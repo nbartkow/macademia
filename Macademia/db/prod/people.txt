@@ -1,0 +1,893 @@
+Shilad Sen	Math/CS	ssen@macalester.edu	online communities
+Shilad Sen	Math/CS	ssen@macalester.edu	social networking
+Shilad Sen	Math/CS	ssen@macalester.edu	data mining
+Shilad Sen	Math/CS	ssen@macalester.edu	machine learning
+Shilad Sen	Math/CS	ssen@macalester.edu	web2.0
+Shilad Sen	Math/CS	ssen@macalester.edu	politics
+Shilad Sen	Math/CS	ssen@macalester.edu	social psychology
+Shilad Sen	Math/CS	ssen@macalester.edu	group psychology
+Shilad Sen	Math/CS	ssen@macalester.edu	statistics
+Shilad Sen	Math/CS	ssen@macalester.edu	collaborative computing
+Shilad Sen	Math/CS	ssen@macalester.edu	moderation
+Shilad Sen	Math/CS	ssen@macalester.edu	online contributions
+Shilad Sen	Math/CS	ssen@macalester.edu	recommender systems
+Shilad Sen	Math/CS	ssen@macalester.edu	social networks
+Shilad Sen	Math/CS	ssen@macalester.edu	tagging
+Shilad Sen	Math/CS	ssen@macalester.edu	web20
+Jaine Strauss	Psychology	strauss@macalester.edu	body image
+Jaine Strauss	Psychology	strauss@macalester.edu	eating disorders
+Jaine Strauss	Psychology	strauss@macalester.edu	body objectification
+Jaine Strauss	Psychology	strauss@macalester.edu	childhood obesity
+Jaine Strauss	Psychology	strauss@macalester.edu	feminist identity
+Jaine Strauss	Psychology	strauss@macalester.edu	nutritional epidemiology
+Jaine Strauss	Psychology	strauss@macalester.edu	psychotherapy research
+Jaine Strauss	Psychology	strauss@macalester.edu	structural analysis of social behavior (SASB)
+Jaine Strauss	Psychology	strauss@macalester.edu	media
+Jaine Strauss	Psychology	strauss@macalester.edu	clinical psychology
+Jaine Strauss	Psychology	strauss@macalester.edu	feminist psychology
+Jaine Strauss	Psychology	strauss@macalester.edu	public health
+Jaine Strauss	Psychology	strauss@macalester.edu	community psychology
+Arjun Guneratne	anthropology	guneratne@macalester.edu	ethnicity
+Arjun Guneratne	anthropology	guneratne@macalester.edu	globalization
+Arjun Guneratne	anthropology	guneratne@macalester.edu	law
+Arjun Guneratne	anthropology	guneratne@macalester.edu	middle classes
+Arjun Guneratne	anthropology	guneratne@macalester.edu	nationalism
+Arjun Guneratne	anthropology	guneratne@macalester.edu	Nepal
+Arjun Guneratne	anthropology	guneratne@macalester.edu	NGOs
+Arjun Guneratne	anthropology	guneratne@macalester.edu	politics
+Arjun Guneratne	anthropology	guneratne@macalester.edu	South Asia
+Arjun Guneratne	anthropology	guneratne@macalester.edu	Sri Lanka
+Arjun Guneratne	anthropology	guneratne@macalester.edu	state formation
+Arjun Guneratne	anthropology	guneratne@macalester.edu	wildlife conservation
+Diane Michelfelder	philosophy	michelfelder@macalester.edu	ethics of emerging technologies
+Diane Michelfelder	philosophy	michelfelder@macalester.edu	European philosophy
+Diane Michelfelder	philosophy	michelfelder@macalester.edu	existentialism
+Diane Michelfelder	philosophy	michelfelder@macalester.edu	Heidegger
+Diane Michelfelder	philosophy	michelfelder@macalester.edu	hermeneutics
+Diane Michelfelder	philosophy	michelfelder@macalester.edu	information technology
+Diane Michelfelder	philosophy	michelfelder@macalester.edu	liberal education
+Diane Michelfelder	philosophy	michelfelder@macalester.edu	philosophy of technology
+Diane Michelfelder	philosophy	michelfelder@macalester.edu	the good life
+Diane Michelfelder	philosophy	michelfelder@macalester.edu	the right to privacy
+Diane Michelfelder	philosophy	michelfelder@macalester.edu	Web 2.0
+Diane Michelfelder	philosophy	michelfelder@macalester.edu	architecture
+Diane Michelfelder	philosophy	michelfelder@macalester.edu	modernism
+Diane Michelfelder	philosophy	michelfelder@macalester.edu	environmentalism
+Diane Michelfelder	philosophy	michelfelder@macalester.edu	everyday material life
+Dianna Shandy	anthropology	shandy@macalester.edu	Africa
+Dianna Shandy	anthropology	shandy@macalester.edu	anthropology
+Dianna Shandy	anthropology	shandy@macalester.edu	citizenship
+Dianna Shandy	anthropology	shandy@macalester.edu	Darfur
+Dianna Shandy	anthropology	shandy@macalester.edu	forced migration
+Dianna Shandy	anthropology	shandy@macalester.edu	gender
+Dianna Shandy	anthropology	shandy@macalester.edu	human rights
+Dianna Shandy	anthropology	shandy@macalester.edu	humanitarianism
+Dianna Shandy	anthropology	shandy@macalester.edu	immigrants
+Dianna Shandy	anthropology	shandy@macalester.edu	Ireland
+Dianna Shandy	anthropology	shandy@macalester.edu	qualitative research methods
+Dianna Shandy	anthropology	shandy@macalester.edu	rapid social change
+Dianna Shandy	anthropology	shandy@macalester.edu	Sudan
+Dianna Shandy	anthropology	shandy@macalester.edu	Transnationalism
+Dianna Shandy	anthropology	shandy@macalester.edu	war
+Dianna Shandy	anthropology	shandy@macalester.edu	work-life choices
+Geoff Gorham	philosophy	ggorham@macalester.edu	time
+Geoff Gorham	philosophy	ggorham@macalester.edu	identity
+Geoff Gorham	philosophy	ggorham@macalester.edu	space
+Geoff Gorham	philosophy	ggorham@macalester.edu	realism
+Geoff Gorham	philosophy	ggorham@macalester.edu	progress
+Geoff Gorham	philosophy	ggorham@macalester.edu	early modern
+Geoff Gorham	philosophy	ggorham@macalester.edu	Descartes
+Geoff Gorham	philosophy	ggorham@macalester.edu	Newton
+Geoff Gorham	philosophy	ggorham@macalester.edu	Locke
+Geoff Gorham	philosophy	ggorham@macalester.edu	Hume
+Geoff Gorham	philosophy	ggorham@macalester.edu	causality
+Geoff Gorham	philosophy	ggorham@macalester.edu	cosmology
+Geoff Gorham	philosophy	ggorham@macalester.edu	quantum
+Geoff Gorham	philosophy	ggorham@macalester.edu	Aristotle
+Geoff Gorham	philosophy	ggorham@macalester.edu	Darwin
+Geoff Gorham	philosophy	ggorham@macalester.edu	Suarez
+Geoff Gorham	philosophy	ggorham@macalester.edu	eternity
+Geoff Gorham	philosophy	ggorham@macalester.edu	death
+Janet Folina	philosophy	folina@macalester.edu	numbers
+Janet Folina	philosophy	folina@macalester.edu	structure
+Janet Folina	philosophy	folina@macalester.edu	realism
+Janet Folina	philosophy	folina@macalester.edu	Poincare
+Janet Folina	philosophy	folina@macalester.edu	Kant
+Janet Folina	philosophy	folina@macalester.edu	Wittgenstein
+Janet Folina	philosophy	folina@macalester.edu	Weyl
+Janet Folina	philosophy	folina@macalester.edu	logicism
+Janet Folina	philosophy	folina@macalester.edu	intuition
+Janet Folina	philosophy	folina@macalester.edu	abstract
+Janet Folina	philosophy	folina@macalester.edu	naturalism
+Janet Folina	philosophy	folina@macalester.edu	fictionalism
+Janet Folina	philosophy	folina@macalester.edu	diagrams
+Janet Folina	philosophy	folina@macalester.edu	visual information
+Janet Folina	philosophy	folina@macalester.edu	proof
+Janet Folina	philosophy	folina@macalester.edu	objectivity
+Joy Laine	philosophy	lainej@macalester.edu	philosophy of mind
+Joy Laine	philosophy	lainej@macalester.edu	consciousness
+Joy Laine	philosophy	lainej@macalester.edu	embodiment
+Joy Laine	philosophy	lainej@macalester.edu	persons
+Joy Laine	philosophy	lainej@macalester.edu	personal identity
+Joy Laine	philosophy	lainej@macalester.edu	thought experimentation
+Joy Laine	philosophy	lainej@macalester.edu	narrativity
+Joy Laine	philosophy	lainej@macalester.edu	philosophy and literature
+Joy Laine	philosophy	lainej@macalester.edu	Parfit
+Joy Laine	philosophy	lainej@macalester.edu	Locke
+Joy Laine	philosophy	lainej@macalester.edu	Indian philosophies
+Joy Laine	philosophy	lainej@macalester.edu	Indian realism
+Joy Laine	philosophy	lainej@macalester.edu	Nyaya Darsana
+Joy Laine	philosophy	lainej@macalester.edu	Udayana
+Joy Laine	philosophy	lainej@macalester.edu	Nagarjuna
+Joy Laine	philosophy	lainej@macalester.edu	Wittgenstein
+Joy Laine	philosophy	lainej@macalester.edu	Davidson
+Joy Laine	philosophy	lainej@macalester.edu	metaphor
+Joy Laine	philosophy	lainej@macalester.edu	cross-cultural philosophy
+Karine Moe	economics	moe@macalester.edu	demography
+Karine Moe	economics	moe@macalester.edu	development
+Karine Moe	economics	moe@macalester.edu	economics
+Karine Moe	economics	moe@macalester.edu	education
+Karine Moe	economics	moe@macalester.edu	environment
+Karine Moe	economics	moe@macalester.edu	fertility
+Karine Moe	economics	moe@macalester.edu	gender
+Karine Moe	economics	moe@macalester.edu	girls
+Karine Moe	economics	moe@macalester.edu	human capital
+Karine Moe	economics	moe@macalester.edu	informal economy
+Karine Moe	economics	moe@macalester.edu	labor
+Karine Moe	economics	moe@macalester.edu	Mexico
+Karine Moe	economics	moe@macalester.edu	social movements
+Karine Moe	economics	moe@macalester.edu	time use
+Karine Moe	economics	moe@macalester.edu	women
+Karine Moe	economics	moe@macalester.edu	work
+Karine Moe	economics	moe@macalester.edu	work-life balance
+Kendrick Brown	psychology	brown@macalester.edu	african american psychology
+Kendrick Brown	psychology	brown@macalester.edu	discrimination
+Kendrick Brown	psychology	brown@macalester.edu	intergroup contact
+Kendrick Brown	psychology	brown@macalester.edu	interracial friendship
+Kendrick Brown	psychology	brown@macalester.edu	online surveys
+Kendrick Brown	psychology	brown@macalester.edu	perception of bias
+Kendrick Brown	psychology	brown@macalester.edu	prejudice
+Kendrick Brown	psychology	brown@macalester.edu	racism
+Kendrick Brown	psychology	brown@macalester.edu	skin tone bias
+Kendrick Brown	psychology	brown@macalester.edu	social psychology
+Kendrick Brown	psychology	brown@macalester.edu	stereotyping
+Kendrick Brown	psychology	brown@macalester.edu	survey methodology
+Martin Gunderson	philosophy	gunderson@macalester.edu	ethics
+Martin Gunderson	philosophy	gunderson@macalester.edu	Kantian ethics
+Martin Gunderson	philosophy	gunderson@macalester.edu	Kantian constructivism
+Martin Gunderson	philosophy	gunderson@macalester.edu	Rawls
+Martin Gunderson	philosophy	gunderson@macalester.edu	bioethics
+Martin Gunderson	philosophy	gunderson@macalester.edu	philosophy of law
+Martin Gunderson	philosophy	gunderson@macalester.edu	civil rights
+Martin Gunderson	philosophy	gunderson@macalester.edu	human rights
+Martin Gunderson	philosophy	gunderson@macalester.edu	right to die
+Martin Gunderson	philosophy	gunderson@macalester.edu	informed consent
+Martin Gunderson	philosophy	gunderson@macalester.edu	dignity
+Terry Boychuk	sociology	boychuk@macalester.edu	Affirmative Action Policy
+Terry Boychuk	sociology	boychuk@macalester.edu	American Social Policy
+Terry Boychuk	sociology	boychuk@macalester.edu	Comparative Health Systems
+Terry Boychuk	sociology	boychuk@macalester.edu	historical development of social policies
+Terry Boychuk	sociology	boychuk@macalester.edu	Medical Sociology
+Terry Boychuk	sociology	boychuk@macalester.edu	Non-Profits
+Terry Boychuk	sociology	boychuk@macalester.edu	Nonprofit Organizations
+Terry Boychuk	sociology	boychuk@macalester.edu	Philanthropy
+Terry Boychuk	sociology	boychuk@macalester.edu	Politics of Health Policy
+Erik Larson	Sociology	larsone@macalester.edu	sociology of law
+Erik Larson	Sociology	larsone@macalester.edu	political sociology
+Erik Larson	Sociology	larsone@macalester.edu	economic sociology
+Erik Larson	Sociology	larsone@macalester.edu	indigenous peoples' movements
+Erik Larson	Sociology	larsone@macalester.edu	market formation and operation
+Erik Larson	Sociology	larsone@macalester.edu	reconciliation
+Erik Larson	Sociology	larsone@macalester.edu	Fiji
+Erik Larson	Sociology	larsone@macalester.edu	globalization
+Erik Larson	Sociology	larsone@macalester.edu	anti-corruption
+Duchess Harris	American Studies	harris@macalester.edu	20th Century African American History
+Duchess Harris	American Studies	harris@macalester.edu	African American literature
+Duchess Harris	American Studies	harris@macalester.edu	feminist theory
+Duchess Harris	American Studies	harris@macalester.edu	legal studies
+Duchess Harris	American Studies	harris@macalester.edu	autobiography
+Duchess Harris	American Studies	harris@macalester.edu	political theory
+Eric Wiertelak	Psychology	wiertelak@macalester.edu	Pain
+Eric Wiertelak	Psychology	wiertelak@macalester.edu	nociception
+Eric Wiertelak	Psychology	wiertelak@macalester.edu	neuroscience
+Eric Wiertelak	Psychology	wiertelak@macalester.edu	neuroscience studies
+Eric Wiertelak	Psychology	wiertelak@macalester.edu	alternative medicine
+Eric Wiertelak	Psychology	wiertelak@macalester.edu	complementary medicine
+Eric Wiertelak	Psychology	wiertelak@macalester.edu	psychopharmacology
+Eric Wiertelak	Psychology	wiertelak@macalester.edu	neuroscience and dance
+Eric Wiertelak	Psychology	wiertelak@macalester.edu	consciousness
+Eric Wiertelak	Psychology	wiertelak@macalester.edu	animal behavior
+Eric Wiertelak	Psychology	wiertelak@macalester.edu	aromatherapy
+Eric Wiertelak	Psychology	wiertelak@macalester.edu	herbalism
+Eric Wiertelak	Psychology	wiertelak@macalester.edu	drug policy
+David Bressoud	Math/Stat/Comp Sci	bressoud@macalester.edu	number theory
+David Bressoud	Math/Stat/Comp Sci	bressoud@macalester.edu	combinatorics
+David Bressoud	Math/Stat/Comp Sci	bressoud@macalester.edu	special functions
+David Bressoud	Math/Stat/Comp Sci	bressoud@macalester.edu	history of mathematics
+David Bressoud	Math/Stat/Comp Sci	bressoud@macalester.edu	undergraduate mathematics education
+Susan Eileen Fox	Math/CS	fox@macalester.edu	artificial intelligence
+Susan Eileen Fox	Math/CS	fox@macalester.edu	robotics
+Susan Eileen Fox	Math/CS	fox@macalester.edu	cognitive science
+David Chioni Moore	International Studies and English	mooredc@macalester.edu	African literature
+David Chioni Moore	International Studies and English	mooredc@macalester.edu	African American literature
+David Chioni Moore	International Studies and English	mooredc@macalester.edu	the Black Atlantic
+David Chioni Moore	International Studies and English	mooredc@macalester.edu	globalization
+David Chioni Moore	International Studies and English	mooredc@macalester.edu	cultural theory
+David Chioni Moore	International Studies and English	mooredc@macalester.edu	literary theory
+David Chioni Moore	International Studies and English	mooredc@macalester.edu	history of world literature concept
+David Chioni Moore	International Studies and English	mooredc@macalester.edu	postcolonial studies
+David Chioni Moore	International Studies and English	mooredc@macalester.edu	cosmopolitanism
+David Chioni Moore	International Studies and English	mooredc@macalester.edu	Langston Hughes
+David Chioni Moore	International Studies and English	mooredc@macalester.edu	Derek Walcott
+David Chioni Moore	International Studies and English	mooredc@macalester.edu	genres and forms of discourse
+David Chioni Moore	International Studies and English	mooredc@macalester.edu	post-Soviet sphere
+Dan Flath	Math/CS	flath@macalester.edu	algebra
+Dan Flath	Math/CS	flath@macalester.edu	geometry
+Dan Flath	Math/CS	flath@macalester.edu	math modeling in any discipline
+Franklin Hugh Adler	Political Science	adler@macalester.edu	political theory
+Franklin Hugh Adler	Political Science	adler@macalester.edu	comparative politics
+Franklin Hugh Adler	Political Science	adler@macalester.edu	political sociology
+Franklin Hugh Adler	Political Science	adler@macalester.edu	contemporary European history
+Franklin Hugh Adler	Political Science	adler@macalester.edu	critical theory
+Franklin Hugh Adler	Political Science	adler@macalester.edu	Western Marxism
+Franklin Hugh Adler	Political Science	adler@macalester.edu	Fascism
+Franklin Hugh Adler	Political Science	adler@macalester.edu	Holocaust studies
+Franklin Hugh Adler	Political Science	adler@macalester.edu	comparative Jewish history
+Franklin Hugh Adler	Political Science	adler@macalester.edu	race and ethnicity
+Franklin Hugh Adler	Political Science	adler@macalester.edu	Kant for managers.
+Tonnis ter Veldhuis	Physics and Astronomy	terveldhuis@macalester.edu	elementary particle physics
+Tonnis ter Veldhuis	Physics and Astronomy	terveldhuis@macalester.edu	field theory
+Tonnis ter Veldhuis	Physics and Astronomy	terveldhuis@macalester.edu	cosmology
+Tonnis ter Veldhuis	Physics and Astronomy	terveldhuis@macalester.edu	phenomenology
+Tonnis ter Veldhuis	Physics and Astronomy	terveldhuis@macalester.edu	solitons
+Tonnis ter Veldhuis	Physics and Astronomy	terveldhuis@macalester.edu	supersymmetry
+Tonnis ter Veldhuis	Physics and Astronomy	terveldhuis@macalester.edu	symmetry breaking
+Tonnis ter Veldhuis	Physics and Astronomy	terveldhuis@macalester.edu	dark matter
+Tonnis ter Veldhuis	Physics and Astronomy	terveldhuis@macalester.edu	higgs boson
+Tonnis ter Veldhuis	Physics and Astronomy	terveldhuis@macalester.edu	inflation
+Tonnis ter Veldhuis	Physics and Astronomy	terveldhuis@macalester.edu	group theory
+Tonnis ter Veldhuis	Physics and Astronomy	terveldhuis@macalester.edu	parallel computing
+Tonnis ter Veldhuis	Physics and Astronomy	terveldhuis@macalester.edu	Beowulf cluster
+Tonnis ter Veldhuis	Physics and Astronomy	terveldhuis@macalester.edu	MPI
+Karl Wirth	Geology	wirth@macalester.edu	geology
+Karl Wirth	Geology	wirth@macalester.edu	petrology
+Karl Wirth	Geology	wirth@macalester.edu	geochemistry
+Karl Wirth	Geology	wirth@macalester.edu	isotopes
+Karl Wirth	Geology	wirth@macalester.edu	environmental chemistry
+Karl Wirth	Geology	wirth@macalester.edu	mantle evolution
+Karl Wirth	Geology	wirth@macalester.edu	crustal evolution
+Karl Wirth	Geology	wirth@macalester.edu	tectonics
+Karl Wirth	Geology	wirth@macalester.edu	volcanism
+Karl Wirth	Geology	wirth@macalester.edu	ophiolites
+Karl Wirth	Geology	wirth@macalester.edu	rifting
+Karl Wirth	Geology	wirth@macalester.edu	Precambrian geology
+Karl Wirth	Geology	wirth@macalester.edu	planetary geology
+Karl Wirth	Geology	wirth@macalester.edu	learning and teaching
+Karl Wirth	Geology	wirth@macalester.edu	pedagogy
+Karl Wirth	Geology	wirth@macalester.edu	assessment
+Karl Wirth	Geology	wirth@macalester.edu	metacognition
+Karl Wirth	Geology	wirth@macalester.edu	learning management systems
+Karl Wirth	Geology	wirth@macalester.edu	Moodle
+Karl Wirth	Geology	wirth@macalester.edu	learning abroad
+Karl Wirth	Geology	wirth@macalester.edu	Africa
+Karl Wirth	Geology	wirth@macalester.edu	faculty development
+Chad Topaz	Math/CS	ctopaz@macalester.edu	applied mathematics
+Chad Topaz	Math/CS	ctopaz@macalester.edu	mathematical modeling
+Chad Topaz	Math/CS	ctopaz@macalester.edu	mathematical biology
+Chad Topaz	Math/CS	ctopaz@macalester.edu	pattern formation
+Chad Topaz	Math/CS	ctopaz@macalester.edu	swarming
+Chad Topaz	Math/CS	ctopaz@macalester.edu	fluid dynamics
+Chad Topaz	Math/CS	ctopaz@macalester.edu	reaction-diffusion
+Laura Smith	Geography	smithl@macalester.edu	urban geography
+Laura Smith	Geography	smithl@macalester.edu	housing markets
+Laura Smith	Geography	smithl@macalester.edu	foreclosure
+Laura Smith	Geography	smithl@macalester.edu	American Indian lands and economic development
+Laura Smith	Geography	smithl@macalester.edu	Canada
+Laura Smith	Geography	smithl@macalester.edu	quantitative methods
+Laura Smith	Geography	smithl@macalester.edu	GIS (Geographic Information Systems)
+Laura Smith	Geography	smithl@macalester.edu	U.S. regional geography
+Laura Smith	Geography	smithl@macalester.edu	transportation
+Liang Ding	Economics	ding@macalester.edu	International finance (foreign exchange market microstructure and exchange rate dynamics)
+Liang Ding	Economics	ding@macalester.edu	Financial economics (general financial markets
+Liang Ding	Economics	ding@macalester.edu	market efficiency and behavioral finance)
+Liang Ding	Economics	ding@macalester.edu	Statistics of high frequency time series
+Liang Ding	Economics	ding@macalester.edu	China's economic development
+Andrew Beveridge	Mathematics and Computer Science	abeverid	combinatorics
+Andrew Beveridge	Mathematics and Computer Science	abeverid	graph theory
+Andrew Beveridge	Mathematics and Computer Science	abeverid	networks
+Andrew Beveridge	Mathematics and Computer Science	abeverid	probability
+Andrew Beveridge	Mathematics and Computer Science	abeverid	random walks
+Andrew Beveridge	Mathematics and Computer Science	abeverid	optimization
+Andrew Beveridge	Mathematics and Computer Science	abeverid	algorithms
+Leola Johnon	Humanities and Media and Cultural Studies	johnsonl1@macalester.edu	African American popular culture from WWII to the present
+Leola Johnon	Humanities and Media and Cultural Studies	johnsonl1@macalester.edu	Representations of African Americans in news
+Leola Johnon	Humanities and Media and Cultural Studies	johnsonl1@macalester.edu	advertising
+Leola Johnon	Humanities and Media and Cultural Studies	johnsonl1@macalester.edu	entertainment
+Leola Johnon	Humanities and Media and Cultural Studies	johnsonl1@macalester.edu	and politics
+James Heyman	Physics and Astronomy	heyman@macalester.edu	experimental physics
+James Heyman	Physics and Astronomy	heyman@macalester.edu	condensed matter
+James Heyman	Physics and Astronomy	heyman@macalester.edu	ultrafast phenomena
+James Heyman	Physics and Astronomy	heyman@macalester.edu	femtosecond infrared spectroscopy
+James Heyman	Physics and Astronomy	heyman@macalester.edu	optics
+Beth Cleary	Theater and Dance	cleary	embodiment practices in rehearsal and performance
+Beth Cleary	Theater and Dance	cleary	directing
+Beth Cleary	Theater and Dance	cleary	history of directing
+Beth Cleary	Theater and Dance	cleary	political theater
+Beth Cleary	Theater and Dance	cleary	subaltern theater texts and practices
+Beth Cleary	Theater and Dance	cleary	playwrighting
+Beth Cleary	Theater and Dance	cleary	yoga
+Beth Cleary	Theater and Dance	cleary	somatics
+John M. Cannon	Physics & Astronomy	jcannon@macalester.edu	observational astronomy
+John M. Cannon	Physics & Astronomy	jcannon@macalester.edu	low-mass galaxies
+John M. Cannon	Physics & Astronomy	jcannon@macalester.edu	galaxy evolution
+Margaret Olsen	Hispanic Studies	molsen@macalester.edu	Hispanic literature
+Margaret Olsen	Hispanic Studies	molsen@macalester.edu	Latin American culture
+Margaret Olsen	Hispanic Studies	molsen@macalester.edu	literary theory
+Margaret Olsen	Hispanic Studies	molsen@macalester.edu	cultural studies
+Margaret Olsen	Hispanic Studies	molsen@macalester.edu	film studies
+Margaret Olsen	Hispanic Studies	molsen@macalester.edu	African American history
+Margaret Olsen	Hispanic Studies	molsen@macalester.edu	African American studies
+Margaret Olsen	Hispanic Studies	molsen@macalester.edu	Afro-Hispanic studies
+Margaret Olsen	Hispanic Studies	molsen@macalester.edu	history of diaspora
+Vittorio Addona	Mathematics and Computer Science	addona@macalester.edu	survival analysis
+Vittorio Addona	Mathematics and Computer Science	addona@macalester.edu	biostatistics
+Vittorio Addona	Mathematics and Computer Science	addona@macalester.edu	election audits
+Vittorio Addona	Mathematics and Computer Science	addona@macalester.edu	sports statistics.
+Erik W. Davis	Religious Studies	davise@macalester.edu	religion
+Erik W. Davis	Religious Studies	davise@macalester.edu	buddhism
+Erik W. Davis	Religious Studies	davise@macalester.edu	cambodia
+Erik W. Davis	Religious Studies	davise@macalester.edu	southeast asia
+Erik W. Davis	Religious Studies	davise@macalester.edu	ritual
+Erik W. Davis	Religious Studies	davise@macalester.edu	agriculture
+Erik W. Davis	Religious Studies	davise@macalester.edu	foodgetting
+Erik W. Davis	Religious Studies	davise@macalester.edu	labor
+Erik W. Davis	Religious Studies	davise@macalester.edu	union
+Erik W. Davis	Religious Studies	davise@macalester.edu	death
+Erik W. Davis	Religious Studies	davise@macalester.edu	funeral
+Erik W. Davis	Religious Studies	davise@macalester.edu	theravada
+Erik W. Davis	Religious Studies	davise@macalester.edu	durkheim
+Erik W. Davis	Religious Studies	davise@macalester.edu	asian anarchism
+Erik W. Davis	Religious Studies	davise@macalester.edu	castoriadis
+Amy Damon	Economics	adamon@macalester.edu	international development
+Amy Damon	Economics	adamon@macalester.edu	human migration
+Amy Damon	Economics	adamon@macalester.edu	remittances
+Amy Damon	Economics	adamon@macalester.edu	rural development
+Amy Damon	Economics	adamon@macalester.edu	agriculture
+Amy Damon	Economics	adamon@macalester.edu	food security
+Amy Damon	Economics	adamon@macalester.edu	poverty
+Amy Damon	Economics	adamon@macalester.edu	education
+Amy Damon	Economics	adamon@macalester.edu	rural labor markets
+Sun No	Psychology	sno@macalester.edu	biculturalism
+Sun No	Psychology	sno@macalester.edu	racial essentialism
+Sun No	Psychology	sno@macalester.edu	cultural inauthenticity
+Sun No	Psychology	sno@macalester.edu	multiple social identities
+Sun No	Psychology	sno@macalester.edu	immigration
+Sun No	Psychology	sno@macalester.edu	acculturation
+Sun No	Psychology	sno@macalester.edu	intergroup relations
+Christina Esposito	Linguistics	esposito@macalester.edu	phonetics
+Christina Esposito	Linguistics	esposito@macalester.edu	the production and perception of voice quality
+Christina Esposito	Linguistics	esposito@macalester.edu	tone
+Christina Esposito	Linguistics	esposito@macalester.edu	indigenous languages (especially ones spoken in Mexico)
+Christina Esposito	Linguistics	esposito@macalester.edu	Zapotec
+Christina Esposito	Linguistics	esposito@macalester.edu	Hmong
+Paul Overvoorde	Biology	overvoorde@macalester.edu	plant genetics
+Paul Overvoorde	Biology	overvoorde@macalester.edu	genomics
+Paul Overvoorde	Biology	overvoorde@macalester.edu	chemical biology
+Paul Overvoorde	Biology	overvoorde@macalester.edu	plant hormone signaling
+Paul Overvoorde	Biology	overvoorde@macalester.edu	root development
+Paul Overvoorde	Biology	overvoorde@macalester.edu	undergraduate genomics education
+Paul Overvoorde	Biology	overvoorde@macalester.edu	cell biology
+Harry Waters Jr.	theatre and Dance 	waters@macalester.edu	Performance
+Harry Waters Jr.	theatre and Dance 	waters@macalester.edu	Theater
+Harry Waters Jr.	theatre and Dance 	waters@macalester.edu	acting
+Harry Waters Jr.	theatre and Dance 	waters@macalester.edu	directing
+Harry Waters Jr.	theatre and Dance 	waters@macalester.edu	community building
+Harry Waters Jr.	theatre and Dance 	waters@macalester.edu	community based arts
+Harry Waters Jr.	theatre and Dance 	waters@macalester.edu	cultural competency
+Harry Waters Jr.	theatre and Dance 	waters@macalester.edu	interdisciplinary connections
+Harry Waters Jr.	theatre and Dance 	waters@macalester.edu	african american theater
+Harry Waters Jr.	theatre and Dance 	waters@macalester.edu	hip hop culture
+Harry Waters Jr.	theatre and Dance 	waters@macalester.edu	dance (all kinds)
+Harry Waters Jr.	theatre and Dance 	waters@macalester.edu	movies
+Harry Waters Jr.	theatre and Dance 	waters@macalester.edu	films
+Harry Waters Jr.	theatre and Dance 	waters@macalester.edu	hollywood intrigue
+Harry Waters Jr.	theatre and Dance 	waters@macalester.edu	Meisner Acting Technique
+Harry Waters Jr.	theatre and Dance 	waters@macalester.edu	Penumbra Theatre Company
+Harry Waters Jr.	theatre and Dance 	waters@macalester.edu	In the Heart of the Beast Puppet and Mask Theater
+Paul Dosh	Political Science/Latin American Studies	dosh@macalester.edu	Latin America
+Paul Dosh	Political Science/Latin American Studies	dosh@macalester.edu	comparative politics
+Paul Dosh	Political Science/Latin American Studies	dosh@macalester.edu	social movements
+Paul Dosh	Political Science/Latin American Studies	dosh@macalester.edu	urban politics
+Paul Dosh	Political Science/Latin American Studies	dosh@macalester.edu	urban poverty
+Paul Dosh	Political Science/Latin American Studies	dosh@macalester.edu	Peru
+Paul Dosh	Political Science/Latin American Studies	dosh@macalester.edu	Ecuador
+Paul Dosh	Political Science/Latin American Studies	dosh@macalester.edu	Bolivia
+Paul Dosh	Political Science/Latin American Studies	dosh@macalester.edu	women and social movements
+Paul Dosh	Political Science/Latin American Studies	dosh@macalester.edu	privatization and social movements
+Paul Dosh	Political Science/Latin American Studies	dosh@macalester.edu	Montessori
+Paul Dosh	Political Science/Latin American Studies	dosh@macalester.edu	pedagogy
+Paul Dosh	Political Science/Latin American Studies	dosh@macalester.edu	
+Ernie Capello	History	ecapello@macalester.edu	Latin America
+Ernie Capello	History	ecapello@macalester.edu	cultural geography
+Ernie Capello	History	ecapello@macalester.edu	collective memory
+Ernie Capello	History	ecapello@macalester.edu	transnationalism
+Ernie Capello	History	ecapello@macalester.edu	urban history
+Ernie Capello	History	ecapello@macalester.edu	pan-Americanism
+Ernie Capello	History	ecapello@macalester.edu	art and society
+Ernie Capello	History	ecapello@macalester.edu	modernism
+Ernie Capello	History	ecapello@macalester.edu	architecture
+Ernie Capello	History	ecapello@macalester.edu	counter-cultures
+Ernie Capello	History	ecapello@macalester.edu	humor
+Sarah West	Economics	wests@macalester.edu	economics
+Sarah West	Economics	wests@macalester.edu	environmental economics
+Sarah West	Economics	wests@macalester.edu	public finance
+Sarah West	Economics	wests@macalester.edu	environmental policy
+Sarah West	Economics	wests@macalester.edu	public policy
+Sarah West	Economics	wests@macalester.edu	externalities
+Sarah West	Economics	wests@macalester.edu	market failure
+Sarah West	Economics	wests@macalester.edu	optimal tax policy
+Sarah West	Economics	wests@macalester.edu	climate change
+Sarah West	Economics	wests@macalester.edu	energy
+Sarah West	Economics	wests@macalester.edu	natural resources
+Sarah West	Economics	wests@macalester.edu	gasoline
+Sarah West	Economics	wests@macalester.edu	automobiles
+Sarah West	Economics	wests@macalester.edu	pollution control
+Sarah West	Economics	wests@macalester.edu	statistics
+Sarah West	Economics	wests@macalester.edu	econometrics
+Sarah West	Economics	wests@macalester.edu	mathematical modeling
+Ronald Brisbois	Chemistry	brisbois@macalester.edu	chemistry
+Ronald Brisbois	Chemistry	brisbois@macalester.edu	materials science
+Ronald Brisbois	Chemistry	brisbois@macalester.edu	history of science/chemistry
+Mark Davis	Biology	davis@macalester.edu	ecology
+Mark Davis	Biology	davis@macalester.edu	invasion biology
+Mark Davis	Biology	davis@macalester.edu	biodiversity
+Mark Davis	Biology	davis@macalester.edu	grasslands
+Mark Davis	Biology	davis@macalester.edu	savannas
+Mark Davis	Biology	davis@macalester.edu	plant ecology
+Mark Davis	Biology	davis@macalester.edu	animal behavior
+Keith Kuwata	Chemistry	kuwata@macalester.edu	atmospheric chemistry
+Keith Kuwata	Chemistry	kuwata@macalester.edu	quantum chemistry
+Keith Kuwata	Chemistry	kuwata@macalester.edu	computational kinetics
+Keith Kuwata	Chemistry	kuwata@macalester.edu	reaction mechanisms
+Keith Kuwata	Chemistry	kuwata@macalester.edu	RRKM theory
+Keith Kuwata	Chemistry	kuwata@macalester.edu	transition state theory
+Keith Kuwata	Chemistry	kuwata@macalester.edu	elemental analysis
+Raymond Robertson	Economics/Latin American Studies	robertson@macalester.edu	International Trade
+Raymond Robertson	Economics/Latin American Studies	robertson@macalester.edu	Globalization
+Raymond Robertson	Economics/Latin American Studies	robertson@macalester.edu	Labor
+Raymond Robertson	Economics/Latin American Studies	robertson@macalester.edu	Latin America
+Raymond Robertson	Economics/Latin American Studies	robertson@macalester.edu	Working Conditions
+Raymond Robertson	Economics/Latin American Studies	robertson@macalester.edu	Migration
+Raymond Robertson	Economics/Latin American Studies	robertson@macalester.edu	Debt
+Raymond Robertson	Economics/Latin American Studies	robertson@macalester.edu	Exchange Rates
+Raymond Robertson	Economics/Latin American Studies	robertson@macalester.edu	Mexico
+Raymond Robertson	Economics/Latin American Studies	robertson@macalester.edu	Cambodia
+Raymond Robertson	Economics/Latin American Studies	robertson@macalester.edu	Indonesia
+Raymond Robertson	Economics/Latin American Studies	robertson@macalester.edu	El Salvador
+Raymond Robertson	Economics/Latin American Studies	robertson@macalester.edu	Honduras
+Raymond Robertson	Economics/Latin American Studies	robertson@macalester.edu	Vietnam.
+Paul J. Fischer	Chemistry	fischer@macalester.edu	organometallic and inorganic chemistry
+Paul J. Fischer	Chemistry	fischer@macalester.edu	ligand design for inorganic complexes
+Ruthann Godollei	Art	godollei@macalester.edu	art
+Ruthann Godollei	Art	godollei@macalester.edu	printmaking
+Ruthann Godollei	Art	godollei@macalester.edu	(etching
+Ruthann Godollei	Art	godollei@macalester.edu	screenprint
+Ruthann Godollei	Art	godollei@macalester.edu	lithography
+Ruthann Godollei	Art	godollei@macalester.edu	typography
+Ruthann Godollei	Art	godollei@macalester.edu	hand set type
+Ruthann Godollei	Art	godollei@macalester.edu	relief printing)
+Ruthann Godollei	Art	godollei@macalester.edu	print history
+Ruthann Godollei	Art	godollei@macalester.edu	digital media
+Ruthann Godollei	Art	godollei@macalester.edu	political art
+Ruthann Godollei	Art	godollei@macalester.edu	art theory
+Ruthann Godollei	Art	godollei@macalester.edu	feminist theory
+Ruthann Godollei	Art	godollei@macalester.edu	women artists
+Ruthann Godollei	Art	godollei@macalester.edu	african american art
+Ruthann Godollei	Art	godollei@macalester.edu	mexican art
+Ruthann Godollei	Art	godollei@macalester.edu	chicano art
+Ruthann Godollei	Art	godollei@macalester.edu	latin american art
+Ruthann Godollei	Art	godollei@macalester.edu	central european art
+Ruthann Godollei	Art	godollei@macalester.edu	performance art
+Ruthann Godollei	Art	godollei@macalester.edu	animation
+Ruthann Godollei	Art	godollei@macalester.edu	texts and images
+Ruthann Godollei	Art	godollei@macalester.edu	art cars
+Ruthann Godollei	Art	godollei@macalester.edu	international car art
+Ruthann Godollei	Art	godollei@macalester.edu	history of decorated vehicles.
+Karen Saxe	Mathematics and Computer Science	saxe@macalester.edu	math and applied math; history of math; voting and elections.
+Beth Severy-Hoven	Classics	severy@macalester.edu	ancient history
+Beth Severy-Hoven	Classics	severy@macalester.edu	history of women and gender
+Beth Severy-Hoven	Classics	severy@macalester.edu	mythology and storytelling
+Beth Severy-Hoven	Classics	severy@macalester.edu	theoretical approaches to myth
+Beth Severy-Hoven	Classics	severy@macalester.edu	textbook writing
+Beth Severy-Hoven	Classics	severy@macalester.edu	student writing
+Mark Mazullo	Music	mazullo@macalester.edu	History of Western art music
+Mark Mazullo	Music	mazullo@macalester.edu	theories of musical performance and interpretation
+Mark Mazullo	Music	mazullo@macalester.edu	music in literature
+Mark Mazullo	Music	mazullo@macalester.edu	Dmitri Shostakovich
+Mark Mazullo	Music	mazullo@macalester.edu	piano music
+Mark Mazullo	Music	mazullo@macalester.edu	Beethoven
+Mark Mazullo	Music	mazullo@macalester.edu	American popular music
+Mark Mazullo	Music	mazullo@macalester.edu	opera
+Mark Mazullo	Music	mazullo@macalester.edu	alienation/enstrangement
+Mark Mazullo	Music	mazullo@macalester.edu	music in film
+Mark Mazullo	Music	mazullo@macalester.edu	history of aesthetics
+Mark Mazullo	Music	mazullo@macalester.edu	music and morality
+Liz Jansen	Biology	jansen@macalester.edu	neuroscience
+Liz Jansen	Biology	jansen@macalester.edu	psychopharmacology
+Liz Jansen	Biology	jansen@macalester.edu	mental health
+Liz Jansen	Biology	jansen@macalester.edu	learning and human brain development
+Liz Jansen	Biology	jansen@macalester.edu	experience- and injury-induced neural plasticity
+Liz Jansen	Biology	jansen@macalester.edu	women’s health
+Liz Jansen	Biology	jansen@macalester.edu	reproductive health
+Liz Jansen	Biology	jansen@macalester.edu	reproductive technologies
+Liz Jansen	Biology	jansen@macalester.edu	public health
+Susanna Drake	Religious Studies	sdrake@macalester.edu	Early Christian and Jewish history
+Susanna Drake	Religious Studies	sdrake@macalester.edu	ancient history
+Susanna Drake	Religious Studies	sdrake@macalester.edu	religion and secularism
+Susanna Drake	Religious Studies	sdrake@macalester.edu	gender and sexuality studies
+Susanna Drake	Religious Studies	sdrake@macalester.edu	postcolonial theory
+Kelly MacGregor	Geology	macgregor@macalester.edu	glaciology
+Kelly MacGregor	Geology	macgregor@macalester.edu	sediment transport
+Kelly MacGregor	Geology	macgregor@macalester.edu	fluvial processes
+Kelly MacGregor	Geology	macgregor@macalester.edu	climate change
+Kelly MacGregor	Geology	macgregor@macalester.edu	environmental hydrology
+Kelly MacGregor	Geology	macgregor@macalester.edu	alpine environments
+Gitta Hammarberg	Russian Studies	hammarberg@macalester.edu	Russian literature
+Gitta Hammarberg	Russian Studies	hammarberg@macalester.edu	Sentimentalist culture
+Gitta Hammarberg	Russian Studies	hammarberg@macalester.edu	18th-century minor writers and genres (album verse
+Gitta Hammarberg	Russian Studies	hammarberg@macalester.edu	domestic performance literature
+Gitta Hammarberg	Russian Studies	hammarberg@macalester.edu	early women's journals)
+Gitta Hammarberg	Russian Studies	hammarberg@macalester.edu	the inception of literary criticism
+Gitta Hammarberg	Russian Studies	hammarberg@macalester.edu	literary theory (esp. Bakhtin)
+Gitta Hammarberg	Russian Studies	hammarberg@macalester.edu	dandyism
+Gitta Hammarberg	Russian Studies	hammarberg@macalester.edu	epigonism
+Gitta Hammarberg	Russian Studies	hammarberg@macalester.edu	spa culture
+Gitta Hammarberg	Russian Studies	hammarberg@macalester.edu	Gogol'
+Adrienne Christiansen	Political Science	christiansen@macalester.edu	rhetoric
+Adrienne Christiansen	Political Science	christiansen@macalester.edu	the persuasive qualities of public space and political memorials
+Adrienne Christiansen	Political Science	christiansen@macalester.edu	the rhetoric of social movements
+Adrienne Christiansen	Political Science	christiansen@macalester.edu	campaign rhetoric
+Adrienne Christiansen	Political Science	christiansen@macalester.edu	political speeches
+Adrienne Christiansen	Political Science	christiansen@macalester.edu	women's rights
+Adrienne Christiansen	Political Science	christiansen@macalester.edu	feminism
+Adrienne Christiansen	Political Science	christiansen@macalester.edu	contemporary conservatism
+Adrienne Christiansen	Political Science	christiansen@macalester.edu	political humor
+Adrienne Christiansen	Political Science	christiansen@macalester.edu	cyberpolitics
+Adrienne Christiansen	Political Science	christiansen@macalester.edu	e-democracy
+Ruthanne Kurth-Schai	Educational Studies	kurthschai@macalester.edu	educational studies
+Ruthanne Kurth-Schai	Educational Studies	kurthschai@macalester.edu	philosophy of education
+Ruthanne Kurth-Schai	Educational Studies	kurthschai@macalester.edu	education policy
+Ruthanne Kurth-Schai	Educational Studies	kurthschai@macalester.edu	public education reform
+Ruthanne Kurth-Schai	Educational Studies	kurthschai@macalester.edu	education and social reform; democracy and education; social/cultural/spiritual issues in education
+Ruthanne Kurth-Schai	Educational Studies	kurthschai@macalester.edu	civic education
+Ruthanne Kurth-Schai	Educational Studies	kurthschai@macalester.edu	globalization and education
+Ruthanne Kurth-Schai	Educational Studies	kurthschai@macalester.edu	environmental education
+Ruthanne Kurth-Schai	Educational Studies	kurthschai@macalester.edu	teacher education
+Ruthanne Kurth-Schai	Educational Studies	kurthschai@macalester.edu	qualitative research methodologies
+Ruthanne Kurth-Schai	Educational Studies	kurthschai@macalester.edu	general systems/cultural futures theory and methodologies
+carleton Macy	music	macy@macalester.edu	(formal research): Music Composition of all kinds
+carleton Macy	music	macy@macalester.edu	(less formal research
+carleton Macy	music	macy@macalester.edu	meaning fascination without publications): Chinese Music
+carleton Macy	music	macy@macalester.edu	Javanese gamelan
+carleton Macy	music	macy@macalester.edu	Jazz
+carleton Macy	music	macy@macalester.edu	Faust in music
+Tom Halverson	Mathematics and Computer Science	halverson@macalester.edu	linear and abstract algebra
+Tom Halverson	Mathematics and Computer Science	halverson@macalester.edu	discrete mathematics and combinatorics
+Tom Halverson	Mathematics and Computer Science	halverson@macalester.edu	symmetry
+Tom Varberg	Chemistry	varberg@macalester.edu	chemical physics
+Tom Varberg	Chemistry	varberg@macalester.edu	molecular spectroscopy
+Tom Varberg	Chemistry	varberg@macalester.edu	free radicals
+Tom Varberg	Chemistry	varberg@macalester.edu	hyperfine structure
+Tom Varberg	Chemistry	varberg@macalester.edu	diatomic molecules
+Tom Varberg	Chemistry	varberg@macalester.edu	chemical pedagogy
+James	Dawes	dawes@macalester.edu	literature
+James	Dawes	dawes@macalester.edu	ethics
+James	Dawes	dawes@macalester.edu	aesthetics
+James	Dawes	dawes@macalester.edu	philosophy
+James	Dawes	dawes@macalester.edu	human rights
+James	Dawes	dawes@macalester.edu	violence
+James	Dawes	dawes@macalester.edu	theories of justice
+Cynthia Kauffeld	Hispanic Studies	kauffeld@macalester.edu	Spanish dialectology
+Cynthia Kauffeld	Hispanic Studies	kauffeld@macalester.edu	colonial Spanish
+Cynthia Kauffeld	Hispanic Studies	kauffeld@macalester.edu	paleography
+Cynthia Kauffeld	Hispanic Studies	kauffeld@macalester.edu	Andalusian Spanish
+Cynthia Kauffeld	Hispanic Studies	kauffeld@macalester.edu	historical linguistics
+Cynthia Kauffeld	Hispanic Studies	kauffeld@macalester.edu	Spanish in the US
+William Moseley	Geography	moseley@macalester.edu	geography
+William Moseley	Geography	moseley@macalester.edu	political ecology
+William Moseley	Geography	moseley@macalester.edu	development
+William Moseley	Geography	moseley@macalester.edu	agriculture
+William Moseley	Geography	moseley@macalester.edu	Africa
+William Moseley	Geography	moseley@macalester.edu	food security
+William Moseley	Geography	moseley@macalester.edu	hunger
+William Moseley	Geography	moseley@macalester.edu	environment
+William Moseley	Geography	moseley@macalester.edu	public policy
+Paula Cooey	Religious Studies	Cooey@macalester/edu	History of Christian traditions (especially the 16th century)
+Paula Cooey	Religious Studies	Cooey@macalester/edu	theory & critique of religion
+Paula Cooey	Religious Studies	Cooey@macalester/edu	religion & gender
+Paula Cooey	Religious Studies	Cooey@macalester/edu	religious ethics & politics (particularly comparative religious views of martyrdom)
+Paula Cooey	Religious Studies	Cooey@macalester/edu	post-colonial theory
+Paula Cooey	Religious Studies	Cooey@macalester/edu	ethics of theory & method in religious studies
+Paula Cooey	Religious Studies	Cooey@macalester/edu	history of Christian & Muslim relations
+Paula Cooey	Religious Studies	Cooey@macalester/edu	religion & the environment
+Paula Cooey	Religious Studies	Cooey@macalester/edu	religion & economics
+Kristi Curry Rogers	Biology and Geology 	rogersk@macalester.edu	Dinosaur paleobiology & evolution
+Kristi Curry Rogers	Biology and Geology 	rogersk@macalester.edu	bone histology and relationships to growth rates
+Kristi Curry Rogers	Biology and Geology 	rogersk@macalester.edu	body size evolution
+Kristi Curry Rogers	Biology and Geology 	rogersk@macalester.edu	& environment
+Nanette Goldman	Classics	goldman@macalester.edu	ancient Mediterranean and Near Eastern crisis poetry
+Nanette Goldman	Classics	goldman@macalester.edu	Roman archaeology of Israel
+Nanette Goldman	Classics	goldman@macalester.edu	Greek
+Nanette Goldman	Classics	goldman@macalester.edu	Hebrew and Aramaic texts of the 2nd temple period
+Julie Dolan	Political Science	dolan@macalester.edu	political science
+Julie Dolan	Political Science	dolan@macalester.edu	American politics
+Julie Dolan	Political Science	dolan@macalester.edu	women and politics
+Julie Dolan	Political Science	dolan@macalester.edu	public policy and government institutions
+Jerald Dosch	Biology and Environmental Studies	dosch@macalester.edu	ecology
+Jerald Dosch	Biology and Environmental Studies	dosch@macalester.edu	restoration ecology
+Jerald Dosch	Biology and Environmental Studies	dosch@macalester.edu	ornithology
+Jerald Dosch	Biology and Environmental Studies	dosch@macalester.edu	heavy metals and loons
+Jerald Dosch	Biology and Environmental Studies	dosch@macalester.edu	Common Loons
+Jerald Dosch	Biology and Environmental Studies	dosch@macalester.edu	winter ecology
+Joëlle Vitiello	French and Francophone Studies	vitiello@macalester.edu	Contemporary French culture and literature
+Joëlle Vitiello	French and Francophone Studies	vitiello@macalester.edu	French film
+Joëlle Vitiello	French and Francophone Studies	vitiello@macalester.edu	Haitian culture and literature
+Joëlle Vitiello	French and Francophone Studies	vitiello@macalester.edu	Human Rights in Haiti
+Joëlle Vitiello	French and Francophone Studies	vitiello@macalester.edu	colonial/post-colonial France
+Joëlle Vitiello	French and Francophone Studies	vitiello@macalester.edu	representations of the Algerian/French war and post-independence relations
+Joëlle Vitiello	French and Francophone Studies	vitiello@macalester.edu	immigration literature and cinema
+Joëlle Vitiello	French and Francophone Studies	vitiello@macalester.edu	North African literature and cinema African literature and film
+Joëlle Vitiello	French and Francophone Studies	vitiello@macalester.edu	human rights and representations pertinent to human rights.
+Devavani Chatterjea	Biology	chatterjead@macalester.edu	Vertebrate immunity
+Devavani Chatterjea	Biology	chatterjead@macalester.edu	hematopoietic stem cells
+Devavani Chatterjea	Biology	chatterjead@macalester.edu	T cell development
+Devavani Chatterjea	Biology	chatterjead@macalester.edu	bone marrow stroma
+Devavani Chatterjea	Biology	chatterjead@macalester.edu	mast cells
+Devavani Chatterjea	Biology	chatterjead@macalester.edu	inflammatory pain
+Devavani Chatterjea	Biology	chatterjead@macalester.edu	undergraduate public health studies
+Devavani Chatterjea	Biology	chatterjead@macalester.edu	biology & civic engagement
+Devavani Chatterjea	Biology	chatterjead@macalester.edu	metaphors of immunity
+Galo F. Gonzalez	Hispanic and Latin American Studies	gonzalez@macalester.edu	Latin American literatures and cultures
+Galo F. Gonzalez	Hispanic and Latin American Studies	gonzalez@macalester.edu	Hispanic literature and culture
+Galo F. Gonzalez	Hispanic and Latin American Studies	gonzalez@macalester.edu	Latin American Indigenous literature and cultures
+Galo F. Gonzalez	Hispanic and Latin American Studies	gonzalez@macalester.edu	social movements in Ecuador
+Galo F. Gonzalez	Hispanic and Latin American Studies	gonzalez@macalester.edu	Peru
+Galo F. Gonzalez	Hispanic and Latin American Studies	gonzalez@macalester.edu	Bolivia
+Galo F. Gonzalez	Hispanic and Latin American Studies	gonzalez@macalester.edu	subaltern literature
+Galo F. Gonzalez	Hispanic and Latin American Studies	gonzalez@macalester.edu	revolutions
+Galo F. Gonzalez	Hispanic and Latin American Studies	gonzalez@macalester.edu	cultural theory
+Galo F. Gonzalez	Hispanic and Latin American Studies	gonzalez@macalester.edu	literary theory
+Galo F. Gonzalez	Hispanic and Latin American Studies	gonzalez@macalester.edu	creative writing
+Galo F. Gonzalez	Hispanic and Latin American Studies	gonzalez@macalester.edu	U.S. Latin@ studies
+David Lanegran	Geography	lanegran@macalester.edu	Geography
+David Lanegran	Geography	lanegran@macalester.edu	Human Geography
+David Lanegran	Geography	lanegran@macalester.edu	Urban Geography
+David Lanegran	Geography	lanegran@macalester.edu	applied geography and community engagement
+David Lanegran	Geography	lanegran@macalester.edu	Special interests in inner city neighborhoods and commercial streets
+David Lanegran	Geography	lanegran@macalester.edu	historic preservation
+David Lanegran	Geography	lanegran@macalester.edu	urban planning
+David Lanegran	Geography	lanegran@macalester.edu	cities and rivers. Historical cartography of Minnesota
+David Lanegran	Geography	lanegran@macalester.edu	Advanced placement geography
+David Lanegran	Geography	lanegran@macalester.edu	world urbanization
+Kathleen Murray	Provost	kmurray@macalester.edu	piano performance
+Kathleen Murray	Provost	kmurray@macalester.edu	piano pedagogy
+Kathleen Murray	Provost	kmurray@macalester.edu	20th and 21st century piano literature
+Kathleen Murray	Provost	kmurray@macalester.edu	teaching contemporary piano techniques to elementary and intermediate level pianists
+Kathleen Murray	Provost	kmurray@macalester.edu	faculty development
+Kathleen Murray	Provost	kmurray@macalester.edu	leadership development
+Kathleen Murray	Provost	kmurray@macalester.edu	liberal arts education
+Holly Barcus	Geography	barcus@macalester.edu	population
+Holly Barcus	Geography	barcus@macalester.edu	migration
+Holly Barcus	Geography	barcus@macalester.edu	rural communities
+Holly Barcus	Geography	barcus@macalester.edu	Mongolia
+Holly Barcus	Geography	barcus@macalester.edu	Great Plains
+Holly Barcus	Geography	barcus@macalester.edu	Appalachia
+Holly Barcus	Geography	barcus@macalester.edu	GIS
+Brooke Lea	Psychology	lea@macalester.edu	Cognition generally
+Brooke Lea	Psychology	lea@macalester.edu	psycholinguistics and psychological models of reasoning specifically.
+Christopher Scott	Asian Languages and Cultures	scottcd@macalester.edu	modern Japanese literature and film
+Christopher Scott	Asian Languages and Cultures	scottcd@macalester.edu	Koreans in Japan (zainichi Koreans)
+Christopher Scott	Asian Languages and Cultures	scottcd@macalester.edu	Japanese colonialism
+Christopher Scott	Asian Languages and Cultures	scottcd@macalester.edu	race and ethnicity
+Christopher Scott	Asian Languages and Cultures	scottcd@macalester.edu	gender studies and queer theory
+Christopher Scott	Asian Languages and Cultures	scottcd@macalester.edu	translation studies
+Christopher Scott	Asian Languages and Cultures	scottcd@macalester.edu	Asian American studies
+Raymond Rogers	Geology	rogers@macalester.edu	sedimentary geology
+Raymond Rogers	Geology	rogers@macalester.edu	paleoecology
+Raymond Rogers	Geology	rogers@macalester.edu	taphonomy
+Raymond Rogers	Geology	rogers@macalester.edu	patterns in the fossil record
+Dan Trudeau	Geography	trudeau@macalester.edu	urban geography -  racial residential segregation in North American cities
+Dan Trudeau	Geography	trudeau@macalester.edu	history of urban planning
+Dan Trudeau	Geography	trudeau@macalester.edu	sustainable urban utopias
+Dan Trudeau	Geography	trudeau@macalester.edu	cultural geography -  landscapes
+Dan Trudeau	Geography	trudeau@macalester.edu	law and geography
+Dan Trudeau	Geography	trudeau@macalester.edu	migration and assimilation
+Dan Trudeau	Geography	trudeau@macalester.edu	political geography -  citizenship
+Dan Trudeau	Geography	trudeau@macalester.edu	states and nationalism
+Dan Trudeau	Geography	trudeau@macalester.edu	geopolitics
+Dan Trudeau	Geography	trudeau@macalester.edu	welfare state restructuring
+Chris Calderone	Biology	ccalder2@macalester.edu	Biochemistry
+Chris Calderone	Biology	ccalder2@macalester.edu	chemical biology
+Chris Calderone	Biology	ccalder2@macalester.edu	natural products
+Chris Calderone	Biology	ccalder2@macalester.edu	enzymology
+Olga González	Anthropology	ogonzale@macalester.edu	Violence and war
+Olga González	Anthropology	ogonzale@macalester.edu	memory studies
+Olga González	Anthropology	ogonzale@macalester.edu	politics of truth and reconciliation
+Olga González	Anthropology	ogonzale@macalester.edu	trauma
+Olga González	Anthropology	ogonzale@macalester.edu	subjectivity
+Olga González	Anthropology	ogonzale@macalester.edu	visuality and representation
+Olga González	Anthropology	ogonzale@macalester.edu	vernacular/popular art
+Olga González	Anthropology	ogonzale@macalester.edu	Latin America
+Olga González	Anthropology	ogonzale@macalester.edu	Peru.
+Lara Nielsen	Theatre and Dance	lnielsen@macalester.edu	performance studies and critical theory
+Lara Nielsen	Theatre and Dance	lnielsen@macalester.edu	globalization and cultural production
+Lara Nielsen	Theatre and Dance	lnielsen@macalester.edu	international modernisms and the avant-garde (especially Latin American and Caribbean)
+Lara Nielsen	Theatre and Dance	lnielsen@macalester.edu	US Latin@ performance and diaspora
+Lara Nielsen	Theatre and Dance	lnielsen@macalester.edu	postcolonial and gender theories
+Lara Nielsen	Theatre and Dance	lnielsen@macalester.edu	violence and the state
+Lara Nielsen	Theatre and Dance	lnielsen@macalester.edu	deployments of oral history
+Lara Nielsen	Theatre and Dance	lnielsen@macalester.edu	ethnography
+Lara Nielsen	Theatre and Dance	lnielsen@macalester.edu	and documentary in the arts
+Roopali Phadke	Environmental Studies	phadke@macalester.edu	South Asia
+Roopali Phadke	Environmental Studies	phadke@macalester.edu	social movements
+Roopali Phadke	Environmental Studies	phadke@macalester.edu	environmental politics
+Roopali Phadke	Environmental Studies	phadke@macalester.edu	environmental law
+Roopali Phadke	Environmental Studies	phadke@macalester.edu	development studies
+Roopali Phadke	Environmental Studies	phadke@macalester.edu	water
+Roopali Phadke	Environmental Studies	phadke@macalester.edu	renewable energy
+Roopali Phadke	Environmental Studies	phadke@macalester.edu	science and technology studies
+Roopali Phadke	Environmental Studies	phadke@macalester.edu	political ecology
+Roopali Phadke	Environmental Studies	phadke@macalester.edu	climate change
+Roopali Phadke	Environmental Studies	phadke@macalester.edu	participation and community development
+Roopali Phadke	Environmental Studies	phadke@macalester.edu	international institutions
+Roopali Phadke	Environmental Studies	phadke@macalester.edu	visualization
+Roopali Phadke	Environmental Studies	phadke@macalester.edu	simulation
+Roopali Phadke	Environmental Studies	phadke@macalester.edu	modeling
+Scott Legge	Anthropology	slegge@macalester.edu	anthropology
+Scott Legge	Anthropology	slegge@macalester.edu	archaeology
+Scott Legge	Anthropology	slegge@macalester.edu	primate skeletal biology
+Scott Legge	Anthropology	slegge@macalester.edu	evolutionary biology
+Scott Legge	Anthropology	slegge@macalester.edu	bioarchaeology
+Scott Legge	Anthropology	slegge@macalester.edu	paleoanthropology
+Scott Legge	Anthropology	slegge@macalester.edu	paleopathology
+Peter Rachleff	History	rachleff@macaalester.edu	US working class -- past
+Peter Rachleff	History	rachleff@macaalester.edu	present
+Peter Rachleff	History	rachleff@macaalester.edu	future
+Peter Rachleff	History	rachleff@macaalester.edu	Immigration to US and global migration patterns
+Peter Rachleff	History	rachleff@macaalester.edu	Race
+Peter Rachleff	History	rachleff@macaalester.edu	racism
+Peter Rachleff	History	rachleff@macaalester.edu	racial formations
+Peter Rachleff	History	rachleff@macaalester.edu	racialized representations and popular culture
+Peter Rachleff	History	rachleff@macaalester.edu	African American history
+Peter Rachleff	History	rachleff@macaalester.edu	Mellon Mays Undergraduate Fellowship Program
+Peter Rachleff	History	rachleff@macaalester.edu	South Africa -- apartheid and anti-apartheid
+Clay Steinman	Humanities and Media and Cutural Studies	steinman@macalester.edu	critical social theory and the media
+Clay Steinman	Humanities and Media and Cutural Studies	steinman@macalester.edu	film and media analysis
+Clay Steinman	Humanities and Media and Cutural Studies	steinman@macalester.edu	film history and theory
+Clay Steinman	Humanities and Media and Cutural Studies	steinman@macalester.edu	gender/race/sexualities and film
+Clay Steinman	Humanities and Media and Cutural Studies	steinman@macalester.edu	Hollywood and U.S. Communism
+Clay Steinman	Humanities and Media and Cutural Studies	steinman@macalester.edu	Marxism and aesthetic and cultural analysis
+Clay Steinman	Humanities and Media and Cutural Studies	steinman@macalester.edu	U.S. Jews and the media.
+Patrick Schmidt	Political Science	schmidtp@macalester.edu	Public law
+Patrick Schmidt	Political Science	schmidtp@macalester.edu	U.S. constitutional law
+Patrick Schmidt	Political Science	schmidtp@macalester.edu	civil liberties & civil rights
+Patrick Schmidt	Political Science	schmidtp@macalester.edu	the American Supreme Court
+Patrick Schmidt	Political Science	schmidtp@macalester.edu	American political and legal development
+Patrick Schmidt	Political Science	schmidtp@macalester.edu	Anglo-American legal traditions
+Patrick Schmidt	Political Science	schmidtp@macalester.edu	the legal profession
+Patrick Schmidt	Political Science	schmidtp@macalester.edu	lawyers
+Patrick Schmidt	Political Science	schmidtp@macalester.edu	judicial behavior esp. appellate court judges
+Patrick Schmidt	Political Science	schmidtp@macalester.edu	transparency
+Patrick Schmidt	Political Science	schmidtp@macalester.edu	freedom of information
+Patrick Schmidt	Political Science	schmidtp@macalester.edu	disclosure
+Patrick Schmidt	Political Science	schmidtp@macalester.edu	government regulation
+Patrick Schmidt	Political Science	schmidtp@macalester.edu	bureaucracy and administrative behavior
+Patrick Schmidt	Political Science	schmidtp@macalester.edu	occupational safety and health
+Patrick Schmidt	Political Science	schmidtp@macalester.edu	securities regulation
+Patrick Schmidt	Political Science	schmidtp@macalester.edu	college architecture and design
+Christopher Wells	Environmental Studies	wells@macalester.edu	Environmental history
+Christopher Wells	Environmental Studies	wells@macalester.edu	United States history since 1877
+Christopher Wells	Environmental Studies	wells@macalester.edu	U.S. cultural and intellectual history
+Christopher Wells	Environmental Studies	wells@macalester.edu	history of technology
+Christopher Wells	Environmental Studies	wells@macalester.edu	urban history
+Christopher Wells	Environmental Studies	wells@macalester.edu	automobiles and the American environment
+Christopher Wells	Environmental Studies	wells@macalester.edu	US influence on global environment
+Christopher Wells	Environmental Studies	wells@macalester.edu	"green" architecture
+Christopher Wells	Environmental Studies	wells@macalester.edu	sustainability
+Nadya Nedelsky	International Studies	nedelsky@macalester.edu	comparative politics
+Nadya Nedelsky	International Studies	nedelsky@macalester.edu	political theory
+Nadya Nedelsky	International Studies	nedelsky@macalester.edu	nationalism
+Nadya Nedelsky	International Studies	nedelsky@macalester.edu	ethnic conflict
+Nadya Nedelsky	International Studies	nedelsky@macalester.edu	human rights
+Nadya Nedelsky	International Studies	nedelsky@macalester.edu	minority rights
+Nadya Nedelsky	International Studies	nedelsky@macalester.edu	East European politics
+Nadya Nedelsky	International Studies	nedelsky@macalester.edu	citizenship
+Nadya Nedelsky	International Studies	nedelsky@macalester.edu	transitional justice
+Rebecca C. Hoye	Chemisery	hoye@macalester.edu	Natural products chemistry: synthesis
+Rebecca C. Hoye	Chemisery	hoye@macalester.edu	development of synthetic methology
+Rebecca C. Hoye	Chemisery	hoye@macalester.edu	use of the yeast three hybrid assay and other chemical genetics techniques
+Gary Krueger	Economics	krueger@macalester.edu	Economics of institutions
+Gary Krueger	Economics	krueger@macalester.edu	Corporate Governance
+Gary Krueger	Economics	krueger@macalester.edu	Russia in Transition. Comparative Economic Systems.
+Satoko Suzuki	Asian Languages and Cultures	suzuki@macalester.edu	Japanese linguistics
+Satoko Suzuki	Asian Languages and Cultures	suzuki@macalester.edu	pragmatics
+Satoko Suzuki	Asian Languages and Cultures	suzuki@macalester.edu	discourse analysis
+Satoko Suzuki	Asian Languages and Cultures	suzuki@macalester.edu	stylistics
+Satoko Suzuki	Asian Languages and Cultures	suzuki@macalester.edu	rhetoric
+Satoko Suzuki	Asian Languages and Cultures	suzuki@macalester.edu	communication strategies
+Satoko Suzuki	Asian Languages and Cultures	suzuki@macalester.edu	sociolinguistics
+Joan Ostrove	Psychology	ostrove@macalester.edu	psychology and social structure
+Joan Ostrove	Psychology	ostrove@macalester.edu	social identities
+Joan Ostrove	Psychology	ostrove@macalester.edu	psychology of social class
+Joan Ostrove	Psychology	ostrove@macalester.edu	psychology of gender
+Joan Ostrove	Psychology	ostrove@macalester.edu	disability studies
+Joan Ostrove	Psychology	ostrove@macalester.edu	deaf studies
+Joan Ostrove	Psychology	ostrove@macalester.edu	friendships and alliances across differences of identity
+Joan Ostrove	Psychology	ostrove@macalester.edu	feminist methodologies
+Joan Ostrove	Psychology	ostrove@macalester.edu	feminist theories
+Henry R. West	Philosophy, Emeritus	west@macalester.edu	John Stuart Mill
+Henry R. West	Philosophy, Emeritus	west@macalester.edu	utilitarianism
+Henry R. West	Philosophy, Emeritus	west@macalester.edu	ethics
+Henry R. West	Philosophy, Emeritus	west@macalester.edu	political philosophy
+Henry R. West	Philosophy, Emeritus	west@macalester.edu	philosophy and history of socialism
+Henry R. West	Philosophy, Emeritus	west@macalester.edu	history of western philosophy
+Henry R. West	Philosophy, Emeritus	west@macalester.edu	Plato
+Henry R. West	Philosophy, Emeritus	west@macalester.edu	Aristotle
+Henry R. West	Philosophy, Emeritus	west@macalester.edu	Bentham
+Henry R. West	Philosophy, Emeritus	west@macalester.edu	Rawls
+Dan Hornbach	Environmental Studies	hornbach@macalester.edu	freshwater ecology
+Dan Hornbach	Environmental Studies	hornbach@macalester.edu	conservation biology
+Dan Hornbach	Environmental Studies	hornbach@macalester.edu	endangered species
+Dan Hornbach	Environmental Studies	hornbach@macalester.edu	freshwater mollusks
+Eugene Rogers	Music	erogers2@macalester.edu	conducting and rehearsal techniques
+Eugene Rogers	Music	erogers2@macalester.edu	choral music education
+Eugene Rogers	Music	erogers2@macalester.edu	British and Italian Renaissance choral music
+Eugene Rogers	Music	erogers2@macalester.edu	multicultural choral music (special emphasis on East Africa)
+Eugene Rogers	Music	erogers2@macalester.edu	contemporary American composers
+Eugene Rogers	Music	erogers2@macalester.edu	choral orchestral repertoire of the 17th
+Eugene Rogers	Music	erogers2@macalester.edu	18th and 19th centuries
+Louisa Bradtmiller	Environmental Studies	lbradtmi@macalester.edu	Climate change
+Louisa Bradtmiller	Environmental Studies	lbradtmi@macalester.edu	paleoclimate
+Louisa Bradtmiller	Environmental Studies	lbradtmi@macalester.edu	oceanography
+Louisa Bradtmiller	Environmental Studies	lbradtmi@macalester.edu	geochemistry
+Ron Barrett	Anthropology	rbarrett@macalester.edu	Medical anthropology
+Ron Barrett	Anthropology	rbarrett@macalester.edu	medical sociology
+Ron Barrett	Anthropology	rbarrett@macalester.edu	cultural anthropology
+Ron Barrett	Anthropology	rbarrett@macalester.edu	psychological anthropology
+Ron Barrett	Anthropology	rbarrett@macalester.edu	infectious disease
+Ron Barrett	Anthropology	rbarrett@macalester.edu	stigma
+Ron Barrett	Anthropology	rbarrett@macalester.edu	death and dying
+Ron Barrett	Anthropology	rbarrett@macalester.edu	social epidemiology
+Ron Barrett	Anthropology	rbarrett@macalester.edu	social inequalities
+Ron Barrett	Anthropology	rbarrett@macalester.edu	public health
+Ron Barrett	Anthropology	rbarrett@macalester.edu	religious healing
+Ron Barrett	Anthropology	rbarrett@macalester.edu	traditional healing
+Ron Barrett	Anthropology	rbarrett@macalester.edu	India
+Ron Barrett	Anthropology	rbarrett@macalester.edu	South Asia
+Darcy Burgund	Psychology	dburgund@macalester.edu	psychology
+Darcy Burgund	Psychology	dburgund@macalester.edu	neuroscience
+Darcy Burgund	Psychology	dburgund@macalester.edu	vision
+Darcy Burgund	Psychology	dburgund@macalester.edu	memory
+Darcy Burgund	Psychology	dburgund@macalester.edu	brain
+Darcy Burgund	Psychology	dburgund@macalester.edu	functional magnetic resonance imaging
+Alicia Johnson	Mathematics, Statistics, and Computer Science	ajohns24@macalester.edu	Markov chain Monte Carlo
+Alicia Johnson	Mathematics, Statistics, and Computer Science	ajohns24@macalester.edu	statistics
+Alicia Johnson	Mathematics, Statistics, and Computer Science	ajohns24@macalester.edu	applied statistics
+Alicia Johnson	Mathematics, Statistics, and Computer Science	ajohns24@macalester.edu	probability
+Alicia Johnson	Mathematics, Statistics, and Computer Science	ajohns24@macalester.edu	public health
+Neil Chudgar	English	nchudgar@macalester.edu	18th-century British literature
+Neil Chudgar	English	nchudgar@macalester.edu	early modern philosophy
+Neil Chudgar	English	nchudgar@macalester.edu	history of philosophy
+Neil Chudgar	English	nchudgar@macalester.edu	modernity
+Neil Chudgar	English	nchudgar@macalester.edu	sensation and perception
+Neil Chudgar	English	nchudgar@macalester.edu	the sense of touch
+Neil Chudgar	English	nchudgar@macalester.edu	literature and embodiment
+Neil Chudgar	English	nchudgar@macalester.edu	aesthetics
+Neil Chudgar	English	nchudgar@macalester.edu	poetry and poetics
+Neil Chudgar	English	nchudgar@macalester.edu	literary theory
+Neil Chudgar	English	nchudgar@macalester.edu	literary criticism
+Neil Chudgar	English	nchudgar@macalester.edu	bibliotherapy
+Neil Chudgar	English	nchudgar@macalester.edu	psychoanalysis
+Neil Chudgar	English	nchudgar@macalester.edu	object relations
+Neil Chudgar	English	nchudgar@macalester.edu	subjectivity and objectivity
+Neil Chudgar	English	nchudgar@macalester.edu	gender and sexuality in literature
