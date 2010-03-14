@@ -2,9 +2,20 @@ package org.macademia;
 
 import org.macademia.jad.DISCO;
 
-import java.util.*;
 import java.io.IOException;
+import java.io.FileInputStream;
 import java.text.DecimalFormat;
+import java.util.Map;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Collection;
+
+import net.didion.jwnl.JWNL;
+import net.didion.jwnl.JWNLException;
+import net.didion.jwnl.dictionary.Dictionary;
+import net.didion.jwnl.data.IndexWord;
+import net.didion.jwnl.data.POS;
+import shef.nlp.wordnet.similarity.SimilarityMeasure;
 
 /**
  * Measures the similarity between two phrases
@@ -31,6 +42,8 @@ public class PhraseComparer {
     private DISCO disco;
 
     public PhraseComparer(DISCO disco, Collection<String> interests) {
+
+        
         this.disco = disco;
         for (String i : interests) {
             for (String word : split(clean(i))) {
@@ -120,7 +133,8 @@ public class PhraseComparer {
         if (oneWordSims.containsKey(word2)) {
             return oneWordSims.get(word2);
         }
-        double s = disco.firstOrderSimilarity(word1, word2);
+//        double s = disco.firstOrderSimilarity(word1, word2);
+        double s = 3.0;
         s = Math.min(s, MAX_SIM) / (4 + popularityPenalty(word1) + popularityPenalty(word2));
         oneWordSims.put(word2, s);
         //System.out.println("" + format(s) + "\tword\t" + word1 + "\t" + word2);

@@ -493,7 +493,10 @@ Ruthann Godollei	Art	godollei@macalester.edu	texts and images
 Ruthann Godollei	Art	godollei@macalester.edu	art cars
 Ruthann Godollei	Art	godollei@macalester.edu	international car art
 Ruthann Godollei	Art	godollei@macalester.edu	history of decorated vehicles.
-Karen Saxe	Mathematics and Computer Science	saxe@macalester.edu	math and applied math; history of math; voting and elections.
+Karen Saxe	Mathematics and Computer Science	saxe@macalester.edu	math
+Karen Saxe	Mathematics and Computer Science	saxe@macalester.edu	applied math
+Karen Saxe	Mathematics and Computer Science	saxe@macalester.edu	history of math
+Karen Saxe	Mathematics and Computer Science	saxe@macalester.edu	voting and elections
 Beth Severy-Hoven	Classics	severy@macalester.edu	ancient history
 Beth Severy-Hoven	Classics	severy@macalester.edu	history of women and gender
 Beth Severy-Hoven	Classics	severy@macalester.edu	mythology and storytelling
@@ -558,7 +561,9 @@ Ruthanne Kurth-Schai	Educational Studies	kurthschai@macalester.edu	educational s
 Ruthanne Kurth-Schai	Educational Studies	kurthschai@macalester.edu	philosophy of education
 Ruthanne Kurth-Schai	Educational Studies	kurthschai@macalester.edu	education policy
 Ruthanne Kurth-Schai	Educational Studies	kurthschai@macalester.edu	public education reform
-Ruthanne Kurth-Schai	Educational Studies	kurthschai@macalester.edu	education and social reform; democracy and education; social/cultural/spiritual issues in education
+Ruthanne Kurth-Schai	Educational Studies	kurthschai@macalester.edu	education and social reform
+Ruthanne Kurth-Schai	Educational Studies	kurthschai@macalester.edu	democracy and education
+Ruthanne Kurth-Schai	Educational Studies	kurthschai@macalester.edu	social/cultural/spiritual issues in education
 Ruthanne Kurth-Schai	Educational Studies	kurthschai@macalester.edu	civic education
 Ruthanne Kurth-Schai	Educational Studies	kurthschai@macalester.edu	globalization and education
 Ruthanne Kurth-Schai	Educational Studies	kurthschai@macalester.edu	environmental education
