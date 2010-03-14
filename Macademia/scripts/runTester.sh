@@ -4,7 +4,7 @@ if [ ! -d bin ] ;then
     mkdir bin
 fi
 
-DISCO=./lib/disco-1.1.jar
-rm -rf bin/*
-javac -d bin/ -cp $DISCO src/edu/mac/macademia/* &&
-java -cp bin/:$DISCO edu.mac.macademia.InterestComparer $@
+CP=./lib2/disco-1.1.jar:./lib2/JWordNetSim.jar:./lib2/jwnl.jar:./lib2/commons-logging.jar
+rm -rf javabin/*
+javac -d javabin/ -cp $CP `find src2/java/org/macademia/ -type f | grep '.java$'` &&
+java -cp javabin/:$CP org.macademia.Tester $@
