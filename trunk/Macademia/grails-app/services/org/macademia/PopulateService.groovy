@@ -10,7 +10,8 @@ class PopulateService {
 
     def populate(File directory) {
         readPeople(new File(directory.toString() + "/people.txt"))
-        readSimilarities(new File(directory.toString() + "/sims.txt"))
+        analyzeInterests();
+//        readSimilarities(new File(directory.toString() + "/sims.txt"))
     }
 
     def readPeople(File file) {
@@ -41,6 +42,19 @@ class PopulateService {
         }
         log.error("Read ${Person.count()} people objects")
         log.error("Read ${Interest.count()} interest objects")
+    }
+
+    /** TODO: move this to some other service */
+    def analyzeInterests() {
+        WikipediaTextDumper dumper = new WikipediaTextDumper()
+        Interest.findAll().each({
+            Map<String, String> docs = dumper.getText(it.text)
+            for (String url : docs.keySet()) {
+                println("interest is ${it.text}, url is ${url} and text is ${docs.get(url)}");
+            }
+
+            double weight = 1.0
+        })
     }
 
     def readSimilarities(File file) {

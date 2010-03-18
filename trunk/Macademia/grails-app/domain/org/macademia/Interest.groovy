@@ -7,14 +7,16 @@ class Interest {
     String text
     String normalizedText
 
-
     static searchable = true
     static constraints = {
         normalizedText(unique: true)
     }
 
     static belongsTo = Person
-    static hasMany = [people: Person]
+    static hasMany = [
+            people: Person,
+            documents: InterestDocument
+    ]
 
     static def normalize = {text ->
         return (text.toLowerCase() =~ /[^a-zA-Z0-9]+/).replaceAll("")

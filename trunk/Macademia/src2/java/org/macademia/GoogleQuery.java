@@ -18,6 +18,8 @@ import java.net.URLEncoder;
 import java.net.URLDecoder;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.LinkedHashMap;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -31,7 +33,15 @@ public class GoogleQuery {
     public GoogleQuery() {
     }
 
-    public List<String> makeQuery(String query, int maxResults) throws IOException, JSONException {
+    /**
+     * Returns an ordered set of url -> name pairs that match the query
+     * @param query
+     * @param maxResults
+     * @return
+     * @throws IOException
+     * @throws JSONException
+     */
+    public Map<String, String> makeQuery(String query, int maxResults) throws IOException, JSONException {
 
         // Convert spaces to +, etc. to make a valid URL
         query = URLEncoder.encode(query, "UTF-8");
@@ -55,12 +65,12 @@ public class GoogleQuery {
         JSONArray ja = json.getJSONObject("responseData")
                 .getJSONArray("results");
 
-        List<String> results = new ArrayList<String>();
+        Map<String, String> results = new LinkedHashMap<String, String>();
         for (int i = 0; i < ja.length() && i < maxResults; i++) {
             JSONObject j = ja.getJSONObject(i);
             String url2 = j.getString("url");
             if (url2.indexOf("/") > 0) {
-                results.add(decodeWikiUrl(url2));
+                results.put(url2, decodeWikiUrl(url2));
             }
         }
         return results;
