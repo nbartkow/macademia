@@ -48,12 +48,23 @@ class PopulateService {
     def analyzeInterests() {
         WikipediaTextDumper dumper = new WikipediaTextDumper()
         Interest.findAll().each({
-            Map<String, String> docs = dumper.getText(it.text)
-            for (String url : docs.keySet()) {
-                println("interest is ${it.text}, url is ${url} and text is ${docs.get(url)}");
-            }
-
+            println("doing interest ${it}")
+            Map<String, String> docs = dumper.getText(it.text, 5)
             double weight = 1.0
+            for (String url : docs.keySet()) {
+                weight *= 0.5;
+                Document d = Document.findByUrl(url)
+                if (d == null) {
+                    d = new Document(url : url, text : docs.get(url))
+                    if (!d.save(flush : true)) {
+                        println("saving failed!")
+                    }
+                }
+                InterestDocument id = new InterestDocument(document : d, weight : weight)
+                it.addToDocuments(id)
+                id.save(flush : true)
+            }
+            it.save(flush : true)
         })
     }
 
