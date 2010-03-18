@@ -7,6 +7,8 @@ import net.sourceforge.jwbf.actions.mw.util.ProcessException;
 
 import java.net.MalformedURLException;
 import java.io.IOException;
+import java.util.Map;
+import java.util.LinkedHashMap;
 
 import de.tudarmstadt.ukp.wikipedia.parser.mediawiki.MediaWikiParserFactory;
 import de.tudarmstadt.ukp.wikipedia.parser.mediawiki.MediaWikiParser;
@@ -32,11 +34,23 @@ public class WikipediaTextDumper {
         gq = new GoogleQuery();
     }
 
-    public String getText(String topic) throws ActionException, ProcessException, IOException, JSONException {
-        StringBuffer text = new StringBuffer();
-        System.err.println("retrieving content for " + topic);
-        for (String page : gq.makeQuery(topic, 1)) {
-            System.err.println("reading contents of article " + page);
+    /**
+     * Returns a set of url -> text key, value
+     * pairs for wiki pages matching the topic.
+     * @param topic
+     * @param numDocs
+     * @return
+     * @throws ActionException
+     * @throws ProcessException
+     * @throws IOException
+     * @throws JSONException
+     */
+    public Map<String, String> getText(String topic, int numDocs) throws ActionException, ProcessException, IOException, JSONException {
+        Map<String, String> docs = new LinkedHashMap<String, String>();
+        Map<String, String> urls = gq.makeQuery(topic, numDocs);
+        for (String url : urls.keySet()) {
+            String page = urls.get(url);
+            StringBuffer text = new StringBuffer();
             Article article = bot.readContent(page);
             if (article == null) {
                 System.err.println("unknown article: " + page);
@@ -61,12 +75,11 @@ public class WikipediaTextDumper {
                     }
                 }
             }
+            if (text.length() > 0) {
+                docs.put(url, text.toString());
+            }
         }
-        if (text.length() == 0) {
-            return null;
-        } else {
-            return text.toString();
-        }
+        return docs;
     }
 
     public boolean keepSection(Section section) {
@@ -88,7 +101,6 @@ public class WikipediaTextDumper {
 
     public static void main(String args[]) throws IOException, ActionException, ProcessException, JSONException {
         WikipediaTextDumper dumper = new WikipediaTextDumper();
-        dumper.getText("John Coltrane");
     }
 
 }
