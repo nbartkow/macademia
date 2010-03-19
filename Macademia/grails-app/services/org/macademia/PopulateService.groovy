@@ -46,18 +46,27 @@ class PopulateService {
 
     /** TODO: move this to some other service */
     def analyzeInterests() {
-        WikipediaTextDumper dumper = new WikipediaTextDumper()
+        Wikipedia wikipedia = new Wikipedia()
+        Google google = new Google()
         Interest.findAll().each({
             println("doing interest ${it}")
-            Map<String, String> docs = dumper.getText(it.text, 5)
             double weight = 1.0
-            for (String url : docs.keySet()) {
+            for (String url : google.query(it.text, 5)) {
                 weight *= 0.5;
-                Document d = Document.findByUrl(url)
+                String url2 = Wikipedia.getCanonicalUrl(url)
+                if (!url2) {
+                    println("canonicalizing of $url failed")
+                    continue
+                }
+                Document d = Document.findByUrl(url2)
                 if (d == null) {
-                    d = new Document(url : url, text : docs.get(url))
-                    if (!d.save(flush : true)) {
+                    d = wikipedia.getDocumentByUrl(url2)
+                    if (!d) {
+                        println("retrieval of $url (canonical form is $url2) failed")
+                        continue
+                    } else if (!d.save(flush : true)) {
                         println("saving failed!")
+                        continue
                     }
                 }
                 InterestDocument id = new InterestDocument(document : d, weight : weight)
