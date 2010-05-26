@@ -12,10 +12,11 @@ To be a member of the Poliwiki team, your email must be added to:
 = Integrated Build =
 We have set up a continuous integrated build server at http://poliwiki.macalester.edu:8080/hudson/.  The server checks out the codebase from svn, builds the codebase, and runs the unit tests.  If things go wrong, you will receive an email.
 
-== Install grails ==
+= Software Installation =
+=== Install grails ===
   # Download the binary zip of grails 1.3.1 and open it up.  It should be in Downloads/grails-1.3.1.  
 
-== Setup Intellij ==
+=== Setup Intellij ===
   # Download and install Intellij.  You want the ultimate edition.
   # Start up IntelliJ.  You'll need to answer some configuration questions:
     # For now we'll use the evaluation license.
@@ -25,7 +26,7 @@ We have set up a continuous integrated build server at http://poliwiki.macaleste
     # Leave all the HTML / Javascript plugins.
     # Leave all the "Other" plugins.
 
-== Check out Macademia ==
+=== Check out Macademia ===
   # Check out Macademia from version control.
     # Open intellij and click "check out from version control."
     # The repositories tab will open.  Click the "+" to add the following repository: http://poliwiki.macalester.edu/svn/
@@ -35,7 +36,7 @@ We have set up a continuous integrated build server at http://poliwiki.macaleste
 = Code Reviews =
 The code review site is available at http://codereview.macalester.edu/.  Information and help available at http://code.google.com/p/rietveld/wiki/CodeReviewHelp
 
-The short description:
+===The short description:===
  * Download the [http://codereview.macalester.edu/static/upload.py upload.py] script (it requires python-2.5)
  * Prepare some changes to check in to subversion
  * Make sure to "svn add" your files before executing the code review.  If you don't svn add a file before running upload.py, that file won't be included in the code review.  You can add the file (or directory) foo from the command line by running "svn add ./foo" from the containing directory.  If you forget to add the file, upload.py will warn you (we've just been ignoring the warnings :).
