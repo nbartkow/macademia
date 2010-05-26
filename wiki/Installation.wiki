@@ -43,7 +43,7 @@ export PATH=$PATH:$GROOVY_HOME/bin
   # Check out Macademia from version control.
     # Open intellij and click "check out from version control."
     # The repositories tab will open.  Click the "+" to add the following repository: http://poliwiki.macalester.edu/svn/
-
+    # When the repository opens, click on plus to see the Macademia folder click on it and press the button checkout
 
 
 = Code Reviews =
