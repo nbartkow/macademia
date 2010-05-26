@@ -21,6 +21,13 @@ export GRAILS_HOME=~/Downloads/grails-1.3.1
 export PATH=$PATH:$GRAILS_HOME/bin
 export JAVA_HOME=/Library/Java/Home
 }}}
+=== Install Groovy ===
+  # Download the binary zip of groovy 1.7.2 and open it up. It should be Downloads/groovy-1.7.2
+  # Add the following 2 lines to the ".profile" file in your home directory
+ {{{
+export GROOVY_HOME=~/Downloads/groovy-1.7.2
+export PATH=$PATH:$GROOVY_HOME/bin
+}}}
 
 === Setup Intellij ===
   # Download and install Intellij.  You want the ultimate edition.
