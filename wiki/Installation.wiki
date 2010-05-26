@@ -1,0 +1,26 @@
+#summary Directions for installing Macademia.
+
+# Download the binary zip of grails 1.3.1 and open it up.  It should be in Downloads/grails-1.3.1.
+# Download and install Intellij.  You want the ultimate edition.
+# Start up IntelliJ.  You'll need to answer some configuration questions:
+  # For now we'll use the evaluation license.
+  # You only need to select the subversion VCS plugin.
+  # Select all the Web / J2EE modules. 
+  # Only select the tomcat and Resin app server plugins.
+  # Leave all the HTML / Javascript plugins.
+  # Leave all the "Other" plugins.
+# Check out Macademia from version control.
+  # Open intellij and click "check out from version control."
+  # The repositories tab will open.  Click the "+" to add the following repository: http://poliwiki.macalester.edu/svn/
+
+= Introduction =
+
+Add your content here.
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
