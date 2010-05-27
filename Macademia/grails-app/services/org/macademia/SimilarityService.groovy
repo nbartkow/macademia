@@ -50,7 +50,6 @@ class SimilarityService {
         }
         int counter = 0
         for (Interest i : Interest.findAll()) {
-//        Interest i = interestService.findByText("web2.0")
             log.info("calculating all similarities for ${i}")
             for (Interest j : Interest.findAll()) {
                 if (!i.equals(j)) {
