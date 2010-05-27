@@ -77,7 +77,9 @@ public class Wikipedia {
     public void login() {
         if (user == null) {
             user = new User(userName, password, apiUrl)
-            user.login()
+            if (!user.login()) {
+              throw new RuntimeException("login failed");
+            }
         }
     }
 

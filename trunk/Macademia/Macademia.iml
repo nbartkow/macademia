@@ -40,7 +40,17 @@
           <root url="file://$MODULE_DIR$/lib" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/dep/bliki.3.0.13.zip!/info.bliki.wiki/bliki-core/src/main/java" />
+          <root url="jar://$MODULE_DIR$/dep/bliki.3.0.13.zip!/info.bliki.wiki/bliki-addons/src/main/java" />
+          <root url="jar://$MODULE_DIR$/dep/bliki.3.0.13.zip!/info.bliki.wiki/bliki-pdf/src/main/java" />
+          <root url="jar://$MODULE_DIR$/dep/bliki.3.0.13.zip!/info.bliki.wiki/bliki-core/src/test/java" />
+          <root url="jar://$MODULE_DIR$/dep/bliki.3.0.14.zip!/info.bliki.wiki/bliki-pdf/src/test/java" />
+          <root url="jar://$MODULE_DIR$/dep/bliki.3.0.14.zip!/info.bliki.wiki/bliki-core/src/main/java" />
+          <root url="jar://$MODULE_DIR$/dep/bliki.3.0.14.zip!/info.bliki.wiki/bliki-addons/src/main/java" />
+          <root url="jar://$MODULE_DIR$/dep/bliki.3.0.14.zip!/info.bliki.wiki/bliki-pdf/src/main/java" />
+          <root url="jar://$MODULE_DIR$/dep/bliki.3.0.14.zip!/info.bliki.wiki/bliki-core/src/test/java" />
+        </SOURCES>
         <jarDirectory url="file://$MODULE_DIR$/lib" recursive="false" />
       </library>
     </orderEntry>

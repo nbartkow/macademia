@@ -6,10 +6,12 @@ package org.macademia
 class Interest {
     String text
     String normalizedText
+    Date lastAnalyzed
 
     static searchable = true
     static constraints = {
         normalizedText(unique: true)
+        lastAnalyzed(nullable : true)
     }
 
     static belongsTo = Person
@@ -47,6 +49,17 @@ class Interest {
 
     public String toString() {
         return "<$text>"
+    }
+    public Document findMostRelevantDocument() {
+        double bestRelevance = -1.0
+        Document best = null
+        for (InterestDocument id : documents) {
+            if (bestRelevance < id.weight) {
+                bestRelevance = id.weight
+                best = id.document
+            }
+        }
+        return best
     }
 
 

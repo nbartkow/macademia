@@ -2,6 +2,8 @@ package org.macademia
 
 class PopulateService {
     def interestService
+    def similarityService
+    
     def sessionFactory
     def propertyInstanceMap = org.codehaus.groovy.grails.plugins.DomainClassGrailsPlugin.PROPERTY_INSTANCE_MAP
 
@@ -49,32 +51,12 @@ class PopulateService {
         Wikipedia wikipedia = new Wikipedia()
         Google google = new Google()
         Interest.findAll().each({
-            println("doing interest ${it}")
-            double weight = 1.0
-            for (String url : google.query(it.text, 5)) {
-                weight *= 0.5;
-                String url2 = Wikipedia.getCanonicalUrl(url)
-                if (!url2) {
-                    println("canonicalizing of $url failed")
-                    continue
-                }
-                Document d = Document.findByUrl(url2)
-                if (d == null) {
-                    d = wikipedia.getDocumentByUrl(url2)
-                    if (!d) {
-                        println("retrieval of $url (canonical form is $url2) failed")
-                        continue
-                    } else if (!d.save(flush : true)) {
-                        println("saving failed!")
-                        continue
-                    }
-                }
-                InterestDocument id = new InterestDocument(document : d, weight : weight)
-                it.addToDocuments(id)
-                id.save(flush : true)
-            }
-            it.save(flush : true)
+            interestService.analyzeInterest(it, wikipedia, google)
         })
+    }
+
+    def buildInterestRelations() {
+        similarityService.buildInterestRelations()
     }
 
     def readSimilarities(File file) {

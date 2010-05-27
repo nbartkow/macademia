@@ -1,5 +1,9 @@
 package org.macademia
 
+import com.aliasi.tokenizer.IndoEuropeanTokenizerFactory
+import com.aliasi.tokenizer.TokenizerFactory
+import com.aliasi.spell.TfIdfDistance
+
 class SimilarityService {
 
     // The maximum number of similar interests per interest
@@ -27,6 +31,34 @@ class SimilarityService {
     def personService
     def interestService
 
+    def buildInterestRelations() {
+        log.info("deleting existing interest relations")
+        for (InterestRelation ir : InterestRelation.findAll()) {
+            ir.delete(flush : true)
+        }
+
+        log.info("building similarities for ${Interest.count()} interests")
+
+        TokenizerFactory tokenizerFactory = IndoEuropeanTokenizerFactory.INSTANCE;
+        TfIdfDistance tfIdf = new TfIdfDistance(tokenizerFactory);
+        log.info("training on ${Document.count()} documents")
+        for (Document d : Document.findAll()) {
+            tfIdf.handle(d.text.toCharArray(), 0, d.text.length());
+        }
+        for (Interest i : Interest.findAll()) {
+            log.info("calculating all similarities for ${i}")
+            Document d1 = i.findMostRelevantDocument()
+            for (Interest j : Interest.findAll()) {
+                if (!i.equals(j)) {
+                    Document d2 = j.findMostRelevantDocument()
+                    double sim = tfIdf.proximity(d1.text, d2.text)
+                    InterestRelation ir = new InterestRelation(first : i, second: j, similarity : sim)
+                    ir.save()
+                }
+            }
+//            cleanUpGorm()
+        }
+    }
 
     def analyze(BlacklistRelations bl) {
         calculateSimilarInterests(bl)
@@ -185,5 +217,14 @@ class SimilarityService {
             }
         }
         return null
+    }
+
+    def sessionFactory
+    def propertyInstanceMap = org.codehaus.groovy.grails.plugins.DomainClassGrailsPlugin.PROPERTY_INSTANCE_MAP
+    def cleanUpGorm() {
+        def session = sessionFactory.currentSession
+        session.flush()
+        session.clear()
+        propertyInstanceMap.get().clear()
     }
 }
