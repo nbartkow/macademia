@@ -68,8 +68,8 @@ log4j = {
 
     warn   'org.mortbay.log'
 
-    info  'org.macademia'
+    info  'grails.app'
 }
 
-
-     
+// throw exceptions when saves fail.
+grails.gorm.save.failOnError = true

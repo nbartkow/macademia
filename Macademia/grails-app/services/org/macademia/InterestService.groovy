@@ -32,4 +32,37 @@ class InterestService {
         findSimilarities(interest).each { res[it.second.normalizedText] = it.similarity }
         return res
     }
+
+    public void analyzeInterest(Interest interest) {
+        analyzeInterest(interest, new Wikipedia(), new Google())
+
+    }
+    public void analyzeInterest(Interest interest, Wikipedia wikipedia, Google google) {
+        log.info("doing interest ${interest}")
+        double weight = 1.0
+        for (String url : google.query(interest.text, 5)) {
+            weight *= 0.5;
+            String url2 = Wikipedia.getCanonicalUrl(url)
+            if (!url2) {
+                log.error("canonicalizing of $url failed")
+                continue
+            }
+            Document d = Document.findByUrl(url2)
+            if (d == null) {
+                d = wikipedia.getDocumentByUrl(url2)
+                if (!d) {
+                    log.error("retrieval of $url (canonical form is $url2) failed")
+                    continue
+                } else if (!d.save(flush : true)) {
+                    log.error("saving failed!")
+                    continue
+                }
+            }
+            InterestDocument id = new InterestDocument(document : d, weight : weight)
+            interest.addToDocuments(id)
+            id.save(flush : true)
+        }
+        interest.lastAnalyzed = new Date()
+        interest.save(flush : true)
+    }
 }
