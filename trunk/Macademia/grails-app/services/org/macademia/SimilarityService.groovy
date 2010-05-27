@@ -48,8 +48,9 @@ class SimilarityService {
         for (Document d : Document.findAll()) {
             tfIdf.handle(d.text.toCharArray(), 0, d.text.length());
         }
-//        for (Interest i : Interest.findAll()) {
-        Interest i = interestService.findByText("web2.0")
+        int counter = 0
+        for (Interest i : Interest.findAll()) {
+//        Interest i = interestService.findByText("web2.0")
             log.info("calculating all similarities for ${i}")
             for (Interest j : Interest.findAll()) {
                 if (!i.equals(j)) {
@@ -59,24 +60,29 @@ class SimilarityService {
                     ir.save()
                 }
             }
-//            cleanUpGorm()
-//        }
+            if (((++counter) % 10) == 0) {
+                cleanUpGorm()                
+            }
+        }
     }
 
     def calculatePairwiseSimilarity(Interest i1, Interest i2, TfIdfDistance tfIdf) {
-        double simSum = 0
-        double weightSum = 0
-
-        for (InterestDocument id1 : i1.documents) {
-            for (InterestDocument id2 : i2.documents) {
-                println("comparing ${id1.document.url} and ${id2.document.url}")
-                double w = id1.weight * id2.weight
-                weightSum += w
-                simSum += w * tfIdf.proximity(id1.document.text, id2.document.text)
-            }
-        }
-
-        return 1.0 * simSum / weightSum
+        Document d1 = i1.findMostRelevantDocument()
+        Document d2 = i2.findMostRelevantDocument()
+        return tfIdf.proximity(d1.text, d2.text)
+//        double simSum = 0
+//        double weightSum = 0
+//
+//        for (InterestDocument id1 : i1.documents) {
+//            for (InterestDocument id2 : i2.documents) {
+////                println("comparing ${id1.document.url} and ${id2.document.url}")
+//                double w = id1.weight * id2.weight
+//                weightSum += w
+//                simSum += w * tfIdf.proximity(id1.document.text, id2.document.text)
+//            }
+//        }
+//
+//        return 1.0 * simSum / weightSum
     }
 
     def analyze(BlacklistRelations bl) {
