@@ -37,7 +37,7 @@ class InterestService {
         analyzeInterest(interest, new Wikipedia(), new Google())
 
     }
-    public void analyzeInterest(Interest interest, Wikipedia wikipedia, Google google) {
+    public void buildDocuments(Interest interest, Wikipedia wikipedia, Google google) {
         log.info("doing interest ${interest}")
         double weight = 1.0
         for (String url : google.query(interest.text, 5)) {
