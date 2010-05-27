@@ -66,10 +66,12 @@ public class Google {
                 .getJSONArray("results");
 
         List<String> results = new ArrayList<String>();
-        for (int i = 0; i < ja.length() && i < maxResults; i++) {
+        for (int i = 0; i < ja.length() && results.size() < maxResults; i++) {
             JSONObject j = ja.getJSONObject(i);
             String url2 = j.getString("url");
-            results.add(url2);
+            if (Wikipedia.isUrlForNormalPage(url2)) {
+                results.add(url2);
+            }
         }
         return results;
     }

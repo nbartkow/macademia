@@ -118,4 +118,19 @@ public class Wikipedia {
             return encodeWikiUrl(name)
         }
     }
+
+    /**
+     * Ensures that a page is in the default namespace (not a talk page, for instance)
+     * @param url
+     * @return
+     */
+    public static boolean isUrlForNormalPage(String url) {
+        if (url.startsWith("http://")) {
+            String suffix = url.substring(7).toLowerCase();
+            if (!suffix.contains("%3a") && !suffix.contains(":")) {
+                return true
+            }
+        }
+        return false
+    }
 }

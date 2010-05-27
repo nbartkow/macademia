@@ -24,6 +24,9 @@ class SimilarityService {
     // Maximum number of neighbors per person
     int maxNeighbors = 20
 
+    // Minimum similarity that is stored in the database.
+    double minSimilarity = 0.1
+
     boolean transactional = true
     Map<Interest, List<InterestRelation>> similarInterests = [:]
     Map<Person, List<Neighbors>> neighbors = [:]
@@ -45,19 +48,35 @@ class SimilarityService {
         for (Document d : Document.findAll()) {
             tfIdf.handle(d.text.toCharArray(), 0, d.text.length());
         }
-        for (Interest i : Interest.findAll()) {
+//        for (Interest i : Interest.findAll()) {
+        Interest i = interestService.findByText("web2.0")
             log.info("calculating all similarities for ${i}")
-            Document d1 = i.findMostRelevantDocument()
             for (Interest j : Interest.findAll()) {
                 if (!i.equals(j)) {
-                    Document d2 = j.findMostRelevantDocument()
-                    double sim = tfIdf.proximity(d1.text, d2.text)
+                    double sim = calculatePairwiseSimilarity(i, j, tfIdf)
                     InterestRelation ir = new InterestRelation(first : i, second: j, similarity : sim)
+                    println("${sim}\t${i}\t${j}")
                     ir.save()
                 }
             }
 //            cleanUpGorm()
+//        }
+    }
+
+    def calculatePairwiseSimilarity(Interest i1, Interest i2, TfIdfDistance tfIdf) {
+        double simSum = 0
+        double weightSum = 0
+
+        for (InterestDocument id1 : i1.documents) {
+            for (InterestDocument id2 : i2.documents) {
+                println("comparing ${id1.document.url} and ${id2.document.url}")
+                double w = id1.weight * id2.weight
+                weightSum += w
+                simSum += w * tfIdf.proximity(id1.document.text, id2.document.text)
+            }
         }
+
+        return 1.0 * simSum / weightSum
     }
 
     def analyze(BlacklistRelations bl) {
