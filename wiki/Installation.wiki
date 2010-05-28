@@ -38,6 +38,8 @@ export JAVA_HOME=/Library/Java/Home
     # The repositories tab will open.  Click the "+" to add the following repository: https://macademia.googlecode.com/svn/trunk
     # When the repository opens, it will show the address https://macademia.googlecode.com/svn/trunk
     # Click on the arrow to open the file, and you will see the "Macademia" folder; click on that and click checkout
+    # You should checkout the project into a folder that ends with "/Macademia" (probably the second of three options)
+  # Setup the project
     # After checking out will ask you if you want to create a grails application for the checked out files, click yes
     # Then click on import grails application from existing source
     # Then it will ask you to choose the Grails SDK, choose the grails folder in Users/yourname/Downloads/grails-1.3.1
