@@ -84,7 +84,7 @@ class JsonService {
                 }
                 personNodes[pid]['data']['sharedInterest'].add(ir.second.text)
                 def irList = ['first': ir.first, 'second': ir.second]
-                personNodes[pid]['data']['irs'].add(irList);
+//                personNodes[pid]['data']['irs'].add(irList);
 
                 // add two way relation between
                 personNodes[pid]['adjacencies'].add(iid)
