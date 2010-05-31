@@ -9,12 +9,12 @@ package org.macademia
 
 public class BlacklistRelations {
     Set<String> blacklisted
-    String path
+    File file
 
-    public BlacklistRelations(String path) {
-        this.path = path
+    public BlacklistRelations(File file) {
+        this.file = file
         blacklisted = new HashSet<String>()
-        new File(path).eachLine { line ->
+        this.file.eachLine { line ->
             if (line[0] == "-") {
                 def tokens = line.substring(1).tokenize("\t")
                 if (tokens.size() == 2) {

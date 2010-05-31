@@ -59,6 +59,10 @@ class PopulateService {
         similarityService.buildInterestRelations()
     }
 
+    def displaySimilarities(File blacklistFile) {
+        similarityService.displaySimilarities(new BlacklistRelations(blacklistFile))
+    }
+
     def readSimilarities(File file) {
         log.error("reading similarities from $file...")
         int i = 0
