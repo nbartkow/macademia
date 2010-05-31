@@ -61,14 +61,9 @@ class PersonController {
     }
 
     def json = {
-        println("1 here ${params.id}")
         def person = personService.get((params.id as long))
-        println("2 here ${params.id}")
         def data = jsonService.buildUserCentricGraph(person)
-        println("3 here ${params.id}")
-        def jsonStr = "" + (data as JSON)
-        println("4 here ${params.id}")
-        render(json)
+        render(data as JSON)
     }
 
 }
