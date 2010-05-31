@@ -18,14 +18,14 @@ class SimilarityService {
     // The maximum number of times to use a particular interest as a partner for other interests
     int maxSimsPerInterest = 10
 
+    // Only similarities in the top fraction are stored in the database.
+    double roughThreshold = 0.15
+
     // Only similarities in the top fraction are used to fill out interests
-    double threshold = 0.2
+    double refinedThreshold = 0.08
 
     // Maximum number of neighbors per person
     int maxNeighbors = 20
-
-    // Minimum similarity that is stored in the database.
-    double minSimilarity = 0.1
 
     boolean transactional = true
     Map<Interest, List<InterestRelation>> similarInterests = [:]
@@ -36,10 +36,7 @@ class SimilarityService {
 
     def buildInterestRelations() {
         log.info("deleting existing interest relations")
-        for (InterestRelation ir : InterestRelation.findAll()) {
-            ir.delete(flush : true)
-        }
-
+        InterestRelation.executeUpdate("Delete from InterestRelation")
         log.info("building similarities for ${Interest.count()} interests")
 
         TokenizerFactory tokenizerFactory = IndoEuropeanTokenizerFactory.INSTANCE;
@@ -48,17 +45,46 @@ class SimilarityService {
         for (Document d : Document.findAll()) {
             tfIdf.handle(d.text.toCharArray(), 0, d.text.length());
         }
-        int counter = 0
+
+        // Step one: calculate sim threshold
+        log.info("determining similarity threshold of top ${roughThreshold}")
+        List<Double> sims = []
+        int n = Interest.count()
         for (Interest i : Interest.findAll()) {
+            if (n-- % 10 == 0) {
+                log.info("remaining estimated interests are: ${n}")
+            }
+            for (Interest j : Interest.findAll()) {
+                if (("" + i + j).hashCode() % 100 == 0) {
+                    sims.add(calculatePairwiseSimilarity(i, j, tfIdf))
+                }
+            }
+        }
+        sims = sims.sort()
+        sims = sims.reverse()
+        double minSimilarity = sims[roughThreshold * sims.size() as int]
+        log.info("setting similarity threshold to ${minSimilarity}")
+
+        
+        // Need to generate the full list because sessions are occasionally flushed.
+        int counter = 0
+        List interestIds = new ArrayList(Interest.findAll().collect { it.id })
+        for (Object id : interestIds) {
+            Interest i = Interest.get(id)
             log.info("calculating all similarities for ${i}")
             for (Interest j : Interest.findAll()) {
                 if (!i.equals(j)) {
+//                    if (("" + i + j).hashCode() % 10 != 0) {
+//                        continue
+//                    }
                     double sim = calculatePairwiseSimilarity(i, j, tfIdf)
-                    InterestRelation ir = new InterestRelation(first : i, second: j, similarity : sim)
-                    println("${sim}\t${i}\t${j}")
-                    ir.save()
+                    if (sim > minSimilarity) {
+                        InterestRelation ir = new InterestRelation(first : i, second: j, similarity : sim)
+//                        println("${sim}\t${i}\t${j}")
+                        ir.save()
+                    }
                 }
-            }
+            }                                               
             if (((++counter) % 10) == 0) {
                 cleanUpGorm()                
             }
@@ -68,7 +94,11 @@ class SimilarityService {
     def calculatePairwiseSimilarity(Interest i1, Interest i2, TfIdfDistance tfIdf) {
         Document d1 = i1.findMostRelevantDocument()
         Document d2 = i2.findMostRelevantDocument()
-        return tfIdf.proximity(d1.text, d2.text)
+        if (d1 == null || d2 == null) {
+            return -1.0
+        } else {
+            return tfIdf.proximity(d1.text, d2.text)
+        }
 //        double simSum = 0
 //        double weightSum = 0
 //
@@ -84,6 +114,11 @@ class SimilarityService {
 //        return 1.0 * simSum / weightSum
     }
 
+
+    def displaySimilarities(BlacklistRelations blacklist) {
+        analyze(blacklist)
+    }
+    
     def analyze(BlacklistRelations bl) {
         calculateSimilarInterests(bl)
         calculateNeighbors()
@@ -122,7 +157,7 @@ class SimilarityService {
         }
         // second pass: try to fill in the remaining
         // but don't use any similarities that are too low
-        def maxIndex = all.size() * threshold as int
+        def maxIndex = Interest.count() * Interest.count() * refinedThreshold as int
         for (InterestRelation ir: all[0..maxIndex]) {
             if ((!used.contains(ir))
             && (bl.isRetained(ir))

@@ -8,7 +8,7 @@ package org.macademia
  */
 
 public class MacademiaConstants {
-    public static final String PATH_SIM_ADJUSTEMENTS = "db/prod/sim_adjustments.txt"
+    public static final File PATH_SIM_ADJUSTEMENTS = new File("db/prod/sim_adjustments.txt")
     public static final int MAX_DEPTH = 1
     public static final COLORS = [
             "#99F",

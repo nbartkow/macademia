@@ -19,8 +19,6 @@ class BootStrap {
             populateService.populate(new File(dbDir))
             break
         case Environment.DEVELOPMENT:
-            dbDir = "db/prod"
-            populateService.populate(new File(dbDir))
             break
         default:
             assert(false)
