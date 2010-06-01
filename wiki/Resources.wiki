@@ -1,0 +1,5 @@
+#summary Useful resources
+
+= General Grails + Groovy =
+ * [ http://www.grails.org/Quick+Start Grails quick start]
+ * [ http://groovy.codehaus.org/Differences+from+Java Differences between groovy and java ]
