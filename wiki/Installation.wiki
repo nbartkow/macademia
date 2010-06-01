@@ -32,6 +32,7 @@ You can check to make sure this worked properly by opening a terminal and typing
     # Only select the tomcat and Resin app server plugins.
     # Leave all the HTML / Javascript plugins.
     # Leave all the "Other" plugins.
+    # The first time you create a Java or grails project you'll need to specify a path to a Java Compiler.  Choose "a new JCS," and use the path you specified for JAVA_HOME in your .profile.
 
 === Check out Macademia ===
   # Check out Macademia from version control.
