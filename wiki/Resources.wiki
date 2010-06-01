@@ -1,4 +1,4 @@
-#summary Useful resources
+Useful resources for grails development.  Add to me!
 
 = General Grails + Groovy =
  * [http://www.grails.org/Quick+Start Grails quick start]
