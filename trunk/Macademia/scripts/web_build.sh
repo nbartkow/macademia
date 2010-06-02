@@ -10,8 +10,8 @@ cd macademia
 echo "classpath is $CLASSPATH; java home is $JAVA_HOME"
 env
 
-rm -f application.properties
-cp -p application.properties.current.txt application.properties
+#rm -f application.properties
+#cp -p application.properties.current.txt application.properties
 
 # remove JAVA_OPTS provided by hudson as it may cause errors
 
