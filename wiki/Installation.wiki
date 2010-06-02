@@ -59,9 +59,9 @@ The code review site is available at http://codereview.macalester.edu/.  Informa
  * Make sure to "svn add" your files before executing the code review.  If you don't svn add a file before running upload.py, that file won't be included in the code review.  You can add the file (or directory) foo from the command line by running "svn add ./foo" from the containing directory.  If you forget to add the file, upload.py will warn you (we've just been ignoring the warnings :).
  * Initiate a code review by running the following from your Macademia directory:
 {{{
-scripts/upload.py -s codereview.macalester.edu -r ssen@macalester.edu --send_mail --cc poliwiki-svn@googlegroups.com -- ./foo
+scripts/code-review.sh ./foo ./bar
 }}}
- * The arguments after the "--" should be the files or directories you have changed.
+ * The arguments should be the files or directories you have changed.
  * You will be prompted for your macalester email address and password and a description of the change.
  * Shilad will review your change, and you'll receive an email when it's ready.
  * Commit your change *after* the code review is complete.
