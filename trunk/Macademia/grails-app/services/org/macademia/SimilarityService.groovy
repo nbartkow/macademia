@@ -55,7 +55,7 @@ class SimilarityService {
                 if (!i.equals(j)) {
                     double sim = calculatePairwiseSimilarity(i, j, tfIdf)
                     InterestRelation ir = new InterestRelation(first : i, second: j, similarity : sim)
-                    println("${sim}\t${i}\t${j}")
+//                    println("${sim}\t${i}\t${j}")
                     ir.save()
                 }
             }
