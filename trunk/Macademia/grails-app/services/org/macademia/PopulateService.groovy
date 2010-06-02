@@ -12,7 +12,7 @@ class PopulateService {
 
     def populate(File directory) {
         readPeople(new File(directory.toString() + "/people.txt"))
-        downloadInterestDocuments();
+        downloadInterestDocuments()
         buildInterestRelations()
     }
 
@@ -47,7 +47,7 @@ class PopulateService {
     }
 
     /** TODO: move this to some other service */
-    def analyzeInterests() {
+    def downloadInterestDocuments() {
         Wikipedia wikipedia = new Wikipedia()
         Google google = new Google()
         Interest.findAll().each({
