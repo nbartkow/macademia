@@ -5,6 +5,7 @@ import info.bliki.api.Connector
 import info.bliki.api.Page
 import info.bliki.wiki.model.WikiModel
 import info.bliki.wiki.filter.PlainTextConverter
+import grails.util.Environment
 
 /**
  * @author Shilad
@@ -14,11 +15,19 @@ public class Wikipedia {
     private static String WIKIPEDIA_URL = "http://en.wikipedia.org"
     private static String ARTICLE_PREFIX = "${WIKIPEDIA_URL}/wiki/"
     private static String WIKIPEDIA_API_URL = "${WIKIPEDIA_URL}/w/api.php"
+    private static File TEST_CACHE_FILE = new File("db/test/wikipedia.cache.txt")
     
     private String userName = "macademiabot"
     private String password = "goscots"
     private String apiUrl = WIKIPEDIA_API_URL
     private User user;
+    private DiskMap cache = null
+
+    public Wikipedia() {
+        if (Environment.getCurrent() == Environment.TEST) {
+            cache = new DiskMap(TEST_CACHE_FILE)
+        }
+    }
 
     public Document getDocumentByUrl(String url) {
         String url2 = getCanonicalUrl(url)
@@ -43,20 +52,29 @@ public class Wikipedia {
         if (!title) {
             return null
         }
+        if (cache != null && cache.contains(title)) {
+            def info = cache.get(title)
+            return new Document(info)
+        }
         login()
         Connector connector = user.getConnector()
         List<String> titles = new ArrayList<String>([title])
         List<Page> pages = connector.queryContent(user, titles)
-        if (pages.isEmpty()) {
-            return null
+        if (!pages.isEmpty()) {
+            Page first = pages[0]
+            if (first.title) {
+                WikiModel wikiModel = new WikiModel("", "")
+                String text = wikiModel.render(new PlainTextConverter(), first.currentContent)
+                String url = encodeWikiUrl(first.title)
+                if (cache) {
+                    cache.put(title, [url : url, name : first.title, text : text])
+                }
+                return new Document(url : url, name : first.title, text : text)
+            }
         }
-        Page first = pages[0]
-        if (!first.title) {
-            return null
+        if (cache) {
+            cache.put(title, null)
         }
-        WikiModel wikiModel = new WikiModel("", "")
-        String text = wikiModel.render(new PlainTextConverter(), first.currentContent)
-        return new Document(url : encodeWikiUrl(first.title), name : first.title, text : text)
     }
 
     public void setUserName(String userName) {

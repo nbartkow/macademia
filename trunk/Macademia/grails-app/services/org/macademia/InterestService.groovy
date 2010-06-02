@@ -9,8 +9,8 @@ class InterestService {
     }
 
     public Interest findByText(String text) {
-        return Interest.find("from Interest as i where i.normalizedText = ?", [Interest.normalize(text)])
-//        return Interest.findByNormalizedText(Interest.normalize(text))
+//        return Interest.find("from Interest as i where i.normalizedText = ?", [Interest.normalize(text)])
+        return Interest.findByNormalizedText(Interest.normalize(text))
     }
 
     public List<InterestRelation> findSimilarities(String interest) {

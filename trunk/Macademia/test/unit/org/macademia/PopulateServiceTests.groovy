@@ -50,41 +50,6 @@ class PopulateServiceTests extends GrailsUnitTestCase {
         assertFalse(diane.interests.contains(africa))
     }
 
-
-    void testReadSims() {
-        def people = []
-        def interests = []
-        def interestRelations = []
-
-        mockDomain(Person, people)
-        mockDomain(Interest, interests)
-        mockDomain(InterestRelation, interestRelations)
-        mockLogger(PopulateService.class)
-
-        def interestService = new InterestService()
-        def populateService = new PopulateService()
-        populateService.interestService = new InterestService()
-        populateService.readPeople(new File("db/test/people.txt"))
-        populateService.readSimilarities(new File("db/test/sims.txt"))
-
-        assertEquals(Person.count(), 5)
-        assertEquals(Interest.count(), 69) // Shilad and Diane share web20 and politics
-        assertEquals(InterestRelation.count(), 8)
-
-        def sims = interestService.findSimilarities("foo")
-        assertEquals(sims.size(), 0)
-        sims = interestService.findSimilarities("POL ITICS")
-        assertEquals(sims.size(), 1)
-        sims = interestService.findSimilarities("citi&zenSHIP")
-        assertEquals(sims.size(), 2)
-        def simMap = interestService.findSimilaritiesAsMap("citi&zenSHIP")
-        assertEquals(simMap.size(), 2)
-        println simMap
-        assertEquals(simMap['politics'], 0.7, 0.001)
-        assertEquals(simMap['law'], 0.4, 0.0001)
-
-    }
-
     public static mockLogger(Class klazz) {
         def logger = new Expando(
                 debug: { println it },
