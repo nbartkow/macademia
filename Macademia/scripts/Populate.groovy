@@ -32,7 +32,8 @@ target ('main': "Load the Grails interactive shell") {
     def tx = session.beginTransaction();
 
     def populateService = appCtx.getBean('populateService')
-    populateService.populate(new File("db/prod"))
+    populateService.readPeople(new File("db/prod/people.txt"))
+    populateService.downloadInterestDocuments()
 
     session.connection().commit()
     def statement = session.connection().createStatement();
