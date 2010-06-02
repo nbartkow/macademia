@@ -12,8 +12,8 @@ class PopulateService {
 
     def populate(File directory) {
         readPeople(new File(directory.toString() + "/people.txt"))
-        analyzeInterests();
-//        readSimilarities(new File(directory.toString() + "/sims.txt"))
+        downloadInterestDocuments();
+        buildInterestRelations()
     }
 
     def readPeople(File file) {
@@ -57,10 +57,6 @@ class PopulateService {
 
     def buildInterestRelations() {
         similarityService.buildInterestRelations()
-    }
-
-    def displaySimilarities(File blacklistFile) {
-        similarityService.displaySimilarities(new BlacklistRelations(blacklistFile))
     }
 
     def readSimilarities(File file) {

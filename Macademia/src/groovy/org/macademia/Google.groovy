@@ -21,19 +21,26 @@ import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONException;
+import org.json.JSONException
+import grails.util.Environment;
 
 public class Google {
 
     // Put your website here
     private final String DEFAULT_REFERRER = "http://macademia.macalester.edu/"
     private final String DEFAULT_SITE = "en.wikipedia.org"
-    private final String API_PREFIX = "http://ajax.googleapis.com/ajax/services/search/web?start=0&rsz=large&v=1.0&q=" 
+    private final String API_PREFIX = "http://ajax.googleapis.com/ajax/services/search/web?start=0&rsz=large&v=1.0&q="
+    private final File TEST_CACHE = new File("db/test/google.cached.txt")
+
+    private DiskMap cache = null
     
     private String referrer = DEFAULT_REFERRER
     private String site = DEFAULT_SITE
 
     public Google() {
+        if (Environment.getCurrent() == Environment.TEST) {
+            cache = new DiskMap(TEST_CACHE)
+        }
     }
 
     /**
@@ -42,9 +49,12 @@ public class Google {
      * @param maxResults the maximum number of results to return.
      */
     public List<String> query(String query, int maxResults) throws IOException, JSONException {
-
         // Convert spaces to +, etc. to make a valid URL
         query = URLEncoder.encode(query, "UTF-8");
+        if (cache != null && cache.contains(query)) {
+            return cache.get(query)
+        }
+
 
         URL url = new URL(API_PREFIX + query + "+site:" + site);
         URLConnection connection = url.openConnection();
@@ -72,6 +82,9 @@ public class Google {
             if (Wikipedia.isUrlForNormalPage(url2)) {
                 results.add(url2);
             }
+        }
+        if (cache != null) {
+            cache.put(query, results)
         }
         return results;
     }
