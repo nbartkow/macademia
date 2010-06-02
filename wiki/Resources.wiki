@@ -8,3 +8,6 @@ Useful resources for grails development.  Add to me!
 
 = Unix Documentation =
  * [http://freeengineer.org/learnUNIXin10minutes.html Unix in 10 Minutes]
+
+= Hudson address =
+ * [http://141.140.167.130:8080/hudson/job/poliwiki/]
