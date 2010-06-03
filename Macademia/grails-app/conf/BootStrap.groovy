@@ -9,23 +9,21 @@ class BootStrap {
     def populateService
     def interestRelationFilterService
     def similarityService
+    def searchableService
 
     def init = { servletContext ->
         def dbDir = null
 
         switch(Environment.current) {
         case Environment.TEST:
-            dbDir = "db/test"
-            populateService.populate(new File(dbDir))
             break
         case Environment.DEVELOPMENT:
+            BlacklistRelations bl = new BlacklistRelations(MacademiaConstants.PATH_SIM_ADJUSTEMENTS)
+            similarityService.analyze(bl)
             break
         default:
             assert(false)
         }
-
-        BlacklistRelations bl = new BlacklistRelations(MacademiaConstants.PATH_SIM_ADJUSTEMENTS)
-        similarityService.analyze(bl)
      }
 
      def destroy = {

@@ -1,3 +1,5 @@
+import org.apache.commons.io.FileUtils
+
 // locations to search for config files that get merged into the main config
 // config files can either be Java properties files or ConfigSlurper scripts
 
@@ -73,3 +75,30 @@ log4j = {
 
 // throw exceptions when saves fail.
 grails.gorm.save.failOnError = true
+
+def prepDirectories(prefix) {
+    for (String file : ["db.script", "db.log", "db.properties"]) {
+        def src = new File("db/${prefix}_backup/${file}")
+        def dest = new File("db/${prefix}/${file}")
+        FileUtils.deleteQuietly(dest)
+        if (file == "db.log" && !src.exists()) {
+            continue
+        }
+        FileUtils.copyFile(src, dest)
+    }
+}
+
+// environment specific settings
+environments {
+    development {
+        // Uncomment to rebuild db
+        //prepDirectories("dev")
+    }
+    test {
+        prepDirectories("test")
+    }
+    populate {
+    }
+    production {
+    }
+}

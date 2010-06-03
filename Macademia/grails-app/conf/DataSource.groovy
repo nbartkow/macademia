@@ -27,10 +27,16 @@ environments {
 			url = "jdbc:hsqldb:file:db/dev/full/devDb;shutdown=true"
 		}
 	}
+	populateTest {
+		dataSource {
+			dbCreate = "update" // one of 'create', 'create-drop','update'
+			url = "jdbc:hsqldb:file:db/test_backup/db;shutdown=true"
+		}
+	}
 	test {
 		dataSource {
 			dbCreate = "update"
-			url = "jdbc:hsqldb:mem:testDB"
+			url = "jdbc:hsqldb:file:db/test/db;shutdown=true"
 		}
 	}
 	production {
