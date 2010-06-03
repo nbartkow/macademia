@@ -83,7 +83,7 @@ class SimilarityServiceIntegrationTests extends GrailsUnitTestCase {
                 assertEquals(n.sharedInterests[0].second.normalizedText, "web20")
                 assertEquals(n.sharedInterests[0].similarity, 1.0, 0.001)
                 assertEquals(n.sharedInterests[1].first.normalizedText, "collaborativecomputing")
-                assertEquals(n.sharedInterests[1].second.normalizedText, "web20")
+                assertEquals(n.sharedInterests[1].second.normalizedText, "therighttoprivacy")
         //       assertEquals(n.sharedInterests[1].similarity, 0.5, 0.001)
             }
         }

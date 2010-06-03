@@ -53,13 +53,18 @@ class SimilarityService {
 
         for (Interest i : interests) {
             log.info("calculating all similarities for ${i}")
+            List<InterestRelation> relations = []
             for (Interest j : interests) {
                 if (!i.equals(j)) {
                     double sim = calculatePairwiseSimilarity(i, j, tfIdf)
                     InterestRelation ir = new InterestRelation(first : i, second: j, similarity : sim)
+                    relations.add(ir)
 //                   println("${sim}\t${i}\t${j}")
-                    ir.save()
                 }
+            }
+            relations.sort()
+            for (InterestRelation ir : relations[0..(roughThreshold * relations.size() as int)]) {
+                ir.save(flush:true)
             }
             if (((++counter) % 10) == 0) {
                 cleanUpGorm()

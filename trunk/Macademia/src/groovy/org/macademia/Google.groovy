@@ -38,7 +38,7 @@ public class Google {
     private String site = DEFAULT_SITE
 
     public Google() {
-        if (Environment.getCurrent() == Environment.TEST) {
+        if (Utils.isTestDb()) {
             cache = new DiskMap(TEST_CACHE)
         }
     }

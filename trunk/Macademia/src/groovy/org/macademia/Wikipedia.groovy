@@ -24,7 +24,7 @@ public class Wikipedia {
     private DiskMap cache = null
 
     public Wikipedia() {
-        if (Environment.getCurrent() == Environment.TEST) {
+        if (Utils.isTestDb()) {
             cache = new DiskMap(TEST_CACHE_FILE)
         }
     }

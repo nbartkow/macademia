@@ -5,9 +5,11 @@ import grails.test.*
 class SearchIntegrationTests extends GrailsUnitTestCase {
     def searchService
     def personService
+    def searchableService
     
     protected void setUp() {
         super.setUp()
+        searchableService.reindex()
     }
 
     protected void tearDown() {
