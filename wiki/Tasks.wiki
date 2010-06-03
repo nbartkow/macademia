@@ -1,7 +1,14 @@
-#summary One-sentence summary of this page.
 
-= User Profile tasks =
+== Login tasks ==
+  * Login for faculty
+  * Login for administrators
+
+== User Profile tasks ==
   === New user profile interface ===
-     * User inputted information
+      * User inputted user information
+      * Hyperlinks to users' profiles on other internet site (e.g: Facebook)
+      * Teaching and research areas
 
   === Edit user profile interface ===
+
+
