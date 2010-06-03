@@ -1,4 +1,3 @@
-
 == Login tasks ==
   * Login for faculty
   * Login for administrators
@@ -11,4 +10,10 @@
 
   === Edit user profile interface ===
 
+== Collab Advertisement ===
+  * Advertisement interface 
+  * Proposal interface 
 
+
+== Algorithms ==
+   * Interest similarity algorithm
