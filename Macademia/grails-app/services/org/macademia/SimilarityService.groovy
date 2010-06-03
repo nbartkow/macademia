@@ -49,23 +49,26 @@ class SimilarityService {
             tfIdf.handle(d.text.toCharArray(), 0, d.text.length());
         }
         int counter = 0
-        for (Interest i : Interest.findAll()) {
+        List<Interest> interests = Interest.findAll()
+
+        for (Interest i : interests) {
             log.info("calculating all similarities for ${i}")
-            for (Interest j : Interest.findAll()) {
+            for (Interest j : interests) {
                 if (!i.equals(j)) {
                     double sim = calculatePairwiseSimilarity(i, j, tfIdf)
                     InterestRelation ir = new InterestRelation(first : i, second: j, similarity : sim)
-//                    println("${sim}\t${i}\t${j}")
+//                   println("${sim}\t${i}\t${j}")
                     ir.save()
                 }
             }
             if (((++counter) % 10) == 0) {
-                cleanUpGorm()                
+                cleanUpGorm()
             }
         }
     }
 
     def calculatePairwiseSimilarity(Interest i1, Interest i2, TfIdfDistance tfIdf) {
+        Random rand = new Random()
         Document d1 = i1.findMostRelevantDocument()
         Document d2 = i2.findMostRelevantDocument()
         return tfIdf.proximity(d1.text, d2.text)
@@ -107,7 +110,7 @@ class SimilarityService {
         for (int i: 1..minSimsPerInterest) {
             for (InterestRelation ir: all) {
                 if ((!used.contains(ir))
-                && (bl.isRetained(ir))
+                && (bl == null || bl.isRetained(ir))
                 && (similarInterests.get(ir.first, []).size() < minSimsPerInterest)
                 && (counts.get(ir.second, 0) < maxSimsPerInterest)) {
                     counts[ir.second] = counts.get(ir.second, 0) + 1
@@ -122,10 +125,10 @@ class SimilarityService {
         }
         // second pass: try to fill in the remaining
         // but don't use any similarities that are too low
-        def maxIndex = all.size() * threshold as int
+        def maxIndex = all.size() * refinedThreshold as int
         for (InterestRelation ir: all[0..maxIndex]) {
             if ((!used.contains(ir))
-            && (bl.isRetained(ir))
+            && (bl == null || bl.isRetained(ir))
             && (similarInterests[ir.first].size() < numSimsPerInterest)
             && (counts.get(ir.second, 0) < maxSimsPerInterest)) {
                 counts[ir.second] = counts.get(ir.second, 0) + 1
