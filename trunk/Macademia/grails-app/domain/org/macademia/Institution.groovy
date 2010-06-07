@@ -6,7 +6,7 @@ class Institution {
 
   static searchable = true
   static constraints = {
-    name(unique: true)
+    emailDomain(unique: true)
   }
   public String toString() {
     return "$name"
