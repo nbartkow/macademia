@@ -8,7 +8,7 @@ import org.apache.commons.io.FileUtils
  * Deletes existing database.
  */
 ["db.log", "db.properties", "db.script"].each({
-    File f = new File("db/test_backup")
+    File f = new File("db/test_backup/" + it)
     if (f.exists()) {
         f.delete()
     }

@@ -10,6 +10,6 @@ class Document {
     }
 
     public String toString() {
-        return "<document '$url', '$name', '${(text.length() < 50) ? text : text.substring(0, 10)}...'>"
+        return "<document '$url', '$name', '${(text.length() < 50) ? text : text.substring(0, 50)}...'>"
     }
 }

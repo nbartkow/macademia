@@ -110,7 +110,7 @@ public class Wikipedia {
             return null
         }
         String ending = url.substring(url.lastIndexOf("/")+1);
-        String decoded = decoder.decode(ending);
+        String decoded = decoder.decode(ending, "UTF-8");
         return decoded.replace('_', ' ');
     }
 
@@ -122,7 +122,7 @@ public class Wikipedia {
      */
     public static String encodeWikiUrl(String name) {
         String encoded = name.replace(' ', '_')
-        return ARTICLE_PREFIX + encoder.encode(encoded)
+        return ARTICLE_PREFIX + encoder.encode(encoded, "UTF-8")
     }
 
     /**
