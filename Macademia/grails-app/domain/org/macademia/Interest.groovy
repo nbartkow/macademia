@@ -20,6 +20,10 @@ class Interest {
             documents: InterestDocument
     ]
 
+    static mapping = {
+        documents column : 'interest_id'
+    }
+
     static def normalize = {text ->
         return (text.toLowerCase() =~ /[^a-zA-Z0-9]+/).replaceAll("")
     }

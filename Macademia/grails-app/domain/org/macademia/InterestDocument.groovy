@@ -5,4 +5,8 @@ class InterestDocument {
     double weight;
 
     static searchable = false;
+    static mapping = {
+        document column : 'document_id'
+    }
+    static belongsTo = [ interest : Interest ]
 }

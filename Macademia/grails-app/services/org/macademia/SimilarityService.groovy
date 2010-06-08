@@ -59,10 +59,10 @@ class SimilarityService {
                     double sim = calculatePairwiseSimilarity(i, j, tfIdf)
                     InterestRelation ir = new InterestRelation(first : i, second: j, similarity : sim)
                     relations.add(ir)
-//                   println("${sim}\t${i}\t${j}")
+//                    println("${sim}\t${i}\t${j}")
                 }
             }
-            relations.sort()
+            relations = relations.sort()
             for (InterestRelation ir : relations[0..(roughThreshold * relations.size() as int)]) {
                 ir.save(flush:true)
             }

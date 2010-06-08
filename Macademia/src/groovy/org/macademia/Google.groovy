@@ -78,7 +78,7 @@ public class Google {
         List<String> results = new ArrayList<String>();
         for (int i = 0; i < ja.length() && results.size() < maxResults; i++) {
             JSONObject j = ja.getJSONObject(i);
-            String url2 = j.getString("url");
+            String url2 = j.getString("unescapedUrl");
             if (Wikipedia.isUrlForNormalPage(url2)) {
                 results.add(url2);
             }
