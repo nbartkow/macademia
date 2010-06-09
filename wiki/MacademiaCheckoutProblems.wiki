@@ -1,0 +1,16 @@
+#summary If your Macademia checkout doesn't work, here are some possible solutions.
+
+= Introduction =
+
+We've found that occasionally when Macademia is checked out from the svn it doesn't work initially. Here are solutions to problems we've encountered.
+
+
+== FileNotFound error ==
+
+If you run the app and it comes up with a FileNotFound error, it could be that the upgrade (detailed in the [http://code.google.com/p/macademia/wiki/Installation Installation] guide) didn't work. To remedy this, open up the terminal and (in your Macademia file) type 'grails clean', then 'grails upgrade'. That should fix the problem.
+
+== jQuery issues ==
+
+If the app runs and opens the page only to tell you that jQuery is not defined, simply uninstall the jQuery plugin and reinstall it. Do this from the terminal with the commands 'grails uninstall-plugin jquery' then 'grails install-plugin jquery'.
+
+
