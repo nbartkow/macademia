@@ -11,8 +11,8 @@ class InterestService implements ApplicationContextAware {
 
     ApplicationContext applicationContext
     def xSimilarityService
-    def googleServiceProxy
-    def wikipediaServiceProxy
+    def googleService
+    def wikipediaService
 
     boolean transactional = true
 
@@ -46,7 +46,7 @@ class InterestService implements ApplicationContextAware {
     }
 
     public void analyzeInterest(Interest interest) {
-        analyzeInterest(interest, new Wikipedia(), new Google())
+        analyzeInterest(interest)
 
     }
 
@@ -61,16 +61,16 @@ class InterestService implements ApplicationContextAware {
 
         log.info("doing interest ${interest}")
         double weight = 1.0
-        for (String url : googleServiceProxy.query(interest.text, 5)) {
+        for (String url : googleService.query(interest.text, 5)) {
             weight *= 0.5;
-            String url2 = wikipediaServiceProxy.getCanonicalUrl(url)
+            String url2 = wikipediaService.getCanonicalUrl(url)
             if (!url2) {
                 log.error("canonicalizing of $url failed")
                 continue
             }
             Document d = Document.findByUrl(url2)
             if (d == null) {
-                d = wikipediaServiceProxy.getDocumentByUrl(url2)
+                d = wikipediaService.getDocumentByUrl(url2)
                 if (!d) {
                     log.error("retrieval of $url (canonical form is $url2) failed")
                     continue

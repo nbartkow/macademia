@@ -2,20 +2,26 @@ package org.macademia
 
 class WikipediaService {
 
-    static scope = "request"
-    static proxy = true
     static transactional = false
-    Wikipedia wikipedia=new Wikipedia()
+    ThreadLocal<Wikipedia> holder = new ThreadLocal<Wikipedia>()
 
     public Document getDocumentByUrl(String url){
-        return wikipedia.getDocumentByUrl(url)
+        return getWikipedia().getDocumentByUrl(url)
     }
 
     public Document getDocumentByName(String title){
-        return wikipedia.getDocumentByName(title)
+        return getWikipedia().getDocumentByName(title)
     }
 
     public String getCanonicalUrl(String url){
-        return wikipedia.getCanonicalUrl(url)
+        return getWikipedia().getCanonicalUrl(url)
+    }
+
+    public Wikipedia getWikipedia() {
+        if (holder.get() == null) {
+            holder.set(new Wikipedia())
+        }
+        return holder.get()
     }
 }
+

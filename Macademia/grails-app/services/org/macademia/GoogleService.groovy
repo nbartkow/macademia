@@ -5,12 +5,13 @@ import org.json.JSONException
 class GoogleService {
 
     static transactional = false
-    static scope = "request"
-    static proxy = true
-    Google google = new Google()
+    ThreadLocal<Google> holder = new ThreadLocal<Google>()
 
     public List<String> query (String query, int maxResults) {
-      return google.query(query, maxResults)
+        if (holder.get() == null) {
+            holder.set(new Google())
+        }
+        return holder.get().query(query, maxResults)
     }
 
 }
