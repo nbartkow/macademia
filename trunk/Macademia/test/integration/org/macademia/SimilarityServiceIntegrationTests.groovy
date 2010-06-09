@@ -13,14 +13,14 @@ class SimilarityServiceIntegrationTests extends GrailsUnitTestCase {
         similarityService.minSimsPerInterest = 1
         similarityService.numSimsPerInterest = 2
         similarityService.maxSimsPerInterest = 3
-        similarityService.analyze()     // rebuild
+        //similarityService.analyze()     // rebuild
     }
 
     protected void tearDown() {
         super.tearDown()
     }
 
-    void testSimilariInterests() {
+    /*void testSimilariInterests() {
         Interest africa = interestService.findByText("africa")
         Interest darfur = interestService.findByText("darfur")
         Interest humanRights = interestService.findByText("human rights")
@@ -94,5 +94,89 @@ class SimilarityServiceIntegrationTests extends GrailsUnitTestCase {
         println n3
         println n4
         println n5
+
+    }    */
+
+    void testGetSimilarInterests(){
+        Interest interest= Interest.findByText("web2.0")
+        List<InterestRelation> list= similarityService.getSimilarInterests(interest)
+        assertEquals(list.size(),6)
+        InterestRelation ir =list.get(0)
+        Interest second= Interest.findByText("globalization")
+        assertEquals(ir.second, second)
+        ir=list.get(3)
+        second= Interest.findByText("anthropology")
+        assertEquals(ir.second, second)
+        ir=list.get(5)
+        assertTrue(ir.similarity>0.136)
+        assertTrue(ir.similarity<0.142)
+        ir=list.get(0)
+        assertTrue(ir.similarity<0.2)
+        InterestRelation ir2=list.get(1)
+        assertTrue(ir.similarity>ir2.similarity)
+    }
+
+    void testCalculateInterestNeighbors() {
+        Interest interest = Interest.findByText("web2.0")
+        Graph graph = similarityService.calculateInterestNeighbors(interest, 4)
+        assertEquals(graph.edgeSize(),8)
+        Edge e1= new Edge(interest:interest, relatedInterest:Interest.findByText("online communities"))
+        assertTrue(graph.getAdjacentEdges(interest).contains(e1))
+        Edge e2= new Edge(interest:Interest.findByText("online communities"), relatedInterest:interest)
+        assertTrue(graph.getAdjacentEdges(interest).contains(e2))
+        Edge e3= new Edge(person:Person.findById(1) ,interest:Interest.findById(14))
+        assertTrue(graph.getAdjacentEdges(Person.findById(1)).contains(e3))
+        Edge e4 = new Edge(interest: interest, relatedInterest:Interest.findById(30))
+        assertTrue(graph.getAdjacentEdges(interest).contains(e4))
+
+    }
+
+    void testCalculatePersonNeighbors () {
+        Person p=Person.findById(4)
+        Graph graph= similarityService.calculatePersonNeighbors(p,10)
+        Edge e = new Edge(person:Person.findById(1),interest:Interest.findById(42), relatedInterest:Interest.findById(5))
+        assertFalse(graph.getAdjacentEdges(Person.findById(1)).contains(e))
+        assertEquals(graph.edgeSize(),36)
+        e=new Edge(person:Person.findById(4),interest:Interest.findById(42))
+        assertTrue(graph.getAdjacentEdges(Person.findById(4)).contains(e))
+        e=new Edge(person:Person.findById(3),interest:Interest.findById(5), relatedInterest:Interest.findById(30))
+        assertTrue(graph.getAdjacentEdges(Person.findById(3)).contains(e))
+    }
+
+    void testBuildInterestRelations () {
+        Interest i = new Interest("GIS")
+        Interest i2= new Interest("GIS (Geographic Information System)")
+        Interest i3= new Interest("e-democracy")
+        i.save()
+        i2.save()
+        i3.save()
+        Interest interest= Interest.findByText("web2.0")
+        List<InterestRelation> list= InterestRelation.findAllByFirst(interest, [sort:"similarity", order:"desc"])
+        assertEquals(list.size(),11)
+        interestService.buildDocuments(i)
+        interestService.buildDocuments(i2)
+        interestService.buildDocuments(i3)
+        similarityService.buildInterestRelations(i)
+        similarityService.buildInterestRelations(i2)
+        similarityService.buildInterestRelations(i3)
+        assertTrue(InterestRelation.findByFirst(i)!=null)
+        assertTrue(InterestRelation.findAllByFirst(i, [sort:"similarity", order:"desc"]).get(0).similarity>0.2)
+        List<InterestRelation> nlist= InterestRelation.findAllByFirst(interest)
+        Set<InterestRelation> nset= new HashSet<InterestRelation>()
+        for(InterestRelation ir : nlist){
+            nset.add(ir)
+        }
+        assertEquals(nset.size(),11)
+        List<InterestRelation> nlist2= InterestRelation.findAllByFirst(i, [sort:"similarity", order:"desc"])
+        assertEquals(nlist2.size(),13)
+        InterestRelation ir = nlist2.get(0)
+        InterestRelation ir2= new InterestRelation(first:ir.second, second:ir.first, similarity:ir.similarity)
+        List<InterestRelation> nlist3=InterestRelation.findAllByFirst(ir.second)
+        Set<InterestRelation> nset2= new HashSet<InterestRelation>()
+        for(InterestRelation iir: nlist3){
+            nset2.add(iir)
+        }
+        assertTrue(nset2.contains(ir2))
+
     }
 }

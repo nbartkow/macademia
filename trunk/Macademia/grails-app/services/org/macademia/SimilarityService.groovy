@@ -24,8 +24,14 @@ class SimilarityService {
     // Only similarities in the top fraction are used to fill out interests
     double refinedThreshold = 0.08
 
+    // The lowest possible acceptable similarity score
+    double absoluteThreshold = 0.15
+
     // Maximum number of neighbors per person
     int maxNeighbors = 20
+
+    // This is a temporary value designed to allow the new methods to approximate the outputs of the old ones
+    double threshold = refinedThreshold/roughThreshold
 
     boolean transactional = true
     Map<Interest, List<InterestRelation>> similarInterests = [:]
@@ -69,6 +75,31 @@ class SimilarityService {
             if (((++counter) % 10) == 0) {
                 cleanUpGorm()
             }
+        }
+    }
+
+    public void buildInterestRelations(Interest interest){
+        TokenizerFactory tokenizerFactory = IndoEuropeanTokenizerFactory.INSTANCE;
+        TfIdfDistance tfIdf = new TfIdfDistance(tokenizerFactory);
+        log.info("training on ${Document.count()} documents")
+        for (Document d : Document.findAll()) {
+            tfIdf.handle(d.text.toCharArray(), 0, d.text.length());
+        }
+        List<InterestRelation> newIR= new ArrayList<InterestRelation>()
+        for(Interest i : Interest.findAll()){
+            if(i != interest){
+                double sim = calculatePairwiseSimilarity(interest, i, tfIdf)
+                InterestRelation ir = new InterestRelation(first:interest, second:i, similarity:sim)
+                newIR.add(ir)
+            }
+        }
+        newIR.sort()
+        newIR.reverse()
+        for(int i =0; i<newIR.size()*roughThreshold; i++){
+            InterestRelation ir = newIR.get(i)
+            ir.save()
+            ir=new InterestRelation(first:ir.second, second:ir.first, similarity:ir.similarity)
+            ir.save()
         }
     }
 
@@ -220,13 +251,83 @@ class SimilarityService {
     }
 
     /**
+     * Finds the local graph given an interest to go at the center and a maximum number of people
+     * to go in the graph.
+     *
+     * @param interest the interest to go at the center of the graph
+     * @param maxPeople the maximum number of people to go in the graph
+     * @return A graph that contains the nodes and edges to them of the neighbor of the passed interest
+     */
+    public Graph calculateInterestNeighbors(Interest interest, int maxPeople){
+        Graph graph = new Graph()
+        //adds the edges to the set between people who have the central interest
+        for(Person p : personService.findByInterest(interest)){
+            if(graph.getPeople().size()<maxPeople || graph.getPeople().contains(p)){
+                graph.addEdge(new Edge(person:p, interest:interest))
+            }
+        }
+        //loops over the InterestRelations representing similar interests, then looks for people with similar interests
+        for(InterestRelation ir : getSimilarInterests(interest)){
+            if (ir.similarity > absoluteThreshold) {
+                graph.addEdge(new Edge(interest:interest, relatedInterest:ir.second))
+                for(Person p : personService.findByInterest(ir.second)){
+                    if(graph.getPeople().size()<maxPeople || graph.getPeople().contains(p)){
+                        graph.addEdge(new Edge(person:p, interest:ir.second))
+                    }
+                }
+            }
+        }
+        return graph
+    }
+
+    /**
+     * Finds the local graph given a person to go at the center and a maximum number of people
+     * to go in the graph.
+     * @param person the person at the center of the graph
+     * @param maxPeople the maximum number of people in the graph
+     * @return A graph that contains the nodes and edges to them of the neighbor of the passed person
+     */
+    public Graph calculatePersonNeighbors( Person person, int maxPeople){
+        Graph graph= new Graph()
+        //loops over the central person's interests, adds people who have those interests, then people who have interests
+        //similar to the central person's interests
+        for(Interest i : person.interests){
+            for(Person p : personService.findByInterest(i)){
+                if(graph.getPeople().size()<maxPeople || graph.getPeople().contains(p)){
+                    graph.addEdge(new Edge(person:p, interest:i))
+                }
+            }
+            //set is used to eliminate multiple edges between an interest and a person
+            Set<Person> usedPeople= new HashSet<Person>()
+            for(InterestRelation ir : getSimilarInterests(i)){
+                if(!person.interests.contains(ir.second)) {
+                    for(Person p : personService.findByInterest(ir.second)){
+                        if((graph.getPeople().size()<maxPeople || graph.getPeople().contains(p))
+                        && (ir.similarity>absoluteThreshold && !usedPeople.contains(p))){
+                            graph.addEdge(new Edge(person:p, interest:i, relatedInterest:ir.second))
+                            usedPeople.add(p)
+                        }
+                    }
+                }
+            }
+        }
+        return graph
+    }
+
+    /**
      * Returns a list of similar interests in the form of interest relations.
      * The first interest in every interest relation will be the interest requested.
      * The second will be the similar interest.
-     * The list is sorted by similarity.
+     * The list is sorted by similarity in descending.  The size of the list depends
+     * upon the relative threshold defined inside, as well as the roughThreshold variable.
+     *
+     * @param i the interest for which similar interests are being obtained
+     *
      */
     public List<InterestRelation> getSimilarInterests(Interest i) {
-        return similarInterests[i]
+        List<InterestRelation> simInterests=InterestRelation.findAllByFirst(i, [sort:"similarity", order:"desc"])
+        int lastIndex=(simInterests.size() + 1)*threshold as int
+        return simInterests.subList(0, lastIndex)
     }
 
     /**
