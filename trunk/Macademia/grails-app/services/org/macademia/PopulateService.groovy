@@ -51,7 +51,7 @@ class PopulateService {
         Wikipedia wikipedia = new Wikipedia()
         Google google = new Google()
         Interest.findAll().each({
-            interestService.buildDocuments(it, wikipedia, google)
+            interestService.buildDocuments(it)
         })
     }
 
