@@ -5,9 +5,9 @@
 We've found that occasionally when Macademia is checked out from the svn it doesn't work initially. Here are solutions to problems we've encountered.
 
 
-== _FileNotFound_ error ==
+== _File not found_ error ==
 
-If you run the app and it comes up with a _FileNotFound_ error, it could be that the upgrade (detailed in the [http://code.google.com/p/macademia/wiki/Installation Installation] guide) didn't work. To remedy this, open up the terminal and (in your Macademia file) type 'grails clean', then 'grails upgrade'. That should fix the problem.
+If you run the app and it comes up with a _file not found_ error, it could be that the upgrade (detailed in the [wiki/Installation Installation] guide) didn't work. To remedy this, open up the terminal and (in your Macademia file) type 'grails clean', then 'grails upgrade'. That should fix the problem.
 
 == jQuery issues ==
 
