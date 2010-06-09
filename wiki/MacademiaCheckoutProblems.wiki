@@ -11,4 +11,4 @@ If you run the app and it comes up with a _file not found_ error, it could be th
 
 == jQuery issues ==
 
-If the app runs and opens the page only to tell you that jQuery is not defined, simply uninstall the jQuery plugin and reinstall it. Do this from the terminal with the commands 'grails uninstall-plugin jquery' then 'grails install-plugin jquery'.
+If the app runs and opens the page only to tell you that jQuery is not defined, simply uninstall the jQuery plugin and reinstall it. Do this from the terminal with the commands 'grails uninstall-plugin jquery' then 'grails install-plugin jquery'. This problem may arise as a result of using [http://code.google.com/p/macademia/wiki/Nimble nimble], but we don't know for sure.
