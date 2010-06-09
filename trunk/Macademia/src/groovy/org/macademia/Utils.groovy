@@ -13,7 +13,6 @@ class Utils {
      */
 
     public static boolean isTestDb() {
-        System.err.println("RESULT IS " + Environment.getCurrent() + ", " + ['test', 'populateTest'].contains(Environment.getCurrent()))
         return ['test', 'populateTest'].contains(Environment.getCurrent())
     }
 }
