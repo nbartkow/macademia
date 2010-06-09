@@ -1,0 +1,13 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+Karmasphere is a Hadoop plugin for Netbeans. It allows programmers to
+interact with the Hadoop filesystem and run jobs.
+
+
+= Setup =
+
+== Installing Karmasphere== 
+  * Install Netbeans (http://netbeans.org/downloads/index.html -choose the java version)
+  * In Netbeans go to plugins and enter (http://hadoopstudio.org/updates/updates.xml)
+  
