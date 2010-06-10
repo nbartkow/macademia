@@ -17,4 +17,15 @@ calculate the similarity of our wikipedia pages.
   * Enter your username and password and checkout
 
 == Setting up the HDFS service in Netbeans ==
-  * 
+  * On Netbeans click on the services tab
+  * Choose Hadoop Filesystems and right click on it
+  * Click new filesystem
+  * Enter the Filesystem Name ("Wikipedia_Hadoop")
+  * Click on HDFS and click next
+  * Enter the NameNode host ("mist.public.stolaf.edu"); port: 9000, your username and group
+  * Press next and enter proxy type: "SSH TUNNEL", enter the SSH private key
+  * Press Finish
+  * The new filesystem will appear under Hadoop Filesystems
+  * Right click on it and press browse to see files
+
+== Generating and setting the private key ==
