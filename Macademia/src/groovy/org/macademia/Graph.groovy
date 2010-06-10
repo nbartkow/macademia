@@ -11,6 +11,7 @@ package org.macademia
 class Graph {
     Map<Interest,Set<Edge>> interestMap
     Map<Person, Set<Edge>> personMap
+    Map<CollaboratorRequest, Set<Edge>> requestMap
     int edges //needed for some unit tests
 
     /**
@@ -20,6 +21,7 @@ class Graph {
     public Graph() {
         interestMap=new HashMap<Interest, Set<Edge>>()
         personMap= new HashMap<Person, Set<Edge>>()
+        requestMap= new HashMap<CollaboratorRequest, Set<Edge>>()
         edges = 0
     }
 
@@ -30,6 +32,8 @@ class Graph {
      *
      */
     public void addEdge(Edge e) throws IllegalArgumentException {
+
+
         if (interestMap.containsKey(e.interest)) {
             if (!interestMap.get(e.interest).contains(e)) {
               edges++
@@ -42,7 +46,8 @@ class Graph {
             interestMap.put(e.interest, set)
         }
 
-        //edges may either be interest-person edges or interest-interest edges.
+        //edges may either be interest-person edges, interest-collaborator
+        // request edges, or interest-interest edges.
         //as of now no other types of edges should exist
         if (e.person != null) {
             if (personMap.containsKey(e.person)) {
@@ -60,7 +65,16 @@ class Graph {
                 set.add(e)
                 interestMap.put(e.relatedInterest, set)
             }
-        }  else  {
+        } else if (e.request != null){
+            if (requestMap.containsKey(e.request)) {
+                requestMap.get(e.request).add(e)
+            } else {
+                HashSet<Edge> set = new HashSet()
+                set.add(e)
+                requestMap.put(e.request, set)
+            }
+
+        } else  {
             throw new IllegalArgumentException("Second Vertex Needed")
         }
 
@@ -84,6 +98,16 @@ class Graph {
         interestMap.get(interest)
     }
 
+
+    /**
+     *
+     * @param interest the collaborator request for which adjacent edges are needed
+     * @return edges with the input collaborator request as one vertex.
+     */
+    public Set<Edge> getAdjacentEdges (CollaboratorRequest request) {
+        requestMap.get(request)
+    }
+
     /**
      *
      * @return the set of people who are vertices in the graph
@@ -98,6 +122,10 @@ class Graph {
      */
     public Set<Interest> getInterests() {
         return interestMap.keySet()
+    }
+
+    public Set<CollaboratorRequest> getRequests(){
+        return requestMap.keySet()
     }
 
     /**
@@ -116,6 +144,10 @@ class Graph {
      */
     public boolean containsNode(Interest interest){
         return interestMap.containsKey(interest)
+    }
+
+    public boolean containsNode(CollaboratorRequest request){
+        return requestMap.containsKey(request)
     }
 
 
