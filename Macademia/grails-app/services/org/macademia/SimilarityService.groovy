@@ -39,6 +39,7 @@ class SimilarityService {
 
     def personService
     def interestService
+    def collaboratorRequestService
 
     def buildInterestRelations() {
         log.info("deleting existing interest relations")
@@ -78,12 +79,18 @@ class SimilarityService {
         }
     }
 
+
+   /**
+    *
+    * @param i
+    */
     public void buildInterestRelations(Interest interest){
         TokenizerFactory tokenizerFactory = IndoEuropeanTokenizerFactory.INSTANCE;
         TfIdfDistance tfIdf = new TfIdfDistance(tokenizerFactory);
+        //Are the next four lines necessary?
         log.info("training on ${Document.count()} documents")
         for (Document d : Document.findAll()) {
-            tfIdf.handle(d.text.toCharArray(), 0, d.text.length());
+            tfIdf.handle(d.text.toCharArray(), 0, d.text.length());  //what does this do??
         }
         List<InterestRelation> newIR= new ArrayList<InterestRelation>()
         for(Interest i : Interest.findAll()){
@@ -104,7 +111,7 @@ class SimilarityService {
     }
 
     def calculatePairwiseSimilarity(Interest i1, Interest i2, TfIdfDistance tfIdf) {
-        Random rand = new Random()
+        //Random rand = new Random()
         Document d1 = i1.findMostRelevantDocument()
         Document d2 = i2.findMostRelevantDocument()
         return tfIdf.proximity(d1.text, d2.text)
@@ -262,8 +269,13 @@ class SimilarityService {
         Graph graph = new Graph()
         //adds the edges to the set between people who have the central interest
         for(Person p : personService.findByInterest(interest)){
-            if(graph.getPeople().size()<maxPeople || graph.getPeople().contains(p)){
+            if(graph.getPeople().size() + graph.getRequests().size() < maxPeople || graph.getPeople().contains(p)){
                 graph.addEdge(new Edge(person:p, interest:interest))
+            }
+        }
+        for(CollaboratorRequest cr : collaboratorRequestService.findByInterest(interest)){
+            if(graph.getPeople().size() + graph.getRequests().size() < maxPeople || graph.getRequests().contains(cr)){
+                graph.addEdge(new Edge(request: cr, interest:interest))
             }
         }
         //loops over the InterestRelations representing similar interests, then looks for people with similar interests
@@ -271,8 +283,13 @@ class SimilarityService {
             if (ir.similarity > absoluteThreshold) {
                 graph.addEdge(new Edge(interest:interest, relatedInterest:ir.second))
                 for(Person p : personService.findByInterest(ir.second)){
-                    if(graph.getPeople().size()<maxPeople || graph.getPeople().contains(p)){
+                    if(graph.getPeople().size() + graph.getRequests().size() < maxPeople  || graph.getPeople().contains(p)){
                         graph.addEdge(new Edge(person:p, interest:ir.second))
+                    }
+                }
+                for(CollaboratorRequest cr : collaboratorRequestService.findByInterest(interest)){
+                    if(graph.getPeople().size() + graph.getRequests().size() < maxPeople || graph.getRequests().contains(cr)){
+                        graph.addEdge(new Edge(request: cr, interest:interest))
                     }
                 }
             }
@@ -292,27 +309,69 @@ class SimilarityService {
         //loops over the central person's interests, adds people who have those interests, then people who have interests
         //similar to the central person's interests
         for(Interest i : person.interests){
-            for(Person p : personService.findByInterest(i)){
-                if(graph.getPeople().size()<maxPeople || graph.getPeople().contains(p)){
-                    graph.addEdge(new Edge(person:p, interest:i))
-                }
+            graph = calculateNeighbors(i, graph, maxPeople, person.interests)
+        }
+        return graph
+    }
+
+
+   /**
+    * Should we link requests to other requests?
+    *
+    * Finds the local graph given a collaboration request to go at the center and a maximum number of
+    * people to go in the graph
+    * @param request   the collaborator request that goes at the center
+    * @param maxPeople the maximum number of people to go in the graph
+    * @return the local graph centered at the input CollaboratorRequest
+    */
+    public Graph calculateRequestNeighbors(CollaboratorRequest request, int maxPeople) {
+        Graph graph = new Graph()
+        //loops over the collaborator request's interests, adds people who have those interests, then people who have interests
+        //similar to the requests's interests
+        for (Interest i : request.keywords) {
+             graph = calculateNeighbors(i, graph, maxPeople, request.keywords)
+        }
+        return graph
+    }
+
+
+   /**
+    * Finds the branches off of an interest node in a graph centered on a request or a person
+    * @param i
+    * @param graph
+    * @param maxPeople
+    * @param inner the interests that should be on the inner ring
+    * @return
+    */
+    public Graph calculateNeighbors(Interest i, Graph graph, int maxPeople, Set<Interest> inner) {
+        for(Person p : personService.findByInterest(i)){
+            if(graph.getPeople().size() + graph.getRequests().size() < maxPeople || graph.getPeople().contains(p)){
+                graph.addEdge(new Edge(person:p, interest:i))
             }
-            //set is used to eliminate multiple edges between an interest and a person
-            Set<Person> usedPeople= new HashSet<Person>()
-            for(InterestRelation ir : getSimilarInterests(i)){
-                if(!person.interests.contains(ir.second)) {
-                    for(Person p : personService.findByInterest(ir.second)){
-                        if((graph.getPeople().size()<maxPeople || graph.getPeople().contains(p))
-                        && (ir.similarity>absoluteThreshold && !usedPeople.contains(p))){
-                            graph.addEdge(new Edge(person:p, interest:i, relatedInterest:ir.second))
-                            usedPeople.add(p)
-                        }
+        }
+        for(CollaboratorRequest cr : collaboratorRequestService.findByInterest(i)) {
+            if(graph.getPeople().size() + graph.getRequests().size() < maxPeople || graph.getRequests().contains(cr)) {
+                graph.addEdge(new Edge(request: cr, interest: i))
+            }
+        }
+        Set<CollaboratorRequest> usedRequests = new HashSet<CollaboratorRequest>()
+        for(InterestRelation ir : getSimilarInterests(i)){
+            if(!inner.contains(ir.second) && ir.similarity > absoluteThreshold) {
+                for(Person p : personService.findByInterest(ir.second)){
+                    if(graph.getPeople().size()<maxPeople || graph.getPeople().contains(p)){
+                        graph.addEdge(new Edge(person:p, interest:i, relatedInterest:ir.second))
+                    }
+                }
+                for (CollaboratorRequest cr : collaboratorRequestService.findByInterest(ir.second)) {
+                    if(graph.getPeople().size()<maxPeople || graph.getPeople().contains(p)){
+                        graph.addEdge(new Edge(request: cr, interest:i, relatedInterest:ir.second))
                     }
                 }
             }
         }
         return graph
     }
+
 
     /**
      * Returns a list of similar interests in the form of interest relations.

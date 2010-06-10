@@ -7,6 +7,7 @@ class SearchIntegrationTests extends GrailsUnitTestCase {
     def personService
     def autoCompleteService
     def searchableService
+    def collaboratorRequestService
 
     protected void setUp() {
         super.setUp()
@@ -65,6 +66,21 @@ class SearchIntegrationTests extends GrailsUnitTestCase {
         autoCompleteService.addInstitution(institution)
         assertEquals(autoCompleteService.getInstitutionAutocomplete("mac", 2).size(), 1)
 
+    }
+    
+    void testCollaboratorRequestsSearch(){
+        searchableService.reindex()
+        CollaboratorRequest cr = new CollaboratorRequest(title:"Test RFC", description:"Test RFC", creator:Person.findById(1), dateCreated:new Date(), expiration:new Date())
+        cr.addToKeywords(Interest.findById(1))
+        cr.addToKeywords(Interest.findById(2))
+        cr.addToKeywords(Interest.findById(3))
+        cr.addToKeywords(Interest.findById(5))
+        collaboratorRequestService.save(cr)
+        //Utils.safeSave(cr)
+        def requests =  searchService.searchCollaboratorRequests("Test")
+        //assertTrue(cr.save()!= null)
+        assertEquals(CollaboratorRequest.findAllByTitle("Test RFC").size(),1)
+        assertEquals(requests.size(),0)
     }
 
 

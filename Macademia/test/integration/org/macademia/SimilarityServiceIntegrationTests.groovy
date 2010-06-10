@@ -5,7 +5,8 @@ import grails.test.*
 class SimilarityServiceIntegrationTests extends GrailsUnitTestCase {
     def similarityService
     def interestService
-    
+    def collaboratorRequestService
+
     protected void setUp() {
         super.setUp()
 
@@ -98,17 +99,17 @@ class SimilarityServiceIntegrationTests extends GrailsUnitTestCase {
     }    */
 
     void testGetSimilarInterests(){
-        Interest interest= Interest.findByText("web2.0")
+        Interest interest= interestService.findByText("web2.0")
         List<InterestRelation> list= similarityService.getSimilarInterests(interest)
         assertEquals(list.size(),6)
         InterestRelation ir =list.get(0)
-        Interest second= Interest.findByText("globalization")
+        Interest second= interestService.findByText("globalization")
         assertEquals(ir.second, second)
         ir=list.get(3)
-        second= Interest.findByText("anthropology")
+        second= interestService.findByText("anthropology")
         assertEquals(ir.second, second)
         ir=list.get(5)
-        assertTrue(ir.similarity>0.136)
+        assertTrue(ir.similarity>0.13)
         assertTrue(ir.similarity<0.142)
         ir=list.get(0)
         assertTrue(ir.similarity<0.2)
@@ -117,30 +118,82 @@ class SimilarityServiceIntegrationTests extends GrailsUnitTestCase {
     }
 
     void testCalculateInterestNeighbors() {
-        Interest interest = Interest.findByText("web2.0")
+        Interest interest = interestService.findByText("web2.0")
         Graph graph = similarityService.calculateInterestNeighbors(interest, 4)
         assertEquals(graph.edgeSize(),8)
-        Edge e1= new Edge(interest:interest, relatedInterest:Interest.findByText("online communities"))
+        Edge e1= new Edge(interest:interest, relatedInterest:interestService.findByText("online communities"))
         assertTrue(graph.getAdjacentEdges(interest).contains(e1))
-        Edge e2= new Edge(interest:Interest.findByText("online communities"), relatedInterest:interest)
+        Edge e2= new Edge(interest:interestService.findByText("online communities"), relatedInterest:interest)
         assertTrue(graph.getAdjacentEdges(interest).contains(e2))
         Edge e3= new Edge(person:Person.findById(1) ,interest:Interest.findById(14))
         assertTrue(graph.getAdjacentEdges(Person.findById(1)).contains(e3))
         Edge e4 = new Edge(interest: interest, relatedInterest:Interest.findById(30))
         assertTrue(graph.getAdjacentEdges(interest).contains(e4))
+        CollaboratorRequest cr = new CollaboratorRequest(title:"Test RFC", description:"This is a test request for collaboratorRequest", creator:Person.findById(1), dateCreated: new Date(), expiration: new Date())
+        cr.addToKeywords(Interest.findById(5))
+        collaboratorRequestService.save(cr)
+        graph= similarityService.calculateInterestNeighbors(interest,10)
+        assertEquals(graph.getRequests().size(),1)
+        assertEquals(graph.getPeople().size(),3)
+        assertEquals(graph.getInterests().size(),4)
 
     }
 
     void testCalculatePersonNeighbors () {
         Person p=Person.findById(4)
         Graph graph= similarityService.calculatePersonNeighbors(p,10)
+        assertEquals(graph.getAdjacentEdges(p).size(),15)
         Edge e = new Edge(person:Person.findById(1),interest:Interest.findById(42), relatedInterest:Interest.findById(5))
         assertFalse(graph.getAdjacentEdges(Person.findById(1)).contains(e))
-        assertEquals(graph.edgeSize(),36)
         e=new Edge(person:Person.findById(4),interest:Interest.findById(42))
         assertTrue(graph.getAdjacentEdges(Person.findById(4)).contains(e))
         e=new Edge(person:Person.findById(3),interest:Interest.findById(5), relatedInterest:Interest.findById(30))
         assertTrue(graph.getAdjacentEdges(Person.findById(3)).contains(e))
+        assertEquals(graph.getPeople().size(),5)
+        assertEquals(graph.getInterests().size(),15)
+        CollaboratorRequest cr = new CollaboratorRequest(title:"Test RFC", description:"This is a test request for collaboratorRequest", creator:Person.findById(1), dateCreated: new Date(), expiration: new Date())
+        cr.addToKeywords(Interest.findById(5))
+        collaboratorRequestService.save(cr)
+        graph= similarityService.calculatePersonNeighbors(p,10)
+        assertEquals(graph.getRequests().size(),1)
+        assertEquals(graph.getPeople().size(),5)
+        assertEquals(graph.getInterests().size(),15)
+    }
+
+    void testCalculateRequestNeighbors () {
+        CollaboratorRequest cr = new CollaboratorRequest(title:"Test RFC", description:"This is a test request for collaboratorRequest", creator:Person.findById(1), dateCreated: new Date(), expiration: new Date())
+        cr.addToKeywords(Interest.findById(5))
+        cr.addToKeywords(Interest.findById(1))
+        cr.addToKeywords(Interest.findById(2))
+        cr.addToKeywords(Interest.findById(3))
+        collaboratorRequestService.save(cr)
+        Graph graph= similarityService.calculateRequestNeighbors(cr,10)
+        assertTrue(graph.getInterests().contains(Interest.findById(1)))
+        assertTrue(graph.getInterests().contains(Interest.findById(2)))
+        assertTrue(graph.getInterests().contains(Interest.findById(3)))
+        assertTrue(graph.getInterests().contains(Interest.findById(5)))
+        assertTrue(graph.getPeople().contains(Person.findById(1)))
+        assertTrue(graph.getPeople().contains(Person.findById(2)))
+        assertTrue(graph.getPeople().contains(Person.findById(3)))
+        assertTrue(graph.getPeople().contains(Person.findById(4)))
+        assertEquals(graph.getPeople().size(),4)
+        assertEquals(graph.getInterests().size(),4)
+        assertEquals(graph.getRequests().size(),1)
+        assertEquals(graph.getAdjacentEdges(cr).size(),4)
+        assertEquals(graph.getAdjacentEdges(Person.findById(4)).size(),1)
+        assertEquals(graph.getAdjacentEdges(Person.findById(3)).size(),1)
+        assertEquals(graph.getAdjacentEdges(Person.findById(2)).size(),1)
+        assertEquals(graph.getAdjacentEdges(Interest.findById(1)).size(),2)
+        assertEquals(graph.getAdjacentEdges(Interest.findById(3)).size(),3)
+        assertEquals(graph.getAdjacentEdges(Interest.findById(2)).size(),2)
+        Edge e1 = new Edge(person:Person.findById(1),interest:Interest.findById(5),relatedInterest:Interest.findById(14))
+        Edge e2 = new Edge(person:Person.findById(1),interest:Interest.findById(5),relatedInterest:Interest.findById(3))
+        Edge e3 = new Edge(person:Person.findById(1),interest:Interest.findById(5),relatedInterest:Interest.findById(2))
+        assertTrue(graph.getAdjacentEdges(Person.findById(1)).contains(e1))
+        assertFalse(graph.getAdjacentEdges(Person.findById(1)).contains(e2))
+        assertFalse(graph.getAdjacentEdges(Person.findById(1)).contains(e3))
+
+
     }
 
     void testBuildInterestRelations () {
@@ -150,7 +203,7 @@ class SimilarityServiceIntegrationTests extends GrailsUnitTestCase {
         i.save()
         i2.save()
         i3.save()
-        Interest interest= Interest.findByText("web2.0")
+        Interest interest= interestService.findByText("web2.0")
         List<InterestRelation> list= InterestRelation.findAllByFirst(interest, [sort:"similarity", order:"desc"])
         assertEquals(list.size(),11)
         interestService.buildDocuments(i)
