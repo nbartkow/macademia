@@ -1,0 +1,16 @@
+= Problems checking out Macademia =
+
+We've found that occasionally when Macademia is checked out from the svn it doesn't work initially. Here are solutions to problems we've encountered.
+
+== _File not found_ error ==
+
+If you run the app and it comes up with a _file not found_ error, it could be that the upgrade (detailed in the [http://code.google.com/p/macademia/wiki/Installation Installation] guide) didn't work. To remedy this, open up the terminal and (in your Macademia file) type 'grails clean', then 'grails upgrade'. That should fix the problem.
+
+== jQuery issues ==
+
+If the app runs and opens the page only to tell you that jQuery is not defined, simply uninstall the jQuery plugin and reinstall it. Do this from the terminal with the commands 'grails uninstall-plugin jquery' then 'grails install-plugin jquery'. This problem may arise as a result of using [http://code.google.com/p/macademia/wiki/Nimble nimble], but we don't know for sure.
+
+= Problems with IntelliJ =
+
+== IntelliJ runs out of memory ==
+[http://stackoverflow.com/questions/2435569/how-to-give-more-memory-to-intellij-idea-9 Answered on Stack Overflow]
