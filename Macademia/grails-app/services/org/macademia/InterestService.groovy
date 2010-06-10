@@ -45,12 +45,6 @@ class InterestService implements ApplicationContextAware {
         return res
     }
 
-    public void analyzeInterest(Interest interest) {
-        analyzeInterest(interest)
-
-    }
-
-
    /**
     * Finds the most relevant document(s) for the interest
     * @param interest : an interest in the interest list
