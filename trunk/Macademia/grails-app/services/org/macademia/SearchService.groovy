@@ -14,4 +14,8 @@ class SearchService {
   Collection<Institution> searchInstitutions(String query) {
     return Institution.search(query, [reload: true]).results
   }
+
+  Collection<CollaboratorRequest> searchCollaboratorRequests(String query) {
+      return CollaboratorRequest.search(query, [reload: true]).results
+  }
 }
