@@ -13,4 +13,8 @@ If the app runs and opens the page only to tell you that jQuery is not defined, 
 = Problems with IntelliJ =
 
 == IntelliJ runs out of memory ==
-[http://stackoverflow.com/questions/2435569/how-to-give-more-memory-to-intellij-idea-9 Answered on Stack Overflow]
+ * If IntelliJ itself runs out of memory, [http://stackoverflow.com/questions/2435569/how-to-give-more-memory-to-intellij-idea-9 increase the memory for the IDE]
+ * If programs that IntelliJ starts (such as grails) run out of memory:
+   * Click "edit configuration" from the drop down menu of runnable items at the top-left of the IDE (right next to the green arrow).
+   * Click on the runnable item whose memory you want to increase.
+   * Add the following VM parameter: -Xmx1024M (or any other reasonable value).
