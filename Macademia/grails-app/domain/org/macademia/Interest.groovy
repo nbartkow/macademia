@@ -14,10 +14,11 @@ class Interest {
         lastAnalyzed(nullable : true)
     }
 
-    static belongsTo = Person
+    static belongsTo = [Person, CollaboratorRequest]
     static hasMany = [
             people: Person,
-            documents: InterestDocument
+            documents: InterestDocument,
+            requests: CollaboratorRequest
     ]
 
     static mapping = {
