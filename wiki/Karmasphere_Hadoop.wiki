@@ -36,4 +36,15 @@ calculate the similarity of our wikipedia pages.
   * Test to see if the login to mist works with username and password
   * If it does that means that the key worked.
   * Then go back to the Netbeans IDE and browse to the ./ssh directory to upload the "id_dsa" file into the private key. 
-  * 
+
+== Setting up the Hadoop Cluster on Karmasphere ==
+  * On the services tab click on Hadoop Clusters
+  * Click on New Cluster
+  * Enter the cluster name "mistRider"
+  * In the "Cluster Type" enter "Hadoop cluster"
+  * The default filesystem will point to the filesystem you have created
+  * You have to enter the host name (mist.public.stolaf.edu) and port (9001)
+  * Press next then enter the proxy type as SSHTUNNEL: and your username and the private key should be autocompleted, if not follow the smae steps as when setting up the filesystem in order to obtain the private key.
+  * Press finish
+
+== Setting up  the Hadoop job == 
