@@ -1,13 +1,20 @@
-#summary One-sentence summary of this page.
-
-= Introduction =
+== Wikipedia Hadoop ==
 Karmasphere is a Hadoop plugin for Netbeans. It allows programmers to
-interact with the Hadoop filesystem and run jobs.
+interact with the Hadoop filesystem and run jobs. We are using it to
+calculate the similarity of our wikipedia pages.
 
-
-= Setup =
-
-== Installing Karmasphere== 
+== Installing Karmasphere == 
   * Install Netbeans (http://netbeans.org/downloads/index.html -choose the java version)
-  * In Netbeans go to plugins and enter (http://hadoopstudio.org/updates/updates.xml)
+  * In Netbeans go to plugins  and clique settings
+  * On settings click the button add and enter the following information
+  * Name: "Karmasphere for Hadoop" and URL: "http://hadoopstudio.org/updates/updates.xml"
+  * Click ok and go to available plugins tab and search for karmasphere
+  * About four items will appear on the results, click all of them and press install
   
+== Checking out the project ==
+  * On Netbeans click on team and choose svn
+  * Choose checkout and the URL is "http://poliwiki.macalester.edu/svn/research"
+  * Enter your username and password and checkout
+
+== Setting up the HDFS service in Netbeans ==
+  * 
