@@ -1,11 +1,7 @@
 package org.macademia
 
 /**
- * Created by IntelliJ IDEA.
- * User: aschneem
- * Date: Jun 3, 2010
- * Time: 11:00:18 AM
- * To change this template use File | Settings | File Templates.
+ * Authors: Nathaniel Miller and Alex Schneeman
  */
 import grails.test.*
 
@@ -25,6 +21,8 @@ class EdgeTests extends GrailsUnitTestCase {
       Interest i2=new Interest("bar")
       Interest i3=new Interest("goo")
       Interest i4=new Interest("foo")
+      CollaboratorRequest cr = new CollaboratorRequest(title: "ladf")
+      CollaboratorRequest cr2 = new CollaboratorRequest(title: "kajfd")
       Edge e1=new Edge(person:p1, interest:i1)
       Edge e2=new Edge(person:p1, interest:i2)
       Edge e3=new Edge(person:p1, interest:i4)
@@ -42,6 +40,10 @@ class EdgeTests extends GrailsUnitTestCase {
       Edge e15=new Edge(interest:i3, relatedInterest:i2)
       Edge e16=new Edge(interest:i1, relatedInterest:i4)
       Edge e17 = new Edge (interest: i2, relatedInterest: i1)
+      Edge e18 = new Edge(interest: i1, request: cr)
+      assertFalse(e18 == new Edge(interest: i1, request: cr2))
+      assertFalse(e18 == new Edge(interest: i2, request: cr))
+      assertEquals(e18, new Edge(interest: i1, request: cr))
       assertEquals(e1,e3)
       assertFalse(e1==e4)
       assertFalse(e2==e4)
