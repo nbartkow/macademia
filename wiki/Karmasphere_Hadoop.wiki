@@ -20,12 +20,20 @@ calculate the similarity of our wikipedia pages.
   * On Netbeans click on the services tab
   * Choose Hadoop Filesystems and right click on it
   * Click new filesystem
-  * Enter the Filesystem Name ("Wikipedia_Hadoop")
+  * Enter the Filesystem Name "Wikipedia_Hadoop"
   * Click on HDFS and click next
-  * Enter the NameNode host ("mist.public.stolaf.edu"); port: 9000, your username and group
-  * Press next and enter proxy type: "SSH TUNNEL", enter the SSH private key
+  * Enter the NameNode host "mist.public.stolaf.edu"; port: 9000, your username and group
+  * Press next and enter proxy type: "SSH TUNNEL", enter the SSH private key (see next section)
   * Press Finish
   * The new filesystem will appear under Hadoop Filesystems
   * Right click on it and press browse to see files
 
 == Generating and setting the private key ==
+  * In the terminal window enter ssh-keygen -t dss
+  * On mist cd to .shh and create an authorization file (vim authorized_keys)
+  * On your machine (cat ./ssh/id_dsa.pub)
+  * Copy the key and go to mist and paste it into the authorized_keys file
+  * Test to see if the login to mist works with username and password
+  * If it does that means that the key worked.
+  * Then go back to the Netbeans IDE and browse to the ./ssh directory to upload the "id_dsa" file into the private key. 
+  * 
