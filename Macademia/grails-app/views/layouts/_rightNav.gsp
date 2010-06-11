@@ -3,7 +3,7 @@
     <div id="wrapper">
       <div id="main">
         <div id="account" class="btxt">
-          <a href="#">Login</a>|<a href="#">Register</a>
+          <a rel="address:/" href="#">Login</a>|<a rel="address:/" href="#">Register</a>
         </div>
         <div id="mac_logo" class="atxt">
           <img src="${createLinkTo(dir: 'images', file: 'mac_logo.png')}"/><br/>
@@ -43,6 +43,6 @@
       </div>
     </div>
     <div id="hide" class="btxt">
-	  <a href="#">hide-></a>
+	  <a rel="address:/" href="#hide">hide-></a>
 	</div>
   </div>

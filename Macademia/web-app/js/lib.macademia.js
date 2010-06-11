@@ -10,6 +10,26 @@ macademia.drawCircles = function(canvas, ctx) {
     }
 
 };
+macademia.nav = function(){
+
+    $.address.change(function(event){
+          if ($.address.value().indexOf("show") >= 0){
+				$("#rightDiv").animate({width: "320"}, "slow");
+				$("#infovis").animate({right: "320"}, "slow", function() {
+                    $("#rightDiv > *").show();
+                    $("#show").hide()
+                });
+          }else if ($.address.value().indexOf("hide") >= 0){
+				$("#rightDiv > *").hide();
+				$("#rightDiv").animate({width: "0"}, "slow");
+				$("#infovis").animate({right: "0"}, "slow");
+				$("#show").show();
+		  }
+    });
+    $('a').click(function() {
+        $.address.value($(this).attr('href'));
+    });
+};
 macademia.updateSidebar = function(node){
     $("#rootInfo").empty();
     $("#rootInfo").html(node.name+" ("+node.data.department+") "+node.data.email);
@@ -38,18 +58,9 @@ macademia.clearSearch = function(){
     });
 };
 
-macademia.showHide = function(){
+macademia.pageLoad = function(){
 			$("#show").hide();
-			$("#hide").click(function(event) {
-				$("#rightDiv > *").toggle()
-				$("#rightDiv").animate({width: "0"}, "slow")
-				$("#infovis").animate({right: "0"}, "slow")
-				$("#show").show();
-			});
-			$("#show").click(function(event) {
-				$("#rightDiv").animate({width: "320"}, "slow");
-				$("#infovis").animate({right: "320"}, "slow", function() {$("#rightDiv > *").toggle();$("#show").hide()});
-			});
+			
 };
 
 macademia.collegeFilter = function(){
