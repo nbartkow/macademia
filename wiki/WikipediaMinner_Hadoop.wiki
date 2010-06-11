@@ -1,11 +1,65 @@
 == Stage 1: WordCounter ==
-
-It takes each wikipedia page and count how many times a word appears in the page.
-
+It takes each wikipedia page and counts how many times a word appears in the page.
 
 === Mapper ===
+   * Input: wikipedia pages
+   * Output: word @ page_title @ word_count @ total_number_words
+   * Example: Mathematics @Modern_Mathematics@12@120 per line
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+=== Reducer ===
+   * Input: word @ page_title @ word_count @ total_number_words
+   * Outputs: word #cnumber_of_occurrences_across_all_wikipages
+              word @ page_title @ word_count @ total_number_words              
+
+   * Output Example: Mathematics #c1230
+                     Mathematics @Modern_Mathematics@12@120          
+
+
+
+== Stage 2:DocFrequency ==
+Prepares the data pieces for the tf-idf calculations
+
+=== Mapper ===
+   * Identity
+
+=== Reducer ===
+   * Input: word #cnumber_of_occurrences_across_all_wikipages
+            word @ page_title @ word_count @ total_number_words 
+            
+   * Output: wiki_page word@articleWordFrequency@articleWordCount@wordDocFrequency
+   * Output Example: Anarchism   developed@345@6249@32424 
+
+== Stage 3:TfidfVectorPruner ==
+This is used to calculate the tf-idf scores
+
+=== Mapper ===
+   * Identity
+
+=== Reducer ===
+   * Input: wiki_page_name word@articleWordFrequency@articleWordCount@wordDocFrequency
+   * Ouput: article word@tf-idf_score
+   * Output Example: "Anarchism   developed@32.0"
+
+== Stage 4: DocSimScorer ==
+Calculates the similarities between two documents
+
+=== Mapper ===
+   * Input: wiki_page_name word@tf-idf_score
+   * Output: word wiki_page_name@score
+   * Output Example: developed Anarchism@32
+
+=== Reducer ===
+   * Input: word wiki_page_name@score
+   * Output: wiki_page_name1 wiki_page_name2@(wp1.score*wp2.score) -- the multiplication of the scores is for cosine similarity
+   * Output example: Anarchism Decency@0.43
+
+== Stage 5 ==
+This adds the sim_scores for the pair of wiki articles being compared
+
+=== Mapper ===
+   * Identity
+
+=== Reducer ===
+   * input: wiki_page_name1 wiki_page_name2@(wp1.score*wp2.score)
+   * Output: wiki_page_name1 wiki_page_name2@Combined_similairty_scores
+   * Anarchism Decency@0.48
