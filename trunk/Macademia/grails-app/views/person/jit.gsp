@@ -14,12 +14,18 @@
     $().ready(function(){
        init('person', ${person.id});
        macademia.clearSearch();
+       macademia.showHide();
     });
   </g:javascript>
 </head>
 <body>
 <g:render template="../layouts/components"/>
-<div id="infovis">&nbsp;</div>
+<div id="infovis">
+  &nbsp;
+  <div id="show" class="btxt">
+    <a href="#"><-show</a>
+  </div>
+</div>
 <div id="extendedInfo">
   <g:render template="../layouts/rightNav"/>
 </div>

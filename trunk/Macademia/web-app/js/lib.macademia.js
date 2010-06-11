@@ -17,11 +17,11 @@ macademia.updateSidebar = function(node){
 
 
 macademia.clearSearch = function(){
-    
+
     var textToClear =  "Search people or interests";
 
     $(".clearDefault").val(textToClear);
-    
+
     $(".clearDefault").focus(function(){
         if($(this).val() == textToClear){
             $(this).data("clearedText", $(this).val());
@@ -36,4 +36,18 @@ macademia.clearSearch = function(){
         }
 
     });
+};
+
+macademia.showHide = function(){
+			$("#show").hide();
+			$("#hide").click(function(event) {
+				$("#rightDiv > *").toggle()
+				$("#rightDiv").animate({width: "0"}, "slow")
+				$("#infovis").animate({right: "0"}, "slow")
+				$("#show").show();
+			});
+			$("#show").click(function(event) {
+				$("#rightDiv").animate({width: "320"}, "slow");
+				$("#infovis").animate({right: "320"}, "slow", function() {$("#rightDiv > *").toggle();$("#show").hide()});
+			});
 };
