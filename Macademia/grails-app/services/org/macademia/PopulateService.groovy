@@ -1,8 +1,17 @@
 package org.macademia
 
+import grails.plugins.nimble.InstanceGenerator
+import grails.util.Environment
+import grails.plugins.nimble.core.AdminsService
+import grails.plugins.nimble.core.Role
+
 class PopulateService {
     def interestService
     def similarityService
+    def userService
+    def nimbleService
+    def personService
+    def adminsService
     
     def sessionFactory
     def propertyInstanceMap = org.codehaus.groovy.grails.plugins.DomainClassGrailsPlugin.PROPERTY_INSTANCE_MAP
@@ -17,6 +26,8 @@ class PopulateService {
     }
 
     def readPeople(File file) {
+        nimbleService.init()
+        
         log.error("reading people from $file...")
         file.eachLine {
             String line ->
@@ -32,8 +43,21 @@ class PopulateService {
 
             Person person = Person.findByEmail(email)
             if (person == null) {
-                person = new Person(name: name, department: dept, email: email)
-                person.save()
+                // Create example User account
+                def user = new User()
+                user.username = email
+                user.pass = 'useR123!'
+                user.passConfirm = 'useR123!'
+                user.enabled = true
+
+                person = new Person(fullName: name, department: dept, email: email)
+                person.owner = user
+                user.profile = person
+
+                // NOTE: THIS IS AN OLD METHOD THAT USES PERSON.SAVE
+                // HENCE, BOTH personService.save() and userService.save() don't work.
+                // (we have to rearrange the test)
+                personService.save(person)
             }
             Interest interest = interestService.findByText(interestStr)
             if (interest == null) {
@@ -41,9 +65,14 @@ class PopulateService {
                 interest.save()
             }
             person.addToInterests(interest)
+            //personService.save(person)
         }
         log.error("Read ${Person.count()} people objects")
         log.error("Read ${Interest.count()} interest objects")
+
+        def admins = Role.findByName(AdminsService.ADMIN_ROLE)
+        adminsService.add(personService.findByEmail("ssen@macalester.edu").owner)
+
     }
 
     /** TODO: move this to some other service */

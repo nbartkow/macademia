@@ -15,8 +15,8 @@ class EdgeTests extends GrailsUnitTestCase {
     }
 
     void testEquals(){
-      Person p1=new Person(name:"foo" , email:"bar", department:"goo")
-      Person p2=new Person(name:"bar" , email:"foo", department:"goo")
+      Person p1=new Person(fullName:"foo" , email:"bar", department:"goo")
+      Person p2=new Person(fullName:"bar" , email:"foo", department:"goo")
       Interest i1=new Interest("foo")
       Interest i2=new Interest("bar")
       Interest i3=new Interest("goo")
@@ -63,8 +63,8 @@ class EdgeTests extends GrailsUnitTestCase {
     }
 
     void testHashCode(){
-      Person p1=new Person(name:"foo" , email:"bar", department:"goo")
-      Person p2=new Person(name:"bar" , email:"foo", department:"goo")
+      Person p1=new Person(fullName:"foo" , email:"bar", department:"goo")
+      Person p2=new Person(fullName:"bar" , email:"foo", department:"goo")
       Interest i1=new Interest("foo")
       Interest i2=new Interest("bar")
       Interest i3=new Interest("goo")

@@ -16,7 +16,7 @@ class GraphTests extends GrailsUnitTestCase {
 
     public void testGraph(){
         Graph graph=new Graph()
-        Person p= new Person(name:"foo" , email:"1", department:"CS")
+        Person p= new Person(fullName:"foo" , email:"1", department:"CS")
         Interest i= new Interest("Web 2.0")
         Interest i2 = new Interest("Anthropology")
         CollaboratorRequest cr = new CollaboratorRequest(title:"lakd")
