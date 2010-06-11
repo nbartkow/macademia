@@ -13,10 +13,12 @@ If the app runs and opens the page only to tell you that jQuery is not defined, 
 == Reinitializing the database ===
 There are times when rebuilding/repopulating the service is required (especially when you use/add new variables to the classes. 
 First, find the database folder in your project folder (use the ls command). Usually:
-/Users/<name>/Macademia/db/dev/full
+/Users/name/Macademia/db/dev/full
+
 Navigate to your project folder and use the following command:
 rm ./db/dev/full/
 you should see many previous versions. An example:
+
 .svn/                  devDb.properties.r96   devDb.script.1.r96
 devDb.properties       devDb.script           devDb.script.mine
 devDb.properties.mine  devDb.script.1.mine    devDb.script.r113
