@@ -14,7 +14,8 @@
     $().ready(function(){
        init('person', ${person.id});
        macademia.clearSearch();
-       macademia.showHide();
+       macademia.pageLoad();
+       macademia.nav();
     });
   </g:javascript>
 </head>
@@ -23,7 +24,7 @@
 <div id="infovis">
   &nbsp;
   <div id="show" class="btxt">
-    <a href="#"><-show</a>
+    <a rel="address:/" href="#show"><-show</a>
   </div>
 </div>
 <div id="extendedInfo">
