@@ -67,6 +67,24 @@ html,body {
 	text-decoration:none;
 }
 
+.padded{
+	margin:5px;
+}
+.padded2{
+	margin: 10px;
+}
+.padded3{
+	margin: 20px;
+}
+.center{
+	text-align:center;
+}
+.right{
+	text-align:right;
+}
+.left{
+	text-align:left;
+}
 
 .ttName {
     font-weight: bold;
@@ -175,5 +193,35 @@ ul#instruct_list li:before{
 }
 #show a{
 	color:#FFFFEE;
+}
+
+#editColleges{
+    -moz-border-radius:5px 5px 5px 5px;
+	background-color:#A2AB8E;
+	margin:30px;
+	padding:10px;
+	height:420px;
+
+
+}
+#add{
+	float:left;
+}
+#clear{
+	float:right;
+}
+
+#selectedColleges{
+    -moz-border-radius:5px 5px 5px 5px;
+	background-color:#ffe;
+	width:200px;
+	height:300px;
+	padding:5px;
+	margin:5px;
+	margin-top:40px;
+	overflow:auto;
+}
+#close{
+
 }
 
