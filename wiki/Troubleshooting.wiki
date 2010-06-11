@@ -25,7 +25,7 @@ devDb.properties.mine  devDb.script.1.mine    devDb.script.r113
 devDb.properties.r113  devDb.script.1.r113    devDb.script.r96
 
 Then run the following command to delete the existing database:
-rm ./db/dev/full/devDb.*
+rm ./db/dev/full/devDb.***
 
 Following that, rebuild the database with the following command:
 grails populate
