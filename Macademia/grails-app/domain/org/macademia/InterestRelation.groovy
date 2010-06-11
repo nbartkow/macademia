@@ -1,6 +1,6 @@
 package org.macademia
 
-class InterestRelation {
+class InterestRelation implements Comparable {
     Interest first
     Interest second
     double similarity

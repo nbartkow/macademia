@@ -8,7 +8,7 @@ class SimilarityService {
 
     // The maximum number of similar interests per interest
     int numSimsPerInterest = 8
-
+                                                                                     `
     // The maximum number of similar interests per neighbors
     int numSimsPerNeighbor = 10
 
@@ -101,7 +101,6 @@ class SimilarityService {
             }
         }
         newIR.sort()
-        newIR.reverse()
         for(int i =0; i<newIR.size()*roughThreshold; i++){
             InterestRelation ir = newIR.get(i)
             ir.save()
@@ -114,7 +113,11 @@ class SimilarityService {
         //Random rand = new Random()
         Document d1 = i1.findMostRelevantDocument()
         Document d2 = i2.findMostRelevantDocument()
-        return tfIdf.proximity(d1.text, d2.text)
+        if (d1 == null || d2 == null) {
+            return -1.0
+        } else {
+            return tfIdf.proximity(d1.text, d2.text)
+        }
 //        double simSum = 0
 //        double weightSum = 0
 //

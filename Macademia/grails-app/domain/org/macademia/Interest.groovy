@@ -3,7 +3,7 @@ package org.macademia
 /**
  * A research interest denoted by a text field
  */
-class Interest {
+class Interest implements Comparable {
     String text
     String normalizedText
     Date lastAnalyzed
