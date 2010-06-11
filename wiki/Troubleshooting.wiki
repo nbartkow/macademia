@@ -26,10 +26,13 @@ devDb.properties.r113  devDb.script.1.r113    devDb.script.r96
 
 Then run the following command to delete the existing database:
 rm ./db/dev/full/devDb.*
+
 Following that, rebuild the database with the following command:
 grails populate
+
 When that is done (it will take a while), run the following command:
 grails buildInterestRelations
+
 Now try again :)
 
 = Problems with IntelliJ =
