@@ -38,7 +38,9 @@ input, select, textarea {
     background-color: #fcfcfc;
     border: 1px solid #ccc;
     font: 11px verdana, arial, helvetica, sans-serif;
-    margin: 2px 0;
+    margin: 2px 0;                                                                              
+	at org.apache.catalina.core.StandardHostValve.status(StandardHostValve.java:343)
+	at org.apache.catalina.core.StandardHostValve.throwable(StandardHostValve.java:287)
     padding: 2px 4px;
 }
 select {

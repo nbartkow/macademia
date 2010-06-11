@@ -51,3 +51,24 @@ macademia.showHide = function(){
 				$("#infovis").animate({right: "320"}, "slow", function() {$("#rightDiv > *").toggle();$("#show").hide()});
 			});
 };
+
+macademia.collegeFilter = function(){
+            $(".delete").click(function(event){
+				$(this).parents("li").animate({opacity: "hide" }, "normal")
+			});
+			$("#editColleges").hide();
+			$("#selectButton").click(function(event) {
+				$("#editColleges").slideToggle();
+				$("#selectButton").toggle();
+			});
+			$("#close > a").click(function(event) {
+				$("#editColleges").slideToggle();
+				$("#selectButton").slideToggle();
+			});
+			$("#clear").click(function(event) {
+				$("#selectedColleges > ul > li").hide();
+			});
+			$("#add").click(function(event) {
+				$("#selectedColleges > ul > li").show();
+			});
+}
