@@ -50,7 +50,7 @@ Calculates the similarities between two documents
 
 === Reducer ===
    * Input: word wiki_page_name@score
-   * Output: wiki_page_name1 wiki_page_name2@(wp1.score*wp2.score) -- the multiplication of the scores is for cosine similarity
+   * Output: wiki_page_name1@wiki_page_name2 (wp1.score*wp2.score) -- the multiplication of the scores is for cosine similarity
    * Output example: Anarchism Decency@0.43
 
 == Stage 5 ==
@@ -61,5 +61,5 @@ This adds the sim_scores for the pair of wiki articles being compared
 
 === Reducer ===
    * input: wiki_page_name1 wiki_page_name2@(wp1.score*wp2.score)
-   * Output: wiki_page_name1 wiki_page_name2@Combined_similairty_scores
-   * Anarchism Decency@0.48
+   * Output: wiki_page_name1@wiki_page_name2 Combined_similairty_scores
+   * Anarchism@Decency 0.48
