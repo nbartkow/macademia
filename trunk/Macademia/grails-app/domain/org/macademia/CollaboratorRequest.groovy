@@ -18,7 +18,7 @@ class CollaboratorRequest {
     }
     
     public String toString() {
-        return "$title ($creator.name)"
+        return "$title ($creator.fullName)"
     }
 
     public int compareTo(Object other) {

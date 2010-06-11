@@ -1,6 +1,7 @@
 package org.macademia
 
 import grails.test.*
+import grails.plugins.nimble.InstanceGenerator
 
 class PersonServiceTests extends GrailsUnitTestCase {
     protected void setUp() {
@@ -13,8 +14,8 @@ class PersonServiceTests extends GrailsUnitTestCase {
 
     void testSomething() {
         mockDomain(Person, [])
-        Person p1 = new Person(name : "Shilad", department : "MSCS", email : "ssen@macalester.edu")
-        Person p2 = new Person(name : "Tm", department : "MSCS", email : "halverson@macalester.edu")
+        Person p1 = new Person(owner: InstanceGenerator.user(), fullName : "Shilad", department : "MSCS", email : "ssen@macalester.edu")
+        Person p2 = new Person(owner: InstanceGenerator.user(), fullName : "Tm", department : "MSCS", email : "halverson@macalester.edu")
         p1.save()
         p2.save()
         def service = new PersonService()

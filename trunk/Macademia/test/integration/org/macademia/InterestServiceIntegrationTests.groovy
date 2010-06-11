@@ -1,6 +1,7 @@
 package org.macademia
 
 import grails.test.*
+import grails.plugins.nimble.InstanceGenerator
 
 /**
  * Authors: Nathaniel Miller and Alex Schneeman
@@ -18,7 +19,7 @@ class InterestServiceIntegrationTests extends GrailsUnitTestCase {
   }
 
   void testSave() {
-    Person p = new Person(name: "foo", email: "bar", department: "CS")
+    Person p = new Person(owner: InstanceGenerator.user(), fullName: "foo", email: "bar", department: "CS")
     //There is some problem with normalize text for the space character
     Interest interest = new Interest("web 3.0")
     interestService.save(interest)

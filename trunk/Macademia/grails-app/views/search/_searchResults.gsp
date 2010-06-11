@@ -14,7 +14,7 @@
 <div class="searchHeader">Matching <b>people:</b></div>
 <g:each in="${people}" var="p">
     <li>
-      <g:link controller="person" action="jit" params="[id:p.id]">${p.name}</g:link>
+      <g:link controller="person" action="jit" params="[id:p.id]">${p.fullName}</g:link>
     </li>
 </g:each>
 </g:if>

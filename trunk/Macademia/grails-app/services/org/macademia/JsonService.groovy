@@ -211,10 +211,10 @@ class JsonService {
     def makeJsonForPerson(Person p) {
         return [
                 id: "p_" + p.id,
-                name: p.name,
+                name: p.fullName,
                 data: [
                         unmodifiedId: p.id,
-                        name: p.name,
+                        name: p.fullName,
                         email: p.email,
                         department: p.department,
                         sharedInterest: [],

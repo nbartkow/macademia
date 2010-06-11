@@ -1,21 +1,18 @@
 package org.macademia
 
-class Person {
-    String name
-    String email
+class Person extends grails.plugins.nimble.core.ProfileBase {
+    // fullName and email are inherited.
+    
     String department
 
     static hasMany = [interests: Interest]
     static searchable = true
-    static constraints = {
-        email(unique: true)
-    }
     static mapping = {
         interests fetch: "join", cache: true
     }
 
     public String toString() {
-        return "$name ($department)"
+        return "$fullName ($department)"
     }
 
     public int compareTo(Object p2) {
