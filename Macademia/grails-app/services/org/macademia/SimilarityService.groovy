@@ -8,7 +8,7 @@ class SimilarityService {
 
     // The maximum number of similar interests per interest
     int numSimsPerInterest = 8
-                                                                                     `
+
     // The maximum number of similar interests per neighbors
     int numSimsPerNeighbor = 10
 
