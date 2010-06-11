@@ -21,121 +21,43 @@ class SimilarityServiceIntegrationTests extends GrailsUnitTestCase {
         super.tearDown()
     }
 
-    /*void testSimilariInterests() {
-        Interest africa = interestService.findByText("africa")
-        Interest darfur = interestService.findByText("darfur")
-        Interest humanRights = interestService.findByText("human rights")
-        Interest modernism = interestService.findByText("modernism")
-        Interest law = interestService.findByText("law")
-        assertNotNull(africa)
-        assertNotNull(darfur)
-        assertNotNull(humanRights)
-        assertNotNull(modernism)
-        assertNotNull(law)
-
-        List<InterestRelation> sim1 = similarityService.getSimilarInterests(africa)
-        List<InterestRelation> sim2 = similarityService.getSimilarInterests(darfur)
-        List<InterestRelation> sim3 = similarityService.getSimilarInterests(humanRights)
-        List<InterestRelation> sim4 = similarityService.getSimilarInterests(modernism)
-        List<InterestRelation> sim5 = similarityService.getSimilarInterests(law)
-
-        assertEquals(sim1.size(), 2)
-        assertEquals(sim2.size(), 2)
-        assertEquals(sim3.size(), 2)
-        assertEquals(sim4.size(), 2)
-        assertEquals(sim5.size(), 2)
-
-//        assertTrue(sim1[0].second == darfur)
-//        assertTrue(sim2[0].second == africa)
-    }
-
-    void testNeighbors() {
-        Person shilad = Person.findByEmail("ssen@macalester.edu")
-        Person diane = Person.findByEmail("michelfelder@macalester.edu")
-        Person dianna = Person.findByEmail("shandy@macalester.edu")
-        Person arjun = Person.findByEmail("guneratne@macalester.edu")
-        Person jaine = Person.findByEmail("strauss@macalester.edu")
-
-        assertNotNull(shilad)
-        assertNotNull(diane)
-        assertNotNull(dianna)
-        assertNotNull(arjun)
-        assertNotNull(jaine)
-
-        List<Neighbors> n1 = similarityService.getNeighbors(shilad)
-        List<Neighbors> n2 = similarityService.getNeighbors(diane)
-        List<Neighbors> n3 = similarityService.getNeighbors(dianna)
-        List<Neighbors> n4 = similarityService.getNeighbors(arjun)
-        List<Neighbors> n5 = similarityService.getNeighbors(jaine)
-
-//        assertEquals(n1.size(), 4)
-//        assertEquals(n2.size(), 4)
-//        assertEquals(n3.size(), 4)
-//        assertEquals(n4.size(), 4)
-//        assertEquals(n5.size(), 4)
-
-        boolean found = false
-        for (Neighbors n : n1) {
-            assertEquals(n.first, shilad)
-            if (n.second == diane) {
-                found = true
-          //      assertEquals(n.sharedInterests.size(), 2)
-                assertEquals(n.sharedInterests[0].first.normalizedText, "web20")
-                assertEquals(n.sharedInterests[0].second.normalizedText, "web20")
-                assertEquals(n.sharedInterests[0].similarity, 1.0, 0.001)
-                assertEquals(n.sharedInterests[1].first.normalizedText, "collaborativecomputing")
-                assertEquals(n.sharedInterests[1].second.normalizedText, "therighttoprivacy")
-        //       assertEquals(n.sharedInterests[1].similarity, 0.5, 0.001)
-            }
-        }
-        assertTrue(found)
-        
-        println n1
-        println n2
-        println n3
-        println n4
-        println n5
-
-    }    */
 
     void testGetSimilarInterests(){
         Interest interest= interestService.findByText("web2.0")
         List<InterestRelation> list= similarityService.getSimilarInterests(interest)
         assertEquals(list.size(),6)
         InterestRelation ir =list.get(0)
-        Interest second= interestService.findByText("globalization")
+        Interest second= interestService.findByText("collaborative computing")
         assertEquals(ir.second, second)
         ir=list.get(3)
-        second= interestService.findByText("anthropology")
+        second= interestService.findByText("onlinecommunities")
         assertEquals(ir.second, second)
-        ir=list.get(5)
-        assertTrue(ir.similarity>0.13)
-        assertTrue(ir.similarity<0.142)
         ir=list.get(0)
-        assertTrue(ir.similarity<0.2)
         InterestRelation ir2=list.get(1)
         assertTrue(ir.similarity>ir2.similarity)
     }
 
     void testCalculateInterestNeighbors() {
+        def shilad = Person.findByEmail("ssen@macalester.edu")
+        assertNotNull(shilad)
         Interest interest = interestService.findByText("web2.0")
         Graph graph = similarityService.calculateInterestNeighbors(interest, 4)
-        assertEquals(graph.edgeSize(),8)
+        assertEquals(graph.edgeSize(),14)
         Edge e1= new Edge(interest:interest, relatedInterest:interestService.findByText("online communities"))
         assertTrue(graph.getAdjacentEdges(interest).contains(e1))
         Edge e2= new Edge(interest:interestService.findByText("online communities"), relatedInterest:interest)
         assertTrue(graph.getAdjacentEdges(interest).contains(e2))
-        Edge e3= new Edge(person:Person.findById(1) ,interest:Interest.findById(14))
-        assertTrue(graph.getAdjacentEdges(Person.findById(1)).contains(e3))
-        Edge e4 = new Edge(interest: interest, relatedInterest:Interest.findById(30))
+        Edge e3= new Edge(person:shilad ,interest: interestService.findByText("socialnetworks"))
+        assertTrue(graph.getAdjacentEdges(shilad).contains(e3))
+        Edge e4 = new Edge(interest: interest, relatedInterest:interestService.findByText("globalization"))
         assertTrue(graph.getAdjacentEdges(interest).contains(e4))
         CollaboratorRequest cr = new CollaboratorRequest(title:"Test RFC", description:"This is a test request for collaboratorRequest", creator:Person.findById(1), dateCreated: new Date(), expiration: new Date())
-        cr.addToKeywords(Interest.findById(5))
+        cr.addToKeywords(interestService.findByText("web20"))
         collaboratorRequestService.save(cr)
         graph= similarityService.calculateInterestNeighbors(interest,10)
         assertEquals(graph.getRequests().size(),1)
         assertEquals(graph.getPeople().size(),3)
-        assertEquals(graph.getInterests().size(),4)
+        assertEquals(graph.getInterests().size(),7)
 
     }
 
@@ -176,15 +98,15 @@ class SimilarityServiceIntegrationTests extends GrailsUnitTestCase {
         assertTrue(graph.getPeople().contains(Person.findById(2)))
         assertTrue(graph.getPeople().contains(Person.findById(3)))
         assertTrue(graph.getPeople().contains(Person.findById(4)))
-        assertEquals(graph.getPeople().size(),4)
+        assertEquals(graph.getPeople().size(),5)
         assertEquals(graph.getInterests().size(),4)
         assertEquals(graph.getRequests().size(),1)
         assertEquals(graph.getAdjacentEdges(cr).size(),4)
-        assertEquals(graph.getAdjacentEdges(Person.findById(4)).size(),1)
-        assertEquals(graph.getAdjacentEdges(Person.findById(3)).size(),1)
-        assertEquals(graph.getAdjacentEdges(Person.findById(2)).size(),1)
-        assertEquals(graph.getAdjacentEdges(Interest.findById(1)).size(),2)
-        assertEquals(graph.getAdjacentEdges(Interest.findById(3)).size(),3)
+        assertEquals(graph.getAdjacentEdges(Person.findById(4)).size(),4)
+        assertEquals(graph.getAdjacentEdges(Person.findById(3)).size(),2)
+        assertEquals(graph.getAdjacentEdges(Person.findById(2)).size(),2)
+        assertEquals(graph.getAdjacentEdges(Interest.findById(1)).size(),7)
+        assertEquals(graph.getAdjacentEdges(Interest.findById(3)).size(),8)
         assertEquals(graph.getAdjacentEdges(Interest.findById(2)).size(),2)
         Edge e1 = new Edge(person:Person.findById(1),interest:Interest.findById(5),relatedInterest:Interest.findById(14))
         Edge e2 = new Edge(person:Person.findById(1),interest:Interest.findById(5),relatedInterest:Interest.findById(3))
@@ -219,7 +141,7 @@ class SimilarityServiceIntegrationTests extends GrailsUnitTestCase {
         for(InterestRelation ir : nlist){
             nset.add(ir)
         }
-        assertEquals(nset.size(),11)
+        assertEquals(nset.size(),14)
         List<InterestRelation> nlist2= InterestRelation.findAllByFirst(i, [sort:"similarity", order:"desc"])
         assertEquals(nlist2.size(),13)
         InterestRelation ir = nlist2.get(0)

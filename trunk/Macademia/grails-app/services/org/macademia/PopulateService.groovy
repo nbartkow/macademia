@@ -48,8 +48,6 @@ class PopulateService {
 
     /** TODO: move this to some other service */
     def downloadInterestDocuments() {
-        Wikipedia wikipedia = new Wikipedia()
-        Google google = new Google()
         Interest.findAll().each({
             interestService.buildDocuments(it)
         })
