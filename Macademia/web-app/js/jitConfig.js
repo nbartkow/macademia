@@ -1,4 +1,4 @@
-var macademia = {};
+var macademia = macademia || {};
 macademia.rootId;
 macademia.distance = 150;
 
@@ -44,7 +44,7 @@ function init(rootType, id) {
             //draw in some circles to aid the visual connection of same distance nodes
             'backgroundCanvas':{
                 'styles':{
-                    'strokeStyle':'#999'
+                    'strokeStyle':'#6A705D'
                 },
                 'impl':{
                     'init':function() {
@@ -100,7 +100,9 @@ function init(rootType, id) {
                     $(this).css('z-index', 10);
                 });
                 $(d).click(function() {
-                    rgraph.onClick(node.id);
+                    macademia.navInfovis(node);
+//                    rgraph.onClick(node.id);
+
                 });
                 d.qtip({
                     content:{
@@ -167,6 +169,7 @@ function init(rootType, id) {
                             hideLabels:false,
                             onComplete:function(){
                                 macademia.updateSidebar(rgraph.graph.getNode(rgraph.root));
+                                
                             }
                         });
                     });
@@ -174,6 +177,7 @@ function init(rootType, id) {
                 macademia.nextNode = null;
             }
         });
+        macademia.rgraph = rgraph;
 
         //load tree from tree data.
         rgraph.loadJSON(json);
