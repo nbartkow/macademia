@@ -1,3 +1,5 @@
+var macademia = macademia || {};
+
 //canvas background circles
 macademia.drawCircles = function(canvas, ctx) {
     var times = 2, d = macademia.distance;
@@ -11,13 +13,12 @@ macademia.drawCircles = function(canvas, ctx) {
 
 };
 macademia.nav = function(){
-
     $.address.change(function(event){
-          if ($.address.value().indexOf("show") >= 0){
+          if ($.address.value().indexOf("hide") < 0){
 				$("#rightDiv").animate({width: "320"}, "slow");
 				$("#infovis").animate({right: "320"}, "slow", function() {
                     $("#rightDiv > *").show();
-                    $("#show").hide()
+                    $("#show").hide();
                 });
           }else if ($.address.value().indexOf("hide") >= 0){
 				$("#rightDiv > *").hide();
@@ -25,14 +26,26 @@ macademia.nav = function(){
 				$("#infovis").animate({right: "0"}, "slow");
 				$("#show").show();
 		  }
+          if (macademia.rgraph && $.address.parameter('nodeId')!= undefined) {
+                var param = $.address.parameter('nodeId');
+                macademia.rgraph.onClick(param);
+          }
     });
-    $('a').click(function() {
+    $('a').click(function(event) {
         $.address.value($(this).attr('href'));
+        $.address.update();
+
     });
+    
 };
+macademia.navInfovis = function(node){
+    $.address.parameter('nodeId', node.id);
+    $.address.update();
+}
 macademia.updateSidebar = function(node){
     $("#rootInfo").empty();
     $("#rootInfo").html(node.name+" ("+node.data.department+") "+node.data.email);
+
 };
 
 
@@ -49,7 +62,7 @@ macademia.clearSearch = function(){
         }
     });
 
-    $(".clearDefault").blur(function(){
+    $(".clearDefault").blur(function(event){
         var value = $(this).val();
         if(!value && $(this).data("clearedText")){
             $(this).val($(this).data("clearedText"));
@@ -60,6 +73,7 @@ macademia.clearSearch = function(){
 
 macademia.pageLoad = function(){
 			$("#show").hide();
+            $.address.autoUpdate(false);
 			
 };
 
