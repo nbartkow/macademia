@@ -18,8 +18,8 @@ environments {
 	development {
 		dataSource {
 			dbCreate = "update" // one of 'create', 'create-drop','update'
-			url = "jdbc:hsqldb:file:db/test/db;shutdown=true"
-//			url = "jdbc:hsqldb:file:db/dev/full/devDb;shutdown=true"
+//			url = "jdbc:hsqldb:file:db/test/db;shutdown=true"
+			url = "jdbc:hsqldb:file:db/dev/full/devDb;shutdown=true"
 		}
 	}
 	populate {
