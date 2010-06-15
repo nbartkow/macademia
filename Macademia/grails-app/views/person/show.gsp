@@ -13,7 +13,7 @@
   <g:include view="/layouts/headers.gsp"/>
 </head>
 <body>
-${personInstance.name}
+${person.fullName}
 <br/>
 <br/>
 

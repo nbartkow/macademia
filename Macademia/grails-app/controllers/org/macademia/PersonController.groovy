@@ -66,4 +66,15 @@ class PersonController {
         render(data as JSON)
     }
 
+    def show = {
+        def person = Person.get(params.id)
+        if (!person) {
+            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'collaboratorRequest.label', default: 'CollaboratorRequest'), params.id])}"
+            redirect(action: "list")
+        }
+        else {
+            [person: person]
+        }
+    }
+
 }

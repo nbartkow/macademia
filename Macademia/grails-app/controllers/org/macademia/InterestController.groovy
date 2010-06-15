@@ -37,4 +37,15 @@ class InterestController {
         ]
     }
 
+    def show = {
+        def interest = Interest.get(params.id)
+        if (!interest) {
+            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'collaboratorRequest.label', default: 'CollaboratorRequest'), params.id])}"
+            redirect(action: "list")
+        }
+        else {
+            [interest: interest]
+        }
+    }
+
 }
