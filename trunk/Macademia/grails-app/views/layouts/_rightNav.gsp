@@ -37,6 +37,10 @@
           </g:formRemote>
         </div>
 
+        <div id="collegeFilterButton" class="center">
+          <input type="submit" class="jqModal" id="collegeFilterTrigger" value="Filter by college"/>
+        </div>
+
         <div id="searchResults">
           &nbsp;
         </div>
