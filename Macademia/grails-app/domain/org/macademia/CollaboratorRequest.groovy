@@ -10,23 +10,22 @@ class CollaboratorRequest {
     Date dateCreated
     Date expiration
     static hasMany = [keywords : Interest]
-    static searchable = true
+    static searchable = [only: ['title', 'description']]
     Person creator
-
-    static mapping = {
-        keywords fetch: "join", cache: true
-    }
     
     public String toString() {
-        return "$title ($creator.fullName)"
+        return "$title ($creator?.fullName)"
     }
 
     public int compareTo(Object other) {
+        def r = -1
         if (CollaboratorRequest.class.isInstance(other)){
-            return title.compareTo(other.title)
-        } else {
-            return -1
+            r = title.compareTo(other.title)
+            if (r == 0) {
+                r = dateCreated.compareTo(other.dateCreated)
+            }
         }
+        return r
 
     }
 

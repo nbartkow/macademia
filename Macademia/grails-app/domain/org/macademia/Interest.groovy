@@ -8,7 +8,8 @@ class Interest implements Comparable {
     String normalizedText
     Date lastAnalyzed
 
-    static searchable = true
+
+    static searchable = [only: ['text', 'normalizedText']]
     static constraints = {
         normalizedText(unique: true)
         lastAnalyzed(nullable : true)
