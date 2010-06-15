@@ -71,6 +71,11 @@ log4j = {
     warn   'org.mortbay.log'
 
     info  'grails.app'
+
+    // more detailed searchable debug logging
+//    debug 'org.codehaus.groovy.grails.plugins.searchable'
+//    trace 'org.compass'
+
 }
 
 // throw exceptions when saves fail.

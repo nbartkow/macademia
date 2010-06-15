@@ -6,7 +6,8 @@ class Person extends grails.plugins.nimble.core.ProfileBase {
     String department
 
     static hasMany = [interests: Interest]
-    static searchable = true
+    static searchable = [only: ['fullName', 'email', 'department']]
+    
     static mapping = {
         interests fetch: "join", cache: true
     }
