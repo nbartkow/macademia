@@ -76,11 +76,9 @@ class SearchIntegrationTests extends GrailsUnitTestCase {
         cr.addToKeywords(Interest.findById(3))
         cr.addToKeywords(Interest.findById(5))
         collaboratorRequestService.save(cr)
-        //Utils.safeSave(cr)
         def requests =  searchService.searchCollaboratorRequests("Test")
-        //assertTrue(cr.save()!= null)
         assertEquals(CollaboratorRequest.findAllByTitle("Test RFC").size(),1)
-        assertEquals(requests.size(),0)
+        assertEquals(requests.size(),1)
     }
 
 
