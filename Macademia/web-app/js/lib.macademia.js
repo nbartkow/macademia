@@ -12,88 +12,92 @@ macademia.drawCircles = function(canvas, ctx) {
     }
 
 };
-macademia.nav = function(){
-    $.address.change(function(event){
-          if ($.address.value().indexOf("hide") < 0){
-				$("#rightDiv").animate({width: "320"}, "slow");
-				$("#infovis").animate({right: "320"}, "slow", function() {
-                    $("#rightDiv > *").show();
-                    $("#show").hide();
-                });
-          }else if ($.address.value().indexOf("hide") >= 0){
-				$("#rightDiv > *").hide();
-				$("#rightDiv").animate({width: "0"}, "slow");
-				$("#infovis").animate({right: "0"}, "slow");
-				$("#show").show();
-		  }
-          if (macademia.rgraph && $.address.parameter('nodeId')!= undefined) {
-                var param = $.address.parameter('nodeId');
-                macademia.rgraph.onClick(param);
-          }
+macademia.nav = function() {
+    $.address.change(function(event) {
+        if ($.address.value().indexOf("hide") < 0) {
+            $("#rightDiv").animate({width: "320"}, "slow");
+            $("#infovis").animate({right: "320"}, "slow", function() {
+                $("#rightDiv > *").show();
+                $("#show").hide();
+            });
+        } else if ($.address.value().indexOf("hide") >= 0) {
+            $("#rightDiv > *").hide();
+            $("#rightDiv").animate({width: "0"}, "slow");
+            $("#infovis").animate({right: "0"}, "slow");
+            $("#show").show();
+        }
+        if (macademia.rgraph && $.address.parameter('nodeId') != undefined) {
+            var param = $.address.parameter('nodeId');
+            macademia.rgraph.onClick(param);
+        }
     });
     $('a').click(function(event) {
         $.address.value($(this).attr('href'));
         $.address.update();
 
     });
-    
+
 };
-macademia.navInfovis = function(node){
+macademia.navInfovis = function(node) {
     $.address.parameter('nodeId', node.id);
     $.address.update();
 }
-macademia.updateSidebar = function(node){
+macademia.updateSidebar = function(node) {
     $("#rootInfo").empty();
-    $("#rootInfo").html(node.name+" ("+node.data.department+") "+node.data.email);
+    $("#rootInfo").html(node.name + " (" + node.data.department + ") " + node.data.email);
 
 };
 
 
-macademia.clearSearch = function(){
+macademia.clearSearch = function() {
 
-    var textToClear =  "Search people or interests";
+    var textToClear = "Search people or interests";
 
     $(".clearDefault").val(textToClear);
 
-    $(".clearDefault").focus(function(){
-        if($(this).val() == textToClear){
+    $(".clearDefault").focus(function() {
+        if ($(this).val() == textToClear) {
             $(this).data("clearedText", $(this).val());
             $(this).val('');
         }
     });
 
-    $(".clearDefault").blur(function(event){
+    $(".clearDefault").blur(function(event) {
         var value = $(this).val();
-        if(!value && $(this).data("clearedText")){
+        if (!value && $(this).data("clearedText")) {
             $(this).val($(this).data("clearedText"));
         }
 
     });
 };
 
-macademia.pageLoad = function(){
-			$("#show").hide();
-            $.address.autoUpdate(false);
-			
+macademia.pageLoad = function() {
+    $("#show").hide();
+    $.address.autoUpdate(false);
+
 };
 
-macademia.collegeFilter = function(){
-            $(".delete").click(function(event){
-				$(this).parents("li").animate({opacity: "hide" }, "normal")
-			});
-			$("#editColleges").hide();
-			$("#selectButton").click(function(event) {
-				$("#editColleges").slideToggle();
-				$("#selectButton").toggle();
-			});
-			$("#close > a").click(function(event) {
-				$("#editColleges").slideToggle();
-				$("#selectButton").slideToggle();
-			});
-			$("#clear").click(function(event) {
-				$("#selectedColleges > ul > li").hide();
-			});
-			$("#add").click(function(event) {
-				$("#selectedColleges > ul > li").show();
-			});
+macademia.collegeFilter = function() {
+
+
+    $().ready(function() {
+        $('#modalDialog').jqm({trigger: '#collegeFilterTrigger'});
+    });
+    $(".delete").click(function(event) {
+        $(this).parents("li").animate({opacity: "hide" }, "normal")
+    });
+    $("#clear").click(function(event) {
+        $("#selectedColleges > ul > li").hide();
+    });
+    $("#add").click(function(event) {
+        $("#selectedColleges > ul > li").show();
+    });
+};
+
+macademia.startSearch = function() {
+    $("#searchSubmitButton").click(function(event) {
+        $(".hidable").hide();
+        
+    })
+
 }
