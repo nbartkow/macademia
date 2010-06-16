@@ -1,6 +1,8 @@
 package org.macademia
 
-
+/**
+ * Authors: Nathaniel Miller and Alex Schneeman
+ */
 class PersonService {
 
     boolean transactional = true
@@ -22,10 +24,9 @@ class PersonService {
     }
 
     public void save(Person person){
-
         //Maps wrong interest to right interest
         Map<Interest,Interest> remove = new HashMap<Interest,Interest>()
-        log.info("$person.interests[0]")
+        //log.info("$person.interests[0]")
 
         for(Interest interest in person.interests){            
             if (interestService.findByText(interest.text) == null) {
@@ -33,11 +34,8 @@ class PersonService {
             } else if (interestService.findByText(interest.text) != null && interest.id == null) {
                 remove.put(interest,interestService.findByText(interest.text))
 
-            } /*else {
-              interestService.save(interest)
-            }  */ //not necessary?
+            } 
         }
-        
         for (Interest interest in remove.keySet()) {
             person.removeFromInterests(interest)
             person.addToInterests(remove.get(interest))

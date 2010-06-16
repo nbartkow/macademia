@@ -32,14 +32,22 @@ class PopulateService {
         file.eachLine {
             String line ->
             String[] tokens = line.trim().split("\t")
-            if (tokens.length != 4) {
+            if (tokens.length != 5) {
                 log.error("illegal line in ${file.absolutePath}: ${line.trim()}")
+                log.error("$tokens.length")
                 return
             }
             String name = tokens[0]
             String dept = tokens[1]
             String email = tokens[2]
             String interestStr = tokens[3]
+            String institutionName = tokens[4]
+
+            Institution institution = Institution.findByName(institutionName)
+            if (institution == null){
+                institution= new Institution(name:institutionName, emailDomain:email.split("@")[0])
+                Utils.safeSave(institution)
+            }
 
             Person person = Person.findByEmail(email)
             if (person == null) {
@@ -50,9 +58,10 @@ class PopulateService {
                 user.passConfirm = 'useR123!'
                 user.enabled = true
 
-                person = new Person(fullName: name, department: dept, email: email)
+                person = new Person(fullName: name, department: dept, email: email, institution: institution)
                 person.owner = user
                 user.profile = person
+                Utils.safeSave(user)
 
                 // NOTE: THIS IS AN OLD METHOD THAT USES PERSON.SAVE
                 // HENCE, BOTH personService.save() and userService.save() don't work.
@@ -62,7 +71,7 @@ class PopulateService {
             Interest interest = interestService.findByText(interestStr)
             if (interest == null) {
                 interest = new Interest(interestStr)
-                interest.save()
+                Utils.safeSave(interest)
             }
             person.addToInterests(interest)
             //personService.save(person)
@@ -76,7 +85,14 @@ class PopulateService {
     }
 
     /** TODO: move this to some other service */
-    def downloadInterestDocuments() {
+  /**
+   * second method in graphing algorithm
+   * for each interest, calls buildDocuments, which uses wikipedia and
+   * google assigns documents to the interests (for the purposes of calculating
+   * interest similarity)
+   * @return
+   */  
+   def downloadInterestDocuments() {
         Interest.findAll().each({
             interestService.buildDocuments(it)
         })
@@ -84,6 +100,10 @@ class PopulateService {
 
     def buildInterestRelations() {
         similarityService.buildInterestRelations()
+    }
+
+    def displaySimilarities(File blacklistFile) {
+        similarityService.displaySimilarities(new BlacklistRelations(blacklistFile))
     }
 
     def readSimilarities(File file) {

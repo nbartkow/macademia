@@ -1,9 +1,10 @@
 package org.macademia
 
 class Person extends grails.plugins.nimble.core.ProfileBase {
-    // fullName and email are inherited.
+    // fullName, owner, and email are inherited.
     
     String department
+    Institution institution
 
     static hasMany = [interests: Interest]
     static searchable = [only: ['fullName', 'email', 'department']]

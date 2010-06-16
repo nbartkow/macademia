@@ -45,6 +45,11 @@ class InterestService implements ApplicationContextAware {
         return res
     }
 
+    public void initBuildDocuments(String fileDirectory){
+        googleService.setCache (new File(fileDirectory+"wikipedia_cache.txt"))
+        wikipediaService.setCache(new File(fileDirectory+"google_cache.txt"))
+    }
+
    /**
     * Finds the most relevant document(s) for the interest
     * @param interest : an interest in the interest list
@@ -55,7 +60,7 @@ class InterestService implements ApplicationContextAware {
 
         log.info("doing interest ${interest}")
         double weight = 1.0
-        for (String url : googleService.query(interest.text, 5)) {
+        for (String url : googleService.query(interest.text, 1)) {
             weight *= 0.5;
             String url2 = wikipediaService.getCanonicalUrl(url)
             if (!url2) {
@@ -74,11 +79,14 @@ class InterestService implements ApplicationContextAware {
                 }
             }
             InterestDocument id = new InterestDocument(document : d, weight : weight)
+            id.interest = interest
             interest.addToDocuments(id)
-            id.save()
+           // id.interest = interest
+            Utils.safeSave(id)
+            Utils.safeSave(interest)
         }
         interest.lastAnalyzed = new Date()
-        interest.save()
+        //Utils.safeSave(interest)
     }
 
 
@@ -89,14 +97,11 @@ class InterestService implements ApplicationContextAware {
               xSimilarityService = applicationContext.getBean("similarityService")
             }
             //must save prior to finding similar interests
-            interest.save()
+            Utils.safeSave(interest)
             buildDocuments(interest)
             xSimilarityService.buildInterestRelations(interest)
-      } /*else {
-           //id, already in db
-           interest.save()
-      }   */ //not necessary?
+      } 
   }
 
-  
+
 }
