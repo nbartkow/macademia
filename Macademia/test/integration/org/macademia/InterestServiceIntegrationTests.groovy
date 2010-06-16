@@ -24,10 +24,11 @@ class InterestServiceIntegrationTests extends GrailsUnitTestCase {
     Interest interest = new Interest("web 3.0")
     interestService.save(interest)
     assertEquals(Interest.findByText("web 3.0"),interest)
+    p = Person.findById(3)
     interest.addToPeople(p)
     interestService.save(interest)
     assertTrue(Interest.findByText("web 3.0").people.contains(p))
-    assertEquals(InterestRelation.findAllByFirst(interest).size(),11)
+    assertEquals(InterestRelation.findAllByFirst(interest).size(),10)  
 
   }
 

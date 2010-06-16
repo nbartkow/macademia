@@ -59,7 +59,6 @@ class SearchIntegrationTests extends GrailsUnitTestCase {
         Institution institution = Institution.findByName("macalester")
         if (institution == null) {
             institution = new Institution(name: "macalester", emailDomain: "@macalester.edu")
-            institution.save()
         }
         def institutions = searchService.searchInstitutions("macalester")
         assertEquals(institutions.size(), 1)
@@ -76,7 +75,9 @@ class SearchIntegrationTests extends GrailsUnitTestCase {
         cr.addToKeywords(Interest.findById(3))
         cr.addToKeywords(Interest.findById(5))
         collaboratorRequestService.save(cr)
+        //Utils.safeSave(cr)
         def requests =  searchService.searchCollaboratorRequests("Test")
+        //assertTrue(cr.save()!= null)
         assertEquals(CollaboratorRequest.findAllByTitle("Test RFC").size(),1)
         assertEquals(requests.size(),1)
     }

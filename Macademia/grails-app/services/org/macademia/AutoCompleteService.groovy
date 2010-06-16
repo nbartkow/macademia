@@ -16,7 +16,7 @@ class AutoCompleteService {
   static int MAX_NUMBER_RES = 10
   AutocompleteTree<String, Person> personTree = new AutocompleteTree<String, Person>()
   AutocompleteTree<String,Institution> institutionTree = new  AutocompleteTree<String,Institution>()
-  AutocompleteTree<String,Interest> interestTree = new  AutocompleteTree<Interest,Interest>()
+  AutocompleteTree<String,Interest> interestTree = new  AutocompleteTree<String,Interest>()
 
   // creates a tree for person class
   def addPerson(Person person){
@@ -31,7 +31,7 @@ class AutoCompleteService {
   }
 
   def addInterest(Interest interest){
-    interestTree.add(interest.hashCode(), interest)
+    interestTree.add(interest.normalizedText, interest)
 
   }
 

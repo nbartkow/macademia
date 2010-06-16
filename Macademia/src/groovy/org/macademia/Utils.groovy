@@ -8,16 +8,7 @@ import org.apache.log4j.Logger
  */
 class Utils {
     private final static Logger log = Logger.getLogger(Utils.class)
-
-    /**
-     * Determine if the current environment uses some variant of the test database
-     * @return
-     */
-
-    public static boolean isTestDb() {
-        return ['test', 'populateTest'].contains(Environment.getCurrent())
-    }
-
+    
     public static void safeSave(Object o) {
         safeSave(o, false)
     }

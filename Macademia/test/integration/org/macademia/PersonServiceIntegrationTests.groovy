@@ -24,7 +24,9 @@ class PersonServiceIntegrationTests extends GrailsUnitTestCase {
     }
 
     void testSave(){
-        Person p = new Person(owner: InstanceGenerator.user(), fullName:"Alicia Johnson",email:"ajohns24@macalester.edu",department:"Mathematics, Statistics, and Computer Science" )
+        Institution mac = new Institution(name: "Macalester", emailDomain: "@macalester.edu")
+        Utils.safeSave(mac)
+        Person p = new Person(institution: mac, owner: InstanceGenerator.user(), fullName:"Alicia Johnson",email:"ajohns24@macalester.edu",department:"Mathematics, Statistics, and Computer Science" )
         Interest i1 = new Interest("statistics")
         Interest i2 = new Interest("applied statistics")
         Interest i3 = new Interest("probability")
