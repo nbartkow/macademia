@@ -24,13 +24,12 @@ import org.json.JSONObject;
 import org.json.JSONException
 import grails.util.Environment;
 
-public class Google {
+public class  Google {
 
     // Put your website here
     private final String DEFAULT_REFERRER = "http://macademia.macalester.edu/"
     private final String DEFAULT_SITE = "en.wikipedia.org"
     private final String API_PREFIX = "http://ajax.googleapis.com/ajax/services/search/web?start=0&rsz=large&v=1.0&q="
-    private final File TEST_CACHE = new File("db/test/google.cached.txt")
 
     private DiskMap cache = null
     
@@ -38,9 +37,11 @@ public class Google {
     private String site = DEFAULT_SITE
 
     public Google() {
-        if (Utils.isTestDb()) {
-            cache = new DiskMap(TEST_CACHE)
-        }
+
+    }
+
+    public Google (File file) {
+         cache = new DiskMap(file)
     }
 
     /**

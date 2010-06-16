@@ -15,7 +15,6 @@ public class Wikipedia {
     private static String WIKIPEDIA_URL = "http://en.wikipedia.org"
     private static String ARTICLE_PREFIX = "${WIKIPEDIA_URL}/wiki/"
     private static String WIKIPEDIA_API_URL = "${WIKIPEDIA_URL}/w/api.php"
-    private static File TEST_CACHE_FILE = new File("db/test/wikipedia.cache.txt")
     
     private String userName = "macademiabot"
     private String password = "goscots"
@@ -24,9 +23,11 @@ public class Wikipedia {
     private DiskMap cache = null
 
     public Wikipedia() {
-        if (Utils.isTestDb()) {
-            cache = new DiskMap(TEST_CACHE_FILE)
-        }
+
+    }
+
+    public Wikipedia(File file) {
+        cache = new DiskMap(file)
     }
 
     public Document getDocumentByUrl(String url) {
