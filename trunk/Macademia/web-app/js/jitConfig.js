@@ -3,6 +3,7 @@ macademia.rootId;
 macademia.distance = 150;
 
 
+
 function makeJsonUrl(type, id) {
     return "/Macademia/" + type + "/json/" + id;
 }
@@ -40,7 +41,7 @@ function init(rootType, id) {
             'injectInto':'infovis',
             //width and height for canvas. Default's to 200.
             'width': 680,
-            'height':660,
+            'height': 660,
             //draw in some circles to aid the visual connection of same distance nodes
             'backgroundCanvas':{
                 'styles':{
@@ -53,6 +54,22 @@ function init(rootType, id) {
                 }
             }
         });
+        $("#mycanvas").css("margin","auto");
+        if(Math.min($("#infovis").width(),$("#infovis").height()) == $("#infovis").width()){
+                    var canvasW = 0.95 * $("#infovis").width();
+                    var canvasH = 660 * canvasW / 680;
+
+
+        }else{
+                    canvasH = 0.95 * $("#infovis").height();
+                    canvasW = 680 * canvasH / 660;
+
+
+        }
+        macademia.mycanvas = canvas;
+        $("#mycanvas").css({"width":canvasW, "height": canvasH});
+        macademia.distance = 150 / 660 * canvasH;
+        canvas.resize(canvasW, canvasH);
 
         var rgraph = new RGraph(canvas, {
             interpolation : 'polar',
@@ -70,6 +87,7 @@ function init(rootType, id) {
             //interpolation type, can be linear or polar
             interpolation: 'polar',
             //parent-children distance
+
             levelDistance: macademia.distance,
             //Set node/edge styles
 
@@ -77,10 +95,12 @@ function init(rootType, id) {
                 $(domElement).attr('alt','/Macademia/'+node.data.type+'/tooltip/'+node.data.unmodifiedId);                
                 var d = $(domElement);
                 var left = parseInt(d.css('left'));
+
                 var w = domElement.offsetWidth;
                 d.css('width', '');
                 d.css('height', '');
                 d.css('left', (left - w /2) + 'px');
+
             },
             //Add a controller to make the tree move on click.
             onCreateLabel: function(domElement, node) {
@@ -101,9 +121,12 @@ function init(rootType, id) {
                 });
                 $(d).click(function() {
                     macademia.navInfovis(node);
-//                    rgraph.onClick(node.id);
+//                  rgraph.onClick(node.id);
 
                 });
+
+
+
                 d.qtip({
                     content:{
                         text:'loading...'
@@ -131,6 +154,7 @@ function init(rootType, id) {
                                 x:'700',
                                 y:'300'
                             }
+
                         }
                     },
                     position:{
@@ -140,6 +164,8 @@ function init(rootType, id) {
                     }
 
                 });
+
+
             },
             onBeforeCompute:function(node) {
                 if (node.data.unmodifiedId) {
@@ -176,15 +202,13 @@ function init(rootType, id) {
                 }
                 macademia.nextNode = null;
             }
+            
         });
-        macademia.rgraph = rgraph;
-
         //load tree from tree data.
         rgraph.loadJSON(json);
         //compute positions and plot
         rgraph.refresh();
-
+        macademia.rgraph = rgraph;
         // $('#infovis').draggable();
-//        alert(rgraph.graph.getNode(rgraph.root).id);
     });
 }
