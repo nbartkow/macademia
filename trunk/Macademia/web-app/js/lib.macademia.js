@@ -26,35 +26,39 @@ macademia.nav = function(){
                     $("#rightDiv > *").show();
                     $("#show").hide();
                 });
-                if(Math.min((bodyWidth-320) , currentHeight) == (bodyWidth - 320)){
-                    var newWidth = 0.95 * (bodyWidth - 320);
-                    var newHeight = originalHeight * newWidth / originalWidth;
-                }else{
-                    newHeight = 0.95 * currentHeight;
-                    newWidth = originalWidth * newHeight / originalHeight;
+                if (macademia.mycanvas){
+                    if(Math.min((bodyWidth-320) , currentHeight) == (bodyWidth - 320)){
+                        var newWidth = 0.95 * (bodyWidth - 320);
+                        var newHeight = originalHeight * newWidth / originalWidth;
+                    }else{
+                        newHeight = 0.95 * currentHeight;
+                        newWidth = originalWidth * newHeight / originalHeight;
+                    }
+                    $("#mycanvas").css({"width":newWidth, "height": newHeight});
+                    macademia.distance = originalDistance * newHeight / originalHeight;
+                    macademia.mycanvas.resize(newWidth, newHeight);
+                    macademia.rgraph.config.levelDistance = macademia.distance;
+                    macademia.rgraph.refresh();
                 }
-                $("#mycanvas").css({"width":newWidth, "height": newHeight});
-                macademia.distance = originalDistance * newHeight / originalHeight;
-                macademia.mycanvas.resize(newWidth, newHeight);
-                macademia.rgraph.config.levelDistance = macademia.distance;
-                macademia.rgraph.refresh();
           }else if ($.address.value().indexOf("hide") >= 0){
 				$("#rightDiv > *").hide();
 				$("#rightDiv").animate({width: "0"}, "slow");
 				$("#infovis").animate({right: "0"}, "slow");
 				$("#show").show();
-                if(Math.min(bodyWidth , currentHeight) == bodyWidth){
-                    var newWidth = 0.95 * bodyWidth;
-                    var newHeight = originalHeight * newWidth / originalWidth;
-                }else{
-                    newHeight = 0.95 * currentHeight;
-                    newWidth = originalWidth * newHeight / originalHeight;
+                if (macademia.mycanvas){
+                    if(Math.min(bodyWidth , currentHeight) == bodyWidth){
+                        var newWidth = 0.95 * bodyWidth;
+                        var newHeight = originalHeight * newWidth / originalWidth;
+                    }else{
+                        newHeight = 0.95 * currentHeight;
+                        newWidth = originalWidth * newHeight / originalHeight;
+                    }
+                    $("#mycanvas").css({"width":newWidth, "height": newHeight});
+                    macademia.distance = originalDistance * newHeight / originalHeight;
+                    macademia.mycanvas.resize(newWidth, newHeight);
+                    macademia.rgraph.config.levelDistance = macademia.distance;
+                    macademia.rgraph.refresh();
                 }
-                $("#mycanvas").css({"width":newWidth, "height": newHeight});
-                macademia.distance = originalDistance * newHeight / originalHeight;
-                macademia.mycanvas.resize(newWidth, newHeight);
-                macademia.rgraph.config.levelDistance = macademia.distance;
-                macademia.rgraph.refresh();
 		  }
           if (macademia.rgraph && $.address.parameter('nodeId')!= undefined) {
                 var param = $.address.parameter('nodeId');
