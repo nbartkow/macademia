@@ -77,7 +77,7 @@ function init(rootType, id) {
             Node: {
                 'overridable': true,
                 'type': 'circle',
-                'color': '#a77', /*'#ccddee'*/
+                'color': '#777777', /*'#ccddee'*/
                 'width' : '4px'
             },
             Edge: {
