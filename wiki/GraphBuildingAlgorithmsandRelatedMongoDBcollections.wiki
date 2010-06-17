@@ -9,13 +9,13 @@ A description of the graph building algorithms and information on what will be s
 
 Collections
 	interests
-		ids=> 	similar:[interest ids]
+		ids=> 	similar:an array of interest ids
 	users
-		ids=> 	interests:[interest ids]
+		ids=> 	interests:an array of interest ids
 			institution:id
 
 	collaboratorRequests
-		ids=>	interests:[interest ids]
+		ids=>	interests:an array of interest ids
 			institution:id
 
 =Person/CollaboratorRequest centered graphs=
@@ -42,6 +42,4 @@ Otherwise there is no edge between the interest and the similar interest and the
 End the loop.
 
 Build the graph and return it.
-
-
 
