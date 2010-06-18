@@ -36,4 +36,12 @@ class Edge {
       }
       return interest.hashCode()*relatedInterest.hashCode()
   }
+
+    public boolean hasSharedInterest(){
+        return(!relatedInterest)
+    }
+
+    public boolean hasRelatedInterest() {
+        return(relatedInterest)
+    }
 }

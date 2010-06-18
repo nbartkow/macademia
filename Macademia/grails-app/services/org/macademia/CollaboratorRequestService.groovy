@@ -13,6 +13,10 @@ class CollaboratorRequestService {
         return i.requests
     }
 
+    def get(long id) {
+        return CollaboratorRequest.get(id)
+    }
+
     public void save(CollaboratorRequest cr) {
         //Maps wrong interest to right interest
         Map<Interest,Interest> remove = new HashMap<Interest,Interest>()

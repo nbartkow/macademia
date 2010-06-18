@@ -18,8 +18,8 @@ class BootStrap {
         case Environment.TEST:
             break
         case Environment.DEVELOPMENT:
-            BlacklistRelations bl = new BlacklistRelations(MacademiaConstants.PATH_SIM_ADJUSTEMENTS)
-            similarityService.analyze(bl)
+//            BlacklistRelations bl = new BlacklistRelations(MacademiaConstants.PATH_SIM_ADJUSTEMENTS)
+//            similarityService.analyze(bl)
             break
         default:
             assert(false)
@@ -28,4 +28,4 @@ class BootStrap {
 
      def destroy = {
      }
-} 
+}
