@@ -29,20 +29,23 @@ class PersonController {
 
         // Are we mousing over a user who has a link to the root?
         if (link != null && target != link) {
-            Neighbors n = similarityService.getNeighbors(target, link)
-
-            for (InterestRelation ir: n.sharedInterests) {
-                if (ir.first == ir.second) {
-                    exact[ir.first] = ir.first
-                } else {
-                    if (!close[ir.first]) {
-                        close[ir.first] = []
+            for(Interest i: link.interests) {
+                for(InterestRelation ir: similarityService.getSimilarInterests(i)){
+                    //println("first: $ir.first second: $ir.second")
+                    if(target.interests.contains(ir.second)){
+                        if (ir.first == ir.second) {
+                            exact[ir.first] = ir.first
+                        } else {
+                            if (!close[ir.first]) {
+                                close[ir.first] = []
+                            }
+                            close[ir.first].add(ir.second)
+                        }
                     }
-                    close[ir.first].add(ir.second)
                 }
             }
-            for (Interest i: close.keySet()) {
-                close[i] = close[i].collect({it.text}).join(", ")
+            for (Interest ci: close.keySet()) {
+                close[ci] = close[ci].collect({it.text}).join(", ")
             }
         }
 
@@ -55,7 +58,6 @@ class PersonController {
 
 
     def jit = {
-
         [person: personService.get((params.id as long))]
 
     }
