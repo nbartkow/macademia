@@ -344,7 +344,7 @@ class SimilarityService {
     }
 
 
-    /**
+    /*
      * Returns a list of similar interests in the form of interest relations.
      * The first interest in every interest relation will be the interest requested.
      * The second will be the similar interest.

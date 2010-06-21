@@ -12,7 +12,7 @@ class PopulateService {
     def nimbleService
     def personService
     def adminsService
-    
+
     def sessionFactory
     def propertyInstanceMap = org.codehaus.groovy.grails.plugins.DomainClassGrailsPlugin.PROPERTY_INSTANCE_MAP
 
@@ -27,7 +27,7 @@ class PopulateService {
 
     def readPeople(File file) {
         nimbleService.init()
-        
+
         log.error("reading people from $file...")
         file.eachLine {
             String line ->
@@ -45,7 +45,7 @@ class PopulateService {
 
             Institution institution = Institution.findByName(institutionName)
             if (institution == null){
-                institution= new Institution(name:institutionName, emailDomain:email.split("@")[0])
+                institution= new Institution(name:institutionName, emailDomain:email.split("@")[1])
                 Utils.safeSave(institution)
             }
 
@@ -91,7 +91,7 @@ class PopulateService {
    * google assigns documents to the interests (for the purposes of calculating
    * interest similarity)
    * @return
-   */  
+   */
    def downloadInterestDocuments() {
         Interest.findAll().each({
             interestService.buildDocuments(it)
@@ -118,7 +118,7 @@ class PopulateService {
             if (i++ % 1000 == 0) {
                 log.error("processing similarity " + i);
                 cleanUpGorm()
-                
+
             }
             String[] tokens = line.trim().split("\t")
             if (tokens.length != 3) {
@@ -154,5 +154,5 @@ class PopulateService {
         session.clear()
         propertyInstanceMap.get().clear()
     }
-    
+
 }
