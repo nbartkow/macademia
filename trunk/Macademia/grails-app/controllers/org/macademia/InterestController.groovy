@@ -24,7 +24,8 @@ class InterestController {
 
     def jit = {
 
-        [interest: interestService.get((params.id as long))]
+      [:]
+      //[interest: interestService.get((params.id as long))]
 
     }
 

@@ -14,25 +14,67 @@ macademia.drawCircles = function(canvas, ctx) {
 
 };
 macademia.nav = function(){
-    $.address.change(function(event){
+    $.address.change(function(){
+         macademia.backSupport();
+    });
+    $(window).resize(function(){
+          if (macademia.mycanvas){
+            var originalWidth =  680;
+            var originalHeight = 660;
+            var originalDistance = 150;
+            var currentHeight = $("#infovis").height();
+            var currentWidth = $("#infovis").width();
+            if(Math.min(currentWidth , currentHeight) == currentWidth){
+                      var newWidth = 0.95 * currentWidth;
+                      var newHeight = originalHeight * newWidth / originalWidth;
+            }else{
+                      var newHeight = 0.95 * currentHeight;
+                      var newWidth = originalWidth * newHeight / originalHeight;
+            }
+            if (newWidth != $("mycanvas").css("width")){
+                $("#mycanvas").css({"width":newWidth, "height": newHeight});
+                macademia.distance = originalDistance / originalHeight * newHeight;
+                macademia.mycanvas.resize(newWidth, newHeight);
+                macademia.rgraph.config.levelDistance = macademia.distance;
+                macademia.rgraph.refresh();
+            }
+          }
+    });
+    $('a').click(function(event) {
+        $.address.value($(this).attr('href'));
+        $.address.update();
+
+    });
+    $("#hide").click(function(event){
+        $.address.parameter('navVisibility', 'false');
+        $.address.update();
+    });
+    $("#show").click(function(event){
+        $.address.parameter('navVisibility', 'true');
+        $.address.update();
+    });
+
+};
+macademia.backSupport = function(){
           var originalWidth =  680;
           var originalHeight = 660;
           var originalDistance = 150;
           var currentHeight = $("#infovis").height();
           var bodyWidth = $("body").width();
-          if ($.address.value().indexOf("hide") < 0){
+          if ($.address.parameter('navVisibility').indexOf('true')>=0 && !$("#wrapper").is(":visible")){
 				$("#rightDiv").animate({width: "320"}, "slow");
 				$("#infovis").animate({right: "320"}, "slow", function() {
                     $("#rightDiv > *").show();
                     $("#show").hide();
                 });
+              // resize visual
                 if (macademia.mycanvas){
                     if(Math.min((bodyWidth-320) , currentHeight) == (bodyWidth - 320)){
                         var newWidth = 0.95 * (bodyWidth - 320);
                         var newHeight = originalHeight * newWidth / originalWidth;
                     }else{
-                        newHeight = 0.95 * currentHeight;
-                        newWidth = originalWidth * newHeight / originalHeight;
+                        var newHeight = 0.95 * currentHeight;
+                        var newWidth = originalWidth * newHeight / originalHeight;
                     }
                     $("#mycanvas").css({"width":newWidth, "height": newHeight});
                     macademia.distance = originalDistance * newHeight / originalHeight;
@@ -40,18 +82,19 @@ macademia.nav = function(){
                     macademia.rgraph.config.levelDistance = macademia.distance;
                     macademia.rgraph.refresh();
                 }
-          }else if ($.address.value().indexOf("hide") >= 0){
+          }else if ($.address.parameter('navVisibility').indexOf('false')>=0 && $("#wrapper").is(":visible")){
 				$("#rightDiv > *").hide();
 				$("#rightDiv").animate({width: "0"}, "slow");
 				$("#infovis").animate({right: "0"}, "slow");
 				$("#show").show();
+              // resize visual
                 if (macademia.mycanvas){
                     if(Math.min(bodyWidth , currentHeight) == bodyWidth){
                         var newWidth = 0.95 * bodyWidth;
                         var newHeight = originalHeight * newWidth / originalWidth;
                     }else{
-                        newHeight = 0.95 * currentHeight;
-                        newWidth = originalWidth * newHeight / originalHeight;
+                        var newHeight = 0.95 * currentHeight;
+                        var newWidth = originalWidth * newHeight / originalHeight;
                     }
                     $("#mycanvas").css({"width":newWidth, "height": newHeight});
                     macademia.distance = originalDistance * newHeight / originalHeight;
@@ -60,39 +103,15 @@ macademia.nav = function(){
                     macademia.rgraph.refresh();
                 }
 		  }
-          if (macademia.rgraph && $.address.parameter('nodeId')!= undefined) {
-                var param = $.address.parameter('nodeId');
+          if (macademia.rgraph){
+              var param = $.address.parameter('nodeId');
+              if (macademia.rgraph.graph.getNode(param).data) {
                 macademia.rgraph.onClick(param);
+              }else{
+                 location.reload(); 
+              }
           }
-    });
-    $(window).resize(function(){
-            
-          var originalWidth =  680;
-          var originalHeight = 660;
-          var originalDistance = 150;
-          var currentHeight = $("#infovis").height();
-          var currentWidth = $("#infovis").width();
-          if(Math.min(currentWidth , currentHeight) == currentWidth){
-                    var newWidth = 0.95 * currentWidth;
-                    var newHeight = originalHeight * newWidth / originalWidth;
-          }else{
-                    newHeight = 0.95 * currentHeight;
-                    newWidth = originalWidth * newHeight / originalHeight;
-          }
-          $("#mycanvas").css({"width":newWidth, "height": newHeight});
-          macademia.distance = originalDistance / originalHeight * newHeight;
-          macademia.mycanvas.resize(newWidth, newHeight);
-          macademia.rgraph.config.levelDistance = macademia.distance;
-          macademia.rgraph.refresh();
-        
-    })
-    $('a').click(function(event) {
-        $.address.value($(this).attr('href'));
-        $.address.update();
-
-    });
-
-};
+}
 macademia.navInfovis = function(node) {
     $.address.parameter('nodeId', node.id);
     $.address.update();
@@ -127,8 +146,22 @@ macademia.clearSearch = function(){
 };
 
 macademia.pageLoad = function(){
-			$("#show").hide();
+            if ($.address.parameter('navVisibility').indexOf('true')>=0){
+			    $("#show").hide();
+            }else if ($.address.parameter('navVisibility').indexOf('false')>=0){
+                $("#rightDiv > *").hide();
+                $("#rightDiv").css("width", "0");
+                $("#infovis").css("right", "0");
+            }
             $.address.autoUpdate(false);
+            var param = $.address.parameter('nodeId');
+            if(param.indexOf("p")>=0){
+                var controller = 'person';
+            }else{
+                var controller = 'interest';
+            }
+            var id = parseFloat(param.substr(2));
+            init(controller,id);
 };
 
 macademia.collegeFilter = function() {

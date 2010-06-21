@@ -10,9 +10,12 @@
 <html>
 <head>
   <g:include view="/layouts/headers.gsp"/>
+  <link rel="stylesheet" href="${resource(dir: 'css', file: 'jqModal.css')}"/>
   <g:javascript>
     $().ready(function(){
-       init('interest', ${interest.id});
+       macademia.pageLoad();
+       macademia.nav();
+       macademia.collegeFilter();
     });
   </g:javascript>
 </head>

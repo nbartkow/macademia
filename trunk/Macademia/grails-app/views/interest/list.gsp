@@ -18,7 +18,7 @@
     <g:each in="${interestList}" var="interest">
       <tr>
         <td>
-            <g:link url="[controller:'interest',action:'show',id:interest.id]">
+            <g:link url="/Macademia/interest/jit/#?nodeId=i_${interest.id}">
               ${interest.normalizedText}
             </g:link>
         </td>

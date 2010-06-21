@@ -21,7 +21,7 @@
     <g:each in="${personList}" var="person">
       <tr>
         <td>
-            <g:link url="[controller:'person',action:'jit',id:person.id]">
+            <g:link url="/Macademia/interest/jit/#?nodeId=i_${person.id}">
               ${person.name}
             </g:link>
         </td>
