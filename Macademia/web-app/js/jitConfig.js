@@ -54,7 +54,9 @@ function init(rootType, id) {
                 }
             }
         });
+        // center canvas
         $("#mycanvas").css("margin","auto");
+        // resize visual based on original dimensions
         if(Math.min($("#infovis").width(),$("#infovis").height()) == $("#infovis").width()){
                     var canvasW = 0.95 * $("#infovis").width();
                     var canvasH = 660 * canvasW / 680;
@@ -92,6 +94,7 @@ function init(rootType, id) {
             //Set node/edge styles
 
             onPlaceLabel: function(domElement, node) {
+                //alert('here 1');
                 $(domElement).attr('alt','/Macademia/'+node.data.type+'/tooltip/'+node.data.unmodifiedId);                
                 var d = $(domElement);
                 var left = parseInt(d.css('left'));
@@ -100,10 +103,12 @@ function init(rootType, id) {
                 d.css('width', '');
                 d.css('height', '');
                 d.css('left', (left - w /2) + 'px');
+                //alert('here 2');
 
             },
             //Add a controller to make the tree move on click.
             onCreateLabel: function(domElement, node) {
+                //alert('here 3');
                 var d = $(domElement);
                 d.html(node.name);
                 d.css('z-index', 10);
@@ -165,6 +170,7 @@ function init(rootType, id) {
 
                 });
 
+                //alert('here 4');
 
             },
             onBeforeCompute:function(node) {

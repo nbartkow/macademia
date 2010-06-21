@@ -13,7 +13,6 @@
   <link rel="stylesheet" href="${resource(dir: 'css', file: 'jqModal.css')}"/>
   <g:javascript>
     $().ready(function(){
-       init('person', ${person.id});
        macademia.pageLoad();
        macademia.nav();
        macademia.collegeFilter();
@@ -25,9 +24,6 @@
 <g:render template="../layouts/components"/>
 <div id="infovis">
   &nbsp;
-  <div id="show" class="btxt">
-    <a rel="address:/" href="#show"><-show</a>
-  </div>
 </div>
 <div id="extendedInfo">
   <g:render template="../layouts/rightNav"/>

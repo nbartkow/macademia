@@ -13,7 +13,7 @@ class PersonController {
         Random r = new Random()
         List<Long> ids = new ArrayList<Long>(Person.findAll().collect({it.id}))
         long id = ids[r.nextInt(ids.size())]
-        redirect(action:"jit", params:["id":id], id:id)
+        redirect(uri: "/person/jit/#?nodeId=p_${id}&navVisibility=true")
     }
 
 
@@ -56,11 +56,12 @@ class PersonController {
 
     }
 
-
-    def jit = {
-        [person: personService.get((params.id as long))]
+ def jit = {
+        [:]
+        //[person: personService.get((params.id as long))]
 
     }
+
 
     def json = {
         def person = personService.get((params.id as long))

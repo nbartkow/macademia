@@ -1,3 +1,6 @@
+<div id="show" class="btxt">
+  <-show
+</div>
 <div id="rightDiv">
   <div id="wrapper">
     <div id="main">
@@ -26,6 +29,6 @@
     </div>
   </div>
   <div id="hide" class="btxt">
-    <a rel="address:/" href="#hide">hide-></a>
+    hide->
   </div>
 </div>
