@@ -56,22 +56,9 @@ function init(rootType, id) {
         });
         // center canvas
         $("#mycanvas").css("margin","auto");
-        // resize visual based on original dimensions
-        if(Math.min($("#infovis").width(),$("#infovis").height()) == $("#infovis").width()){
-                    var canvasW = 0.95 * $("#infovis").width();
-                    var canvasH = 660 * canvasW / 680;
-
-
-        }else{
-                    canvasH = 0.95 * $("#infovis").height();
-                    canvasW = 680 * canvasH / 660;
-
-
-        }
         macademia.mycanvas = canvas;
-        $("#mycanvas").css({"width":canvasW, "height": canvasH});
-        macademia.distance = 150 / 660 * canvasH;
-        canvas.resize(canvasW, canvasH);
+        // resize visual based on original dimensions
+        macademia.resizeCanvas(Math.min($("#infovis").width()));
 
         var rgraph = new RGraph(canvas, {
             interpolation : 'polar',
