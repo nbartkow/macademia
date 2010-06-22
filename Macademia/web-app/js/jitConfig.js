@@ -4,19 +4,19 @@ macademia.distance = 150;
 
 
 
-function makeJsonUrl(type, id) {
+macademia.makeJsonUrl = function(type, id) {
     return "/Macademia/" + type + "/json/" + id;
 }
 
 
-function checkBrowser() {
+macademia.checkBrowser = function() {
     if (!$.browser.mozilla && !$.browser.safari) {
         alert('This website will not work properly on Internet Explorer.  Please use Firefox or Safari');
     }
 }
 
-function init(rootType, id) {
-    checkBrowser();
+macademia.init = function(rootType, id) {
+    macademia.checkBrowser();
     
     //create our test label
     var testLabel = document.createElement('div');
@@ -33,7 +33,7 @@ function init(rootType, id) {
         return false;
     }
     var json = null;
-    $.getJSON(makeJsonUrl(rootType, id), function(data) {
+    $.getJSON(macademia.makeJsonUrl(rootType, id), function(data) {
         json = data;
         //Create a new canvas instance.
         var canvas = new Canvas('mycanvas', {
@@ -54,12 +54,10 @@ function init(rootType, id) {
                 }
             }
         });
-        // center canvas
-        $("#mycanvas").css("margin","auto");
         macademia.mycanvas = canvas;
         // resize visual based on original dimensions
         macademia.resizeCanvas(Math.min($("#infovis").width()));
-
+        
         var rgraph = new RGraph(canvas, {
             interpolation : 'polar',
             withLabels : true,
@@ -171,8 +169,8 @@ function init(rootType, id) {
                 if (macademia.nextNode) {
                     macademia.rootId = macademia.nextNode.data.unmodifiedId;
                     var rootType = macademia.nextNode.data.type;
-                    $.getJSON(makeJsonUrl(rootType, macademia.rootId), function(data) {
-                        checkBrowser();
+                    $.getJSON(macademia.makeJsonUrl(rootType, macademia.rootId), function(data) {
+                        macademia.checkBrowser();
                         //alert(rgraph.fx.getLabelContainer().innerHTML);
                         //apparently destroying a label here means it doesn't
                         //get recreated after the morph.

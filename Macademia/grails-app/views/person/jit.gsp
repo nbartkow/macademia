@@ -14,8 +14,6 @@
   <g:javascript>
     $().ready(function(){
        macademia.pageLoad();
-       macademia.nav();
-       macademia.collegeFilter();
     });
   </g:javascript>
 </head>
