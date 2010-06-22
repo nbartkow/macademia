@@ -81,20 +81,33 @@ macademia.nav = function(){
             macademia.resizeCanvas($("#infovis").width());
           }
     });
-    $('a').click(function(event) {
-        $.address.value($(this).attr('href'));
+    $("a").address(function() {
+        var url = $(this).attr('href'); 
+        if (url.indexOf("#")== 0){
+           macademia.changeQueryString(url);
+        }else{
+            $.address.value(url);
+        }
         $.address.update();
-
     });
-    $("#hide").click(function(event){
+    /*$("#hide").click(function(event){
         $.address.parameter('navVisibility', 'false');
         $.address.update();
     });
     $("#show").click(function(event){
         $.address.parameter('navVisibility', 'true');
         $.address.update();
-    });
+    });*/
 
+};
+// changes the Query string according link's href
+macademia.changeQueryString = function(query){
+    var queryString = query.substr(2);
+    var params = queryString.split('&');
+    for (var i in params){
+       var paramValue = params[i].split('=');
+       $.address.parameter(paramValue[0],paramValue[1]);
+    }
 };
 // controller for the select colleges filter
 macademia.collegeFilter = function() {
@@ -119,7 +132,9 @@ macademia.backSupport = function(){
               if (macademia.rgraph.graph.getNode(param).data) {
                 macademia.rgraph.onClick(param);
               }else{
-                 location.reload(); 
+                var url = ($.address.baseURL() + $.address.path() + "#" + $.address.value());
+                location = (url);
+                location.reload();
               }
           }
 };

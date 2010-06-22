@@ -1,5 +1,5 @@
 <div id="show" class="btxt">
-  <-show
+  <a href="#?navVisibility=true"><-show</a>
 </div>
 <div id="rightDiv">
   <div id="wrapper">
@@ -29,6 +29,6 @@
     </div>
   </div>
   <div id="hide" class="btxt">
-    hide->
+    <a href= "#?navVisibility=false">hide-></a>
   </div>
 </div>
