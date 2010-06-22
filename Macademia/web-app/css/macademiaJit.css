@@ -52,24 +52,28 @@ html, body {
 }
 
 .atxt {
+    font-family: helvetica, arial;
     font-size: 14px;
     line-height: 1.2em;
     color: #777777;
 }
 
 .atxt a {
+    font-family: helvetica, arial;
     font-size: 14px;
     line-height: 1.2em;
     color: #7777AA;
 }
 
 .btxt {
+    font-family: helvetica, arial;
     font-size: 14px;
     line-height: 1.2em;
     color: #000000;
 }
 
 .btxt a {
+    font-family: helvetica, arial;
     font-size: 14px;
     line-height: 1.2em;
     color: #7777AA;
@@ -233,12 +237,13 @@ ul#instruct_list li:before {
     text-align: left;
     padding: 5px;
     height: 15px;
-    font-size: 12px;
-    line-height: 1em;
     margin-top: -25px;
     clear: both;
-    cursor: pointer;
-    color: #7777AA;
+}
+#hide a{
+   color: #7777AA;
+   font-size: 12px;
+   line-height: 1em;
 }
 
 #show {
@@ -248,11 +253,12 @@ ul#instruct_list li:before {
     text-align: right;
     height: 15px;
     padding: 5px;
+}
+
+#show a{
+    color: #FFFFEE;
     font-size: 12px;
     line-height: 1em;
-    font-family: helvetica, arial;
-    color: #FFFFEE;
-    cursor: pointer;
 }
 
 #editColleges {
