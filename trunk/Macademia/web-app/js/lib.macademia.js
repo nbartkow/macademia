@@ -2,6 +2,12 @@ var macademia = macademia || {};
 
 //sets the sidebar's visibility according to original status.  Initializes jit visualization
 macademia.pageLoad = function(){
+            macademia.initialSettings();
+            macademia.nav();
+
+
+};
+macademia.initialSettings = function(){
             // address only updates manually when a link/node is clicked
             $.address.autoUpdate(false);
             if ($.address.parameter('navVisibility').indexOf('true')>=0){
@@ -14,7 +20,7 @@ macademia.pageLoad = function(){
             var param = $.address.parameter('nodeId');
             var type = macademia.getType(param);
             var id = parseFloat(param.substr(2));
-            init(type,id);
+            macademia.init(type,id);
 };
 // determines the type according to the node's id (eg p_4)
 macademia.getType = function(nodeId){
@@ -23,7 +29,7 @@ macademia.getType = function(nodeId){
     }else{
         return 'interest';
     }  
-}
+};
 //canvas background circles
 macademia.drawCircles = function(canvas, ctx) {
     var times = 2, d = macademia.distance;
@@ -58,28 +64,14 @@ macademia.updateSidebar = function(node){
     $("#rootInfo").html(node.name+" ("+node.data.department+") "+node.data.email);
 
 };
-// controller for the select colleges filter
-macademia.collegeFilter = function() {
-    $().ready(function() {
-        $('#modalDialog').jqm({trigger: '#collegeFilterTrigger'});
-    });
-    $(".delete").click(function(event) {
-        $(this).parents("li").animate({opacity: "hide" }, "normal")
-    });
-    $("#clear").click(function(event) {
-        $("#selectedColleges > ul > li").hide();
-    });
-    $("#add").click(function(event) {
-        $("#selectedColleges > ul > li").show();
-    });
-};
 // changes the address when a node is clicked
 macademia.navInfovis = function(node) {
     $.address.parameter('nodeId', node.id);
     $.address.update();
-}
+};
 // click navigation for the rightDiv
 macademia.nav = function(){
+    macademia.collegeFilter();
     $.address.change(function(){
          macademia.backSupport();
     });
@@ -102,6 +94,19 @@ macademia.nav = function(){
         $.address.update();
     });
 
+};
+// controller for the select colleges filter
+macademia.collegeFilter = function() {
+    $('#modalDialog').jqm({trigger: '#collegeFilterTrigger'});
+    $(".delete").click(function(event) {
+        $(this).parents("li").animate({opacity: "hide" }, "normal")
+    });
+    $("#clear").click(function(event) {
+        $("#selectedColleges > ul > li").hide();
+    });
+    $("#add").click(function(event) {
+        $("#selectedColleges > ul > li").show();
+    });
 };
 /* Supporting address changing functions and toggling functions for the show and hide toggle
 *  and signals graph changes when back button or search is used.
@@ -142,6 +147,9 @@ macademia.showHide = function(){
 };
 // resizes canvas according to original dimensions
 macademia.resizeCanvas = function(currentWidth){
+    if ($("#mycanvas").css('margin')!= 'auto'){
+        $("#mycanvas").css('margin','auto');
+    }
     var originalWidth =  680;
     var originalHeight = 660;
     var originalDistance = 150;
