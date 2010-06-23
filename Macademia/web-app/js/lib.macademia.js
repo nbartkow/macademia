@@ -2,27 +2,21 @@ var macademia = macademia || {};
 
 //sets the sidebar's visibility according to original status.  Initializes jit visualization
 macademia.pageLoad = function(){
-            macademia.initialSettings();
+            // address only updates manually when a link/node is clicked
+            $.address.autoUpdate(false);
+            macademia.showHide();
+            macademia.initiateGraph();
             macademia.nav();
 
 
 };
-//initial settings for page load
-macademia.initialSettings = function(){
-            // address only updates manually when a link/node is clicked
-            $.address.autoUpdate(false);
-            if ($.address.parameter('navVisibility').indexOf('true')>=0){
-			    $("#show").hide();
-            }else if ($.address.parameter('navVisibility').indexOf('false')>=0){
-                $("#rightDiv > *").hide();
-                $("#rightDiv").css("width", "0");
-                $("#infovis").css("right", "0");
-            }
+//calls the init function in jitConfig
+macademia.initiateGraph = function(){
             var param = $.address.parameter('nodeId');
             var type = macademia.getType(param);
             var id = parseFloat(param.substr(2));
             macademia.init(type,id);
-};
+}
 // determines the type according to the node's id (eg p_4)
 macademia.getType = function(nodeId){
     if(nodeId.indexOf("p")>=0){
@@ -59,14 +53,11 @@ macademia.clearSearch = function(){
         }
     });
 };
-/*
-old function... does nothing
+/*old function... does nothing
 macademia.updateSidebar = function(node){
     $("#rootInfo").empty();
     $("#rootInfo").html(node.name+" ("+node.data.department+") "+node.data.email);
-
-};
-*/
+};*/
 // changes the address when a node is clicked
 macademia.navInfovis = function(node) {
     $.address.parameter('nodeId', node.id);
@@ -95,15 +86,6 @@ macademia.nav = function(){
         }
         $.address.update();
     });
-    /*$("#hide").click(function(event){
-        $.address.parameter('navVisibility', 'false');
-        $.address.update();
-    });
-    $("#show").click(function(event){
-        $.address.parameter('navVisibility', 'true');
-        $.address.update();
-    });*/
-
 };
 // changes the Query string according link's href
 macademia.changeQueryString = function(query){
@@ -134,13 +116,15 @@ macademia.changeGraph = function(nodeId){
               // if the node is on the current graph
                 macademia.rgraph.onClick(param);
               }else{
-                  var type = macademia.getType(param);
-                  var id = parseFloat(param.substr(2));
-                  macademia.init(type,id);
+                  macademia.initiateGraph();
               }
 };
 // controls the show and hide options
 macademia.showHide = function(){
+          if (!$.address.parameter('navVisibility')){
+                $.address.parameter('navVisibility','true');
+                $.address.update();
+          }
           if ($.address.parameter('navVisibility').indexOf('true')>=0 && !$("#wrapper").is(":visible")){
 				$("#rightDiv").animate({width: "320"}, "slow");
 				$("#infovis").animate({right: "320"}, "slow", function() {
@@ -153,8 +137,14 @@ macademia.showHide = function(){
                 }
           }else if ($.address.parameter('navVisibility').indexOf('false')>=0 && $("#wrapper").is(":visible")){
 				$("#rightDiv > *").hide();
-				$("#rightDiv").animate({width: "0"}, "slow");
-				$("#infovis").animate({right: "0"}, "slow");
+                if (macademia.mycanvas){
+				    $("#rightDiv").animate({width: "0"}, "slow");
+				    $("#infovis").animate({right: "0"}, "slow");
+                }else{
+                    // on page load rightDiv will not slide over
+                    $("#rigthDiv").css('width','0');
+                    $("#infovis").css('right','0');
+                }
 				$("#show").show();
               // resize visual
                 if (macademia.mycanvas){
