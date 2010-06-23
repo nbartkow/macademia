@@ -14,7 +14,7 @@
 <div class="searchHeader">Matching <b>people:</b></div>
 <g:each in="${people}" var="p">
     <li>
-      <g:link url = "#?nodeId=p_${p.id}">${p.fullName}</g:link>
+      <g:link url = "#/?nodeId=p_${p.id}">${p.fullName}</g:link>
     </li>
 </g:each>
 </g:if>
@@ -23,7 +23,7 @@
 <div class="searchHeader">Matching <b>interests:</b></div>
 <g:each in="${interests}" var="i">
     <li>
-      <g:link url = "#?nodeId=i_${i.id}">${i.text}</g:link>
+      <g:link url = "#/?nodeId=i_${i.id}">${i.text}</g:link>
     </li>
 </g:each>
 </g:if>

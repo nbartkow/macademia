@@ -17,15 +17,11 @@ macademia.checkBrowser = function() {
 
 macademia.init = function(rootType, id) {
     macademia.checkBrowser();
+
+    if (macademia.rgraph) {
+        macademia.rgraph.fx.clearLabels(true);
+    }
     
-    //create our test label
-    var testLabel = document.createElement('div');
-    testLabel.id = "mytestlabel";
-    testLabel.style.visibility = "hidden";
-    testLabel.style.position = "absolute";
-//    testLabel.style.width = "70px";
-//    testLabel.style.height = "70px";
-    document.body.appendChild(testLabel);
 
     macademia.rootId = id;
     if (rootType != 'person' && rootType != 'interest') {
@@ -35,30 +31,31 @@ macademia.init = function(rootType, id) {
     var json = null;
     $.getJSON(macademia.makeJsonUrl(rootType, id), function(data) {
         json = data;
-        //Create a new canvas instance.
-        var canvas = new Canvas('mycanvas', {
-            //Where to inject the canvas. Any div container will do.
-            'injectInto':'infovis',
-            //width and height for canvas. Default's to 200.
-            'width': 680,
-            'height': 660,
-            //draw in some circles to aid the visual connection of same distance nodes
-            'backgroundCanvas':{
-                'styles':{
-                    'strokeStyle':'#6A705D'
-                },
-                'impl':{
-                    'init':function() {
+        if (!macademia.mycanvas) {
+            //Create a new canvas instance.
+            macademia.mycanvas = new Canvas('mycanvas', {
+                //Where to inject the canvas. Any div container will do.
+                'injectInto':'infovis',
+                //width and height for canvas. Default's to 200.
+                'width': 680,
+                'height': 660,
+                //draw in some circles to aid the visual connection of same distance nodes
+                'backgroundCanvas':{
+                    'styles':{
+                        'strokeStyle':'#6A705D'
                     },
-                    'plot':macademia.drawCircles
+                    'impl':{
+                        'init':function() {
+                        },
+                        'plot':macademia.drawCircles
+                    }
                 }
-            }
-        });
-        macademia.mycanvas = canvas;
-        // resize visual based on original dimensions
-        macademia.resizeCanvas(Math.min($("#infovis").width()));
+            });
+            // resize visual based on original dimensions
+            macademia.resizeCanvas(Math.min($("#infovis").width()));
+        }
         
-        var rgraph = new RGraph(canvas, {
+        macademia.rgraph = new RGraph(macademia.mycanvas, {
             interpolation : 'polar',
             withLabels : true,
             Node: {
@@ -127,7 +124,7 @@ macademia.init = function(rootType, id) {
                             if (url != '') {
                                 var params = {};
                                 if (node.data.type == 'person') {
-                                    var rootId =rgraph.graph.getNode(rgraph.root).id;
+                                    var rootId =macademia.rgraph.graph.getNode(macademia.rgraph.root).id;
                                     params = {node : node.id, root: rootId};
                                 }
                                 this.loadContent(url, params, 'post');
@@ -180,12 +177,12 @@ macademia.init = function(rootType, id) {
                         //with jquery's draggable plugin, and some clever
                         //zoom-tools, it could be an even more compelling visualization
                         //or...feature bloat?
-                        rgraph.op.morph(data, {
+                        macademia.rgraph.op.morph(data, {
                             type:'fade',
                             duration:1000,
                             hideLabels:false,
                             onComplete:function(){
-                                macademia.updateSidebar(rgraph.graph.getNode(rgraph.root));
+                                //macademia.updateSidebar(rgraph.graph.getNode(rgraph.root));
                                 
                             }
                         });
@@ -196,10 +193,9 @@ macademia.init = function(rootType, id) {
             
         });
         //load tree from tree data.
-        rgraph.loadJSON(json);
+        macademia.rgraph.loadJSON(json);
         //compute positions and plot
-        rgraph.refresh();
-        macademia.rgraph = rgraph;
+        macademia.rgraph.refresh();
         // $('#infovis').draggable();
     });
 }

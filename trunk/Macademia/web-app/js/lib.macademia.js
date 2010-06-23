@@ -59,12 +59,14 @@ macademia.clearSearch = function(){
         }
     });
 };
+/*
+old function... does nothing
 macademia.updateSidebar = function(node){
-    // does rootInfo exist?
     $("#rootInfo").empty();
     $("#rootInfo").html(node.name+" ("+node.data.department+") "+node.data.email);
 
 };
+*/
 // changes the address when a node is clicked
 macademia.navInfovis = function(node) {
     $.address.parameter('nodeId', node.id);
@@ -74,7 +76,10 @@ macademia.navInfovis = function(node) {
 macademia.nav = function(){
     macademia.collegeFilter();
     $.address.change(function(){
-         macademia.backSupport();
+         macademia.showHide();
+         if (macademia.rgraph){
+             macademia.changeGraph();
+         }
     });
     $(window).resize(function(){
           if (macademia.mycanvas){
@@ -102,7 +107,7 @@ macademia.nav = function(){
 };
 // changes the Query string according link's href
 macademia.changeQueryString = function(query){
-    var queryString = query.substr(2);
+    var queryString = query.substr(3);
     var params = queryString.split('&');
     for (var i in params){
        var paramValue = params[i].split('=');
@@ -122,21 +127,17 @@ macademia.collegeFilter = function() {
         $("#selectedColleges > ul > li").show();
     });
 };
-/* Supporting address changing functions and toggling functions for the show and hide toggle
-*  and signals graph changes when back button or search is used.
-*/
-macademia.backSupport = function(){
-          macademia.showHide();
-          if (macademia.rgraph){
+// Changes the visualization to new root node
+macademia.changeGraph = function(nodeId){
               var param = $.address.parameter('nodeId');
               if (macademia.rgraph.graph.getNode(param).data) {
+              // if the node is on the current graph
                 macademia.rgraph.onClick(param);
               }else{
-                var url = ($.address.baseURL() + $.address.path() + "#" + $.address.value());
-                location = (url);
-                location.reload();
+                  var type = macademia.getType(param);
+                  var id = parseFloat(param.substr(2));
+                  macademia.init(type,id);
               }
-          }
 };
 // controls the show and hide options
 macademia.showHide = function(){
