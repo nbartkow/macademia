@@ -11,4 +11,8 @@ class InstitutionService {
     public Institution findByEmailDomain(String domain) {
         return Institution.findByEmailDomain(domain)
     }
+
+    public List<Institution> findAll() {
+        return Institution.findAll()
+    }
 }
