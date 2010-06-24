@@ -13,14 +13,16 @@
 </g:javascript>
 
 <div id="searchDiv">
-  <g:formRemote id="searchForm"
+  <%--<g:formRemote id="searchForm"
           name="searchForm"
           url="[action:'search', controller:'search']"
           update="searchResults">
-    <br/>
+    <br>--%>
+  <form method="POST" action="#" id="searchForm" name="searchForm" update="searchResults">
     <input type="text" id="searchBox" name="searchBox" class="clearDefault" value="Search people or interests"/>
     <input type="submit" id="searchSubmitButton" value="Search"/>
-  </g:formRemote>
+  </form>
+  <%--</g:formRemote>--%>
 </div>
 <div id="collegeFilterButton" class="center">
   <input type="submit" class="jqModal" id="collegeFilterTrigger" value="Filter by college"/>
