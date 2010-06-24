@@ -17,3 +17,12 @@
 
 == Algorithms ==
    * Interest similarity algorithm
+
+== Interface ==
+  * Create links to profile editing, adding collaborator requests, etc. for logged in users
+  * Sidebar page for interests
+
+  === Search ===
+  * Implement way of selecting filtered/non-filtered search results
+  * Implement way of managing searches with a large number of results
+  
