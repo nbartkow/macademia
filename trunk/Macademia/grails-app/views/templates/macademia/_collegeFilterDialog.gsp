@@ -19,33 +19,36 @@
       </div>
       <div id="selectedColleges" class="medium btxt lined">
         <ul>
-          <li>College A <a href="#" class="delete">(x)</a></li>
-          <li>College B <a href="#" class="delete">(x)</a></li>
-          <li>College C <a href="#" class="delete">(x)</a></li>
-          <li>College D <a href="#" class="delete">(x)</a></li>
-          <li>College E <a href="#" class="delete">(x)</a></li>
-          <li>College F <a href="#" class="delete">(x)</a></li>
-          <li>College G <a href="#" class="delete">(x)</a></li>
-          <li>College H <a href="#" class="delete">(x)</a></li>
-          <li>College I <a href="#" class="delete">(x)</a></li>
-          <li>College J <a href="#" class="delete">(x)</a></li>
-          <li>College K <a href="#" class="delete">(x)</a></li>
-          <li>College L <a href="#" class="delete">(x)</a></li>
-          <li>College M <a href="#" class="delete">(x)</a></li>
-          <li>College N <a href="#" class="delete">(x)</a></li>
-          <li>College O <a href="#" class="delete">(x)</a></li>
-          <li>College P <a href="#" class="delete">(x)</a></li>
-          <li>College Q <a href="#" class="delete">(x)</a></li>
-          <li>College R <a href="#" class="delete">(x)</a></li>
-          <li>College S <a href="#" class="delete">(x)</a></li>
-          <li>College T <a href="#" class="delete">(x)</a></li>
-          <li>College U <a href="#" class="delete">(x)</a></li>
-          <li>College V <a href="#" class="delete">(x)</a></li>
-          <li>College W <a href="#" class="delete">(x)</a></li>
-          <li>College X <a href="#" class="delete">(x)</a></li>
-          <li>College Y <a href="#" class="delete">(x)</a></li>
-          <li>College Z <a href="#" class="delete">(x)</a></li>
+          <li id = c_a class="college">College A <a href="#">(x)</a></li>
+          <li id = c_b class="college">College B <a href="#">(x)</a></li>
+          <li id = c_c class="college">College C <a href="#">(x)</a></li>
+          <li id = c_d class="college">College D <a href="#">(x)</a></li>
+          <li id = c_e class="college">College E <a href="#">(x)</a></li>
+          <li id = c_f class="college">College F <a href="#">(x)</a></li>
+          <li id = c_g class="college">College G <a href="#">(x)</a></li>
+          <li id = c_h class="college">College H <a href="#">(x)</a></li>
+          <li id = c_i class="college">College I <a href="#">(x)</a></li>
+          <li id = c_j class="college">College J <a href="#">(x)</a></li>
+          <li id = c_k class="college">College K <a href="#">(x)</a></li>
+          <li id = c_l class="college">College L <a href="#">(x)</a></li>
+          <li id = c_m class="college">College M <a href="#">(x)</a></li>
+          <li id = c_n class="college">College N <a href="#">(x)</a></li>
+          <li id = c_o class="college">College O <a href="#">(x)</a></li>
+          <li id = c_p class="college">College P <a href="#">(x)</a></li>
+          <li id = c_q class="college">College Q <a href="#">(x)</a></li>
+          <li id = c_r class="college">College R <a href="#">(x)</a></li>
+          <li id = c_s class="college">College S <a href="#">(x)</a></li>
+          <li id = c_t class="college">College T <a href="#">(x)</a></li>
+          <li id = c_u class="college">College U <a href="#">(x)</a></li>
+          <li id = c_v class="college">College V <a href="#">(x)</a></li>
+          <li id = c_w class="college">College W <a href="#">(x)</a></li>
+          <li id = c_x class="college">College X <a href="#">(x)</a></li>
+          <li id = c_y class="college">College Y <a href="#">(x)</a></li>
+          <li id = c_z class="college">College Z <a href="#">(x)</a></li>
         </ul>
+      </div>
+      <div id="submitColleges">
+          <input id ="select" type="submit" value = "Submit"/>
       </div>
     </div>
   </div>
