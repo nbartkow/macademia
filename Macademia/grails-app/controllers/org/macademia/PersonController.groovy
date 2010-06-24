@@ -13,7 +13,7 @@ class PersonController {
         Random r = new Random()
         List<Long> ids = new ArrayList<Long>(Person.findAll().collect({it.id}))
         long id = ids[r.nextInt(ids.size())]
-        redirect(uri: "/person/jit/#?nodeId=p_${id}&navVisibility=true")
+        redirect(uri: "/person/jit/#/?nodeId=p_${id}&navVisibility=true&institutions=all")
     }
 
 

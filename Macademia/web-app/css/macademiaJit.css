@@ -275,6 +275,10 @@ ul#instruct_list li:before {
 #clear {
     float: right;
 }
+#submitColleges{
+    text-align:center;
+    padding:5px;
+}
 
 #selectedColleges {
     -moz-border-radius: 5px 5px 5px 5px;
