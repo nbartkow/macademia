@@ -8,6 +8,7 @@ import grails.plugins.nimble.core.Role
 class PopulateService {
     def interestService
     def similarityService
+    def institutionService
     def userService
     def nimbleService
     def personService
@@ -20,9 +21,29 @@ class PopulateService {
     boolean transactional = true
 
     def populate(File directory) {
+        readInstitutions(new File(directory.toString() + "/institutions.txt"))
         readPeople(new File(directory.toString() + "/people.txt"))
         downloadInterestDocuments()
         buildInterestRelations()
+    }
+
+    def readInstitutions(File file) {
+        log.error("reading people from $file...")
+        file.eachLine {
+            String line ->
+            String[] tokens = line.trim().split("\t")
+            if (tokens.length != 2) {
+                log.error("illegal line in ${file.absolutePath}: ${line.trim()}")
+                log.error("$tokens.length")
+                return
+            }
+            String name = tokens[0]
+            String emailDomain = tokens[1]
+            if (institutionService.findByEmailDomain(emailDomain) == null) {
+                Institution institution = new Institution(name : name, emailDomain : emailDomain)
+                Utils.safeSave(institution)
+            }
+        }        
     }
 
     def readPeople(File file) {
@@ -40,12 +61,13 @@ class PopulateService {
             String name = tokens[0]
             String dept = tokens[1]
             String email = tokens[2]
+            String emailDomain = email.split("@")[1]
             String interestStr = tokens[3]
             String institutionName = tokens[4]
 
-            Institution institution = Institution.findByName(institutionName)
-            if (institution == null){
-                institution= new Institution(name:institutionName, emailDomain:email.split("@")[1])
+            Institution institution = institutionService.findByEmailDomain(emailDomain)
+            if (institution == null) {
+                institution= new Institution(name:institutionName, emailDomain:emailDomain)
                 Utils.safeSave(institution)
             }
 
