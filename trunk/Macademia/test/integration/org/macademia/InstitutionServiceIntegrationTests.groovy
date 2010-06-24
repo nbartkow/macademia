@@ -18,6 +18,6 @@ class InstitutionServiceIntegrationTests extends GrailsUnitTestCase {
 
     void testFindByEmailDomain(){
         Institution mac = institutionService.findByEmailDomain("macalester.edu")
-        assertEquals(mac, Institution.findById(1))
+        assertNotNull(mac)
     }
 }

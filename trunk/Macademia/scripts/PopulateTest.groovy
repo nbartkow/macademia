@@ -32,6 +32,7 @@ target ('main': "Load the Grails interactive shell") {
     def tx = session.beginTransaction();
 
     def populateService = appCtx.getBean('populateService')
+    populateService.readInstitutions(new File("db/test/institutions.txt"))
     populateService.readPeople(new File("db/test/people.txt"))
     populateService.downloadInterestDocuments()
     populateService.buildInterestRelations()    
