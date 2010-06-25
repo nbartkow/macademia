@@ -296,6 +296,8 @@ class JsonService {
                 String id = adj['nodeTo']
                 if (personAndRequestColors[id]) {
                     adj['data'].putAt("\$color", personAndRequestColors[id])
+                } else{
+                    adj['data'].putAt("\$color", "#0080FF")
                 }
             }
         }

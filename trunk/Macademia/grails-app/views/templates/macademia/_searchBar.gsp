@@ -16,16 +16,16 @@
   <%--<g:formRemote id="searchForm"
           name="searchForm"
           url="[action:'search', controller:'search']"
-          update="searchResults">
+          update="rightContent">
     <br>--%>
-  <form method="POST" action="#" id="searchForm" name="searchForm" update="searchResults">
+  <form method="POST" action="#" id="searchForm" name="searchForm" update="rightContent">
     <input type="text" id="searchBox" name="searchBox" class="clearDefault" value="Search people or interests"/>
     <input type="submit" id="searchSubmitButton" value="Search"/>
   </form>
   <%--</g:formRemote>--%>
 </div>
 <div id="collegeFilterButton" class="center">
-  <input type="submit" class="jqModal" id="collegeFilterTrigger" value="Filter by college"/>
+  <input type="submit" id="collegeFilterTrigger" value="Filter by college"/>
 </div>
 <div id="searchResults">
   &nbsp;
