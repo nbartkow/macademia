@@ -121,7 +121,7 @@ macademia.sortParameters = function(type,value){
             $.address.parameter(queries[i],value);
         }
     }
-}
+};
 // click navigation for the rightDiv
 macademia.nav = function() {
     macademia.modalLogin();
@@ -229,9 +229,6 @@ macademia.changeGraph = function(nodeId){
 };
 // resizes canvas according to original dimensions
 macademia.resizeCanvas = function(currentWidth) {
-    if ($("#mycanvas").css('margin') != 'auto') {
-        $("#mycanvas").css('margin', 'auto');
-    }
     var originalWidth = 680;
     var originalHeight = 660;
     var originalDistance = 150;
@@ -246,7 +243,7 @@ macademia.resizeCanvas = function(currentWidth) {
     if (newWidth != $("mycanvas").css("width")) {
         $("#mycanvas").css({"width":newWidth, "height": newHeight});
         macademia.distance = originalDistance / originalHeight * newHeight;
-        macademia.mycanvas.resize(newWidth, newHeight);
+        macademia.mycanvas.resize(currentWidth, currentHeight);
         if (macademia.rgraph) {
             macademia.rgraph.config.levelDistance = macademia.distance;
             macademia.rgraph.refresh();
