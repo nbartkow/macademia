@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<div class="jqmWindow" id="modalDialog">
+<div class="jqmWindow" id="filterDialog">
   <div id="colleges">
     <div id="editColleges" class="medium">
       <div id="collegeSearch" class="center padded2">
@@ -14,7 +14,7 @@
         <input type="submit" value="Add"/>
       </div>
       <div id="addClear" class="padded2">
-        <input id="add" type="submit" value="Add all"/ >
+        <input id="add" type="submit" value="Add all"/>
         <input id="clear" type="submit" value="Clear list"/>
       </div>
       <div id="selectedColleges" class="medium btxt lined">

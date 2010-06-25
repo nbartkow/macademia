@@ -16,6 +16,7 @@
        macademia.pageLoad();
     });
   </g:javascript>
+  
 </head>
 <body>
 <g:render template="../templates/macademia/collegeFilterDialog"/>

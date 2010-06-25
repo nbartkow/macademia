@@ -121,17 +121,6 @@ html, body {
     line-height: 1.2em;
 }
 
-.jqmWindow {
-    display: none;
-
-    position: fixed;
-
-    background-color: #EEE;
-    color: #333;
-    border: 1px solid black;
-    padding: 12px;
-}
-
 .topBorder {
     border-top: 1px dotted #ccc;
 }
@@ -148,13 +137,14 @@ li {
 
 /* style for the tooltips */
 #account {
-    text-align: right;
-    font-size: 12px;
+    /*text-align: left;*/
+    font-size: 14px;
     margin-top: 2px;
+    font-family: helvetica, arial;
+    margin:5px;
 }
 
-#account a {
-    padding: 5px;
+#account input {
 }
 
 h2#about {
@@ -167,13 +157,12 @@ h2#about {
 }
 
 #mac_logo {
-    margin: 10px;
     overflow: hidden;
 }
 
 #mac_logo img {
-    width: 300px;
-    height: auto;
+    /*width: 300px;*/
+    /*height: auto;*/
 }
 
 #instructions {
@@ -202,8 +191,24 @@ ul#instruct_list li:before {
 }
 
 #searchDiv {
-    margin: 5px;
+    margin: 0px 5px 5px 5px;
 }
+
+.accountButton {
+   background: #a2ab8e;
+   -moz-border-radius: 5px;
+   color: #ffffee;
+   font-size: 13px;
+   font-family: Helvetica, Arial, Sans-Serif;
+   text-decoration: none;
+   vertical-align: middle;
+   }
+.accountButton:hover {
+   }
+.accountButton:active {
+   background: #b2d4ec;
+   }
+
 
 #searchBox {
     -moz-border-radius: 5px 5px 5px 5px;
@@ -211,7 +216,7 @@ ul#instruct_list li:before {
     border: 0 none;
     color: #474953;
     margin-bottom: 0px;
-    margin-top: 4px;
+    margin-top: 0px;
     min-height: 20px;
     padding: 10px 5px;
     width: 250px;
@@ -308,4 +313,16 @@ ul#instruct_list li:before {
 
 #logoImage {
     padding-bottom: 10px;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+}
+
+#description {
+    margin-left: 44px;
+    margin-right: 44px;
+}
+
+#loginButton, #registerButton {
+    cursor: pointer;
 }
