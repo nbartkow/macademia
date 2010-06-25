@@ -229,6 +229,10 @@ macademia.changeGraph = function(nodeId){
 };
 // resizes canvas according to original dimensions
 macademia.resizeCanvas = function(currentWidth) {
+    if ($("#mycanvas").css('margin') != 'auto') {
+        $("#mycanvas").css('margin', 'auto');
+        $('#mycanvas-canvas, #mycanvas-bkcanvas, #mycanvas-label').css('position','fixed');
+    }
     var originalWidth = 680;
     var originalHeight = 660;
     var originalDistance = 150;
