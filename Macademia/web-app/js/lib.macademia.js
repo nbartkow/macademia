@@ -26,12 +26,9 @@ macademia.initialSettings = function(){
         }else{
             $.address.parameter('nodeId',macademia.queryString.nodeId)
         }
-        if($.address.parameter('navVisibility')){
-            macademia.queryString.navVisibility = $.address.parameter('navVisibility');
-        }else{
-            $.address.parameter('navVisibility',macademia.queryString.navVisibility)
-        }
-        if($.address.parameter('navFunction')){
+        if(!$.address.parameter('navVisibility')){
+            $.address.parameter('navVisibility',macademia.queryString.navVisibility)        
+        }if($.address.parameter('navFunction')){
             macademia.queryString.navFunction = $.address.parameter('navFunction');
         }else{
             $.address.parameter('navFunction',macademia.queryString.navFunction)
