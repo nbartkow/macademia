@@ -13,6 +13,7 @@ class PopulateService {
     def nimbleService
     def personService
     def adminsService
+    def databaseService
 
     def sessionFactory
     def propertyInstanceMap = org.codehaus.groovy.grails.plugins.DomainClassGrailsPlugin.PROPERTY_INSTANCE_MAP
@@ -53,7 +54,7 @@ class PopulateService {
         file.eachLine {
             String line ->
             String[] tokens = line.trim().split("\t")
-            if (tokens.length != 5) {
+            if (tokens.length != 4) {
                 log.error("illegal line in ${file.absolutePath}: ${line.trim()}")
                 log.error("$tokens.length")
                 return
@@ -63,12 +64,11 @@ class PopulateService {
             String email = tokens[2]
             String emailDomain = email.split("@")[1]
             String interestStr = tokens[3]
-            String institutionName = tokens[4]
 
             Institution institution = institutionService.findByEmailDomain(emailDomain)
             if (institution == null) {
-                institution= new Institution(name:institutionName, emailDomain:emailDomain)
-                Utils.safeSave(institution)
+                log.error("unknown institution in ${file.absolutePath}: ${line.trim()}")
+                return
             }
 
             Person person = Person.findByEmail(email)
@@ -83,15 +83,17 @@ class PopulateService {
                 person = new Person(fullName: name, department: dept, email: email, institution: institution)
                 person.owner = user
                 user.profile = person
+                //Utils.safeSave(user)
 
                 // NOTE: THIS IS AN OLD METHOD THAT USES PERSON.SAVE
                 // HENCE, BOTH personService.save() and userService.save() don't work.
                 // (we have to rearrange the test)
-//                personService.save(person)
+                //personService.save(person)
             }
             Interest interest = interestService.findByText(interestStr)
             if (interest == null) {
                 interest = new Interest(interestStr)
+                //Utils.safeSave(interest)
             }
             person.addToInterests(interest)
             personService.save(person)
@@ -112,14 +114,15 @@ class PopulateService {
    * interest similarity)
    * @return
    */
-   def downloadInterestDocuments() {
+   def downloadInterestDocuments(String directory) {
+       interestService.initBuildDocuments(directory)
         Interest.findAll().each({
             interestService.buildDocuments(it) //wrap in try/catch each of the people individually
         })
     }
 
     def buildInterestRelations() {
-        similarityService.buildInterestRelations()
+        similarityService.buildAllInterestRelations()
     }
 
     def displaySimilarities(File blacklistFile) {

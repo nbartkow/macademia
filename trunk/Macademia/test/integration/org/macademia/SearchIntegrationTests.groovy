@@ -8,16 +8,20 @@ class SearchIntegrationTests extends GrailsUnitTestCase {
     def autoCompleteService
     def searchableService
     def collaboratorRequestService
+    def databaseService
 
     protected void setUp() {
         super.setUp()
         searchableService.reindex()
+        databaseService.switchToCopyDB("test")
     }
 
     protected void tearDown() {
         super.tearDown()
+        databaseService.dropCurrentDB()
+        databaseService.changeDB("test")
     }
-
+    
     void testPersonSearch() {
         def shilad = personService.findByEmail("ssen@macalester.edu")
         def arjun = personService.findByEmail("guneratne@macalester.edu")

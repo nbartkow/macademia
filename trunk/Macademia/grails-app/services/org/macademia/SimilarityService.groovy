@@ -30,53 +30,16 @@ class SimilarityService {
     // This is a temporary value designed to allow the new methods to approximate the outputs of the old ones
     double threshold = refinedThreshold/roughThreshold
 
+    //Has buildInterestRelations() been run?
+    boolean relationsBuilt = false
+
     boolean transactional = true
     Map<Interest, List<InterestRelation>> similarInterests = [:]
 
     def personService
     def interestService
     def collaboratorRequestService
-
-    /**
-    *
-    * @param i
-    */
-    public void buildInterestRelations(Interest interest){
-        List<Interest> interests = Interest.findAll()
-        int setSize = (int) interests.size()*roughThreshold
-        SortedSet<InterestRelation> newIR = new TreeSet<InterestRelation>()
-        TokenizerFactory tokenizerFactory = IndoEuropeanTokenizerFactory.INSTANCE;
-        TfIdfDistance tfIdf = new TfIdfDistance(tokenizerFactory);
-        Double lastSim
-        //Are the next four lines necessary?
-        log.info("training on ${Document.count()} documents")
-        for (Document d : Document.findAll()) {
-            tfIdf.handle(d.text.toCharArray(), 0, d.text.length());  //what does this do??
-        }
-        for(Interest i : interests){
-            //log.info("building interest relations for ${i} and ${interest}")
-            if(i != interest){
-                double sim = calculatePairwiseSimilarity(interest, i, tfIdf)
-                if (newIR.size() > 0) {
-                    lastSim = newIR.last().similarity
-                } else {
-                    lastSim = 0
-                }
-                if (setSize > newIR.size() || sim > lastSim) {
-                    InterestRelation ir = new InterestRelation(first:interest, second:i, similarity:sim)
-                    newIR.add(ir)
-                    if (setSize < newIR.size()) {
-                        newIR.pollLast()
-                    }
-                }
-            }
-        }
-        newIR.each({
-            Utils.safeSave(it)
-            InterestRelation ir=new InterestRelation(first:it.second, second:it.first, similarity:it.similarity)
-            Utils.safeSave(ir)
-        })
-    }
+    def databaseService
 
     def buildInterestRelations() {
         log.info("deleting existing interest relations")
@@ -114,6 +77,7 @@ class SimilarityService {
                 cleanUpGorm()
             }
         }
+        relationsBuilt = true
     }
 
 
@@ -162,11 +126,56 @@ class SimilarityService {
             }
             newIR.each({
                 Utils.safeSave(it)
+                databaseService.addToInterests(it.first, it.second, it.similarity)
                 //we could use this to do a lot less work later (some interest relations would be precomputed)
                 //InterestRelation ir=new InterestRelation(first:it.second, second:it.first, similarity:it.similarity)
                 //Utils.safeSave(ir)
             })
             cleanUpGorm()
+        })
+        relationsBuilt = true
+    }
+
+   /**
+    *
+    * @param i
+    */
+    public void buildInterestRelations(Interest interest){
+        List<Interest> interests = Interest.findAll()
+        int setSize = (int) interests.size()*roughThreshold
+        SortedSet<InterestRelation> newIR = new TreeSet<InterestRelation>()
+        TokenizerFactory tokenizerFactory = IndoEuropeanTokenizerFactory.INSTANCE;
+        TfIdfDistance tfIdf = new TfIdfDistance(tokenizerFactory);
+        Double lastSim
+        //Are the next four lines necessary?
+        log.info("training on ${Document.count()} documents")
+        for (Document d : Document.findAll()) {
+            tfIdf.handle(d.text.toCharArray(), 0, d.text.length());  //what does this do??
+        }
+        for(Interest i : interests){
+            //log.info("building interest relations for ${i}")
+            if(i != interest){
+                double sim = calculatePairwiseSimilarity(interest, i, tfIdf)
+                if (newIR.size() > 0) {
+                    lastSim = newIR.last().similarity
+                } else {
+                    lastSim = 0
+                }
+                if (setSize > newIR.size() || sim > lastSim) {
+                    InterestRelation ir = new InterestRelation(first:interest, second:i, similarity:sim)
+                    newIR.add(ir)
+                    if (setSize < newIR.size()) {
+                        newIR.pollLast()
+                    }
+                }
+            }
+        }
+        newIR.each({
+            Utils.safeSave(it)
+            InterestRelation ir=new InterestRelation(first:it.second, second:it.first, similarity:it.similarity)
+            Utils.safeSave(ir)
+            databaseService.addToInterests(it.first, it.second, it.similarity)
+            databaseService.addToInterests(ir.first, ir.second, ir.similarity)
         })
     }
 
@@ -205,11 +214,13 @@ class SimilarityService {
 //        return 1.0 * simSum / weightSum
     }
 
-    def analyze(BlacklistRelations bl) {
+    //not used
+    /*def analyze(BlacklistRelations bl) {
         calculateSimilarInterests(bl)
         calculateNeighbors()
     }
 
+    //not used
     def calculateSimilarInterests(BlacklistRelations bl) {
         log.error("building similar interests...")
 
@@ -260,7 +271,7 @@ class SimilarityService {
 //                println "\t${ir.similarity}\t${ir.second.text}"
 //            }
 //        }
-    }
+    }  */
 
     /**
      * Finds the local graph given an interest to go at the center and a maximum number of people
@@ -285,17 +296,21 @@ class SimilarityService {
             }
         }
         //loops over the InterestRelations representing similar interests, then looks for people with similar interests
-        for(InterestRelation ir : getSimilarInterests(interest)){
-            if (ir.similarity > absoluteThreshold && graph.getInterests().size() < maxInterests + 1) {
-                graph.addEdge(new Edge(interest:interest, relatedInterest:ir.second))
-                for(Person p : personService.findByInterest(ir.second)){
-                    if(graph.getPeople().size() + graph.getRequests().size() < maxPeople  || graph.getPeople().contains(p)){
-                        graph.addEdge(new Edge(person:p, interest:ir.second))
+        for(SimilarInterest ir : getSimilarInterests(interest, maxSimsPerInterest, absoluteThreshold)){
+            //log.info("Similar interest ID: "+ir.interestId+" similarity score "+ir.similarity)
+            if (graph.getInterests().size() < maxInterests + 1) {
+                Interest second=Interest.findById(ir.interestId)
+                if(second !=null){
+                    graph.addEdge(new Edge(interest:interest, relatedInterest:second))
+                    for(Person p : personService.findByInterest(second)){
+                        if(graph.getPeople().size() + graph.getRequests().size() < maxPeople  || graph.getPeople().contains(p)){
+                            graph.addEdge(new Edge(person:p, interest:second))
+                        }
                     }
-                }
-                for(CollaboratorRequest cr : collaboratorRequestService.findByInterest(ir.second)){
-                    if(graph.getPeople().size() + graph.getRequests().size() < maxPeople || graph.getRequests().contains(cr)){
-                        graph.addEdge(new Edge(request: cr, interest:ir.second))
+                    for(CollaboratorRequest cr : collaboratorRequestService.findByInterest(second)){
+                        if(graph.getPeople().size() + graph.getRequests().size() < maxPeople || graph.getRequests().contains(cr)){
+                            graph.addEdge(new Edge(request: cr, interest:second))
+                        }
                     }
                 }
             }
@@ -360,16 +375,33 @@ class SimilarityService {
                 graph.addEdge(new Edge(request: cr, interest: i))
             }
         }
-        for(InterestRelation ir : getSimilarInterests(i)){
-            if(!inner.contains(ir.second) && ir.similarity > absoluteThreshold) {
-                for(Person p : personService.findByInterest(ir.second)){
-                    if(graph.getPeople().size() + graph.getRequests().size() < maxPeople || graph.getPeople().contains(p)){
-                        graph.addEdge(new Edge(person:p, interest:i, relatedInterest:ir.second))
+        for(SimilarInterest ir : getSimilarInterests(i, maxSimsPerInterest, absoluteThreshold)){
+            //log.info("Similar interest ID: "+ir.interestId+" similarity score "+ir.similarity+"calculate neighbors")
+            if(ir.interestId!=null){
+                Interest second = Interest.findById(ir.interestId)
+                if(!inner.contains(second) && (second!=null)) {
+                    for(Person p : personService.findByInterest(second)){
+                        if(graph.getPeople().size() + graph.getRequests().size() < maxPeople || graph.getPeople().contains(p)){
+                            graph.addEdge(new Edge(person:p, interest:i, relatedInterest:second))
+                        }
+                    }
+                    for (CollaboratorRequest cr : collaboratorRequestService.findByInterest(second)) {
+                        if(graph.getPeople().size() + graph.getRequests().size()  < maxPeople || graph.getRequests().contains(cr)){
+                            graph.addEdge(new Edge(request: cr, interest:i, relatedInterest:second))
+                        }
                     }
                 }
-                for (CollaboratorRequest cr : collaboratorRequestService.findByInterest(ir.second)) {
+            }
+            Interest second = Interest.findById(ir.interestId)
+            if(!inner.contains(second) && (second!=null)) {
+                for(Person p : personService.findByInterest(second)){
+                    if(graph.getPeople().size() + graph.getRequests().size() < maxPeople || graph.getPeople().contains(p)){
+                        graph.addEdge(new Edge(person:p, interest:i, relatedInterest:second))
+                    }
+                }
+                for (CollaboratorRequest cr : collaboratorRequestService.findByInterest(second)) {
                     if(graph.getPeople().size() + graph.getRequests().size()  < maxPeople || graph.getRequests().contains(cr)){
-                        graph.addEdge(new Edge(request: cr, interest:i, relatedInterest:ir.second))
+                        graph.addEdge(new Edge(request: cr, interest:i, relatedInterest:second))
                     }
                 }
             }
@@ -388,10 +420,40 @@ class SimilarityService {
      * @param i the interest for which similar interests are being obtained
      *
      */
-    public List<InterestRelation> getSimilarInterests(Interest i) {
-        List<InterestRelation> simInterests=InterestRelation.findAllByFirst(i, [sort:"similarity", order:"desc" ])
-        int lastIndex=(simInterests.size() + 1)*threshold as int
-        return simInterests.subList(0, lastIndex)
+    public SimilarInterestList getSimilarInterests(Interest i) {
+        return getSimilarInterests(i, maxSimsPerInterest, absoluteThreshold, null);
+    }
+
+    public SimilarInterestList getSimilarInterests(Interest i, Set<Long> institutionFilter) {
+        return getSimilarInterests(i, maxSimsPerInterest, absoluteThreshold, institutionFilter)
+    }
+
+    public SimilarInterestList getSimilarInterests(Interest i , int max , double similarityThreshold) {
+        return getSimilarInterests(i, max, similarityThreshold, null)
+    }
+
+    public SimilarInterestList getSimilarInterests(Interest i , int max , double similarityThreshold, Set<Long> institutionFilter) {
+        SimilarInterestList sims
+        if (institutionFilter == null) {
+            sims=databaseService.getSimilarInterests(i)
+        } else {
+            sims=databaseService.getSimilarInterests(i, institutionFilter)
+        }
+        if (sims.size() == 0) {
+            return sims
+        }
+        int j = 0
+        if (sims.get(0).similarity < similarityThreshold) {
+            return new SimilarInterestList()
+        }
+        while (j < max && j < sims.size()) {
+            if (sims.get(j).similarity > similarityThreshold) {
+                j++
+            } else {
+                break
+            }
+        }
+        return sims.getSublistTo(j)
     }
 
     def sessionFactory

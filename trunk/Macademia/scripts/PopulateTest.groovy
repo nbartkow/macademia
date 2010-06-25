@@ -31,11 +31,20 @@ target ('main': "Load the Grails interactive shell") {
     TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session))
     def tx = session.beginTransaction();
 
+    boolean necessary = false
+    def databaseService = appCtx.getBean('databaseService')
+    if (necessary) {
+        databaseService.dropCurrentDB()
+    }
+
     def populateService = appCtx.getBean('populateService')
     populateService.readInstitutions(new File("db/test/institutions.txt"))
     populateService.readPeople(new File("db/test/people.txt"))
-    populateService.downloadInterestDocuments()
-    populateService.buildInterestRelations()    
+
+    if (necessary) {
+        //populateService.downloadInterestDocuments()
+        populateService.buildInterestRelations()
+    }
 
     session.connection().commit()
     def statement = session.connection().createStatement();

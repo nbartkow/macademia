@@ -34,7 +34,7 @@ class InterestController {
         [
             interest : interest,
             people : personService.findByInterest(interest),
-            related : similarityService.getSimilarInterests(interest).collect({it.second.text}),        
+            related : similarityService.getSimilarInterests(interest).collect({Interest.findById(it.interestId).text}),
         ]
     }
 

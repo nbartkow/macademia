@@ -7,14 +7,18 @@ class JsonServiceIntegrationTests extends GrailsUnitTestCase {
     def jsonService
     def interestService
     def collaboratorRequestService
+    def databaseService
 
 
     protected void setUp() {
         super.setUp()
+        databaseService.switchToCopyDB("test")
     }
 
     protected void tearDown() {
         super.tearDown()
+        databaseService.dropCurrentDB()
+        databaseService.changeDB("test")
     }
 
     void testUserCentricGraph() {
@@ -31,6 +35,7 @@ class JsonServiceIntegrationTests extends GrailsUnitTestCase {
         int i = testPerson1.hashCode() % org.macademia.MacademiaConstants.COLORS.size()
         assertTrue(jsonGraph.contains(org.macademia.MacademiaConstants.COLORS[i]))
     }
+
 
     void testInterestCentricGraph() {
         Interest i = interestService.findByText("South Asia")
@@ -86,5 +91,5 @@ class JsonServiceIntegrationTests extends GrailsUnitTestCase {
         assertTrue(jsonGraph.contains(c2.title))
         assertTrue(jsonGraph.contains(p1.fullName))
         assertTrue(jsonGraph.contains('c_') && jsonGraph.contains('p_') && jsonGraph.contains('i_'))
-    }
+    }                 
 }

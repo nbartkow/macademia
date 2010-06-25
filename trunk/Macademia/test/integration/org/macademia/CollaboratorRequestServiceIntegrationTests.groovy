@@ -9,13 +9,17 @@ class CollaboratorRequestServiceIntegrationTests extends GrailsUnitTestCase {
 
     def collaboratorRequestService
     def personService
+    def databaseService
 
     protected void setUp() {
         super.setUp()
+        databaseService.switchToCopyDB("test")
     }
 
     protected void tearDown() {
         super.tearDown()
+        databaseService.dropCurrentDB()
+        databaseService.changeDB("test")
     }
 
     void testSave(){

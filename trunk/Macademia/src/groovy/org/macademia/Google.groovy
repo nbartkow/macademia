@@ -73,8 +73,7 @@ public class  Google {
         String response = builder.toString();
         JSONObject json = new JSONObject(response);
 
-        JSONArray ja = json.getJSONObject("responseData")
-                .getJSONArray("results");
+        JSONArray ja = json.getJSONObject("responseData").getJSONArray("results");
 
         List<String> results = new ArrayList<String>();
         for (int i = 0; i < ja.length() && results.size() < maxResults; i++) {
