@@ -3,9 +3,11 @@
   <title><g:message code="nimble.template.login.title" /></title>
   <nh:nimbleui />
   <nh:login />
+
 </head>
 
-<body>
+<body class = doc>
+<link rel="stylesheet" href="${resource(dir: 'css', file: 'style_editprofile.css')}"/>
 
 <g:if test="${facebook || openid}">
   <div class="container">

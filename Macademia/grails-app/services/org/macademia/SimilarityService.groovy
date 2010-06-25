@@ -37,6 +37,47 @@ class SimilarityService {
     def interestService
     def collaboratorRequestService
 
+    /**
+    *
+    * @param i
+    */
+    public void buildInterestRelations(Interest interest){
+        List<Interest> interests = Interest.findAll()
+        int setSize = (int) interests.size()*roughThreshold
+        SortedSet<InterestRelation> newIR = new TreeSet<InterestRelation>()
+        TokenizerFactory tokenizerFactory = IndoEuropeanTokenizerFactory.INSTANCE;
+        TfIdfDistance tfIdf = new TfIdfDistance(tokenizerFactory);
+        Double lastSim
+        //Are the next four lines necessary?
+        log.info("training on ${Document.count()} documents")
+        for (Document d : Document.findAll()) {
+            tfIdf.handle(d.text.toCharArray(), 0, d.text.length());  //what does this do??
+        }
+        for(Interest i : interests){
+            //log.info("building interest relations for ${i} and ${interest}")
+            if(i != interest){
+                double sim = calculatePairwiseSimilarity(interest, i, tfIdf)
+                if (newIR.size() > 0) {
+                    lastSim = newIR.last().similarity
+                } else {
+                    lastSim = 0
+                }
+                if (setSize > newIR.size() || sim > lastSim) {
+                    InterestRelation ir = new InterestRelation(first:interest, second:i, similarity:sim)
+                    newIR.add(ir)
+                    if (setSize < newIR.size()) {
+                        newIR.pollLast()
+                    }
+                }
+            }
+        }
+        newIR.each({
+            Utils.safeSave(it)
+            InterestRelation ir=new InterestRelation(first:it.second, second:it.first, similarity:it.similarity)
+            Utils.safeSave(ir)
+        })
+    }
+
     def buildInterestRelations() {
         log.info("deleting existing interest relations")
         for (InterestRelation ir : InterestRelation.findAll()) {
@@ -78,61 +119,54 @@ class SimilarityService {
 
     public void buildAllInterestRelations() {
         TfIdfDistance tfIdf = calculateDocumentDistances()
-        List<Interest> interests = Interest.findAll()
-        int setSize = (int) interests.size()*roughThreshold
-        interests.each({
+        List<Long> intIds = Interest.findAll().collect{it.id}
+        int setSize = (int) intIds.size()*roughThreshold
+        HashMap<Long,String> docMap = new HashMap<Long,String>()
+        intIds.each({
+            Document doc = Interest.get(it).findMostRelevantDocument()
+            if (doc != null) {
+            String text = doc.text
+            docMap.put(it, text)
+            }
+        })
+        intIds.each({
+            String text = docMap.get(it)
+            //log.info("calculating all similarities for ${i}")
+            log.info("calculating all similarities for $it")
             SortedSet<InterestRelation> newIR = new TreeSet<InterestRelation>()
-            for(Interest i : interests){
-                if(i != it){
-                    double sim = calculatePairwiseSimilarity(it, i, tfIdf)
+            int count = 0
+            for(Long id : intIds){
+                count++
+                String comp = docMap.get(id)
+                if(it != id){
+                    double sim
+                    if (comp == null || text == null) {
+                        sim = -1.0
+                    } else {
+                        sim = tfIdf.proximity(comp, text)
+                    }
+                    //we could check for precomputed relations here
                     if (setSize > newIR.size() || sim > newIR.last().similarity) {
-                        InterestRelation ir = new InterestRelation(first:it, second:i, similarity:sim)
-                            newIR.add(ir)
+                        InterestRelation ir = new InterestRelation(first:Interest.get(it), second:Interest.get(id), similarity:sim)
+                        newIR.add(ir)
                         if (setSize <= newIR.size()) {
                             newIR.pollLast()
                         }
                     }
                 }
+                if (count % 50 == 0) {
+                    //log.info("Cleaning up Gorm at interest relation $count for interest ${i}")
+                    log.info("Cleaning up Gorm at interest relation $count")
+                    cleanUpGorm()
+                }
             }
             newIR.each({
                 Utils.safeSave(it)
-                InterestRelation ir=new InterestRelation(first:it.second, second:it.first, similarity:it.similarity)
-                Utils.safeSave(ir)
+                //we could use this to do a lot less work later (some interest relations would be precomputed)
+                //InterestRelation ir=new InterestRelation(first:it.second, second:it.first, similarity:it.similarity)
+                //Utils.safeSave(ir)
             })
-        })
-    }
-
-   /**
-    *
-    * @param i
-    */
-    public void buildInterestRelations(Interest interest){
-        List<Interest> interests = Interest.findAll()
-        int setSize = (int) interests.size()*roughThreshold
-        SortedSet<InterestRelation> newIR = new TreeSet<InterestRelation>()
-        TokenizerFactory tokenizerFactory = IndoEuropeanTokenizerFactory.INSTANCE;
-        TfIdfDistance tfIdf = new TfIdfDistance(tokenizerFactory);
-        //Are the next four lines necessary?
-        log.info("training on ${Document.count()} documents")
-        for (Document d : Document.findAll()) {
-            tfIdf.handle(d.text.toCharArray(), 0, d.text.length());  //what does this do??
-        }
-        for(Interest i : interests){
-            if(i != interest){
-                double sim = calculatePairwiseSimilarity(interest, i, tfIdf)
-                if (setSize > newIR.size() || sim > newIR.last().similarity) {
-                    InterestRelation ir = new InterestRelation(first:interest, second:i, similarity:sim)
-                    newIR.add(ir)
-                    if (setSize < newIR.size()) {
-                        newIR.pollLast()
-                    }
-                }
-            }
-        }
-        newIR.each({
-            Utils.safeSave(it)
-            InterestRelation ir=new InterestRelation(first:it.second, second:it.first, similarity:it.similarity)
-            Utils.safeSave(ir)
+            cleanUpGorm()
         })
     }
 

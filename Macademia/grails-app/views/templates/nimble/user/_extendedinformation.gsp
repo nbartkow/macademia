@@ -10,5 +10,14 @@
 	    	<th><g:message code="nimble.label.email" /></th>
 			<td>${user.profile?.email?.encodeAsHTML()}</td>
 		</tr>
+
+        <tr>
+            <th><g:message code="nimble.label.institution" /></th>
+            <td>${user.profile?.institution?.name?.encodeAsHTML()}</td>
+        </tr>
+        <tr>
+            <th><g:message code="nimble.label.department" /> </th>
+            <td>${user.profile?.department?.encodeAsHTML()}</td>
+        </tr>
 	</tbody>
 </table>

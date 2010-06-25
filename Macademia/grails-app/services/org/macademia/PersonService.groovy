@@ -28,13 +28,15 @@ class PersonService {
         Map<Interest,Interest> remove = new HashMap<Interest,Interest>()
         //log.info("$person.interests[0]")
 
-        for(Interest interest in person.interests){            
+        for(Interest interest in person.interests){
+            log.info(interestService.findByText(interest.text))
             if (interestService.findByText(interest.text) == null) {
                 interestService.save(interest)
-            } else if (interestService.findByText(interest.text) != null && interest.id == null) {
+            } else if (interest.id == null && interestService.findByText(interest.text) != null) {
                 remove.put(interest,interestService.findByText(interest.text))
-
-            } 
+            } else if (interest.lastAnalyzed == null && interestService.findByText(interest.text) != null) {
+                interestService.save(interest)
+            }
         }
         for (Interest interest in remove.keySet()) {
             person.removeFromInterests(interest)

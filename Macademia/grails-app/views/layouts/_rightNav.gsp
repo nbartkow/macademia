@@ -1,18 +1,42 @@
+<%@ page import="org.macademia.UserService; grails.plugins.nimble.core.AdminsService" %>
 <div id="show" class="btxt">
   <a href="#/?navVisibility=true"><-show</a>
 </div>
 <div id="rightDiv">
   <div id="wrapper">
     <div id="main">
+     <n:notUser>
       <div id="account" class="btxt right">
         <a id="loginButton" class="right">Login</a> | <a id="registerButton" class="right">Register</a>
+      </div>
+      </n:notUser>
+            <div id="account" class="btxt">
+        <ul>
+        <n:hasRole name="${UserService.USER_ROLE}">
+          <div id="account" class="btxt">
+          <g:link controller="auth" action="logout" class="icon icon_cross">Logout</g:link>
+          </div>
+          <li>
+          <g:link controller="account" action="edit" class="icon icon_user_go">Edit Profile</g:link>
+		  </li>
+          <li>
+          <g:link controller="account" action="changepassword" ><g:message code="nimble.link.changepassword" /></g:link>
+          </li>
+          <li>
+          <g:link controller="collaboratorRequest" action="manage" ><g:message code="Manage collaborator requests" /></g:link>
+          </li>
+          <n:hasRole name="${AdminsService.ADMIN_ROLE}">
+            <li>
+              <g:link controller="user" action="list" class="icon icon_user_go">Admin controls</g:link>
+            </li>
+          </n:hasRole>
+          </n:hasRole>
+      </ul>
       </div>
       <div id="mac_logo" class="atxt center">
         <img id="logoImage" src="${createLinkTo(dir: 'images', file: 'mac_logo.png')}"/><br/>
         <div id="description"><b>Macademia</b> connects colleagues who have shared interests.<br/></div>
       </div>
-
-
       <g:render template="../templates/macademia/searchBar"/>
       <div id="rightContent" class="medium">
         <ul id="instruct_list">
