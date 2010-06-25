@@ -97,11 +97,6 @@ macademia.clearSearch = function() {
         }
     });
 };
-/*old function... does nothing
- macademia.updateSidebar = function(node){
- $("#rootInfo").empty();
- $("#rootInfo").html(node.name+" ("+node.data.department+") "+node.data.email);
- };*/
 // changes the address when a node is clicked
 macademia.navInfovis = function(node) {
     var rootId = node.id;
@@ -115,6 +110,18 @@ macademia.navInfovis = function(node) {
     macademia.sortParameters(type,rootId.substr(2));
     $.address.update();
 };
+// removes unused parameters and updates used parameters
+macademia.sortParameters = function(type,value){
+    var queries = ['searchBox','interestId','personId','requestId'];
+    for(var i = 0; i < queries.length; i++){
+        if (queries[i].indexOf(type) < 0){
+            $.address.parameter(queries[i],null);
+            macademia.queryString[queries[i]] = null;
+        }else{
+            $.address.parameter(queries[i],value);
+        }
+    }
+}
 // click navigation for the rightDiv
 macademia.nav = function() {
     macademia.modalLogin();
@@ -159,42 +166,18 @@ macademia.nav = function() {
         return false;
     });
 };
-// changes the Query string according link's href
-macademia.changeQueryString = function(query) {
-    var queryString = query.substr(3);
-    var params = queryString.split('&');
-    for (var i = 0; i < params.length; i++) {
-        var paramValue = params[i].split('=');
-        $.address.parameter(paramValue[0], paramValue[1]);
-    }
-};
-// controller for the select colleges filter
-macademia.collegeFilter = function() {
-    $('#filterDialog').jqm({trigger: '#collegeFilterTrigger', modal: true});
-    $(".college a").click(function() {
-        $(this).parents("li").animate({opacity: "hide" }, "normal")
-    });
-    $("#clear").click(function() {
-        $("#selectedColleges > ul > li").hide();
-    });
-    $("#add").click(function() {
-        $("#selectedColleges > ul > li").show();
+macademia.modalLogin = function() {
+    $('#loginDialog').jqm({modal: false});
+    $('#loginButton').click(function(){
+        $('#loginDialog').jqmShow()
     });
 };
-// Changes the visualization to new root node
-macademia.changeGraph = function(nodeId){
-    if ($.address.parameter('nodeId') != macademia.queryString.nodeId) {
-        if (macademia.rgraph){
-              var param = $.address.parameter('nodeId');
-              if (macademia.rgraph.graph.getNode(param).data) {
-              // if the node is on the current graph
-                macademia.rgraph.onClick(param);
-              }else{
-                  macademia.initiateGraph();
-              }
-              macademia.queryString.nodeId = param;
-        }
-    }
+
+macademia.modalRegister = function() {
+    $('#registerDialog').jqm({modal: false});
+    $('#registerButton').click(function(){
+        $('#registerDialog').jqmShow()
+    });
 };
 // controls the show and hide options
 macademia.showHide = function() {
@@ -228,6 +211,69 @@ macademia.showHide = function() {
         }
         macademia.queryString.navVisibility = navVisibility;
     }
+};
+// Changes the visualization to new root node
+macademia.changeGraph = function(nodeId){
+    if ($.address.parameter('nodeId') != macademia.queryString.nodeId) {
+        if (macademia.rgraph){
+              var param = $.address.parameter('nodeId');
+              if (macademia.rgraph.graph.getNode(param).data) {
+              // if the node is on the current graph
+                macademia.rgraph.onClick(param);
+              }else{
+                  macademia.initiateGraph();
+              }
+              macademia.queryString.nodeId = param;
+        }
+    }
+};
+// resizes canvas according to original dimensions
+macademia.resizeCanvas = function(currentWidth) {
+    if ($("#mycanvas").css('margin') != 'auto') {
+        $("#mycanvas").css('margin', 'auto');
+    }
+    var originalWidth = 680;
+    var originalHeight = 660;
+    var originalDistance = 150;
+    var currentHeight = $("#infovis").height();
+    if (Math.min(currentWidth, currentHeight) == currentWidth) {
+        var newWidth = 0.95 * currentWidth;
+        var newHeight = originalHeight * newWidth / originalWidth;
+    } else {
+        var newHeight = 0.95 * currentHeight;
+        var newWidth = originalWidth * newHeight / originalHeight;
+    }
+    if (newWidth != $("mycanvas").css("width")) {
+        $("#mycanvas").css({"width":newWidth, "height": newHeight});
+        macademia.distance = originalDistance / originalHeight * newHeight;
+        macademia.mycanvas.resize(newWidth, newHeight);
+        if (macademia.rgraph) {
+            macademia.rgraph.config.levelDistance = macademia.distance;
+            macademia.rgraph.refresh();
+        }
+    }
+};
+// changes the Query string according link's href
+macademia.changeQueryString = function(query) {
+    var queryString = query.substr(3);
+    var params = queryString.split('&');
+    for (var i = 0; i < params.length; i++) {
+        var paramValue = params[i].split('=');
+        $.address.parameter(paramValue[0], paramValue[1]);
+    }
+};
+// controller for the select colleges filter
+macademia.collegeFilter = function() {
+    $('#filterDialog').jqm({trigger: '#collegeFilterTrigger', modal: true});
+    $(".college a").click(function() {
+        $(this).parents("li").animate({opacity: "hide" }, "normal")
+    });
+    $("#clear").click(function() {
+        $("#selectedColleges > ul > li").hide();
+    });
+    $("#add").click(function() {
+        $("#selectedColleges > ul > li").show();
+    });
 };
 // puts the selected colleges from the college filter into the address bar
 macademia.collegeSelection = function() {
@@ -292,55 +338,4 @@ macademia.submitSearch = function(){
         }
         macademia.queryString.searchBox = searchBox;
     }
-};
-macademia.sortParameters = function(type,value){
-    var queries = ['searchBox','interestId','personId','requestId'];
-    for(var i = 0; i < queries.length; i++){
-        if (queries[i].indexOf(type) < 0){
-            $.address.parameter(queries[i],null);
-            macademia.queryString[queries[i]] = null;
-        }else{
-            $.address.parameter(queries[i],value);
-        }
-    }
-}
-// resizes canvas according to original dimensions
-macademia.resizeCanvas = function(currentWidth) {
-    if ($("#mycanvas").css('margin') != 'auto') {
-        $("#mycanvas").css('margin', 'auto');
-    }
-    var originalWidth = 680;
-    var originalHeight = 660;
-    var originalDistance = 150;
-    var currentHeight = $("#infovis").height();
-    if (Math.min(currentWidth, currentHeight) == currentWidth) {
-        var newWidth = 0.95 * currentWidth;
-        var newHeight = originalHeight * newWidth / originalWidth;
-    } else {
-        var newHeight = 0.95 * currentHeight;
-        var newWidth = originalWidth * newHeight / originalHeight;
-    }
-    if (newWidth != $("mycanvas").css("width")) {
-        $("#mycanvas").css({"width":newWidth, "height": newHeight});
-        macademia.distance = originalDistance / originalHeight * newHeight;
-        macademia.mycanvas.resize(newWidth, newHeight);
-        if (macademia.rgraph) {
-            macademia.rgraph.config.levelDistance = macademia.distance;
-            macademia.rgraph.refresh();
-        }
-    }
-};
-
-macademia.modalLogin = function() {
-    $('#loginDialog').jqm({modal: false});
-    $('#loginButton').click(function(){
-        $('#loginDialog').jqmShow()
-    });
-};
-
-macademia.modalRegister = function() {
-    $('#registerDialog').jqm({modal: false});
-    $('#registerButton').click(function(){
-        $('#registerDialog').jqmShow()
-    });
 };
