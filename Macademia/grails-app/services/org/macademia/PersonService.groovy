@@ -9,6 +9,7 @@ class PersonService {
     def MAX_DEPTH = 5
     def interestService
     def userService
+    def databaseService
 
 
     def get(long id) {
@@ -28,13 +29,12 @@ class PersonService {
         Map<Interest,Interest> remove = new HashMap<Interest,Interest>()
         //log.info("$person.interests[0]")
 
-        for(Interest interest in person.interests){
-            log.info(interestService.findByText(interest.text))
+        for(Interest interest in person.interests){            
             if (interestService.findByText(interest.text) == null) {
                 interestService.save(interest)
-            } else if (interest.id == null && interestService.findByText(interest.text) != null) {
+            } else if (interest.id == null) {
                 remove.put(interest,interestService.findByText(interest.text))
-            } else if (interest.lastAnalyzed == null && interestService.findByText(interest.text) != null) {
+            } else if (interest.lastAnalyzed == null) {
                 interestService.save(interest)
             }
         }
@@ -48,6 +48,7 @@ class PersonService {
             userService.updateUser(person.owner)
         }
         Utils.safeSave(person)
+        databaseService.addUser(person)
     }
 
 

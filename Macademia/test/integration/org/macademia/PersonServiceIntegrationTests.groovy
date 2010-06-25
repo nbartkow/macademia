@@ -12,15 +12,19 @@ import grails.plugins.nimble.InstanceGenerator
  */
 class PersonServiceIntegrationTests extends GrailsUnitTestCase {
     def personService
+    def databaseService
    // def googleServiceProxy
    // def wikipediaServiceProxy
     
     protected void setUp() {
         super.setUp()
+        databaseService.switchToCopyDB("test")
     }
 
     protected void tearDown() {
         super.tearDown()
+        databaseService.dropCurrentDB()
+        databaseService.changeDB("test")
     }
 
     void testSave(){

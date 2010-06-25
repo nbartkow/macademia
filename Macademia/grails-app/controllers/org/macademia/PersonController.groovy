@@ -34,16 +34,17 @@ class  PersonController {
         // Are we mousing over a user who has a link to the root?
         if (link != null && target != link) {
             for(Interest i: link.interests) {
-                for(InterestRelation ir: similarityService.getSimilarInterests(i)){
+                for(SimilarInterest sim: similarityService.getSimilarInterests(i).list){
                     //println("first: $ir.first second: $ir.second")
-                    if(target.interests.contains(ir.second)){
-                        if (ir.first == ir.second) {
-                            exact[ir.first] = ir.first
+                    Interest second = Interest.findById(sim.interestId)
+                    if(target.interests.contains(second)){
+                        if (i.id == sim.interestId) {
+                            exact[i] = i
                         } else {
-                            if (!close[ir.first]) {
-                                close[ir.first] = []
+                            if (!close[i]) {
+                                close[i] = []
                             }
-                            close[ir.first].add(ir.second)
+                            close[i].add(second)
                         }
                     }
                 }

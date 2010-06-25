@@ -104,12 +104,12 @@ class InterestService implements ApplicationContextAware {
           if (xSimilarityService == null) {
               xSimilarityService = applicationContext.getBean("similarityService")
           }
-          xSimilarityService.buildInterestRelations(interest)
+          if (xSimilarityService.relationsBuilt) {
+              xSimilarityService.buildInterestRelations(interest)
+          }
           Utils.safeSave(interest)
       }
   }
 
-  def deleteInterest(Interest interest){
-      // Yet to implement deleteInterest. Not for a while, probably.
-  }
+
 }

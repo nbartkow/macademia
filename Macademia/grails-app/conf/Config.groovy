@@ -56,6 +56,7 @@ log4j = {
     //appenders {
     //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
     //}
+  // debug 'org.codehaus.groovy.grails.plugins.searchable'
 
     error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
 	       'org.codehaus.groovy.grails.web.pages', //  GSP
@@ -101,9 +102,16 @@ environments {
     }
     test {
         prepDirectories("test")
+        wikipediaService.wikiCache = new File("db/test_backup/wikipedia.cache.txt")
+        googleService.googleCache = new File("db/test_backup/google.cache.txt")
     }
     populate {
     }
     production {
+    }
+    benchmark{
+        prepDirectories("benchmark")
+        wikipediaService.wikiCache = new File("db/benchmark_backup/wikipedia.cache.txt")
+        googleService.googleCache = new File("db/benchmark_backup/google.cache.txt")
     }
 }

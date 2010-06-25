@@ -406,7 +406,6 @@ Paul Dosh	Political Science/Latin American Studies	dosh@macalester.edu	women and
 Paul Dosh	Political Science/Latin American Studies	dosh@macalester.edu	privatization and social movements
 Paul Dosh	Political Science/Latin American Studies	dosh@macalester.edu	Montessori
 Paul Dosh	Political Science/Latin American Studies	dosh@macalester.edu	pedagogy
-Paul Dosh	Political Science/Latin American Studies	dosh@macalester.edu	
 Ernie Capello	History	ecapello@macalester.edu	Latin America
 Ernie Capello	History	ecapello@macalester.edu	cultural geography
 Ernie Capello	History	ecapello@macalester.edu	collective memory
@@ -755,17 +754,17 @@ Scott Legge	Anthropology	slegge@macalester.edu	evolutionary biology
 Scott Legge	Anthropology	slegge@macalester.edu	bioarchaeology
 Scott Legge	Anthropology	slegge@macalester.edu	paleoanthropology
 Scott Legge	Anthropology	slegge@macalester.edu	paleopathology
-Peter Rachleff	History	rachleff@macaalester.edu	US working class -- past
-Peter Rachleff	History	rachleff@macaalester.edu	present
-Peter Rachleff	History	rachleff@macaalester.edu	future
-Peter Rachleff	History	rachleff@macaalester.edu	Immigration to US and global migration patterns
-Peter Rachleff	History	rachleff@macaalester.edu	Race
-Peter Rachleff	History	rachleff@macaalester.edu	racism
-Peter Rachleff	History	rachleff@macaalester.edu	racial formations
-Peter Rachleff	History	rachleff@macaalester.edu	racialized representations and popular culture
-Peter Rachleff	History	rachleff@macaalester.edu	African American history
-Peter Rachleff	History	rachleff@macaalester.edu	Mellon Mays Undergraduate Fellowship Program
-Peter Rachleff	History	rachleff@macaalester.edu	South Africa -- apartheid and anti-apartheid
+Peter Rachleff	History	rachleff@macalester.edu	US working class -- past
+Peter Rachleff	History	rachleff@macalester.edu	present
+Peter Rachleff	History	rachleff@macalester.edu	future
+Peter Rachleff	History	rachleff@macalester.edu	Immigration to US and global migration patterns
+Peter Rachleff	History	rachleff@macalester.edu	Race
+Peter Rachleff	History	rachleff@macalester.edu	racism
+Peter Rachleff	History	rachleff@macalester.edu	racial formations
+Peter Rachleff	History	rachleff@macalester.edu	racialized representations and popular culture
+Peter Rachleff	History	rachleff@macalester.edu	African American history
+Peter Rachleff	History	rachleff@macalester.edu	Mellon Mays Undergraduate Fellowship Program
+Peter Rachleff	History	rachleff@macalester.edu	South Africa -- apartheid and anti-apartheid
 Clay Steinman	Humanities and Media and Cutural Studies	steinman@macalester.edu	critical social theory and the media
 Clay Steinman	Humanities and Media and Cutural Studies	steinman@macalester.edu	film and media analysis
 Clay Steinman	Humanities and Media and Cutural Studies	steinman@macalester.edu	film history and theory

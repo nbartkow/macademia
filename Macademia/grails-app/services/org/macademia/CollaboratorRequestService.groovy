@@ -6,6 +6,7 @@ package org.macademia
 class CollaboratorRequestService {
 
     def interestService
+    def databaseService
 
     static transactional = true
     
@@ -34,5 +35,6 @@ class CollaboratorRequestService {
             cr.addToKeywords(remove.get(interest))
         }
         Utils.safeSave(cr)
+        databaseService.addCollaboratorRequest(cr)
     }
 }
