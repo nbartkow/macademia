@@ -292,13 +292,13 @@ Liang Ding	Economics	ding@macalester.edu	Financial economics (general financial 
 Liang Ding	Economics	ding@macalester.edu	market efficiency and behavioral finance)
 Liang Ding	Economics	ding@macalester.edu	Statistics of high frequency time series
 Liang Ding	Economics	ding@macalester.edu	China's economic development
-Andrew Beveridge	Mathematics and Computer Science	abeverid	combinatorics
-Andrew Beveridge	Mathematics and Computer Science	abeverid	graph theory
-Andrew Beveridge	Mathematics and Computer Science	abeverid	networks
-Andrew Beveridge	Mathematics and Computer Science	abeverid	probability
-Andrew Beveridge	Mathematics and Computer Science	abeverid	random walks
-Andrew Beveridge	Mathematics and Computer Science	abeverid	optimization
-Andrew Beveridge	Mathematics and Computer Science	abeverid	algorithms
+Andrew Beveridge	Mathematics and Computer Science	abeverid@macalester.edu	combinatorics
+Andrew Beveridge	Mathematics and Computer Science	abeverid@macalester.edu	graph theory
+Andrew Beveridge	Mathematics and Computer Science	abeverid@macalester.edu	networks
+Andrew Beveridge	Mathematics and Computer Science	abeverid@macalester.edu	probability
+Andrew Beveridge	Mathematics and Computer Science	abeverid@macalester.edu	random walks
+Andrew Beveridge	Mathematics and Computer Science	abeverid@macalester.edu	optimization
+Andrew Beveridge	Mathematics and Computer Science	abeverid@macalester.edu	algorithms
 Leola Johnon	Humanities and Media and Cultural Studies	johnsonl1@macalester.edu	African American popular culture from WWII to the present
 Leola Johnon	Humanities and Media and Cultural Studies	johnsonl1@macalester.edu	Representations of African Americans in news
 Leola Johnon	Humanities and Media and Cultural Studies	johnsonl1@macalester.edu	advertising
@@ -309,14 +309,14 @@ James Heyman	Physics and Astronomy	heyman@macalester.edu	condensed matter
 James Heyman	Physics and Astronomy	heyman@macalester.edu	ultrafast phenomena
 James Heyman	Physics and Astronomy	heyman@macalester.edu	femtosecond infrared spectroscopy
 James Heyman	Physics and Astronomy	heyman@macalester.edu	optics
-Beth Cleary	Theater and Dance	cleary	embodiment practices in rehearsal and performance
-Beth Cleary	Theater and Dance	cleary	directing
-Beth Cleary	Theater and Dance	cleary	history of directing
-Beth Cleary	Theater and Dance	cleary	political theater
-Beth Cleary	Theater and Dance	cleary	subaltern theater texts and practices
-Beth Cleary	Theater and Dance	cleary	playwrighting
-Beth Cleary	Theater and Dance	cleary	yoga
-Beth Cleary	Theater and Dance	cleary	somatics
+Beth Cleary	Theater and Dance	cleary@macalester.edu	embodiment practices in rehearsal and performance
+Beth Cleary	Theater and Dance	cleary@macalester.edu	directing
+Beth Cleary	Theater and Dance	cleary@macalester.edu	history of directing
+Beth Cleary	Theater and Dance	cleary@macalester.edu	political theater
+Beth Cleary	Theater and Dance	cleary@macalester.edu	subaltern theater texts and practices
+Beth Cleary	Theater and Dance	cleary@macalester.edu	playwrighting
+Beth Cleary	Theater and Dance	cleary@macalester.edu	yoga
+Beth Cleary	Theater and Dance	cleary@macalester.edu	somatics
 John M. Cannon	Physics & Astronomy	jcannon@macalester.edu	observational astronomy
 John M. Cannon	Physics & Astronomy	jcannon@macalester.edu	low-mass galaxies
 John M. Cannon	Physics & Astronomy	jcannon@macalester.edu	galaxy evolution
@@ -607,15 +607,15 @@ William Moseley	Geography	moseley@macalester.edu	food security
 William Moseley	Geography	moseley@macalester.edu	hunger
 William Moseley	Geography	moseley@macalester.edu	environment
 William Moseley	Geography	moseley@macalester.edu	public policy
-Paula Cooey	Religious Studies	Cooey@macalester/edu	History of Christian traditions (especially the 16th century)
-Paula Cooey	Religious Studies	Cooey@macalester/edu	theory & critique of religion
-Paula Cooey	Religious Studies	Cooey@macalester/edu	religion & gender
-Paula Cooey	Religious Studies	Cooey@macalester/edu	religious ethics & politics (particularly comparative religious views of martyrdom)
-Paula Cooey	Religious Studies	Cooey@macalester/edu	post-colonial theory
-Paula Cooey	Religious Studies	Cooey@macalester/edu	ethics of theory & method in religious studies
-Paula Cooey	Religious Studies	Cooey@macalester/edu	history of Christian & Muslim relations
-Paula Cooey	Religious Studies	Cooey@macalester/edu	religion & the environment
-Paula Cooey	Religious Studies	Cooey@macalester/edu	religion & economics
+Paula Cooey	Religious Studies	Cooey@macalester.edu	History of Christian traditions (especially the 16th century)
+Paula Cooey	Religious Studies	Cooey@macalester.edu	theory & critique of religion
+Paula Cooey	Religious Studies	Cooey@macalester.edu	religion & gender
+Paula Cooey	Religious Studies	Cooey@macalester.edu	religious ethics & politics (particularly comparative religious views of martyrdom)
+Paula Cooey	Religious Studies	Cooey@macalester.edu	post-colonial theory
+Paula Cooey	Religious Studies	Cooey@macalester.edu	ethics of theory & method in religious studies
+Paula Cooey	Religious Studies	Cooey@macalester.edu	history of Christian & Muslim relations
+Paula Cooey	Religious Studies	Cooey@macalester.edu	religion & the environment
+Paula Cooey	Religious Studies	Cooey@macalester.edu	religion & economics
 Kristi Curry Rogers	Biology and Geology 	rogersk@macalester.edu	Dinosaur paleobiology & evolution
 Kristi Curry Rogers	Biology and Geology 	rogersk@macalester.edu	bone histology and relationships to growth rates
 Kristi Curry Rogers	Biology and Geology 	rogersk@macalester.edu	body size evolution

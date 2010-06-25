@@ -20,6 +20,7 @@
 grails.views.javascript.library='jquery'
 
 nimble {
+
     organization {
         name = ""
         displayname = ""
@@ -29,10 +30,35 @@ nimble {
         url = ""
     }
 
+    passwords {
+        mustcontain {
+            lowercase = false
+            uppercase = false
+            numbers = false
+            symbols = false
+            numbersOrSymbols = true
+        }
+        minlength = 5
+    }
+
+    fields {
+        admin {
+            user = ['username', 'external', 'federated']
+        }
+        enduser {
+            user = ['username', 'pass', 'passConfirm']
+            profile = ['fullName', 'email', 'department', 'institution']
+        }
+        enduserEdit {
+            user = ['fullName', 'department']
+        }
+    }
+
 	layout {
-        application = 'app'
+        application = 'app'//change back to app for original nimble page
         administration = 'admin'
 		login = 'app'
+        customcss = ''
     }
 
     resources {
@@ -66,7 +92,7 @@ nimble {
     }
 
     messaging {
-		enabled = false
+		enabled = true
 		
         registration {
             subject = "Your new account is ready!"
@@ -76,17 +102,18 @@ nimble {
             external.subject = "Your password reset request"
         }
 
+        // To activate messaging: http://www.grails.org/plugin/mail
         mail {
-            from = "App <app@company.com>"
-            host = ""
-            port = 25
-            username = ""
-            password = ""
-            props = ["mail.smtp.auth": "false",
-              "mail.smtp.socketFactory.port": "25",
-              "mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
-              "mail.smtp.socketFactory.fallback": "false"]
-        }
+             from = "MacademiaAdmin"
+             host = "smtp.gmail.com"
+             port = 465
+             username = "Macalester.Macademia@gmail.com"
+             password = "admiN123!"
+             props = ["mail.smtp.auth": "false",
+               "mail.smtp.socketFactory.port": "465",
+               "mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
+               "mail.smtp.socketFactory.fallback": "false"]
+         }
     }
 
     implementation {
@@ -138,4 +165,6 @@ environments {
             }
         }
     }
+
+
 }

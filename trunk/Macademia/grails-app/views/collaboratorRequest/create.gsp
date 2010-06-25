@@ -17,9 +17,9 @@
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
-            <g:hasErrors bean="${collaboratorRequestInstance}">
+            <g:hasErrors bean="${collaboratorRequest}">
             <div class="errors">
-                <g:renderErrors bean="${collaboratorRequestInstance}" as="list" />
+                <g:renderErrors bean="${collaboratorRequest}" as="list" />
             </div>
             </g:hasErrors>
             <g:form action="save" method="post" >
@@ -31,8 +31,8 @@
                                 <td valign="top" class="name">
                                     <label for="title"><g:message code="collaboratorRequest.title.label" default="Title" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: collaboratorRequestInstance, field: 'title', 'errors')}">
-                                    <g:textField name="title" value="${collaboratorRequestInstance?.title}" />
+                                <td valign="top" class="value ${hasErrors(bean: collaboratorRequest, field: 'title', 'errors')}">
+                                    <g:textField name="title" value="${collaboratorRequest?.title}" />
                                 </td>
                             </tr>
                         
@@ -40,8 +40,8 @@
                                 <td valign="top" class="name">
                                     <label for="expiration"><g:message code="collaboratorRequest.expiration.label" default="Expiration" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: collaboratorRequestInstance, field: 'expiration', 'errors')}">
-                                    <g:datePicker name="expiration" precision="day" value="${collaboratorRequestInstance?.expiration}"  />
+                                <td valign="top" class="value ${hasErrors(bean: collaboratorRequest, field: 'expiration', 'errors')}">
+                                    <g:datePicker name="expiration" precision="day" value="${collaboratorRequest?.expiration}"  />
                                 </td>
                             </tr>
                         
@@ -49,19 +49,19 @@
                                 <td valign="top" class="name">
                                     <label for="description"><g:message code="collaboratorRequest.description.label" default="Description" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: collaboratorRequestInstance, field: 'description', 'errors')}">
-                                    <g:textField name="description" value="${collaboratorRequestInstance?.description}" />
+                                <td valign="top" class="value ${hasErrors(bean: collaboratorRequest, field: 'description', 'errors')}">
+                                    <g:textArea name="description" value="${collaboratorRequest?.description}" />
                                 </td>
                             </tr>
                         
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="creator"><g:message code="collaboratorRequest.creator.label" default="Creator" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: collaboratorRequestInstance, field: 'creator', 'errors')}">
-                                    <g:select name="creator.id" from="${org.macademia.Person.list()}" optionKey="id" value="${collaboratorRequestInstance?.creator?.id}"  />
-                                </td>
-                            </tr>
+                            %{--<tr class="prop">--}%
+                                %{--<td valign="top" class="name">--}%
+                                    %{--<label for="creator"><g:message code="collaboratorRequest.creator.label" default="Creator" /></label>--}%
+                                %{--</td>--}%
+                                %{--<td valign="top" class="value ${hasErrors(bean: collaboratorRequest, field: 'creator', 'errors')}">--}%
+                                    %{--<p>${user.profile?.fullName}</p>--}%
+                                %{--</td>--}%
+                            %{--</tr>--}%
                         
                         </tbody>
                     </table>

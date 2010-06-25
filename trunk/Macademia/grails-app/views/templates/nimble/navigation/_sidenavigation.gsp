@@ -33,6 +33,9 @@
 							  <g:else>
 								<g:link controller="user" action="changepassword" id="${user.id}"><g:message code="nimble.link.changepassword" /></g:link>
 							  </g:else>
+                                %{--<li>--}%
+                                  %{--<n:confirmaction action="document.deleteuser.submit();" title="${message(code: 'nimble.template.delete.confirm.title')}" msg="${message(code: 'nimble.user.delete.confirm')}" accept="${message(code: 'nimble.link.accept')}" cancel="${message(code: 'nimble.link.cancel')}" class=""><g:message code="nimble.link.delete" /></n:confirmaction>--}%
+                                %{--</li>--}%
 							  <g:if test="${actionName in ['show']}">
 						      	<li id="disableuser">
 							        <a onClick="nimble.disableUser('${user.id}'); return false;"><g:message code="nimble.link.disableaccount" /></a>
@@ -47,6 +50,9 @@
 							      <li id="enableuserapi">
 							        <a onClick="nimble.enableAPI('${user.id}'); return false;"><g:message code="nimble.link.enableapi" /></a>
 							      </li>
+                                <li>
+                                  <n:confirmaction action="document.deleteuser.submit();" title="${message(code: 'nimble.template.delete.confirm.title')}" msg="${message(code: 'nimble.user.delete.confirm')}" accept="${message(code: 'nimble.link.accept')}" cancel="${message(code: 'nimble.link.cancel')}" class=""><g:message code="nimble.link.delete" /></n:confirmaction>
+                                </li>
 								</g:if>
 						  </ul>
 					</li>
@@ -78,7 +84,7 @@
 						</g:if>
 					</li>
 				</ul>
-			</g:if>
+			</g:if>                                              
 		</li>
 		<li>
 			<g:link controller="group" action="list"><g:message code="nimble.link.groups" /></g:link>

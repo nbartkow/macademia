@@ -28,6 +28,7 @@ class CollaboratorRequestServiceIntegrationTests extends GrailsUnitTestCase {
         user.passConfirm = 'useR123!'
         user.enabled = true
         creator.owner = user
+        user.profile = creator
         personService.save(creator)
         CollaboratorRequest cr = new CollaboratorRequest(title: "Macademia", creator: creator, description: "kld", dateCreated: new Date(), expiration: new Date())
         Interest i1 = new Interest("macademia")

@@ -83,20 +83,18 @@ class PopulateService {
                 person = new Person(fullName: name, department: dept, email: email, institution: institution)
                 person.owner = user
                 user.profile = person
-                Utils.safeSave(user)
 
                 // NOTE: THIS IS AN OLD METHOD THAT USES PERSON.SAVE
                 // HENCE, BOTH personService.save() and userService.save() don't work.
                 // (we have to rearrange the test)
-                personService.save(person)
+//                personService.save(person)
             }
             Interest interest = interestService.findByText(interestStr)
             if (interest == null) {
                 interest = new Interest(interestStr)
-                Utils.safeSave(interest)
             }
             person.addToInterests(interest)
-            //personService.save(person)
+            personService.save(person)
         }
         log.error("Read ${Person.count()} people objects")
         log.error("Read ${Interest.count()} interest objects")
@@ -116,7 +114,7 @@ class PopulateService {
    */
    def downloadInterestDocuments() {
         Interest.findAll().each({
-            interestService.buildDocuments(it)
+            interestService.buildDocuments(it) //wrap in try/catch each of the people individually
         })
     }
 

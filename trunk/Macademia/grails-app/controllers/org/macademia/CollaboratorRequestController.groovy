@@ -1,40 +1,42 @@
 package org.macademia
 
 class CollaboratorRequestController {
+    def collaboratorRequestService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index = {
-        redirect(action: "list", params: params)
+        redirect(action: "manage", params: params)
     }
 
-    def list = {
+    def manage = {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        [collaboratorRequestInstanceList: CollaboratorRequest.list(params), collaboratorRequestInstanceTotal: CollaboratorRequest.count()]
+        def User user = User.findByid(authenticatedUser.id)
+        def CollaboratorRequestList = CollaboratorRequest.list(params)
+        //uncomment this, and comment the line above in order to lock collaboratorRequests to a single user
+//        def CollaboratorRequestList = CollaboratorRequest.findAllByCreator(user.profile)
+        [collaboratorRequestList: CollaboratorRequestList, collaboratorRequestInstanceTotal: CollaboratorRequest.count(), user:user ]
     }
 
     def create = {
-        def collaboratorRequestInstance = new CollaboratorRequest()
-        collaboratorRequestInstance.properties = params
-        return [collaboratorRequestInstance: collaboratorRequestInstance]
+        def collaboratorRequest = new CollaboratorRequest()
+        collaboratorRequest.properties = params
+//        def user = authenticatedUser
+        return [collaboratorRequest: collaboratorRequest]
     }
 
     def save = {
-        def collaboratorRequestInstance = new CollaboratorRequest(params)
-        if (collaboratorRequestInstance.save(flush: true)) {
-            flash.message = "${message(code: 'default.created.message', args: [message(code: 'collaboratorRequest.label', default: 'CollaboratorRequest'), collaboratorRequestInstance.id])}"
-            redirect(action: "show", id: collaboratorRequestInstance.id)
-        }
-        else {
-            render(view: "create", model: [collaboratorRequestInstance: collaboratorRequestInstance])
-        }
+        def collaboratorRequest = new CollaboratorRequest(params)
+        collaboratorRequest.creator = authenticatedUser.profile
+        collaboratorRequestService.save(collaboratorRequest)
+        redirect(action: "manage")
     }
 
     def show = {
         def collaboratorRequestInstance = CollaboratorRequest.get(params.id)
         if (!collaboratorRequestInstance) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'collaboratorRequest.label', default: 'CollaboratorRequest'), params.id])}"
-            redirect(action: "list")
+            redirect(action: "manage")
         }
         else {
             [collaboratorRequestInstance: collaboratorRequestInstance]

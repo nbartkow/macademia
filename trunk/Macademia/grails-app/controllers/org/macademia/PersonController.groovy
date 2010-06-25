@@ -3,7 +3,7 @@ package org.macademia
 import grails.converters.*
 import org.codehaus.groovy.grails.web.json.*
 
-class PersonController {
+class  PersonController {
 
     def personService
     def similarityService
@@ -14,6 +14,10 @@ class PersonController {
         List<Long> ids = new ArrayList<Long>(Person.findAll().collect({it.id}))
         long id = ids[r.nextInt(ids.size())]
         redirect(uri: "/person/jit/#/?nodeId=p_${id}&navVisibility=true&navFunction=search&institutions=all")
+//        if (authenticatedUser){
+//            def user = authenticatedUser
+//            [user:user]
+//        }
     }
 
 

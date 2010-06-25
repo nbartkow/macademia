@@ -13,6 +13,7 @@ class Interest implements Comparable {
     static constraints = {
         normalizedText(unique: true)
         lastAnalyzed(nullable : true)
+        requests(nullable: true)
     }
 
     static belongsTo = [Person, CollaboratorRequest]

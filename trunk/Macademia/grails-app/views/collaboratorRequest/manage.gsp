@@ -5,15 +5,15 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'collaboratorRequest.label', default: 'CollaboratorRequest')}" />
-        <title><g:message code="default.list.label" args="[entityName]" /></title>
+        <title><g:message code="default.list.label" args="[user.profile.fullName]" /></title>
     </head>
-    <body>
+    <body id = main>
         <div class="nav">
-            <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
-            <span class="menuButton"><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></span>
+            <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="Return to Macademia"/></a></span>
+            <span class="menuButton"><g:link class="create" action="create"><g:message code="Request for collaborators" args="[entityName]" /></g:link></span>
         </div>
         <div class="body">
-            <h1><g:message code="default.list.label" args="[entityName]" /></h1>
+            <h1><g:message code="Viewing collaborator requests of ${user.profile.fullName}" /></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
@@ -37,7 +37,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <g:each in="${collaboratorRequestInstanceList}" status="i" var="collaboratorRequestInstance">
+                    <g:each in="${collaboratorRequestList}" status="i" var="collaboratorRequestInstance">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                         
                             <td><g:link action="show" id="${collaboratorRequestInstance.id}">${fieldValue(bean: collaboratorRequestInstance, field: "id")}</g:link></td>
