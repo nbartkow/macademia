@@ -2,77 +2,102 @@ package org.macademia
 
 import edu.macalester.acs.AutocompleteTree
 import edu.macalester.acs.AutocompleteEntry
+import org.hibernate.event.PostInsertEventListener
+import org.hibernate.event.PostInsertEvent
+import org.hibernate.SessionFactory
 
 /**
  * Created by IntelliJ IDEA.
- * User: equeirosnunes
- * Date: Jun 3, 2010
- * Time: 3:24:04 PM
+ * User: equeirosnunes, shilad
  * This is a wrapper for the autocomplete plugin
  */
-class AutoCompleteService {
+class AutoCompleteService implements PostInsertEventListener {
 
-  //this is the maximum number of autocomplete results
-  static int MAX_NUMBER_RES = 10
-  AutocompleteTree<String, Person> personTree = new AutocompleteTree<String, Person>()
-  AutocompleteTree<String,Institution> institutionTree = new  AutocompleteTree<String,Institution>()
-  AutocompleteTree<String,Interest> interestTree = new  AutocompleteTree<String,Interest>()
+    //this is the maximum number of autocomplete results
+    static int MAX_NUMBER_RES = 10
+    AutocompleteTree<Long, NamedEntity> personTree = new AutocompleteTree<Long, NamedEntity>()
+    AutocompleteTree<Long, NamedEntity> institutionTree = new AutocompleteTree<Long, NamedEntity>()
+    AutocompleteTree<Long, NamedEntity> interestTree = new AutocompleteTree<Long, NamedEntity>()
+    SessionFactory sessionFactory
 
-  // creates a tree for person class
-  def addPerson(Person person){
-
-    personTree.add(person.email,person)
-
-  }
-
-  //creates and autocomplete  tree for intitutions
-  def addInstitution(Institution institution){
-    institutionTree.add(institution.emailDomain, institution)
-  }
-
-  def addInterest(Interest interest){
-    interestTree.add(interest.normalizedText, interest)
-
-  }
-
-  def getPersonAutocomplete(String query,int MAX_NUMBER_RES){
-    // Returns the top three cities that start with "ch" ordered by score.
-    List<Person> people = new ArrayList<Person> ()
-    SortedSet<AutocompleteEntry<String, Person>> results = personTree.autocomplete(query, MAX_NUMBER_RES)
-    for (AutocompleteEntry<String, Person> entry : results) {
-      people.add((Person)entry.getValue())
-      System.out.println("Person " + entry.getValue() + " with score " + entry.getScore())
+    def init() {
+        log.info("processing autocomplete people...")
+        Person.findAll().each { addPerson(it) }
+        log.info("processing autocomplete institution...")
+        Institution.findAll().each { addInstitution(it) }
+        log.info("processing autocomplete interest...")
+        Interest.findAll().each { addInterest(it) }
+        
+        sessionFactory.eventListeners.with {
+            postInsertEventListeners = addListener(sessionFactory.eventListeners.postInsertEventListeners)
+        }
     }
 
-    return people
-
-  }
-
-  def getInstitutionAutocomplete(String query,int MAX_NUMBER_RES){
-    // Returns the top three cities that start with "ch" ordered by score.
-    List<Institution> institutions = new ArrayList<Institution> ()
-    SortedSet<AutocompleteEntry<String, Institution>> results = institutionTree.autocomplete(query, MAX_NUMBER_RES)
-    for (AutocompleteEntry<String, Institution> entry : results) {
-      institutions.add((Institution)entry.getValue())
-      System.out.println("Institution " + entry.getValue() + " with score " + entry.getScore())
+    Object[] addListener(final Object[] array) {
+        def size = array?.length ?: 0
+        def expanded = new Object[size + 1]
+        if (array) {
+            System.arraycopy(array, 0, expanded, 0, array.length)
+        }
+        expanded[-1] = this
+        return expanded
     }
 
-    return institutions
+    // creates a tree for person class
 
-  }
-
-  def getInterestAutocomplete(String query,int MAX_NUMBER_RES){
-    // Returns the top three cities that start with "ch" ordered by score.
-    List<Interest> interests = new ArrayList<Interest> ()
-    SortedSet<AutocompleteEntry<String, Interest>> results = interestTree.autocomplete(query, MAX_NUMBER_RES)
-    for (AutocompleteEntry<String, Interest> entry : results) {
-      interests.add((Interest)entry.getValue())
-      System.out.println("Interest " + entry.getValue() + " with score " + entry.getScore())
+    void onPostInsert(PostInsertEvent postInsertEvent) {
+        Object entity = postInsertEvent.getEntity()
+        println("got onPostInsert for " + entity)
+        if (Person.isInstance(entity)) {
+            addPerson(entity)
+        }
+        if (Institution.isInstance(entity)) {
+            addInstitution(entity)
+        }
+        if (Interest.isInstance(entity)) {
+            addInterest(entity)
+        }
     }
 
-    return interests
+    def addPerson = { person ->
+            personTree.add(person.id, new NamedEntity(person.id, person.fullName))
+    }
+    def addInstitution = { institution ->
+            institutionTree.add(institution.id, new NamedEntity(institution.id, institution.name))
+    }
+    def addInterest = { interest ->
+            interestTree.add(interest.id, new NamedEntity(interest.id, interest.text))
+    }
 
-  }
+    Collection<NamedEntity> getPersonAutocomplete(String query, int maxResults) {
+        // Returns the top three cities that start with "ch" ordered by score.
+        List<NamedEntity> people = new ArrayList<NamedEntity>()
+        SortedSet<AutocompleteEntry<Long, NamedEntity>> results = personTree.autocomplete(query, maxResults)
+        for (AutocompleteEntry<Long, NamedEntity> entry: results) {
+            people.add((NamedEntity) entry.getValue())
+        }
+        return people
+    }
+
+    Collection<NamedEntity> getInstitutionAutocomplete(String query, int maxResults) {
+        // Returns the top three cities that start with "ch" ordered by score.
+        List<NamedEntity> institutions = new ArrayList<NamedEntity>()
+        SortedSet<AutocompleteEntry<Long, NamedEntity>> results = institutionTree.autocomplete(query, maxResults)
+        for (AutocompleteEntry<Long, NamedEntity> entry: results) {
+            institutions.add((NamedEntity) entry.getValue())
+        }
+        return institutions
+    }
+
+    Collection<NamedEntity> getInterestAutocomplete(String query, int maxResults) {
+        // Returns the top three cities that start with "ch" ordered by score.
+        List<NamedEntity> interests = new ArrayList<NamedEntity>()
+        SortedSet<AutocompleteEntry<Long, NamedEntity>> results = interestTree.autocomplete(query, maxResults)
+        for (AutocompleteEntry<Long, NamedEntity> entry: results) {
+            interests.add((NamedEntity) entry.getValue())
+        }
+        return interests
+    }
 }
 
 

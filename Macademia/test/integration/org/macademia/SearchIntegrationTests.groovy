@@ -5,7 +5,6 @@ import grails.test.*
 class SearchIntegrationTests extends GrailsUnitTestCase {
     def searchService
     def personService
-    def autoCompleteService
     def searchableService
     def collaboratorRequestService
     def databaseService
@@ -30,8 +29,6 @@ class SearchIntegrationTests extends GrailsUnitTestCase {
         assertNotNull(shilad)
         assertNotNull(arjun)
         assertNotNull(dianna)
-        autoCompleteService.addPerson(shilad)
-        assertEquals(autoCompleteService.getPersonAutocomplete("sh", 1).size(), 1)
         def people = searchService.searchPeople("shilad")
         assertEquals(people.size(), 1)
         assertEquals(people[0], shilad)
@@ -49,11 +46,6 @@ class SearchIntegrationTests extends GrailsUnitTestCase {
         assertEquals(interests.size(), 0)
         interests = searchService.searchInterests("web20")
         assertEquals(interests.size(), 1)
-        for (Interest interest: interests) {
-            autoCompleteService.addInterest(interest)
-        }
-        assertEquals(autoCompleteService.getInterestAutocomplete("web", 2).size(), 1)
-
         interests = searchService.searchInterests("psychology")
 
         assertEquals(interests.size(), 5)
@@ -66,8 +58,6 @@ class SearchIntegrationTests extends GrailsUnitTestCase {
         }
         def institutions = searchService.searchInstitutions("macalester")
         assertEquals(institutions.size(), 1)
-        autoCompleteService.addInstitution(institution)
-        assertEquals(autoCompleteService.getInstitutionAutocomplete("mac", 2).size(), 1)
 
     }
     

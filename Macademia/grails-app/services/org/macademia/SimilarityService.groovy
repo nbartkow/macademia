@@ -40,6 +40,7 @@ class SimilarityService {
     def interestService
     def collaboratorRequestService
     def databaseService
+    def sessionFactory
 
     def buildInterestRelations() {
         log.info("deleting existing interest relations")
@@ -121,7 +122,7 @@ class SimilarityService {
                 if (count % 50 == 0) {
                     //log.info("Cleaning up Gorm at interest relation $count for interest ${i}")
                     log.info("Cleaning up Gorm at interest relation $count")
-                    cleanUpGorm()
+                    Utils.cleanUpGorm(sessionFactory)
                 }
             }
             newIR.each({
@@ -131,7 +132,7 @@ class SimilarityService {
                 //InterestRelation ir=new InterestRelation(first:it.second, second:it.first, similarity:it.similarity)
                 //Utils.safeSave(ir)
             })
-            cleanUpGorm()
+            Utils.cleanUpGorm(sessionFactory)
         })
         relationsBuilt = true
     }
@@ -456,12 +457,4 @@ class SimilarityService {
         return sims.getSublistTo(j)
     }
 
-    def sessionFactory
-    def propertyInstanceMap = org.codehaus.groovy.grails.plugins.DomainClassGrailsPlugin.PROPERTY_INSTANCE_MAP
-    def cleanUpGorm() {
-        def session = sessionFactory.currentSession
-        session.flush()
-        session.clear()
-        propertyInstanceMap.get().clear()
-    }
 }
