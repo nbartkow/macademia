@@ -7,7 +7,7 @@
     <div id="main">
      <n:notUser>
       <div id="account" class="btxt right">
-        <a id="loginButton" class="right">Login</a> | <a id="registerButton" class="right">Register</a>
+        <a href = "#" id="loginButton" class="right">Login</a> | <a href = "#" id="registerButton" class="right">Register</a>
       </div>
       </n:notUser>
             <div id="account" class="btxt">
