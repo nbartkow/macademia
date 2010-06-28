@@ -1,6 +1,4 @@
 import grails.util.Environment
-import org.macademia.MacademiaConstants
-import org.macademia.BlacklistRelations
 
 
 
@@ -9,7 +7,7 @@ class BootStrap {
     def populateService
     def interestRelationFilterService
     def similarityService
-    def searchableService
+    def autoCompleteService
 
     def init = { servletContext ->
         def dbDir = null
@@ -18,8 +16,7 @@ class BootStrap {
         case Environment.TEST:
             break
         case Environment.DEVELOPMENT:
-//            BlacklistRelations bl = new BlacklistRelations(MacademiaConstants.PATH_SIM_ADJUSTEMENTS)
-//            similarityService.analyze(bl)
+            autoCompleteService.init()
             break
         default:
             assert(false)

@@ -16,8 +16,6 @@ class PopulateService {
     def databaseService
 
     def sessionFactory
-    def propertyInstanceMap = org.codehaus.groovy.grails.plugins.DomainClassGrailsPlugin.PROPERTY_INSTANCE_MAP
-
 
     boolean transactional = true
 
@@ -140,7 +138,7 @@ class PopulateService {
 //            }
             if (i++ % 1000 == 0) {
                 log.error("processing similarity " + i);
-                cleanUpGorm()
+                Utils.cleanUpGorm(sessionFactory)
 
             }
             String[] tokens = line.trim().split("\t")
@@ -170,12 +168,4 @@ class PopulateService {
         }
         log.error("Read ${InterestRelation.count()} interest relationships (including mirror images)")
     }
-
-    def cleanUpGorm() {
-        def session = sessionFactory.currentSession
-        session.flush()
-        session.clear()
-        propertyInstanceMap.get().clear()
-    }
-
 }

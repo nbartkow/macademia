@@ -2,6 +2,7 @@ package org.macademia
 
 import grails.util.Environment
 import org.apache.log4j.Logger
+import org.hibernate.SessionFactory
 
 /**
  * Utility methods
@@ -20,5 +21,13 @@ class Utils {
             }
             throw new RuntimeException("save of " + o + " failed")
         }
+    }
+    
+    static def propertyInstanceMap = org.codehaus.groovy.grails.plugins.DomainClassGrailsPlugin.PROPERTY_INSTANCE_MAP
+    public static void cleanUpGorm(Object sessionFactory) {
+        def session = sessionFactory.currentSession
+        session.flush()
+        session.clear()
+        propertyInstanceMap.get().clear()
     }
 }
