@@ -14,7 +14,7 @@
 <div class="searchHeader">Matching <b>people:</b></div>
 <g:each in="${people}" var="p">
     <li>
-      <g:link url = "#/?nodeId=p_${p.id}&navFunction=profile&personId=${p.id}&searchBox=">${p.fullName}</g:link>
+      <g:link url = "#/?nodeId=p_${p.id}&navFunction=person&personId=${p.id}&searchBox=">${p.fullName}</g:link>
     </li>
 </g:each>
 </g:if>

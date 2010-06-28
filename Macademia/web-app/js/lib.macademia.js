@@ -14,13 +14,10 @@ macademia.pageLoad = function() {
     macademia.showHide();
     macademia.initiateGraph();
     macademia.nav();
-
-
 };
 //sets macademia.queryString values and initial page settings
 macademia.initialSettings = function(){
         $("#show").hide();
-        $('#searchResults').empty();
         if($.address.parameter('nodeId')){
             macademia.queryString.nodeId = $.address.parameter('nodeId');
         }else{
@@ -99,25 +96,13 @@ macademia.navInfovis = function(node) {
     var rootId = node.id;
     var type = macademia.getType(rootId);
     $.address.parameter('nodeId', rootId);
-    if (type == 'person' && $.address.parameter('navFunction') != 'profile') {
-        $.address.parameter('navFunction','profile');
+    if (type == 'person' && $.address.parameter('navFunction') != 'person') {
+        $.address.parameter('navFunction','person');
     } else if (type == 'interest' && $.address.parameter('navFunction') != 'interest') {
         $.address.parameter('navFunction','interest');
     }
-    macademia.sortParameters(type,rootId.substr(2));
+    $.address.parameter(type + "Id",rootId.substr(2));
     $.address.update();
-};
-// removes unused parameters and updates used parameters
-macademia.sortParameters = function(type,value){
-    var queries = ['searchBox','interestId','personId','requestId'];
-    for(var i = 0; i < queries.length; i++){
-        if (queries[i].indexOf(type) < 0){
-            $.address.parameter(queries[i],null);
-            macademia.queryString[queries[i]] = null;
-        }else{
-            $.address.parameter(queries[i],value);
-        }
-    }
 };
 // click navigation for the rightDiv
 macademia.nav = function() {
@@ -142,7 +127,6 @@ macademia.nav = function() {
             } else {
                 $.address.value(url);
             }
-            macademia.queryString.navFunction = 'new';
             $.address.update();
         }
     });
@@ -153,7 +137,7 @@ macademia.nav = function() {
         var search =($('#searchBox').serialize()).split('=');
         if (search[1] != 'Search+people+or+interests' && search[1] != ""){
             $.address.parameter('navFunction','search');
-            macademia.sortParameters('search',search[1]);
+            $.address.parameter('searchBox',search[1]);
             $.address.update();
         }
         else {
@@ -304,35 +288,75 @@ macademia.createInstitutionString = function(collegeArray) {
 };
 // controls view of right nav (incomplete)
 macademia.updateNav = function(){
-     //$('#rightContent').empty();
      var navFunction = $.address.parameter('navFunction');
-     if (navFunction == 'search' /*and search page is not visible*/){
+     macademia.sortParameters(navFunction);
+     if ($("#instruct_list").is(":visible")){
+        macademia.clearInstructions();
+     }
+     if (navFunction == 'search'){
          macademia.submitSearch();
          // go to search page
-     }else if (navFunction == 'profile' /*and profile page is not visible*/){
+     }else if (navFunction == 'person'){
          var rootId = $.address.parameter('nodeId');
-         document.getElementById('rightContent').innerHTML = '<p>to show user profile</p>';
-     }else if (navFunction == 'request' /*and request page is not visible*/){
+         document.getElementById('personIdDiv').innerHTML = '<p>to show user profile</p>';
+     }else if (navFunction == 'request'){
          var rootId = $.address.parameter('nodeId');
-         document.getElementById('rightContent').innerHTML = '<p>to show collaboration request page</p>';
-     }else if (navFunction == 'interest' /*and interest page is not visible*/){
+         document.getElementById('requestIdDiv').innerHTML = '<p>to show collaboration request page</p>';
+     }else if (navFunction == 'interest'){
          var rootId = $.address.parameter('nodeId');
-         document.getElementById('rightContent').innerHTML = '<p>to show interest page</p>';
+         document.getElementById('interestIdDiv').innerHTML = '<p>to show interest page</p>';
      }//else if etc...
      macademia.queryString.navFunction = navFunction;
 };
+// removes unused parameters and updates used parameters
+macademia.sortParameters = function(type,value){
+    var queries = ['searchBox','interestId','personId','requestId'];
+    for(var i = 0; i < queries.length; i++){
+        if (queries[i].indexOf(type) < 0){
+            if ($.address.parameter(queries[i]) || macademia.queryString[queries[i]]){
+                $.address.parameter(queries[i],null);
+                macademia.queryString[queries[i]] = null;
+            }
+            var divName = "#" + queries[i] + "Div";
+            if ($(divName).is(":visible")){
+                $(divName).hide();
+            }
+        }else{
+            var divName = "#" + queries[i] + "Div";
+            if (value){
+                $.address.parameter(queries[i],value);
+            }
+            if ($.address.parameter(queries[i])){
+                if (!$(divName).is(":visible")){
+                    $(divName).show();
+                }
+            }else{
+                if ($(divName).is(":visible")){
+                    $(divName).hide();
+                }
+            }
+
+        }
+    }
+};
+// clears the instructions after the page has been changed by user (or if user enters exact url)
+macademia.clearInstructions = function(){
+    if($.address.parameter('searchBox') || $.address.parameter('personId') || $.address.parameter('interestId') || $.address.parameter('requestId')){
+        $("#instruct_list").hide();
+    }
+}
 // submits the search query from the url
 macademia.submitSearch = function(){
     if(($.address.parameter('searchBox') != macademia.queryString.searchBox || $('#searchResults').is(':empty')) && ($.address.parameter('searchBox') != undefined || macademia.queryString.searchBox != null)){
         if($.address.parameter('searchBox') != undefined){
             var searchBox = $.address.parameter('searchBox');
             var search = searchBox.replace('+', ' ');
-            $('#rightContent').load(
+            $('#searchBoxDiv').load(
                 '/Macademia/search/search',
                 {searchBox:search}
             );
         }else{
-            $('#rightContent').empty();
+            $('#searchBoxDiv').empty();
         }
         macademia.queryString.searchBox = searchBox;
     }

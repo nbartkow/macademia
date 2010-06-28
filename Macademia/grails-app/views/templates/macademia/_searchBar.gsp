@@ -18,7 +18,7 @@
           url="[action:'search', controller:'search']"
           update="rightContent">
     <br>--%>
-  <form method="POST" action="#" id="searchForm" name="searchForm" update="rightContent">
+  <form method="POST" action="#" id="searchForm" name="searchForm" update="searchBoxDiv">
     <input type="text" id="searchBox" name="searchBox" class="clearDefault" value="Search people or interests"/>
     <input type="submit" id="searchSubmitButton" value="Search"/>
   </form>
@@ -26,7 +26,4 @@
 </div>
 <div id="collegeFilterButton" class="center">
   <input type="submit" id="collegeFilterTrigger" value="Filter by college"/>
-</div>
-<div id="searchResults">
-  &nbsp;
 </div>

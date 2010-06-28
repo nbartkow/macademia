@@ -50,15 +50,27 @@
             <b>Search</b> below for a person or interest.
           </li>
         </ul>
-
-      <g:formRemote id="" class="center"
+        <div id="searchBoxDiv">
+          &nbsp;
+        </div>
+        <div id="personIdDiv">
+          &nbsp;
+        </div>
+        <div id="interestIdDiv">
+          &nbsp;
+        </div>
+        <div id="requestIdDiv">
+          &nbsp;
+          <g:formRemote id="" class="center"
               name="a"
               url="[action:'show', controller:'collaboratorRequest', id:'1']"
-              update="rightContent">
-        <br/>
-        <input type="submit" id=id value="Collaborator Request View">
+              update="requestDiv">
+            <br>
+            <input type="submit" id=id value="Collaborator Request View">
 
-      </g:formRemote>
+          </g:formRemote>
+        </div>
+
 
       </div>
 
