@@ -35,15 +35,7 @@ macademia.initialSettings = function(){
         }else{
             $.address.parameter('institutions',macademia.queryString.institutions)
         }
-        if($.address.parameter('searchBox')){
-            macademia.queryString.searchBox = $.address.parameter('searchBox');
-        }if($.address.parameter('interestId')){
-            macademia.queryString.interestId = $.address.parameter('interestId');
-        }if($.address.parameter('personId')){
-            macademia.queryString.personId = $.address.parameter('personId');
-        }if($.address.parameter('requestId')){
-            macademia.queryString.requestId = $.address.parameter('requestId');
-        }
+        macademia.sortParameters(macademia.queryString.navFunction)
         $.address.update();
 };
 //calls the init function in jitConfig
@@ -101,7 +93,7 @@ macademia.navInfovis = function(node) {
     } else if (type == 'interest' && $.address.parameter('navFunction') != 'interest') {
         $.address.parameter('navFunction','interest');
     }
-    $.address.parameter(type + "Id",rootId.substr(2));
+    macademia.sortParameters(type,rootId.substr(2));
     $.address.update();
 };
 // click navigation for the rightDiv
@@ -127,6 +119,7 @@ macademia.nav = function() {
             } else {
                 $.address.value(url);
             }
+            macademia.sortParameters($.address.parameter('navFunction'));
             $.address.update();
         }
     });
@@ -137,7 +130,7 @@ macademia.nav = function() {
         var search =($('#searchBox').serialize()).split('=');
         if (search[1] != 'Search+people+or+interests' && search[1] != ""){
             $.address.parameter('navFunction','search');
-            $.address.parameter('searchBox',search[1]);
+            macademia.sortParameters('search',search[1]);
             $.address.update();
         }
         else {
@@ -289,7 +282,6 @@ macademia.createInstitutionString = function(collegeArray) {
 // controls view of right nav (incomplete)
 macademia.updateNav = function(){
      var navFunction = $.address.parameter('navFunction');
-     macademia.sortParameters(navFunction);
      if ($("#instruct_list").is(":visible")){
         macademia.clearInstructions();
      }
