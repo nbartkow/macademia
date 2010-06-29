@@ -27,7 +27,7 @@ class AutoCompleteServiceIntegrationTests extends GrailsUnitTestCase {
     }
 
     void testSimple() {
-        Collection<NamedEntity> results = autoCompleteService.getInterestAutocomplete('web', 5)
+        Collection<AutocompleteEntity> results = autoCompleteService.getInterestAutocomplete('web', 5)
         assertEquals(1, results.size())
         //There is some problem with normalize text for the space character
         Interest interest = new Interest("web 3.0")
