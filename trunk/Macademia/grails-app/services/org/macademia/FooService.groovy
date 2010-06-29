@@ -11,7 +11,7 @@ import org.hibernate.SessionFactory
  * User: equeirosnunes, shilad
  * This is a wrapper for the autocomplete plugin
  */
-class AutoCompleteService implements PostInsertEventListener {
+class FooService implements PostInsertEventListener {
 
     //this is the maximum number of autocomplete results
     static int MAX_NUMBER_RES = 10
