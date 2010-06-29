@@ -14,7 +14,7 @@ This is how I did it and it seems to work. You may have to wrestle some bugs aft
     defaults write com.apple.finder AppleShowAllFiles -bool false
   and then restarting Finder again.
   * Open the grails-1.3.2 zip file in the downloads folder on the dock, which will unzip it.
-  * When you open IntelliJ, right click on Macademia and choose 'Upgrade Grails.' Select a new SDK and find grails-1.3.2 in your downloads folder.  Have it create a global grails library as opposed to a project one.
+  * When you open IntelliJ, right click on Macademia and choose 'Upgrade Grails.' Select a new SDK and find grails-1.3.2 in your downloads folder.  Have it create a global grails library as opposed to a project one. You may want to restart InelliJ again now.
   * Then you can do the tools > run grails target, "upgrade" thing to be safe.
 
 
