@@ -6,58 +6,43 @@ macademia.distance = 150;
 
 macademia.makeJsonUrl = function(type, id) {
     return "/Macademia/" + type + "/json/" + id;
-}
+};
 
 
 macademia.checkBrowser = function() {
     if (!$.browser.mozilla && !$.browser.safari) {
         alert('This website will not work properly on Internet Explorer.  Please use Firefox or Safari');
     }
-}
+};
 
-macademia.init = function(rootType, id) {
+macademia.init = function(rootType,id){
     macademia.checkBrowser();
 
-    if (macademia.rgraph) {
-        macademia.rgraph.fx.clearLabels(true);
+    if(macademia.rgraph){
+        $("#infovis").empty();
     }
-    
-
     macademia.rootId = id;
-    if (rootType != 'person' && rootType != 'interest') {
+    if (rootType != 'person' && rootType != 'interest' && rootType != 'request'){
         alert('unknown root type: ' + rootType);
         return false;
     }
     var json = null;
-    $.getJSON(macademia.makeJsonUrl(rootType, id), function(data) {
+    $.getJSON(macademia.makeJsonUrl(rootType,id),function(data){
         json = data;
-        if (!macademia.mycanvas) {
-            //Create a new canvas instance.
-            macademia.mycanvas = new Canvas('mycanvas', {
-                //Where to inject the canvas. Any div container will do.
-                'injectInto':'infovis',
-                //width and height for canvas. Default's to 200.
-                'width': 680,
-                'height': 660,
-                //draw in some circles to aid the visual connection of same distance nodes
-                'backgroundCanvas':{
-                    'styles':{
-                        'strokeStyle':'#6A705D'
-                    },
-                    'impl':{
-                        'init':function() {
+            macademia.rgraph = new $jit.RGraph({
+                  'injectInto': 'infovis',
+                  'width': 680,
+                  'height': 660,
+                withLabels : true,
+                levelDistance: macademia.distance,
+                background: {
+                          levelDistance: macademia.distance,
+                          numberOfCircles: 2,
+                          CanvasStyles: {
+                            strokeStyle: '#6A705D'
+                          }
                         },
-                        'plot':macademia.drawCircles
-                    }
-                }
-            });
-            // resize visual based on original dimensions
-            macademia.resizeCanvas(Math.min($("#infovis").width()));
-        }
-        
-        macademia.rgraph = new RGraph(macademia.mycanvas, {
-            interpolation : 'polar',
-            withLabels : true,
+
             Node: {
                 'overridable': true,
                 'type': 'circle',
@@ -72,12 +57,12 @@ macademia.init = function(rootType, id) {
             interpolation: 'polar',
             //parent-children distance
 
-            levelDistance: macademia.distance,
+
             //Set node/edge styles
 
             onPlaceLabel: function(domElement, node) {
                 //alert('here 1');
-                $(domElement).attr('alt','/Macademia/'+node.data.type+'/tooltip/'+node.data.unmodifiedId);                
+                $(domElement).attr('alt','/Macademia/'+node.data.type+'/tooltip/'+node.data.unmodifiedId);
                 var d = $(domElement);
                 var left = parseInt(d.css('left'));
 
@@ -183,19 +168,20 @@ macademia.init = function(rootType, id) {
                             hideLabels:false,
                             onComplete:function(){
                                 //macademia.updateSidebar(rgraph.graph.getNode(rgraph.root));
-                                
+
                             }
                         });
                     });
                 }
                 macademia.nextNode = null;
             }
-            
+
         });
         //load tree from tree data.
         macademia.rgraph.loadJSON(json);
         //compute positions and plot
-        macademia.rgraph.refresh();
+        macademia.resizeCanvas($("#infovis").width());
         // $('#infovis').draggable();
-    });
-}
+        
+    })
+};
