@@ -4,11 +4,11 @@ package org.macademia;
  * A named entity for the autocompleter.
  * @author Shilad
  */
-public class NamedEntity {
+public class AutocompleteEntity {
     private long id;
     private String name;
 
-    public NamedEntity(long id, String name) {
+    public AutocompleteEntity(long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -31,7 +31,7 @@ public class NamedEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        NamedEntity that = (NamedEntity) o;
+        AutocompleteEntity that = (AutocompleteEntity) o;
 
         if (id != that.id) return false;
 
