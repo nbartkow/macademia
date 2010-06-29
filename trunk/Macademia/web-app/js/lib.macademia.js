@@ -107,7 +107,7 @@ macademia.nav = function() {
         macademia.changeGraph();
     });
     $(window).resize(function() {
-        if (macademia.mycanvas) {
+        if (macademia.rgraph) {
             macademia.resizeCanvas($("#infovis").width());
         }
     });
@@ -164,12 +164,12 @@ macademia.showHide = function() {
                 $("#show").hide();
             });
             // resize visual
-            if (macademia.mycanvas) {
+            if (macademia.rgraph) {
                 macademia.resizeCanvas($("body").width() - 320);
             }
         } else if (navVisibility == 'false' && $("#wrapper").is(":visible")) {
             $("#rightDiv > *").hide();
-            if (macademia.mycanvas) {
+            if (macademia.rgraph) {
                 $("#rightDiv").animate({width: "0"}, "slow");
                 $("#infovis").animate({right: "0"}, "slow");
             } else {
@@ -179,7 +179,7 @@ macademia.showHide = function() {
             }
             $("#show").show();
             // resize visual
-            if (macademia.mycanvas) {
+            if (macademia.rgraph) {
                 macademia.resizeCanvas($("body").width());
             }
         }
@@ -191,9 +191,10 @@ macademia.changeGraph = function(nodeId){
     if ($.address.parameter('nodeId') != macademia.queryString.nodeId) {
         if (macademia.rgraph){
               var param = $.address.parameter('nodeId');
-              if (macademia.rgraph.graph.getNode(param).data) {
+              if (macademia.rgraph.graph.getNode(param)) {
               // if the node is on the current graph
                 macademia.rgraph.onClick(param);
+                //macademia.rgraph.refresh();
               }else{
                   macademia.initiateGraph();
               }
@@ -203,9 +204,9 @@ macademia.changeGraph = function(nodeId){
 };
 // resizes canvas according to original dimensions
 macademia.resizeCanvas = function(currentWidth) {
-    if ($("#mycanvas").css('margin') != 'auto') {
-        $("#mycanvas").css('margin', 'auto');
-        $('#mycanvas-canvas, #mycanvas-bkcanvas, #mycanvas-label').css('position','fixed');
+    if ($("#infovis-canvaswidget").css('margin') != 'auto') {
+        $("#infovis-canvaswidget").css('margin', 'auto');
+        $('#infovis-canvas, #infovis-bkcanvas, #infovis-label').css('position','fixed');
     }
     var originalWidth = 680;
     var originalHeight = 660;
@@ -218,14 +219,14 @@ macademia.resizeCanvas = function(currentWidth) {
         var newHeight = 0.95 * currentHeight;
         var newWidth = originalWidth * newHeight / originalHeight;
     }
-    if (newWidth != $("mycanvas").css("width")) {
-        $("#mycanvas").css({"width":newWidth, "height": newHeight});
-        macademia.distance = originalDistance / originalHeight * newHeight;
-        macademia.mycanvas.resize(currentWidth, currentHeight);
-        if (macademia.rgraph) {
-            macademia.rgraph.config.levelDistance = macademia.distance;
-            macademia.rgraph.refresh();
-        }
+    if (newWidth != $("#infovis-canvaswidget").css("width")) {
+        $("#infovis-canvaswidget").css({"width":newWidth, "height": newHeight});
+        //macademia.distance = originalDistance / originalHeight * newHeight;
+        //macademia.rgraph.config.levelDistance = macademia.distance;
+        //macademia.rgraph.config.background.levelDistance = macademia.distance;
+        macademia.rgraph.canvas.resize(currentWidth, currentHeight);
+        macademia.rgraph.canvas.scale(newHeight/originalHeight,newWidth/originalWidth);
+        //macademia.rgraph.refresh();
     }
 };
 // changes the Query string according link's href
