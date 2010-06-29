@@ -33,7 +33,7 @@ class AutoCompleteServiceIntegrationTests extends GrailsUnitTestCase {
         Interest interest = new Interest("web 3.0")
         interestService.save(interest)
 //        Utils.cleanUpGorm(sessionFactory)
-        results = autoCompleteService.getInterestAutocomplete('web', 5)
+        results = autocompleteService.getInterestAutocomplete('web', 5)
         assertEquals(2, results.size())
     }
 
