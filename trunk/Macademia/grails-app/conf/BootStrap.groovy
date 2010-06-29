@@ -7,7 +7,7 @@ class BootStrap {
     def populateService
     def interestRelationFilterService
     def similarityService
-    def autoCompleteService
+    def autocompleteService
 
     def init = { servletContext ->
         def dbDir = null
@@ -16,7 +16,7 @@ class BootStrap {
         case Environment.TEST:
             break
         case Environment.DEVELOPMENT:
-            autoCompleteService.init()
+            autocompleteService.init()
             break
         default:
             assert(false)
