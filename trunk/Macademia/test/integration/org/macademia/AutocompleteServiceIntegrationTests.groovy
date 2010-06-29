@@ -6,7 +6,7 @@ import grails.test.GrailsUnitTestCase
  * Authors: Shilad
  */
 
-class FooServiceIntegrationTests extends GrailsUnitTestCase {
+class AutocompleteServiceIntegrationTests extends GrailsUnitTestCase {
     def interestService
     def sessionFactory
     def databaseService
