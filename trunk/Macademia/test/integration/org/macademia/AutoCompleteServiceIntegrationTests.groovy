@@ -17,7 +17,7 @@ class AutoCompleteServiceIntegrationTests extends GrailsUnitTestCase {
         super.setUp()
         databaseService.switchToCopyDB("test")
         similarityService.relationsBuilt = true
-        autoCompleteService.init()
+        autocompleteService.init()
     }
 
     protected void tearDown() {
