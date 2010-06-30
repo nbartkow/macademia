@@ -7,10 +7,12 @@ package org.macademia;
 public class AutocompleteEntity {
     private long id;
     private String name;
+    private Class klass;
 
-    public AutocompleteEntity(long id, String name) {
+    public AutocompleteEntity(long id, String name, Class klass) {
         this.id = id;
         this.name = name;
+        this.klass = klass;
     }
 
     public String getName() {
@@ -19,6 +21,10 @@ public class AutocompleteEntity {
 
     public long getId() {
         return id;
+    }
+
+    public Class getKlass() {
+        return klass;
     }
 
     @Override
