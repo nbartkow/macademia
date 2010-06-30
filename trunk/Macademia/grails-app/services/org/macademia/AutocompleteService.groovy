@@ -18,6 +18,7 @@ class AutocompleteService implements PostInsertEventListener {
     AutocompleteTree<Long, AutocompleteEntity> personTree = new AutocompleteTree<Long, AutocompleteEntity>()
     AutocompleteTree<Long, AutocompleteEntity> institutionTree = new AutocompleteTree<Long, AutocompleteEntity>()
     AutocompleteTree<Long, AutocompleteEntity> interestTree = new AutocompleteTree<Long, AutocompleteEntity>()
+    AutocompleteTree<Long, AutocompleteEntity> overallTree = new AutocompleteTree<Long, AutocompleteEntity>()
     SessionFactory sessionFactory
 
     def init() {
@@ -60,13 +61,19 @@ class AutocompleteService implements PostInsertEventListener {
     }
 
     def addPerson = { person ->
-            personTree.add(person.id, new AutocompleteEntity(person.id, person.fullName))
+        def entity = new AutocompleteEntity(person.id, person.fullName, Person.class)
+        overallTree.add(person.id, entity)
+        personTree.add(person.id, entity)
     }
     def addInstitution = { institution ->
-            institutionTree.add(institution.id, new AutocompleteEntity(institution.id, institution.name))
+        def entity = new AutocompleteEntity(institution.id, institution.name, Institution.class)
+//        overallTree.add(institution.id, entity)
+        institutionTree.add(institution.id, entity)
     }
     def addInterest = { interest ->
-            interestTree.add(interest.id, new AutocompleteEntity(interest.id, interest.text))
+        def entity = new AutocompleteEntity(interest.id, interest.text, Interest.class)
+        overallTree.add(interest.id, entity)
+        interestTree.add(interest.id, entity)
     }
 
     Collection<AutocompleteEntity> getPersonAutocomplete(String query, int maxResults) {
@@ -97,6 +104,18 @@ class AutocompleteService implements PostInsertEventListener {
             interests.add((AutocompleteEntity) entry.getValue())
         }
         return interests
+    }
+    Map<Class, Collection<AutocompleteEntity>> getOverallAutocomplete(String query, int maxResults) {
+        Map<Class, Collection<AutocompleteEntity>> result = [:]
+        SortedSet<AutocompleteEntry<Long, AutocompleteEntity>> results = overallTree.autocomplete(query, maxResults)
+        for (AutocompleteEntry<Long, AutocompleteEntity> entry: results) {
+            AutocompleteEntity entity = entry.getValue()
+            if (!result.containsKey(entity.getKlass())) {
+                result[entity.getKlass()] = []
+            }
+            result[entity.getKlass()].add(entity)
+        }
+        return result
     }
 }
 
