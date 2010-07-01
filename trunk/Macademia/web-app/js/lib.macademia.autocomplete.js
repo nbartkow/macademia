@@ -51,7 +51,6 @@ $().ready(
                 {
                     multiple : false,
                     select : function (event, ui) {
-                        console.log("ui.item.data is " + ui.item.data);
                         var id = ui.item.data[0];
                         var name = ui.item.data[1];
                         var type = ui.item.data[2];
