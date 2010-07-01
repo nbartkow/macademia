@@ -12,6 +12,9 @@ class CollaboratorRequest {
     static hasMany = [keywords : Interest]
     static searchable = [only: ['title', 'description']]
     Person creator
+    static mapping = {
+        description type:'text'
+    }
     
     public String toString() {
         return "$title ($creator?.fullName)"
