@@ -73,7 +73,8 @@ environments {
 	}
     benchmark {
 		dataSource {
-			dbCreate = "update" // one of 'create', 'create-drop','update'
+			dbCreate = "update" // one of 'create', 'create-drop','update'              
+            mongoDbName = "benchmark"
 
             pooled = false
             url = "jdbc:postgresql://poliwiki.macalester.edu:5432/macademia_bench"
@@ -81,12 +82,13 @@ environments {
             username = "grails"
             password = "grails"
             dialect = net.sf.hibernate.dialect.PostgreSQLDialect
-            
-            mongoDbName = "benchmark"
 		}
 	}
     populateBenchmark{
 		dataSource {
+			dbCreate = "update" // one of 'create', 'create-drop','update'
+            monogDbName = "benchmark"
+            
             pooled = false
 
             url = "jdbc:postgresql://poliwiki.macalester.edu:5432/macademia_bench"
@@ -94,9 +96,7 @@ environments {
             username = "grails"
             password = "grails"
             dialect = net.sf.hibernate.dialect.PostgreSQLDialect
-            
-			dbCreate = "update" // one of 'create', 'create-drop','update'
-            monogDbName = "benchmark"
+
 		}
 	}
 }
