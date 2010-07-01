@@ -83,6 +83,7 @@ macademia.clearSearch = function() {
         }
     });
 };
+
 // changes the address when a node is clicked
 macademia.navInfovis = function(node) {
     var rootId = node.id;
@@ -96,6 +97,8 @@ macademia.navInfovis = function(node) {
     macademia.sortParameters(type,rootId.substr(2));
     $.address.update();
 };
+
+
 // click navigation for the rightDiv
 macademia.nav = function() {
     macademia.modalLogin();
@@ -113,7 +116,7 @@ macademia.nav = function() {
     });
     $("a").address(function() {
         var url = $(this).attr('href');
-        if (url.length > 1) {
+        if (url && url.length > 1) {
             if (url.indexOf("#") == 0) {
                 macademia.changeQueryString(url);
             } else {
@@ -354,3 +357,7 @@ macademia.submitSearch = function(){
         macademia.queryString.searchBox = searchBox;
     }
 };
+
+macademia.makeActionUrl = function(controller, action) {
+    return "/Macademia/" + controller + "/" + action;
+}
