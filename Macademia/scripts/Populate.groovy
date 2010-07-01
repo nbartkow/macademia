@@ -48,7 +48,11 @@ target ('main': "Load the Grails interactive shell") {
 
     session.connection().commit()
     def statement = session.connection().createStatement();
-    statement.execute("SHUTDOWN;")
+    try {
+	statement.execute("SHUTDOWN;")
+    } catch (Exception e) {
+	    System.err.println("shutdown failed (this is okay on postgres)")
+    }
     session.close();
 
 }
