@@ -1,5 +1,7 @@
 package org.macademia
 
+import grails.converters.JSON
+
 class AutocompleteController {
     def autocompleteService
 
@@ -11,24 +13,22 @@ class AutocompleteController {
         List<AutocompleteEntity> results = null
         if (params.klass) {
             if (params.klass == 'person') {
-                results = autocompleteService.getPersonAutocomplete(params.q, max)
+                results = autocompleteService.getPersonAutocomplete(params.term, max)
             } else if (params.klass == 'interest') {
-                results = autocompleteService.getInterestAutocomplete(params.q, max)
+                results = autocompleteService.getInterestAutocomplete(params.term, max)
             } else if (params.klass == 'institution') {
-                results = autocompleteService.getInstitutionAutocomplete(params.q, max)
+                results = autocompleteService.getInstitutionAutocomplete(params.term, max)
             } else {
                 throw new IllegalArgumentException("unknown klass to autocomplete: " + params.klass)
             }
         } else {
-            def resultsByClass = autocompleteService.getOverallAutocomplete(params.q, max)
+            def resultsByClass = autocompleteService.getOverallAutocomplete(params.term, max)
             results = resultsByClass.get(Person.class, []) + resultsByClass.get(Interest.class, [])
         }
 
         def responseStr = ''
         def z = { s -> s.replaceAll('\n', '') }
-        results.each {
-            responseStr += "${it.id}|${z(it.name)}\n"
-        }
-        render(responseStr)
+        def jsonResults = results.collect { ['' + it.id, z(it.name), '' + it.klass.getSimpleName().toLowerCase()]}
+        render(jsonResults as JSON)
     }
 }

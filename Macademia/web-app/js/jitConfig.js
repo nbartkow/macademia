@@ -163,8 +163,8 @@ macademia.init = function(rootType,id){
                         //zoom-tools, it could be an even more compelling visualization
                         //or...feature bloat?
                         macademia.rgraph.op.morph(data, {
-                            type:'fade',
-                            duration:1000,
+                            type:'replot',
+                            duration:100,
                             hideLabels:false,
                             onComplete:function(){
                                 //macademia.updateSidebar(rgraph.graph.getNode(rgraph.root));
