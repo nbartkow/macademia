@@ -37,7 +37,7 @@ environments {
 	populate {
 		dataSource {
 			dbCreate = "update" // one of 'create', 'create-drop','update'
-            monogDbName = "dev"
+            mongoDbName = "dev"
 
             // For hsql:
 			url = "jdbc:hsqldb:file:db/dev/full/devDb;shutdown=true"
@@ -89,7 +89,7 @@ environments {
     populateBenchmark{
 		dataSource {
 			dbCreate = "update" // one of 'create', 'create-drop','update'
-            monogDbName = "benchmark"
+            mongoDbName = "benchmark"
             
             pooled = false
 
