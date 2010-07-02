@@ -36,6 +36,9 @@ class Edge {
       }
       return interest.hashCode()*relatedInterest.hashCode()
   }
+    public String toString() {
+        return "Edge with person $person, interest $interest, collaborator request $request, and related interest $relatedInterest"
+    }
 
     public boolean hasSharedInterest(){
         return(!relatedInterest)

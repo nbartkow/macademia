@@ -11,9 +11,17 @@ class GoogleService {
     public List<String> query (String query, int maxResults) {
         if (holder.get() == null) {
             if (googleCache != null) {
-                holder.set(new Google(googleCache))
+                try {
+                    holder.set(new Google(googleCache))
+                } catch (Exception) {
+                    holder.set(new Google(googleCache))
+                }
             }   else {
-                holder.set(new Google())
+                try {
+                    holder.set(new Google())
+                } catch (Exception) {
+                    holder.set(new Google())
+                }
             }
         }
         return holder.get().query(query, maxResults)

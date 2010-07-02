@@ -7,14 +7,15 @@ import org.apache.commons.io.FileUtils
 /**
  * Deletes existing database.
  */
-["devDb.log", "devDb.properties", "devDb.script"].each({
-    File f = new File("db/dev/full/${it}")
+
+["db.log", "db.properties", "db.script"].each({
+    File f = new File("db/benchmark_backup/" + it)
     if (f.exists()) {
         f.delete()
     }
 })
 
-grailsEnv = 'populate'
+grailsEnv = 'populateBenchmark'
 
 includeTargets << grailsScript("_GrailsBootstrap")
 
@@ -36,25 +37,15 @@ target ('main': "Load the Grails interactive shell") {
     if (necessary) {
         def similarityService = appCtx.getBean('similarityService')
         similarityService.relationsBuilt = false
-        databaseService.dropCurrentDB()
+        //databaseService.dropCurrentDB()
     }
 
-    def populateService = appCtx.getBean('populateService')
-    populateService.readInstitutions(new File("db/prod/institutions.txt"))
-    populateService.readPeople(new File("db/prod/people.txt"))
-
-    if (necessary) {
-        //populateService.downloadInterestDocuments()
-        populateService.buildInterestRelations()
-    }
+   // def interestService = appCtx.getBean('interestService')
+   // def similarityService = appCtx.getBean('similarityService')
+    def benchmarkService = appCtx.getBean('benchmarkService')
+    benchmarkService.populate(new File("db/benchmark_backup/testPeople.txt"), false)
 
     session.connection().commit()
-    def statement = session.connection().createStatement();
-    try {
-	statement.execute("SHUTDOWN;")
-    } catch (Exception e) {
-	    System.err.println("shutdown failed (this is okay on postgres)")
-    }
     session.close();
 
 }

@@ -1,6 +1,7 @@
 package org.macademia
 
 import grails.test.*
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 class JsonServiceIntegrationTests extends GrailsUnitTestCase {
     def personService
@@ -12,13 +13,13 @@ class JsonServiceIntegrationTests extends GrailsUnitTestCase {
 
     protected void setUp() {
         super.setUp()
-        databaseService.switchToCopyDB("test")
+        databaseService.switchToCopyDB((String)ConfigurationHolder.config.dataSource.mongoDbName)
     }
 
     protected void tearDown() {
         super.tearDown()
         databaseService.dropCurrentDB()
-        databaseService.changeDB("test")
+        databaseService.changeDB((String)ConfigurationHolder.config.dataSource.mongoDbName)
     }
 
     void testUserCentricGraph() {

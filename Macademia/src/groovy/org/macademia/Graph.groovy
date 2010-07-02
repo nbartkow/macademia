@@ -12,6 +12,9 @@ class Graph {
     Map<Interest,Set<Edge>> interestMap
     Map<Person, Set<Edge>> personMap
     Map<CollaboratorRequest, Set<Edge>> requestMap
+    Map<Long, Interest> interestIdMap
+    Map<Long, Person> personIdMap
+    Map<Long, CollaboratorRequest> requestIdMap
     int edges //needed for some unit tests
 
     /**
@@ -22,6 +25,10 @@ class Graph {
         interestMap=new HashMap<Interest, Set<Edge>>()
         personMap= new HashMap<Person, Set<Edge>>()
         requestMap= new HashMap<CollaboratorRequest, Set<Edge>>()
+        interestIdMap = new HashMap<Long, Interest>()
+        personIdMap = new HashMap<Long, Person>()
+        requestIdMap = new HashMap<Long, CollaboratorRequest>()
+
         edges = 0
     }
 
@@ -31,7 +38,7 @@ class Graph {
      * @param e an edge
      *
      */
-    public void addEdge(Edge e) throws IllegalArgumentException {
+    private void addEdge(Edge e) throws IllegalArgumentException {
 
 
         if (interestMap.containsKey(e.interest)) {
@@ -57,6 +64,14 @@ class Graph {
                 set.add(e)
                 personMap.put(e.person, set)
             }
+        } else if (e.request != null){
+                    if (requestMap.containsKey(e.request)) {
+                        requestMap.get(e.request).add(e)
+                    } else {
+                        HashSet<Edge> set = new HashSet()
+                        set.add(e)
+                        requestMap.put(e.request, set)
+                    }
         } else if (e.relatedInterest != null) {
             if (interestMap.containsKey(e.relatedInterest)) {
                 interestMap.get(e.relatedInterest).add(e)
@@ -65,19 +80,52 @@ class Graph {
                 set.add(e)
                 interestMap.put(e.relatedInterest, set)
             }
-        } else if (e.request != null){
-            if (requestMap.containsKey(e.request)) {
-                requestMap.get(e.request).add(e)
-            } else {
-                HashSet<Edge> set = new HashSet()
-                set.add(e)
-                requestMap.put(e.request, set)
-            }
-
         } else  {
             throw new IllegalArgumentException("Second Vertex Needed")
         }
 
+    }
+
+    public void addEdge(Long personId, Long interestId, Long relatedInterestId, Long requestId) {
+        Interest interest
+        Person person = null
+        CollaboratorRequest request = null
+        Interest relatedInterest = null
+        if (interestIdMap.containsKey(interestId)) {
+            interest = interestIdMap.get(interestId)
+        } else {
+            interest = Interest.findById(interestId)
+            interestIdMap.put(interestId, interest)
+        }
+
+        if (personId != null) {
+            if (personIdMap.containsKey(personId)) {
+                person = personIdMap.get(personId)
+            } else {
+                person = Person.findById(personId)
+                personIdMap.put(personId, person)
+            }
+        }
+
+        if (relatedInterestId != null) {
+            if (interestIdMap.containsKey(relatedInterestId)) {
+            relatedInterest = interestIdMap.get(relatedInterestId)
+        } else {
+            relatedInterest = Interest.findById(relatedInterestId)
+            interestIdMap.put(relatedInterestId, relatedInterest)
+        }
+        }
+
+        if (requestId != null) {
+            if (requestIdMap.containsKey(requestId)) {
+                request = requestIdMap.get(requestId)
+            } else {
+                request = CollaboratorRequest.findById(requestId)
+                requestIdMap.put(requestId, request)
+            }
+        }
+
+        addEdge(new Edge(interest: interest, person: person, request: request, relatedInterest: relatedInterest))
     }
 
     /**
@@ -157,6 +205,18 @@ class Graph {
      */
     public int edgeSize(){
         return edges
+    }
+
+    public boolean containsInterestId(long id) {
+        return interestIdMap.containsKey(id)
+    }
+
+    public boolean containsPersonId(long id) {
+        return personIdMap.containsKey(id)
+    }
+
+    public boolean containsRequestId(long id) {
+        return requestIdMap.containsKey(id)
     }
     /*
     public boolean containsEdge(Person person, Interest interest){
