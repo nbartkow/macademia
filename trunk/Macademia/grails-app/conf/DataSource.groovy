@@ -89,7 +89,8 @@ environments {
     populateBenchmark{
 		dataSource {
 			dbCreate = "update" // one of 'create', 'create-drop','update'
-            mongoDbName = "benchmark"
+            mongo
+            DbName = "benchmark"
             
             pooled = false
 
