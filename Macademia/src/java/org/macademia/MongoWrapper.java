@@ -33,7 +33,7 @@ public class MongoWrapper {
 
     public static final String INSTITUTION_INTERESTS ="institutionInterests";
 
-    private static final String ARTICLES_DB = "dev";
+    private static final String ARTICLES_DB = "experimental";
 
     private String dbName = null;
 
@@ -289,7 +289,7 @@ public class MongoWrapper {
     public long articleToId(String title){
         String tmpDBName=dbName;
         //we need to fix this stuff...
-        changeDB("dev");
+        changeDB(ARTICLES_DB);
         DBObject res = safeFindByName(ARTICLES_TO_IDS, title, true);
         changeDB(tmpDBName);
         if(res == null){
@@ -450,7 +450,7 @@ public class MongoWrapper {
 
     public SimilarInterestList getArticleSimilarities(long article) {
         String tmpDBName= dbName;
-        changeDB("dev");
+        changeDB(ARTICLES_DB);
         DBObject similarities = safeFindById(ARTICLE_SIMILARITIES, article, true);
         changeDB(tmpDBName);
         if (similarities == null) {
