@@ -32,6 +32,10 @@ class WikipediaService {
         return wiki
     }
 
+    public String decodeWikiUrl(String url) {
+        return getWikipedia().decodeWikiUrl(url)
+    }
+
     public void setCache(File cache){
         wikiCache=cache
         Wikipedia wiki = new Wikipedia(cache)

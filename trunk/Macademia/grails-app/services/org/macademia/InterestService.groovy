@@ -13,6 +13,7 @@ class InterestService implements ApplicationContextAware {
     def xSimilarityService
     def googleService
     def wikipediaService
+    def databaseService
 
     boolean transactional = true
 
@@ -25,24 +26,16 @@ class InterestService implements ApplicationContextAware {
         return Interest.findByNormalizedText(Interest.normalize(text))
     }
 
-    public List<InterestRelation> findSimilarities(String interest) {
+    public SimilarInterestList findSimilarities(String interest) {
         Interest i = findByText(interest)
-        return (i == null) ? [] : findSimilarities(i)
+        return (i == null) ? new SimilarInterestList() : findSimilarities(i)
     }
 
-    public List<InterestRelation> findSimilarities(Interest interest) {
-        return InterestRelation.findAllByFirst(interest)
-    }
-
-    public Map<String, Double> findSimilaritiesAsMap(String interest) {
-        Interest i = findByText(interest)
-        return (i == null) ? [:] : findSimilaritiesAsMap(i)
-    }
-
-    public Map<String, Double> findSimilaritiesAsMap(Interest interest) {
-        def res = [:]
-        findSimilarities(interest).each { res[it.second.normalizedText] = it.similarity }
-        return res
+    public SimilarInterestList findSimilarities(Interest interest) {
+        if (xSimilarityService == null) {
+              xSimilarityService = applicationContext.getBean("similarityService")
+        }
+        return xSimilarityService.getSimilarInterests(interest)
     }
 
     public void initBuildDocuments(String fileDirectory){
@@ -62,27 +55,13 @@ class InterestService implements ApplicationContextAware {
         double weight = 1.0
         for (String url : googleService.query(interest.text, 1)) {
             weight *= 0.5;
-            String url2 = wikipediaService.getCanonicalUrl(url)
-            if (!url2) {
-                log.error("canonicalizing of $url failed")
-                continue
-            }
-            Document d = Document.findByUrl(url2)
-            if (d == null) {
-                d = wikipediaService.getDocumentByUrl(url2)
-                if (!d) {
-                    log.error("retrieval of $url (canonical form is $url2) failed")
-                    continue
-                } else if (!d.save(flush : true)) {
-                    log.error("saving failed!")
-                    continue
-                }
-            }
-            InterestDocument id = new InterestDocument(document : d, weight : weight)
-            id.interest = interest
-            interest.addToDocuments(id)
+            String articleName = wikipediaService.decodeWikiUrl(url)
+            interest.articleId = databaseService.articleToId(articleName)
+            interest.articleName = articleName
+            databaseService.addInterestToArticle(interest, interest.articleId)
+            //InterestDocument id = new InterestDocument(document : d, weight : weight)
            // id.interest = interest
-            Utils.safeSave(id)
+            //Utils.safeSave(id)
             Utils.safeSave(interest)
         }
         interest.lastAnalyzed = new Date()
@@ -90,11 +69,11 @@ class InterestService implements ApplicationContextAware {
     }
 
 
-  public void save(Interest interest) {
-      if (interest.id == null) {
+    public void save(Interest interest) {
+        if (interest.id == null) {
             //no interest with text in db, new interest
             if (xSimilarityService == null) {
-              xSimilarityService = applicationContext.getBean("similarityService")
+                xSimilarityService = applicationContext.getBean("similarityService")
             }
             //must save prior to finding similar interests
             Utils.safeSave(interest)
@@ -109,7 +88,7 @@ class InterestService implements ApplicationContextAware {
           }
           Utils.safeSave(interest)
       }
-  }
+    }
 
 
 }

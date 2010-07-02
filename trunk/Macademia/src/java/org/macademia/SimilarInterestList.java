@@ -21,9 +21,13 @@ public class SimilarInterestList {
     public SimilarInterestList(String fromDB) {
         list = new ArrayList<SimilarInterest>();
         if (fromDB != null) {
-             for (String sim : fromDB.split("\\|")) {
+            for (String sim : fromDB.split("\\|")) {
+                sim = sim.replace("\"","");
                 String[] info = sim.split(",");
-                add(new SimilarInterest(Long.parseLong(info[0]), Double.parseDouble(info[1])));
+                if(info.length==2){
+                    add(new SimilarInterest(Long.parseLong(info[0]), Double.parseDouble(info[1])));
+                }
+
             }
         }
     }
@@ -32,12 +36,21 @@ public class SimilarInterestList {
         list = new ArrayList<SimilarInterest>();
         if (fromDB != null) {
             for (String sim : fromDB.split("\\|")) {
+                sim = sim.replace("\"","");
                 String[] info = sim.split(",");
-                long id = Long.parseLong(info[0]);
-                if (institutionInterests.contains(id)) {
-                    add(new SimilarInterest(id, Double.parseDouble(info[1])));
+                if(info.length==2){
+                    long id = Long.parseLong(info[0]);
+                    if (institutionInterests.contains(id)) {
+                        add(new SimilarInterest(id, Double.parseDouble(info[1])));
+                    }
                 }
             }
+        }
+    }
+
+    public void add(SimilarInterestList toAdd) {
+        for (SimilarInterest s : toAdd.list) {
+            add(s);
         }
     }
 
@@ -56,9 +69,11 @@ public class SimilarInterestList {
     }
 
     public void add(String toAdd){
-        for(String interests : toAdd.split("\\|")){
-            String[] sim=interests.split(",");
-            add(new SimilarInterest(Long.parseLong(sim[0]), Double.parseDouble(sim[1])));
+        if (toAdd.length() > 0) {
+            for(String interests : toAdd.split("\\|")){
+                String[] sim=interests.split(",");
+                add(new SimilarInterest(Long.parseLong(sim[0]), Double.parseDouble(sim[1])));
+            }
         }
     }
 

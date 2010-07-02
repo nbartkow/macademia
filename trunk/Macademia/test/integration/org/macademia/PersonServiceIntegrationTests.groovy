@@ -2,6 +2,7 @@ package org.macademia
 
 import grails.test.GrailsUnitTestCase
 import grails.plugins.nimble.InstanceGenerator
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 /**
  * Created by IntelliJ IDEA.
@@ -18,13 +19,13 @@ class PersonServiceIntegrationTests extends GrailsUnitTestCase {
     
     protected void setUp() {
         super.setUp()
-        databaseService.switchToCopyDB("test")
+        databaseService.switchToCopyDB((String)ConfigurationHolder.config.dataSource.mongoDbName)
     }
 
     protected void tearDown() {
         super.tearDown()
         databaseService.dropCurrentDB()
-        databaseService.changeDB("test")
+        databaseService.changeDB((String)ConfigurationHolder.config.dataSource.mongoDbName)
     }
 
     void testSave(){

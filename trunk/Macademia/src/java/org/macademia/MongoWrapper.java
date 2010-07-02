@@ -33,6 +33,8 @@ public class MongoWrapper {
 
     public static final String INSTITUTION_INTERESTS ="institutionInterests";
 
+    private static final String ARTICLES_DB = "dev";
+
     private String dbName = null;
 
     public MongoWrapper(Mongo mongo, String dbName){
@@ -46,6 +48,14 @@ public class MongoWrapper {
     
     public DB getDb(){
         return mongo.getDB(dbName);
+    }
+
+    public DB getDb(boolean articleDb) {
+        if (articleDb) {
+            return mongo.getDB(ARTICLES_DB);
+        } else {
+            return mongo.getDB(dbName);
+        }
     }
 
     public void copyDB(String fromDB, String dbName) {
@@ -76,7 +86,7 @@ public class MongoWrapper {
         changeDB(dbName);
     }
 
-    public DBObject findById(String collection, Long id) throws IllegalArgumentException{
+    public DBObject findById(String collection, Long id, boolean articleDb) throws IllegalArgumentException{
         DBObject searchById= new BasicDBObject("_id", id);
         DBCollection coll = getDb().getCollection(collection);
         //System.out.println("DBCollection: " + coll.toString());
@@ -90,30 +100,49 @@ public class MongoWrapper {
         return res;
     }
 
-    public DBObject safeFindById(String collection, Long id){
+    public DBObject safeFindById(String collection, Long id, boolean articleDb){
         try{
-            return findById(collection, id);
+            return findById(collection, id, articleDb);
         }   catch(IllegalArgumentException e){
             //System.out.println(e.getMessage());
             return null;
         }
     }
 
-    public void addUser(Long userId, String userInterests, Long institutionId) throws RuntimeException {
+    public DBObject findByName(String collection, String name, boolean articleDb) throws IllegalArgumentException{
+        DBObject searchByName= new BasicDBObject("_id", name);
+        DBCollection coll = getDb().getCollection(collection);
+        DBObject res = coll.findOne(searchByName);
+        if(res==null){
+            throw new IllegalArgumentException("No articles found with the name "+name);
+        }
+        return res;
+    }
+
+    public DBObject safeFindByName(String collection, String name, boolean articleDb){
+        try{
+            return findByName(collection, name, articleDb);
+        }   catch(IllegalArgumentException e){
+            //System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    public void addUser(Long userId, List<Long> userInterests, Long institutionId) throws RuntimeException {
         if(userId == null){
             throw new RuntimeException("User needs an ID");
         }
         if(institutionId == null){
             throw new RuntimeException("users institution has no ID");
         }
-        for (long i : interestStringToSet(userInterests)) {
+        for (long i : userInterests) {
             addInterestToInstitution(institutionId, i);
         }
         DBObject newUser = new BasicDBObject("_id", userId);
         //log.info(interestIds+"addUser")
         newUser.put("interests", userInterests);
         newUser.put("institution", institutionId);
-        DBObject searchById = safeFindById(USERS, userId);
+        DBObject searchById = safeFindById(USERS, userId, false);
         DBCollection users = getDb().getCollection(USERS);
         if(searchById != null){
             users.update(searchById, newUser);
@@ -126,34 +155,57 @@ public class MongoWrapper {
 
     }
 
+
     public Long getUserInstitution(long id){
-        DBObject user = safeFindById(USERS, id);
+        DBObject user = safeFindById(USERS, id, false);
         return (Long) user.get("institution");
     }
 
     public List<Long> getUserInterests(long id){
-        DBObject user = safeFindById(USERS, id);
+        DBObject user = safeFindById(USERS, id, false);
         List<Long> interests = new ArrayList<Long>();
-        String userInterests= (String) user.get(INTERESTS);
-        for(String interest : userInterests.split(",") ){
-            if (!interest.equals("")) {
-                interests.add(new Long(interest));
-            }
+        BasicDBList userInterests=(BasicDBList) user.get(INTERESTS);
+        //interests.addAll((ArrayList<Long>)(ArrayList<Object>)userInterests);
+        //interests.addAll(Arrays.asList((Long[]) userInterests.toArray()));
+        for (Object l : userInterests) {
+            interests.add((Long)l);
         }
         return interests;
     }
 
-    public void addCollaboratorRequest(long rfcId, String interests, long creatorId, long institutionId){
+    public Set<Long> getInterestUsers(long id) {
+        DBObject query = new BasicDBObject("interests", id);
+        DBCollection users = getDb(false).getCollection(USERS);
+        DBCursor cursor = users.find(query);
+        Set<Long> res = new HashSet<Long>();
+        for (DBObject user : cursor) {
+            res.add((Long)user.get("_id"));
+        }
+        return res;
+    }
+
+    public Set<Long> getInterestRequests(long id) {
+        DBObject query = new BasicDBObject("keywords", id);
+        DBCollection requests = getDb(false).getCollection(COLLABORATOR_REQUESTS);
+        DBCursor cursor = requests.find(query);
+        Set<Long> res = new HashSet<Long>();
+        for (DBObject request : cursor) {
+            res.add((Long)request.get("_id"));
+        }
+        return res;
+    }
+
+    public void addCollaboratorRequest(long rfcId, List<Long> interests, long creatorId, long institutionId){
         DBObject newRFC = new BasicDBObject("_id", rfcId);
         //log.info(interestIds+"addCollaboratorRequest")
-        for (long i : interestStringToSet(interests)) {
+        for (long i : interests) {
             addInterestToInstitution(institutionId, i);
         }
         newRFC.put("keywords", interests);
         newRFC.put("creator", creatorId);
         newRFC.put("institution", institutionId);
         DBCollection collaboratorRequests = getDb().getCollection(COLLABORATOR_REQUESTS);
-        DBObject searchById = safeFindById(COLLABORATOR_REQUESTS, rfcId);
+        DBObject searchById = safeFindById(COLLABORATOR_REQUESTS, rfcId, false);
         if(searchById !=null){
             collaboratorRequests.update(searchById, newRFC);
         }
@@ -163,7 +215,7 @@ public class MongoWrapper {
     }
 
     public Long getCollaboratorRequestInstitution(long id){
-        DBObject rfc = safeFindById(COLLABORATOR_REQUESTS, id);
+        DBObject rfc = safeFindById(COLLABORATOR_REQUESTS, id, false);
         Long institutionId;
         if(rfc == null){
             institutionId=new Long(-1);
@@ -174,20 +226,24 @@ public class MongoWrapper {
     }
 
     public Long getCollaboratorRequestCreator(long id){
-        DBObject rfc = safeFindById(COLLABORATOR_REQUESTS, id);
+        DBObject rfc = safeFindById(COLLABORATOR_REQUESTS, id, false);
         System.out.println("RFC: " + rfc.toString());
         return (Long) rfc.get("creator");
     }
 
-    public Set<Long> getCollaboratorRequestKeywords(long id){
-        DBObject rfc = safeFindById(COLLABORATOR_REQUESTS, id);
+    public Set<Long> getRequestKeywords(long id){
+        DBObject rfc = safeFindById(COLLABORATOR_REQUESTS, id, false);
         System.out.println("RFC: " + rfc.toString());
-        return interestStringToSet((String) rfc.get("keywords"));
+        Set<Long> keywords = new HashSet<Long>();
+        for(Object l :(BasicDBList)rfc.get("keywords")){
+            keywords.add((Long) l);
+        }
+        return keywords;
     }
 
     public void removeCollaboratorRequest(long id) {
         DBCollection collaboratorRequests = getDb().getCollection(COLLABORATOR_REQUESTS);
-        DBObject exists = safeFindById(COLLABORATOR_REQUESTS, id);
+        DBObject exists = safeFindById(COLLABORATOR_REQUESTS, id, false);
         collaboratorRequests.remove(exists);
     }
 
@@ -200,7 +256,7 @@ public class MongoWrapper {
     public void addToInterests(long firstId, long secondId, double similarity){
         //log.info("Similar Interest Id before added to DB: "+secondId)
         DBCollection interests = getDb().getCollection(INTERESTS);
-        DBObject i = safeFindById(INTERESTS, firstId);
+        DBObject i = safeFindById(INTERESTS, firstId, false);
         if(i == null){
             i=new BasicDBObject("_id", firstId);
             interests.insert(i);
@@ -210,7 +266,7 @@ public class MongoWrapper {
         SimilarInterestList sim = new SimilarInterestList((String)i.get("similar"));
         sim.add(new SimilarInterest(secondId, similarity));
         i.put("similar",sim.toString());
-        interests.update(safeFindById(INTERESTS, firstId),i);
+        interests.update(safeFindById(INTERESTS, firstId, false),i);
     }
 
 
@@ -221,27 +277,102 @@ public class MongoWrapper {
     */
     public void removeInterests(Long firstInterest, Long secondInterest){
         DBCollection interests = getDb().getCollection(INTERESTS);
-        DBObject i = safeFindById(INTERESTS, firstInterest);
+        DBObject i = safeFindById(INTERESTS, firstInterest, false);
         if (i != null) {
             SimilarInterestList similarInterests = new SimilarInterestList((String)i.get("similar"));
             similarInterests.remove(new SimilarInterest(secondInterest, (double)0));
             i.put("similar", similarInterests.toString());
-            interests.update(safeFindById(INTERESTS, firstInterest),i);
+            interests.update(safeFindById(INTERESTS, firstInterest, false),i);
         }
+    }
+
+    public long articleToId(String title){
+        String tmpDBName=dbName;
+        //we need to fix this stuff...
+        changeDB("dev");
+        DBObject res = safeFindByName(ARTICLES_TO_IDS, title, true);
+        changeDB(tmpDBName);
+        if(res == null){
+            System.out.println("Invalid article title no ID found");
+            return (long) -1;
+        }
+        System.out.println(res);
+        if (res.get("wpId") instanceof Integer) {
+            Long foo = ((Integer)res.get("wpId")).longValue();
+            return foo;
+        } else {
+            return (Long) res.get("wpId");
+        }
+    }
+
+    public void buildInterestRelations (long interest, long article, boolean relationsBuilt) {
+        System.out.println(article);
+        SimilarInterestList articles = getArticleSimilarities(article);
+        SimilarInterestList list = new SimilarInterestList();
+        int i = 0;
+        Map<Long, Double> ids = new HashMap<Long, Double>();
+        while (list.size() < 200 && i < articles.size()) {
+            SimilarInterest check = articles.get(i);
+            DBObject articleToInterests = safeFindById(ARTICLES_TO_INTERESTS, check.interestId, true);
+            if (articleToInterests != null) {
+                Set<Long> similarInterests = interestStringToSet((String)articleToInterests.get("interests"));
+                for (long id : similarInterests) {
+                    if (relationsBuilt && id!=interest) {
+                        ids.put(id, check.similarity);
+                    }
+                    if(id!=interest){
+                        list.add(new SimilarInterest(id, check.similarity));
+                    }
+                }
+            }
+            i++;
+        }
+        addInterestRelations(interest, list);
+        if (relationsBuilt) {
+            for (long id : ids.keySet()) {
+                SimilarInterestList sims = new SimilarInterestList();
+                sims.add(new SimilarInterest(id, ids.get(id)));
+                addInterestRelations(id, sims);
+            }
+        }
+    }
+
+    public void addInterestRelations(long interestId, SimilarInterestList sims){
+        DBCollection interests = getDb().getCollection(INTERESTS);
+        DBObject interest= safeFindById(INTERESTS, interestId, false);
+        if(interest == null){
+            interest = new BasicDBObject("_id", interestId);
+            interest.put("similar", "");
+            interests.insert(interest);
+        }
+        sims.add((String)interest.get("similar"));
+        interest.put("similar", sims.toString());
+        interests.update(safeFindById(INTERESTS, interestId, false), interest);
+    }
+
+    public void addInterestRelations(long interestId, SimilarInterest sim){
+        SimilarInterestList sims = new SimilarInterestList();
+        sims.add(sim);
+        addInterestRelations(interestId, sims);
     }
 
     public SimilarInterestList getSimilarInterests(long interest){
         //System.out.println(interest + " was the interest");
-        DBObject i = safeFindById(INTERESTS, interest);
-        //if (i == null) {
-            //System.out.println("The interest " + i + " is null");
-        //}
-        //log.info(similar +" getSimilarInterests get")
-        return new SimilarInterestList((String)i.get("similar"));
+        DBObject i = safeFindById(INTERESTS, interest, false);
+        if (i == null) {
+            System.out.println("The interest " + i + " is null");
+            return new SimilarInterestList();
+        }
+        //System.out.println(i +" getSimilarInterests get");
+        String res = (String)i.get("similar");
+        if (res == null) {
+            return new SimilarInterestList();
+        }
+        return new SimilarInterestList(res);
     }
 
     public SimilarInterestList getSimilarInterests(Long interest, Set<Long> institutionFilter) {
-        DBObject i = safeFindById(INTERESTS, interest);
+        DBObject i = safeFindById(INTERESTS, interest, false);
         //log.info(similar +" getSimilarInterests get")
         Set<Long> institutionInterests = new HashSet<Long>();
         for (long id : institutionFilter) {
@@ -252,11 +383,11 @@ public class MongoWrapper {
 
     public void removeLowestSimilarity(Long interest) {
         DBCollection interests = getDb().getCollection(INTERESTS);
-        DBObject i = safeFindById(INTERESTS, interest);
+        DBObject i = safeFindById(INTERESTS, interest, false);
         SimilarInterestList similarInterests = new SimilarInterestList((String)i.get("similar"));
         similarInterests.removeLowest();
         i.put("similar", similarInterests.toString());
-        interests.update(safeFindById(INTERESTS, interest),i);
+        interests.update(safeFindById(INTERESTS, interest, false),i);
     }
 
 
@@ -268,16 +399,16 @@ public class MongoWrapper {
     */
     public void replaceLowestSimilarity(Long interest, Long newInterest, Double similarity){
         DBCollection interests = getDb().getCollection(INTERESTS);
-        DBObject i = safeFindById(INTERESTS, interest);
+        DBObject i = safeFindById(INTERESTS, interest, false);
         SimilarInterestList similarInterests = new SimilarInterestList((String)i.get("similar"));
         similarInterests.add(new SimilarInterest(newInterest, similarity));
         similarInterests.removeLowest();
         i.put("similar", similarInterests.toString());
-        interests.update(safeFindById(INTERESTS, interest),i);
+        interests.update(safeFindById(INTERESTS, interest, false),i);
     }
 
     private void addInterestToInstitution(long institutionId ,long interestId){
-        DBObject institution = safeFindById(INSTITUTION_INTERESTS, institutionId);
+        DBObject institution = safeFindById(INSTITUTION_INTERESTS, institutionId, false);
         DBCollection institutionInterests=getDb().getCollection(INSTITUTION_INTERESTS);
         if(institution==null){
             institution= new BasicDBObject("_id", institutionId);
@@ -287,11 +418,11 @@ public class MongoWrapper {
         String res = interestSetToString(interestStringToSet(institution.get("interests")+
                 Long.toString(interestId)+","));
         institution.put("interests",res);
-        institutionInterests.update(safeFindById(INSTITUTION_INTERESTS, institutionId),institution);
+        institutionInterests.update(safeFindById(INSTITUTION_INTERESTS, institutionId, false),institution);
     }
 
     public Set<Long> getInstitutionInterests(long id) {
-        DBObject institution = safeFindById(INSTITUTION_INTERESTS, id);
+        DBObject institution = safeFindById(INSTITUTION_INTERESTS, id, false);
         if(institution == null) {
             return new HashSet<Long>();
         }
@@ -315,6 +446,36 @@ public class MongoWrapper {
             }
         }
         return res;
+    }
+
+    public SimilarInterestList getArticleSimilarities(long article) {
+        String tmpDBName= dbName;
+        changeDB("dev");
+        DBObject similarities = safeFindById(ARTICLE_SIMILARITIES, article, true);
+        changeDB(tmpDBName);
+        if (similarities == null) {
+            System.out.println(article + " does not have an articleSimilarities entry");
+            return new SimilarInterestList();
+        }
+        //System.out.println(article);
+        //really long print ln statement below
+        //System.out.println(similarities.toString());
+        return new SimilarInterestList((String)similarities.get("similarities"));
+    }
+
+    public void addInterestToArticle(long interest, long article){
+        DBObject articleInterests = safeFindById(ARTICLES_TO_INTERESTS , article, true);
+        DBCollection articlesToInterests = getDb().getCollection(ARTICLES_TO_INTERESTS);
+        if(articleInterests==null){
+            articleInterests=new BasicDBObject("_id", article);
+            articleInterests.put("interests","");
+            articlesToInterests.insert(articleInterests);
+        }
+        Set<Long> interests = interestStringToSet((String)articleInterests.get("interests"));
+        interests.add(interest);
+        articleInterests.put("interests", interestSetToString(interests));
+        articlesToInterests.update(safeFindById(ARTICLES_TO_INTERESTS, article, true), articleInterests);
+
     }
 
 }

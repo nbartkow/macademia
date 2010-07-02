@@ -1,6 +1,7 @@
 package org.macademia
 
 import grails.test.*
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 /**
  * Authors: Nathaniel Miller and Alex Schneeman
@@ -12,20 +13,20 @@ class DatabaseServiceIntegrationTests extends GrailsUnitTestCase {
 
      protected void setUp() {
         super.setUp()
-        databaseService.switchToCopyDB("test")
+        databaseService.switchToCopyDB((String)ConfigurationHolder.config.dataSource.mongoDbName)
     }
 
     protected void tearDown() {
         super.tearDown()
         databaseService.dropCurrentDB()
-        databaseService.changeDB("test")
+        databaseService.changeDB((String)ConfigurationHolder.config.dataSource.mongoDbName)
     }
 
     void testAddUser(){
-        similarityService.buildInterestRelations(Interest.findById(5))
-        similarityService.buildInterestRelations(Interest.findById(1))
-        similarityService.buildInterestRelations(Interest.findById(2))
-        databaseService.addUser(Person.findById(1))
+        similarityService.buildInterestRelations(Interest.get(5))
+        similarityService.buildInterestRelations(Interest.get(1))
+        similarityService.buildInterestRelations(Interest.get(2))
+        databaseService.addUser(Person.get(1))
         assertEquals(databaseService.getUserInstitution(1),Institution.findByName("Macalester College").id)
         ArrayList<Long> interests = databaseService.getUserInterests(1)
         Set<Long> set =new HashSet<Long>()
@@ -38,7 +39,7 @@ class DatabaseServiceIntegrationTests extends GrailsUnitTestCase {
     }
 
     void testGetUserInstitution() {
-        //databaseService.addUser(Person.findById(1))
+        //databaseService.addUser(Person.get(1))
         assertEquals(databaseService.getUserInstitution(1),Institution.findByName("Macalester College").id)
     }
 
@@ -54,41 +55,42 @@ class DatabaseServiceIntegrationTests extends GrailsUnitTestCase {
     }
 
     void testAddToInterests() {
-        databaseService.addToInterests(Interest.findById(5),Interest.findById(2),0.01812)
-        assertEquals(databaseService.getSimilarInterests(Interest.findById(5)).size(),10)
-        databaseService.removeLowestSimilarity(Interest.findById(5))
-        //assertEquals(databaseService.getSimilarInterests(Interest.findById(5)).get(1), 0.1812) //returns null for some reason
+        int sizeOne = databaseService.getSimilarInterests(Interest.get(5)).size()
+        databaseService.addToInterests(Interest.get(5),Interest.get(2),0.01812)
+        assertEquals(databaseService.getSimilarInterests(Interest.get(5)).size(),sizeOne + 1)
+        databaseService.removeLowestSimilarity(Interest.get(5))
+        //assertEquals(databaseService.getSimilarInterests(Interest.get(5)).get(1), 0.1812) //returns null for some reason
     }
 
     void testAddCollaboratorRequests(){
         CollaboratorRequest rfc = new CollaboratorRequest(title:"Test RFC", description:"This is a test request for collaboratorRequest", creator:Person.findById(5), dateCreated: new Date(), expiration: new Date())
-        rfc.addToKeywords(Interest.findById(5))
-        rfc.addToKeywords(Interest.findById(2))
+        rfc.addToKeywords(Interest.get(5))
+        rfc.addToKeywords(Interest.get(2))
         collaboratorRequestService.save(rfc)
-        //rfc.addToKeywords(Interest.findById(5))
-        //rfc.addToKeywords(Interest.findById(2))
+        //rfc.addToKeywords(Interest.get(5))
+        //rfc.addToKeywords(Interest.get(2))
         long id = CollaboratorRequest.findByCreator(rfc.creator).id
         assertEquals(databaseService.getCollaboratorRequestInstitution(id), rfc.creator.institution.id)
         assertEquals(databaseService.getCollaboratorRequestCreator(id), rfc.creator.id)
-        assertEquals(databaseService.getCollaboratorRequestKeywords(id).size(),2)
+        assertEquals(databaseService.getRequestKeywords(id).size(),2)
         databaseService.removeCollaboratorRequest(rfc)
     }
 
     void testReplaceLowestSimilarity() {
-        //similarityService.buildInterestRelations(Interest.findById(5))
-        //similarityService.buildInterestRelations(Interest.findById(1))
-        //similarityService.buildInterestRelations(Interest.findById(2))
-        databaseService.addToInterests(Interest.findById(5),Interest.findById(1),0.01812)
-        assertEquals(databaseService.getSimilarInterests(Interest.findById(5)).size(),9)
-        databaseService.replaceLowestSimilarity(Interest.findById(5), Interest.findById(2), 0.2)
-        assertEquals(databaseService.getSimilarInterests(Interest.findById(5)).size(),9)
+        //similarityService.buildInterestRelations(Interest.get(5))
+        //similarityService.buildInterestRelations(Interest.get(1))
+        //similarityService.buildInterestRelations(Interest.get(2))
+        databaseService.addToInterests(Interest.get(5),Interest.get(1),0.01812)
+        int sizeOne = databaseService.getSimilarInterests(Interest.get(5)).size()
+        databaseService.replaceLowestSimilarity(Interest.get(5), Interest.get(2), 0.2)
+        assertEquals(databaseService.getSimilarInterests(Interest.get(5)).size(),sizeOne)
         //There is something quite wrong here...: ID should be 2, map says it is 91, but nothing is returned from get...
-        /*for (Long id : databaseService.getSimilarInterests(Interest.findById(5)).keySet()) {
+        /*for (Long id : databaseService.getSimilarInterests(Interest.get(5)).keySet()) {
             log.info("ID is $id")
         }
-        log.info("" + Interest.findById(2).hashCode())*/
-        databaseService.removeInterests(Interest.findById(5), Interest.findById(2))
-        assertEquals(databaseService.getSimilarInterests(Interest.findById(5)).size(),8)
+        log.info("" + Interest.get(2).hashCode())*/
+        databaseService.removeInterests(Interest.get(5), Interest.get(2))
+        assertEquals(databaseService.getSimilarInterests(Interest.get(5)).size(),sizeOne-1)
 
     }
 

@@ -7,19 +7,23 @@ class Interest implements Comparable {
     String text
     String normalizedText
     Date lastAnalyzed
+    String articleName
+    Long articleId
 
 
     static searchable = [only: ['text', 'normalizedText']]
     static constraints = {
         normalizedText(unique: true)
         lastAnalyzed(nullable : true)
+        articleName(nullable : true)
+        articleId(nullable : true)
         requests(nullable: true)
+        people(nullable: true)
     }
 
     static belongsTo = [Person, CollaboratorRequest]
     static hasMany = [
             people: Person,
-            documents: InterestDocument,
             requests: CollaboratorRequest
     ]
 
@@ -57,18 +61,6 @@ class Interest implements Comparable {
     public String toString() {
         return "<$text>"
     }
-    public Document findMostRelevantDocument() {
-        double bestRelevance = -1.0
-        Document best = null
-        for (InterestDocument id : documents) {
-            if (bestRelevance < id.weight) {
-                bestRelevance = id.weight
-                best = id.document
-            }
-        }
-        return best
-    }
-
 
 }
 

@@ -37,11 +37,11 @@ class DatabaseService {
     }
 
     public DBObject findById(String collection, Long id) throws IllegalArgumentException{
-        return wrapper.findById(collection, id)
+        return wrapper.findById(collection, id, false)
     }
 
     public DBObject safeFindById(String collection, Long id){
-        return wrapper.safeFindById(collection, id)
+        return wrapper.safeFindById(collection, id, false)
     }
 
     public void addUser(Person user) throws RuntimeException {
@@ -50,12 +50,12 @@ class DatabaseService {
             throw new RuntimeException("User needs an ID")
         }
         Set<Interest> interests=user.interests
-        String interestIds =""
+        List<Long> interestIds = new ArrayList<Long>()
         for(Interest interest : interests){
             if(interest.id ==null){
                 throw new RuntimeException("User has an interest with out an ID")
             }
-            interestIds=interestIds+","+interest.id.toString()
+            interestIds.add(+interest.id)
             //log.info("Interest ID: "+ interest + "for User ID: " + id)
         }
         long institutionId = user.institution.id
@@ -73,10 +73,21 @@ class DatabaseService {
         return wrapper.getUserInterests(id)
     }
 
+    public Set<Long> getInterestUsers(long id) {
+        return wrapper.getInterestUsers(id)
+    }
+
+    public Set<Long> getInterestRequests(long id) {
+        return wrapper.getInterestRequests(id)
+    }
+
     public void addCollaboratorRequest(CollaboratorRequest rfc){
-        String interestIds = ""
+        List<Long> interestIds = new ArrayList<Long>()
         for(Interest interest : rfc.keywords){
-            interestIds=interestIds+","+interest.id.toString()
+            if(interest.id ==null){
+                throw new RuntimeException("User has an interest with out an ID")
+            }
+            interestIds.add(interest.id)
         }
         wrapper.addCollaboratorRequest(rfc.id,interestIds,rfc.creator.id,rfc.creator.institution.id)
     }
@@ -89,8 +100,8 @@ class DatabaseService {
         return wrapper.getCollaboratorRequestCreator(id)
     }
 
-    public Set<Long> getCollaboratorRequestKeywords(long id){
-        return wrapper.getCollaboratorRequestKeywords(id)
+    public Set<Long> getRequestKeywords(long id){
+        return wrapper.getRequestKeywords(id)
     }
 
     public void removeCollaboratorRequest(CollaboratorRequest rfc) {
@@ -108,6 +119,10 @@ class DatabaseService {
     }
 
 
+    public void addToInterests(long firstId, long secondId, double sim) {
+        wrapper.addToInterests(firstId, secondId, sim)
+    }
+
    /**
     *
     * @param firstInterest the interest to be removed from
@@ -123,6 +138,14 @@ class DatabaseService {
 
     public SimilarInterestList getSimilarInterests(Interest interest, Set<Long> institutionFilter) {
         return wrapper.getSimilarInterests(interest.id, institutionFilter)
+    }
+
+    public SimilarInterestList getSimilarInterests(Long id) {
+        return wrapper.getSimilarInterests(id)
+    }
+
+    public SimilarInterestList getSimilarInterests(Long id, Set<Long> institutionFilter) {
+        return wrapper.getSimilarInterests(id, institutionFilter)
     }
 
     public void removeLowestSimilarity(Interest interest) {
@@ -142,6 +165,18 @@ class DatabaseService {
 
     public Set<Long> getInstitutionInterests(long institutionId) {
         return wrapper.getInstitutionInterests(institutionId)
+    }
+
+    public void addInterestToArticle(Interest interest, long article){
+        wrapper.addInterestToArticle(interest.id, article);
+    }
+
+    public long articleToId(String title){
+        return wrapper.articleToId(title);
+    }
+
+    public void buildInterestRelations(long interest, long article, boolean relationsBuilt) {
+        wrapper.buildInterestRelations(interest, article, relationsBuilt)
     }
 
 }
