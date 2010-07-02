@@ -33,7 +33,7 @@ public class MongoWrapper {
 
     public static final String INSTITUTION_INTERESTS ="institutionInterests";
 
-    private static final String ARTICLES_DB = "dev";
+    private static final String ARTICLES_DB = "experimental";
 
     private String dbName = null;
 
