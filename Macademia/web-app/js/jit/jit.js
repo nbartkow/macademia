@@ -4830,6 +4830,7 @@ Graph.Util = {
        startDepth - (optional|number) A minimum depth value. Default's 0.
 
     */
+    // computeLevels placeholder
     computeLevels: function(graph, id, startDepth, flags) {
         startDepth = startDepth || 0;
         var filter = this.filter(flags);
@@ -4847,6 +4848,7 @@ Graph.Util = {
                 var n = adj.nodeTo;
                 if(n._flag == false && filter(n)) {
                     if(n._depth < 0) n._depth = node._depth + 1 + startDepth;
+
                     queue.unshift(n);
                 }
             }, flags);
@@ -10310,7 +10312,7 @@ Layouts.Radial = new Class({
     this.graph.computeLevels(this.root, 0, "ignore");
     var lengthFunc = this.createLevelDistanceFunc(); 
     this.computeAngularWidths(prop);
-    this.computePositions(prop, lengthFunc);
+      this.computePositions(prop, lengthFunc);
   },
 
   /*
@@ -10324,63 +10326,232 @@ Layouts.Radial = new Class({
     var root = graph.getNode(this.root);
     var parent = this.parent;
     var config = this.config;
+    var levelOneNodes = [];   //array of nodes in the inner circle (also will contain people with direct connection to root)
+    var levelOneInfo = {};    //{levelOneNodeId: {subnodes: [arrayOfSubnodes], angularWidths: sumOfSubnodesAngularWidths, angleSpan: angleSpan, angleInit: angleInit}}
+    var totalSubnodes = 0;    // total number of subnodes in outer circle
+    var levelTwoInfo = {};    // {nodeId, true/false}  keeps track of whether a nodes has been placed
 
+    // sets position and properties of root node
     for ( var i=0, l=propArray.length; i < l; i++) {
       var pi = propArray[i];
       root.setPos($P(0, 0), pi);
       root.setData('span', Math.PI * 2, pi);
     }
-
     root.angleSpan = {
       begin : 0,
       end : 2 * Math.PI
     };
 
-    graph.eachBFS(this.root, function(elem) {
-      var angleSpan = elem.angleSpan.end - elem.angleSpan.begin;
-      var angleInit = elem.angleSpan.begin;
-      var len = getLength(elem);
-      //Calculate the sum of all angular widths
-      var totalAngularWidths = 0, subnodes = [], maxDim = {};
-      elem.eachSubnode(function(sib) {
-        totalAngularWidths += sib._treeAngularWidth;
-        //get max dim
+
+    var totalLevelOneAngularWidths = 0;
+    // goes through each node in the graph
+    graph.eachBFS(this.root,function(elem){
+      // if the node is the root node
+      if (elem.id == root.id){
+          return
+      }
+      // if the node is an interest or a person directly connected to the root
+      if(elem.data.type == 'interest' || (elem.getParents()[0].id == root.id && elem._depth == 1)){
+                    levelOneNodes.push(elem);
+                    totalLevelOneAngularWidths += elem._treeAngularWidth;
+                    //Calculate the sum of all angular widths
+                    var elemSubnodes = [];
+                    var elemAngularWidths = 0;
+
+                    // goes through each subnode of that node
+                    elem.eachSubnode(function(sib) {
+                        if (sib.getParents().length >3){
+                            //formula to manage better spacing... still needs work.  Without it the nodes are still smushed
+                            //together under each parent with large spaces between clusters because the spacing accounts for
+                            //all possible subnodes, while in our graph, some subnodes may be placed under another parent.
+                             elemAngularWidths += sib._treeAngularWidth; /// (sib.getParents().length /3);
+                        }else{
+                            elemAngularWidths += sib._treeAngularWidth;
+                        }
+                        elemSubnodes.push(sib);
+                    }, "ignore");
+                    var elemAngleSpan = elem.angleSpan.end - elem.angleSpan.begin;
+                    var elemAngleInit = elem.angleSpan.begin;
+                    //sorts subnodes according to their number of parents.
+                    elemSubnodes.sort(function(a, b) {
+                        return (a.getParents().length - b.getParents().length);
+                    }),
+                    //set entry in levelOneInfo
+                    levelOneInfo[elem.id]= {subnodes:elemSubnodes, angularWidths: elemAngularWidths, angleSpan: elemAngleSpan, angleInit: elemAngleInit};
+
+      // if node is a person or request not directly connected to the root.
+      }else if(elem.data.type == 'person' || elem.data.type == 'request'){
+            totalSubnodes ++;
+            // node is not yet placed
+            levelTwoInfo[elem.id]=false;
+      }
+
+    }, 'ignore');
+
+    var levelOneAngleSpan = root.angleSpan.end - root.angleSpan.begin;
+    var levelOneAngleInit = root.angleSpan.begin;
+    // goes through and sets polar coordinates of all nodes in levelOneNodes
+    for(var j=0; j<levelOneNodes.length; j++){
+        var node = levelOneNodes[j];
+        var len = config.levelDistance;
+        if (node.data.type == 'person' || node.data.type == 'request'){
+            // if node is person or request, place in outer ring
+            len = config.levelDistance * 2;
+        }
+        // node's proportional section of graph as determined by it's angular widths in proportion to the total angular widths of the graph.
+        var angleProportion = node._treeAngularWidth / totalLevelOneAngularWidths * levelOneAngleSpan;
+        // node position in center of it's angle span
+        var theta = levelOneAngleInit + angleProportion / 2;
+        //sets some properties
         for ( var i=0, l=propArray.length; i < l; i++) {
-          var pi = propArray[i], dim = sib.getData('dim', pi);
-          maxDim[pi] = (pi in maxDim)? (dim > maxDim[pi]? dim : maxDim[pi]) : dim;
-        }
-        subnodes.push(sib);
-      }, "ignore");
-      //Maintain children order
-      //Second constraint for <http://bailando.sims.berkeley.edu/papers/infovis01.htm>
-      if (parent && parent.id == elem.id && subnodes.length > 0
-          && subnodes[0].dist) {
-        subnodes.sort(function(a, b) {
-          return (a.dist >= b.dist) - (a.dist <= b.dist);
-        });
-      }
-      //Calculate nodes positions.
-      for (var k = 0, ls=subnodes.length; k < ls; k++) {
-        var child = subnodes[k];
-        if (!child._flag) {
-          var angleProportion = child._treeAngularWidth / totalAngularWidths * angleSpan;
-          var theta = angleInit + angleProportion / 2;
-
-          for ( var i=0, l=propArray.length; i < l; i++) {
             var pi = propArray[i];
-            child.setPos($P(theta, len), pi);
-            child.setData('span', angleProportion, pi);
-            child.setData('dim-quotient', child.getData('dim', pi) / maxDim[pi], pi);
-          }
-
-          child.angleSpan = {
-            begin : angleInit,
-            end : angleInit + angleProportion
-          };
-          angleInit += angleProportion;
+            // sets the position of the node
+            node.setPos($P(theta, len), pi);
+            // sets some other stuff.
+            node.setData('span', angleProportion, pi);
         }
-      }
-    }, "ignore");
+        //sets area of graph belonging to node.
+        node.angleSpan = {
+            begin : levelOneAngleInit,
+            end : levelOneAngleInit + angleProportion
+        };
+        // sets properties of node to be used in placing subnodes
+        levelOneInfo[node.id].angleSpan = node.angleSpan.end - node.angleSpan.begin;
+        levelOneInfo[node.id].angleInit = node.angleSpan.begin;
+        // increments the placement on the graph.
+        levelOneAngleInit += angleProportion;
+    }
+      //sorts nodes according to their number of subnodes
+    levelOneNodes.sort(function(a, b) {
+           return (levelOneInfo[a.id].subnodes.length - levelOneInfo[b.id].subnodes.length);
+    });
+    // while there are still subnodes to be placed
+    while(totalSubnodes > 0){
+        for(var m = 0; m<levelOneNodes.length; m++){
+            // for each node in the first level
+            var parent = levelOneNodes[m];
+            // subnode is not yet placed
+            var placed = false;
+            // while subnode is not yet placed, and the parent node still has subnodes to place
+            while(!placed && levelOneInfo[parent.id].subnodes.length>0){
+                var node = levelOneInfo[parent.id].subnodes[0];
+                // if this node is not yet placed (levelTwoInfo entry is false)
+                if(!levelTwoInfo[node.id]){
+                        // node is in second ring
+                        var len = config.levelDistance * 2;
+                        // node's section of graph
+                        var angleProportion = node._treeAngularWidth / levelOneInfo[parent.id].angularWidths * levelOneInfo[parent.id].angleSpan;
+                        // node's position on graph
+                        var theta = levelOneInfo[parent.id].angleInit + angleProportion / 2;
+                        for ( var i=0, l=propArray.length; i < l; i++) {
+                            var pi = propArray[i];
+                            // sets node's position
+                            node.setPos($P(theta, len), pi);
+                            // sets other stuff
+                            node.setData('span', angleProportion, pi);
+                        }
+
+                        //sets area of graph belonging to node
+                        node.angleSpan = {
+                            begin : levelOneInfo[parent.id].angleInit,
+                            end : levelOneInfo[parent.id].angleInit + angleProportion
+                        };
+                        // increments placement for the group according to parent node
+                        levelOneInfo[parent.id].angleInit += angleProportion;
+                        // node is removed from parent's subnodes
+                        levelOneInfo[parent.id].subnodes.splice(0,1);
+                        // node is marked as placed
+                        levelTwoInfo[node.id]=true;
+                        // subnode is placed, goes onto next levelOneNode and places one subnode
+                        placed = true;
+                        totalSubnodes--;
+                }else{
+                        //node is removed from parent's subnodes to prevent it from being cycled through more than necessary
+                        levelOneInfo[parent.id].subnodes.splice(0,1);
+                }
+
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+//    Original Function:
+//
+//    var propArray = property;
+//    var graph = this.graph;
+//    var root = graph.getNode(this.root);
+//    var parent = this.parent;
+//    var config = this.config;
+//    for ( var i=0, l=propArray.length; i < l; i++) {
+//      var pi = propArray[i];
+//      root.setPos($P(0, 0), pi);
+//      root.setData('span', Math.PI * 2, pi);
+//    }
+//    root.angleSpan = {
+//      begin : 0,
+//      end : 2 * Math.PI
+//    };
+//    graph.eachBFS(this.root, function(elem) {
+//      var angleSpan = elem.angleSpan.end - elem.angleSpan.begin;
+//      var angleInit = elem.angleSpan.begin;
+//      var len = getLength(elem);
+//      //Calculate the sum of all angular widths
+//      var totalAngularWidths = 0, subnodes = [], maxDim = {};
+//      elem.eachSubnode(function(sib) {
+//        totalAngularWidths += sib._treeAngularWidth;
+//        //get max dim
+//        for ( var i=0, l=propArray.length; i < l; i++) {
+//          var pi = propArray[i], dim = sib.getData('dim', pi);
+//          maxDim[pi] = (pi in maxDim)? (dim > maxDim[pi]? dim : maxDim[pi]) : dim;
+//        }
+//        subnodes.push(sib);
+//      }, "ignore");
+//      //Maintain children order
+//      //Second constraint for <http://bailando.sims.berkeley.edu/papers/infovis01.htm>
+//      if (parent && parent.id == elem.id && subnodes.length > 0
+//          && subnodes[0].dist) {
+//        subnodes.sort(function(a, b) {
+//          return (a.dist >= b.dist) - (a.dist <= b.dist);
+//        });
+//      }
+//      //Calculate nodes positions.
+//      for (var k = 0, ls=subnodes.length; k < ls; k++) {
+//        var child = subnodes[k];
+//        if (!child._flag) {
+//          var angleProportion = child._treeAngularWidth / totalAngularWidths * angleSpan;
+//          var theta = angleInit + angleProportion / 2;
+//
+//          for ( var i=0, l=propArray.length; i < l; i++) {
+//            var pi = propArray[i];
+//            child.setPos($P(theta, len), pi);
+//            child.setData('span', angleProportion, pi);
+//            child.setData('dim-quotient', child.getData('dim', pi) / maxDim[pi], pi);
+//          }
+//
+//          child.angleSpan = {
+//            begin : angleInit,
+//            end : angleInit + angleProportion
+//          };
+//          angleInit += angleProportion;
+//        }
+//      }
+//    }, "ignore");
+
+
+
+
+
+
+
+
+
+
   },
 
   /*
@@ -12472,7 +12643,7 @@ $jit.Icicle.Plot.EdgeTypes = new Class( {
    fx - Access a <RGraph.Plot> instance.
    labels - Access a <RGraph.Label> interface implementation.   
 */
-
+ // rgraph placeholder
 $jit.RGraph = new Class( {
 
   Implements: [

@@ -207,10 +207,10 @@ macademia.changeGraph = function(nodeId){
 };
 // resizes canvas according to original dimensions
 macademia.resizeCanvas = function(currentWidth) {
-    if ($("#infovis-canvaswidget").css('margin') != 'auto') {
-        $("#infovis-canvaswidget").css('margin', 'auto');
-        $('#infovis-canvas, #infovis-bkcanvas, #infovis-label').css('position','fixed');
-    }
+//    if ($("#infovis-canvaswidget").css('margin') != 'auto') {
+//        $("#infovis-canvaswidget").css('margin', 'auto');
+//        $('#infovis-canvas, #infovis-bkcanvas, #infovis-label').css('position','fixed');
+//    }
     var originalWidth = 680;
     var originalHeight = 660;
     var originalDistance = 150;
