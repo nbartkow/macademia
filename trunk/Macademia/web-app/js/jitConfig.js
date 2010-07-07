@@ -83,13 +83,18 @@ macademia.init = function(rootType,id){
                 d.css('white-space', 'nowrap');
                 d.css('margin-top', '3px');
                 d.css('font-size', '14px');
+                d.css('background-color','transparent');
                 $(d).mouseover(function() {
-                    $(this).css('opacity', 1);
+                    $(this).css('font-weight', 'bold');
+                    $(this).css('opacity', 0.75);
                     $(this).css('z-index', 50);
+                    $(this).css('background-color', '#A2AB8E');
                 });
                 $(d).mouseout(function() {
+                    $(this).css('font-weight', 'normal');
                     $(this).css('opacity', 0.8);
                     $(this).css('z-index', 10);
+                    $(this).css('background-color','transparent');
                 });
                 $(d).click(function() {
                     macademia.navInfovis(node);
@@ -146,6 +151,7 @@ macademia.init = function(rootType,id){
                 }
                 ;
             },
+            
             //morph to new data after anim and if user has clicked a person node
             onAfterCompute:function() {
                 if (macademia.nextNode) {
