@@ -8,7 +8,8 @@
 <!--[if IE]><g:javascript src="jit/Extras/excanvas.js"/><![endif]-->
 
 <!-- JIT Library File -->
-<g:javascript src="jit/jit-yc.js"/>
+%{--<g:javascript src="jit/jit-yc.js"/>--}%
+<g:javascript src="jit/jit.js"/>
 <g:javascript src="jitConfig.js"/>
 <g:javascript src="jquery/jquery.qtip-1.0.0-rc3.js"/>
 <g:javascript src="jquery/jqModal.js"/>
