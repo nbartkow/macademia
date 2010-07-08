@@ -26,7 +26,7 @@ target ('main': "Load the Grails interactive shell") {
 
     session.connection().commit()
     def statement = session.connection().createStatement();
-    statement.execute("SHUTDOWN;")
+    //statement.execute("SHUTDOWN;")  //is this line necessary?
     session.close();
 
 }

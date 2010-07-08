@@ -93,38 +93,56 @@ class Graph {
         Interest relatedInterest = null
         if (interestIdMap.containsKey(interestId)) {
             interest = interestIdMap.get(interestId)
-        } else {
-            interest = Interest.findById(interestId)
+        } else if (interestId != null) {
+            interest = Interest.get(interestId)
             interestIdMap.put(interestId, interest)
+        } else {
+            return
         }
 
         if (personId != null) {
             if (personIdMap.containsKey(personId)) {
                 person = personIdMap.get(personId)
             } else {
-                person = Person.findById(personId)
+                person = Person.get(personId)
                 personIdMap.put(personId, person)
             }
+        } else if (requestId != null) {
+            if (requestIdMap.containsKey(requestId)) {
+                request = requestIdMap.get(requestId)
+            } else {
+                request = CollaboratorRequest.get(requestId)
+                requestIdMap.put(requestId, request)
+            }
+        } else if (relatedInterestId == null) {
+            throw new IllegalArgumentException("Second Vertex Needed")
         }
 
         if (relatedInterestId != null) {
             if (interestIdMap.containsKey(relatedInterestId)) {
-            relatedInterest = interestIdMap.get(relatedInterestId)
-        } else {
-            relatedInterest = Interest.findById(relatedInterestId)
-            interestIdMap.put(relatedInterestId, relatedInterest)
-        }
-        }
-
-        if (requestId != null) {
-            if (requestIdMap.containsKey(requestId)) {
-                request = requestIdMap.get(requestId)
+                relatedInterest = interestIdMap.get(relatedInterestId)
             } else {
-                request = CollaboratorRequest.findById(requestId)
-                requestIdMap.put(requestId, request)
+                relatedInterest = Interest.get(relatedInterestId)
+                interestIdMap.put(relatedInterestId, relatedInterest)
             }
         }
 
+        int nullCount =0
+        if(interest==null){
+            nullCount++
+        }
+        if(person== null){
+            nullCount++
+        }
+        if(request == null){
+            nullCount++
+        }
+        if(relatedInterest == null){
+            nullCount++
+        }
+        if(nullCount>=3){
+            return
+        }
         addEdge(new Edge(interest: interest, person: person, request: request, relatedInterest: relatedInterest))
     }
 

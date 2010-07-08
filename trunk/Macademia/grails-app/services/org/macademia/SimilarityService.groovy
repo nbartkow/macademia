@@ -40,7 +40,7 @@ class SimilarityService {
     def databaseService
     def sessionFactory
 
-    public void buildInterestRelations() {
+   public void buildInterestRelations() {
         for (Interest interest : Interest.findAll()) {
             log.info("interest Id is $interest.id related article is $interest.articleId and relations Built is $relationsBuilt")
             if(!(interest.articleId==null || interest.articleId<0)){
@@ -141,53 +141,24 @@ class SimilarityService {
      * @return A graph that contains the nodes and edges to them of the neighbor of the passed interest
      */
     public Graph calculateInterestNeighbors(Interest interest, int maxPeople, int maxInterests){
+        return calculateInterestNeighbors(interest, maxPeople, maxInterests, null)
+    }
+
+    public Graph calculateInterestNeighbors(Interest interest, int maxPeople, int maxInterests, Set<Long> institutionFilter){
         Graph graph = new Graph()
         //interestCache = new HashMap<Long, Interest>()
         //adds the edges to the set between people who have the central interest
-        timing.startTime()
-        Set<Long> interestUsers = databaseService.getInterestUsers(interest.id)
-        timing.recordTime("Interest Neighbors Mongo call getInterestUsers")
-        for(long p : interestUsers){
-            if(graph.getPeople().size() + graph.getRequests().size() < maxPeople || graph.containsPersonId(p)){
-                timing.startTime()
-                graph.addEdge(p, interest.id, null, null)
-                timing.recordTime("Interest neighbors person interest edge")
-            }
-        }
-        timing.startTime()
-        Set<Long> interestRequests = databaseService.getInterestRequests(interest.id)
-        timing.recordTime("Interest Neighbors Mongo call getInterestRequests")
-        for(long cr : interestRequests){
-            if(graph.getPeople().size() + graph.getRequests().size() < maxPeople || graph.containsRequestId(cr)){
-                timing.startTime()
-                graph.addEdge(null, interest.id, null, cr)
-                timing.recordTime("interest neighbors interest rfc edge")
-            }
-        }
+        graph = findPeopleAndRequests(graph, maxPeople, interest.id, null, institutionFilter)
         //loops over the InterestRelations representing similar interests, then looks for people with similar interests
-        timing.startTime()
-        SimilarInterestList similarInterests = getSimilarInterests(interest, maxSimsPerInterest, absoluteThreshold)
-        timing.recordTime("Interest Neighbors getSimilarInterests")
-        for(SimilarInterest ir : getSimilarInterests(interest, maxSimsPerInterest, absoluteThreshold)){
+        //SimilarInterestList similarInterests = getSimilarInterests(interest, maxSimsPerInterest, absoluteThreshold)
+        for(SimilarInterest ir : getSimilarInterests(interest.id, maxSimsPerInterest, absoluteThreshold, institutionFilter)){
             //log.info("Similar interest ID: "+ir.interestId+" similarity score "+ir.similarity)
             if (graph.getInterests().size() < maxInterests + 1) {
-                timing.startTime()
                 graph.addEdge(null, interest.id, ir.interestId, null)
-                timing.recordTime("Interest Neighbors i")
-                for(long p : databaseService.getInterestUsers(ir.interestId)){
-                    if(graph.getPeople().size() + graph.getRequests().size() < maxPeople || graph.containsPersonId(p)){
-                        graph.addEdge(p, ir.interestId, null, null)
-                    }
-                }
-                for(long cr : databaseService.getInterestRequests(interest.id)){
-                    if(graph.getPeople().size() + graph.getRequests().size() < maxPeople || graph.containsRequestId(cr)){
-                        graph.addEdge(null, ir.interestId, null, cr)
-                    }
-                }
+                graph = findPeopleAndRequests(graph, maxPeople, ir.interestId, null, institutionFilter)
             }
         }
         //interestCache = new HashMap<Long, Interest>()
-        Utils.cleanUpGorm(sessionFactory)
         return graph
     }
 
@@ -198,18 +169,22 @@ class SimilarityService {
      * @param maxPeople the maximum number of people in the graph
      * @return A graph that contains the nodes and edges to them of the neighbor of the passed person
      */
-    public Graph calculatePersonNeighbors( Person person, int maxPeople){
+    public Graph calculatePersonNeighbors(Person person, int maxPeople) {
+        return calculatePersonNeighbors(person, maxPeople, null)
+    }
+
+
+    public Graph calculatePersonNeighbors( Person person, int maxPeople, Set<Long> institutionFilter){
         Graph graph= new Graph()
         //loops over the central person's interests, adds people who have those interests, then people who have interests
         //similar to the central person's interests
         long graphStart = Calendar.getInstance().getTimeInMillis()
         for(long i : databaseService.getUserInterests(person.id)){
-            graph = calculateNeighbors(i, graph, maxPeople, (Set<Long>)person.interests.collect({it.id}))
+            graph = calculateNeighbors(i, graph, maxPeople, (Set<Long>)person.interests.collect({it.id}), institutionFilter)
         }
         long graphEnd =Calendar.getInstance().getTimeInMillis()
         long graphTime=graphEnd-graphStart
         log.info("It took $graphTime to build $person graph")
-        Utils.cleanUpGorm(sessionFactory)
         return graph
     }
 
@@ -224,11 +199,15 @@ class SimilarityService {
     * @return the local graph centered at the input CollaboratorRequest
     */
     public Graph calculateRequestNeighbors(CollaboratorRequest request, int maxPeople) {
+        return calculateRequestNeighbors(request, maxPeople, null)
+    }
+
+    public Graph calculateRequestNeighbors(CollaboratorRequest request, int maxPeople, Set<Long> institutionFilter) {
         Graph graph = new Graph()
         //loops over the collaborator request's interests, adds people who have those interests, then people who have interests
         //similar to the requests's interests
         for (long i : databaseService.getRequestKeywords(request.id)) {
-             graph = calculateNeighbors(i, graph, maxPeople, (Set<Long>)request.keywords.collect({it.id}))
+             graph = calculateNeighbors(i, graph, maxPeople, (Set<Long>)request.keywords.collect({it.id}), institutionFilter)
         }
         return graph
     }
@@ -242,55 +221,62 @@ class SimilarityService {
     * @param inner the interests that should be on the inner ring
     * @return
     */
-    public Graph calculateNeighbors(Long i, Graph graph, int maxPeople, Set<Long> inner) {
+    public Graph calculateNeighbors(Long i, Graph graph, int maxPeople, Set<Long> inner, Set<Long> institutionFilter) {
         if(i == null){
             return graph
         }
         timing.startTime()
-        for(long p : databaseService.getInterestUsers((long)i)){
-            if(graph.getPeople().size() + graph.getRequests().size() < maxPeople || graph.containsPersonId(p)){
-                graph.addEdge(p, i, null, null)
-            }
-        }
-        for(long cr : databaseService.getInterestRequests((long)i)) {
-            if(graph.getPeople().size() + graph.getRequests().size() < maxPeople || graph.containsRequestId(cr)) {
-                graph.addEdge(null, i, null, cr)
-            }
-        }
-        //log.info("Interest $interest")
-        for(SimilarInterest ir : getSimilarInterests(i, maxSimsPerInterest, absoluteThreshold)){
+        graph = findPeopleAndRequests(graph, maxPeople, i, null, institutionFilter)
+        for(SimilarInterest ir : getSimilarInterests(i, maxSimsPerInterest, absoluteThreshold, institutionFilter)){
             //log.info("Similar interest ID: "+ir.interestId+" similarity score "+ir.similarity+"calculate neighbors")
             if(ir.interestId!=null){
                 if(!inner.contains(ir.interestId)) {
-                    for(long p : databaseService.getInterestUsers(ir.interestId)){
-                        timing.startTime()
-                        if(graph.getPeople().size() + graph.getRequests().size() < maxPeople || graph.containsPersonId(p)){
-                            graph.addEdge(p, i, ir.interestId, null)
-                        }
-                    }
-                    //System.out.println(timing.recordTime("Neighbors Inner Related People Loop"))
-                    for (long cr : databaseService.getInterestRequests(ir.interestId)) {
-                        if(graph.getPeople().size() + graph.getRequests().size()  < maxPeople || graph.containsRequestId(cr)){
-                            graph.addEdge(null, i, ir.interestId, cr)
-                        }
-                    }
-                    //System.out.println(timing.recordTime("Neighbors Inner Related Requests Loop"))
+                    graph = findPeopleAndRequests(graph, maxPeople, i, ir.interestId, null)
                 }
             }
-/*           Interest second = Interest.get(ir.interestId)
-            if(!inner.contains(second) && (second!=null)) {
-                for(Person p : personService.findByInterest(second)){
-                    if(graph.getPeople().size() + graph.getRequests().size() < maxPeople || graph.getPeople().contains(p)){
-                        graph.addEdge(new Edge(person:p, interest:interest, relatedInterest:second))
-                    }
-                }
-                for (CollaboratorRequest cr : collaboratorRequestService.findByInterest(second)) {
-                    if(graph.getPeople().size() + graph.getRequests().size()  < maxPeople || graph.getRequests().contains(cr)){
-                        graph.addEdge(new Edge(request: cr, interest:interest, relatedInterest:second))
-                    }
-                }
-            }  */
+
         }
+        return graph
+    }
+
+    public Graph findPeopleAndRequests(Graph graph, int maxPeople, Long i, Long ir, Set<Long> institutionFilter) {
+        timing.startTime()
+        Long foo
+        if (ir == null) {
+            foo = i
+        } else {
+            foo = ir
+        }
+        timing.recordTime("find People And Requests overhead")
+        for(long p : databaseService.getInterestUsers(foo)){
+            if(graph.getPeople().size() + graph.getRequests().size() < maxPeople || graph.containsPersonId(p)){
+                timing.startTime()
+                if (institutionFilter == null) {
+                    graph.addEdge(p, i, ir, null)
+                    timing.recordTime("Adding edge without Institution Filter")
+                } else {
+                    if (institutionFilter.contains(databaseService.getUserInstitution(p))) {
+                        graph.addEdge(p, i, ir, null)
+                    }
+                    timing.recordTime("Adding edge with Institution Filter overhead")
+                }
+            }
+        }
+        for (long cr : databaseService.getInterestRequests(foo)) {
+            if(graph.getPeople().size() + graph.getRequests().size()  < maxPeople || graph.containsRequestId(cr)){
+                timing.startTime()
+                if (institutionFilter == null) {
+                    graph.addEdge(null, i, ir, cr)
+                    timing.recordTime("Adding edge without Institution Filter")
+                } else {
+                    if (institutionFilter.contains(databaseService.getCollaboratorRequestInstitution(cr))) {
+                        graph.addEdge(null, i, ir, cr)
+                    }
+                    timing.recordTime("Adding edge with Institution Filter overhead")
+                }
+            }
+        }
+
         return graph
     }
 

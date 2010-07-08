@@ -101,7 +101,7 @@ environments {
         //prepDirectories("dev")
     }
     test {
-        prepDirectories("test")
+        //prepDirectories("test")
         wikipediaService.wikiCache = new File("db/test_backup/wikipedia.cache.txt")
         googleService.googleCache = new File("db/test_backup/google.cache.txt")
     }
@@ -110,7 +110,7 @@ environments {
     production {
     }
     benchmark{
-        prepDirectories("benchmark")
+        //prepDirectories("benchmark")
         wikipediaService.wikiCache = new File("db/benchmark_backup/wikipedia.cache.txt")
         googleService.googleCache = new File("db/benchmark_backup/google.cache.txt")
     }
