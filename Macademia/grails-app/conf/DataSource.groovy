@@ -22,7 +22,7 @@ environments {
 //			url = "jdbc:hsqldb:file:db/test/db;shutdown=true"   //test
 			url = "jdbc:hsqldb:file:db/dev/full/devDb;shutdown=true"  //dev
 //            url = "jdbc:hsqldb:file:db/benchmark/db;shutdown=true"//benchmark
-            mongoDbName = "dev"
+            mongoDbName = "dev_${System.getProperty('user.name')}"
             
             // For postgresql:
 //            pooled = false
@@ -31,13 +31,20 @@ environments {
 //            username = "grails"
 //            password = "grails"
 //            dialect = net.sf.hibernate.dialect.PostgreSQLDialect // the difference is.
-                    
+         /*
+            pooled = false
+            url = "jdbc:postgresql://poliwiki.macalester.edu:5432/macademia_bench"
+            driverClassName = "org.postgresql.Driver"
+            username = "grails"
+            password = "grails"
+            dialect = net.sf.hibernate.dialect.PostgreSQLDialect   */
+
 		}
 	}
 	populate {
 		dataSource {
 			dbCreate = "update" // one of 'create', 'create-drop','update'
-            mongoDbName = "dev"
+            mongoDbName = "dev_${System.getProperty('user.name')}"
 
             // For hsql:
 			url = "jdbc:hsqldb:file:db/dev/full/devDb;shutdown=true"
@@ -56,15 +63,15 @@ environments {
 		dataSource {
 			dbCreate = "update" // one of 'create', 'create-drop','update'
 			url = "jdbc:hsqldb:file:db/test_backup/db;shutdown=true"
-            mongoDbName = "test"
-		}
+            mongoDbName = "test_${System.getProperty('user.name')}"
+        }
 	}
 	test {
 		dataSource {
 			dbCreate = "update"
 			url = "jdbc:hsqldb:file:db/test/db;shutdown=true"
-            mongoDbName = "test"
-		}
+            mongoDbName = "test_${System.getProperty('user.name')}"
+        }
 	}
 	production {
 		dataSource {
@@ -89,8 +96,7 @@ environments {
     populateBenchmark{
 		dataSource {
 			dbCreate = "update" // one of 'create', 'create-drop','update'
-            mongo
-            DbName = "benchmark"
+            mongoDbName = "benchmark"
             
             pooled = false
 

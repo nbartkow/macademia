@@ -35,7 +35,7 @@ public class TimingAnalysis {
 
     public void analyze() {
         for (String label : calls.keySet()) {
-            System.out.println(label + " took an average of " + (totalTime.get(label)/calls.get(label)) +
+            System.out.println(label + " took an average of " + ((totalTime.get(label)*1.0)/calls.get(label)) +
                     " milliseconds over " + calls.get(label) + " calls and " + totalTime.get(label) +
                     " total milliseconds.");
         }

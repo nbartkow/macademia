@@ -39,8 +39,8 @@ class InterestService implements ApplicationContextAware {
     }
 
     public void initBuildDocuments(String fileDirectory){
-        googleService.setCache (new File(fileDirectory+"wikipedia_cache.txt"))
-        wikipediaService.setCache(new File(fileDirectory+"google_cache.txt"))
+        googleService.setCache (new File(fileDirectory+"google_cache.txt"))
+        wikipediaService.setCache(new File(fileDirectory+"wikipedia_cache.txt"))
     }
 
    /**
@@ -68,7 +68,6 @@ class InterestService implements ApplicationContextAware {
         //Utils.safeSave(interest)
     }
 
-
     public void save(Interest interest) {
         if (interest.id == null) {
             //no interest with text in db, new interest
@@ -77,17 +76,17 @@ class InterestService implements ApplicationContextAware {
             }
             //must save prior to finding similar interests
             Utils.safeSave(interest)
-      }
-      if (interest.lastAnalyzed == null) {
-          buildDocuments(interest)
-          if (xSimilarityService == null) {
-              xSimilarityService = applicationContext.getBean("similarityService")
-          }
-          if (xSimilarityService.relationsBuilt) {
-              xSimilarityService.buildInterestRelations(interest)
-          }
-          Utils.safeSave(interest)
-      }
+        }
+        if (interest.articleId < 1 || interest.articleId == null) {
+            buildDocuments(interest)
+            if (xSimilarityService == null) {
+                  xSimilarityService = applicationContext.getBean("similarityService")
+            }
+            if (xSimilarityService.relationsBuilt) {
+                xSimilarityService.buildInterestRelations(interest)
+            }
+            Utils.safeSave(interest)
+        }
     }
 
 

@@ -1,19 +1,20 @@
 package org.macademia
 
-import static org.junit.Assert.assertTrue
-import grails.plugins.nimble.core.AdminsService
-import grails.plugins.nimble.core.Role
-
 class BenchmarkService {
 
     static transactional = true
 
-    static int NUM_ITERATIONS = 1000 //number of iterations
+    static int NUM_ITERATIONS = 200 //number of iterations
     static int NUM_PEOPLE = 1000  //number of people in the benchmark database
     static int NUM_INTERESTS = 6034 //number of interests (must be actual number of unique interests)
     static int MAX_PEOPLE = 25 //represents maximum number of people on the outside of a graph
     static int GORM_CLEAN_LINES = 225 //number of lines read before Gorm clean up is called
     Random rand = new Random()
+
+    String personRes;
+    String personFilterRes;
+    String interestRes;
+    String interestFilterRes;
 
     def similarityService
     def adminsService
@@ -63,6 +64,12 @@ class BenchmarkService {
                 Institution institution = new Institution(name : name, emailDomain : emailDomain)
                 Utils.safeSave(institution)
             }
+        }
+    }
+
+    def buildDocuments() {
+        for (Interest i : Interest.findAll()) {
+            interestService.buildDocuments(i)
         }
     }
 
@@ -124,14 +131,20 @@ class BenchmarkService {
         log.error("Read ${Person.count()} people objects")
         log.error("Read ${Interest.count()} interest objects")
 
-        def admins = Role.findByName(AdminsService.ADMIN_ROLE)
-        adminsService.add(Person.findById(1).owner)
+        //def admins = Role.findByName(AdminsService.ADMIN_ROLE)
+        //adminsService.add(Person.findById(1).owner)
     }
 
     def benchmark() {
 //        benchRand()
         benchmarkPersonGraph()
         benchmarkInterestGraph()
+        benchmarkInstitutionFilterPersonGraph()
+        benchmarkInstitutionFilterInterestGraph()
+        log.info(personRes)
+        log.info(interestRes)
+        log.info(personFilterRes)
+        log.info(interestFilterRes)
         similarityService.analyzeTimes()
     }
 
@@ -141,10 +154,11 @@ class BenchmarkService {
         long begin = cal.getTimeInMillis()
         long randTime = 0
         long interests = 0
+        List<Person> people = Person.findAll()
 
         for(int i = 0; i < NUM_ITERATIONS; i++) {
             long randStart = Calendar.getInstance().getTimeInMillis()
-            Person person = Person.findById(rand.nextInt(NUM_PEOPLE))
+            Person person = people.get(rand.nextInt(NUM_PEOPLE))
             long randEnd = Calendar.getInstance().getTimeInMillis()
             log.info("RandTime: " + (randEnd - randStart))
             randTime = randTime + randEnd - randStart
@@ -169,11 +183,10 @@ class BenchmarkService {
 
         log.info("Began: $begin")
         log.info("Ended: $end")
-
-        log.info("Over $NUM_ITERATIONS iterations, it took an average of $avg milliseconds to create" +
-             " a graph with a random person at the center")
-        log.info("Over $interests interests, it took an average of $intAvg milliseconds to create a graph" +
-            " for that interest")
+        personRes = "Over $NUM_ITERATIONS iterations, it took an average of $avg milliseconds to create" +
+             " a graph with a random person at the center \n Over $interests interests, it took an average " +
+                "of $intAvg milliseconds to create a graph for that interest"
+        log.info(personRes)
     }
 
     def benchmarkInterestGraph() {
@@ -181,10 +194,11 @@ class BenchmarkService {
         Calendar cal = Calendar.getInstance()
         long begin = cal.getTimeInMillis()
         long randTime = 0
+        List<Interest> interests= Interest.findAll()
 
         for(int i = 0; i < NUM_ITERATIONS; i++) {
             long randStart = Calendar.getInstance().getTimeInMillis()
-            Interest interest = Interest.findById(rand.nextInt(NUM_INTERESTS))
+            Interest interest = interests.get(rand.nextInt(NUM_INTERESTS))
             long randEnd = Calendar.getInstance().getTimeInMillis()
             randTime = randTime + randEnd - randStart
             log.info("Building graph $i for interest $interest")
@@ -199,8 +213,10 @@ class BenchmarkService {
         log.info("Began: $begin")
         log.info("Ended: $end")
 
-        log.info("Over $NUM_ITERATIONS iterations, it took an average of $avg milliseconds to create" +
-             " a graph with a random interest at the center")
+        interestRes = "Over $NUM_ITERATIONS iterations, it took an average of $avg milliseconds to create" +
+             " a graph with a random interest at the center"
+
+        log.info(interestRes)
     }
 
     def benchmarkAddInterest() {
@@ -221,6 +237,87 @@ class BenchmarkService {
 
         log.info("Over $NUM_ITERATIONS , it took an average of $avg milliseconds to create" +
              " a graph with a random interest at the center")
+    }
+
+    def benchmarkInstitutionFilterPersonGraph() {
+        log.info("Beginning person graph benchmark")
+        Calendar cal = Calendar.getInstance()
+        long begin = cal.getTimeInMillis()
+        long randTime = 0
+        long interests = 0
+        List<Person> people = Person.findAll()
+        List<Institution> institutions = Institution.findAll()
+
+        for(int i = 0; i < NUM_ITERATIONS; i++) {
+            long randStart = Calendar.getInstance().getTimeInMillis()
+            Person person = people.get(rand.nextInt(NUM_PEOPLE))
+            int maxFilter = rand.nextInt(institutions.size())
+            Set<Long> filter = new HashSet<Long>()
+            while (filter.size() < maxFilter) {
+                filter.add(institutions.get(rand.nextInt(institutions.size())).id)
+            }
+            long randEnd = Calendar.getInstance().getTimeInMillis()
+            log.info("RandTime: " + (randEnd - randStart))
+            randTime = randTime + randEnd - randStart
+            if(person != null){
+                long interestSize = person.interests.size()
+                log.info("Building graph $i for person $person with " + interestSize + " interests.")
+                interests = interests + interestSize
+                similarityService.calculatePersonNeighbors(person, MAX_PEOPLE, filter)
+            } else{
+                i--
+            }
+        }
+        cal = cal.getInstance()
+        long end = cal.getTimeInMillis()
+
+        int avg = ((int)(end - begin - randTime))
+        avg=avg/NUM_ITERATIONS
+
+        int intAvg = (end - begin - randTime)/interests
+
+        log.info("Began: $begin")
+        log.info("Ended: $end")
+        personFilterRes = "Over $NUM_ITERATIONS iterations, it took an average of $avg milliseconds to create" +
+             " a graph with a random person at the center and an institution filter \n Over $interests interests, it took an average " +
+                "of $intAvg milliseconds to create a graph for that interest"
+        log.info(personFilterRes)
+    }
+
+    def benchmarkInstitutionFilterInterestGraph() {
+        log.info("Beginning interest graph benchmark")
+        Calendar cal = Calendar.getInstance()
+        long begin = cal.getTimeInMillis()
+        long randTime = 0
+        List<Interest> interests= Interest.findAll()
+        List<Institution> institutions = Institution.findAll()
+
+        for(int i = 0; i < NUM_ITERATIONS; i++) {
+            long randStart = Calendar.getInstance().getTimeInMillis()
+            Interest interest = interests.get(rand.nextInt(NUM_INTERESTS))
+            int maxFilter = rand.nextInt(institutions.size())
+            Set<Long> filter = new HashSet<Long>()
+            while (filter.size() < maxFilter) {
+                filter.add(institutions.get(rand.nextInt(institutions.size())).id)
+            }
+            long randEnd = Calendar.getInstance().getTimeInMillis()
+            randTime = randTime + randEnd - randStart
+            log.info("Building graph $i for interest $interest")
+            similarityService.calculateInterestNeighbors(interest, MAX_PEOPLE, 100, filter)
+        }
+        cal = cal.getInstance()
+        long end = cal.getTimeInMillis()
+
+        long avg = (end - begin - randTime)/NUM_ITERATIONS
+
+
+        log.info("Began: $begin")
+        log.info("Ended: $end")
+
+        interestFilterRes = "Over $NUM_ITERATIONS iterations, it took an average of $avg milliseconds to create" +
+             " a graph with a random interest and an institution filter at the center"
+
+        log.info(interestFilterRes)
     }
 
     def cleanUpGorm() {

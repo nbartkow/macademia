@@ -32,18 +32,23 @@ target ('main': "Load the Grails interactive shell") {
     TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session))
     def tx = session.beginTransaction();
 
-    boolean necessary = false
+    boolean necessary = true
     def databaseService = appCtx.getBean('databaseService')
+    def similarityService = appCtx.getBean('similarityService')
     if (necessary) {
-        def similarityService = appCtx.getBean('similarityService')
         similarityService.relationsBuilt = false
-        //databaseService.dropCurrentDB()
     }
 
    // def interestService = appCtx.getBean('interestService')
    // def similarityService = appCtx.getBean('similarityService')
     def benchmarkService = appCtx.getBean('benchmarkService')
     benchmarkService.populate(new File("db/benchmark_backup/testPeople.txt"), false)
+    if (necessary) {
+        def interestService = appCtx.getBean('interestService')
+        interestService.initBuildDocuments("db/benchmark_backup/")
+        benchmarkService.buildDocuments()
+        similarityService.buildInterestRelations()
+    }
 
     session.connection().commit()
     session.close();

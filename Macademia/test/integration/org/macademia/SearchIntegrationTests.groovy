@@ -9,6 +9,7 @@ class SearchIntegrationTests extends GrailsUnitTestCase {
     def searchableService
     def collaboratorRequestService
     def databaseService
+    def interestService
 
     protected void setUp() {
         super.setUp()
@@ -64,11 +65,11 @@ class SearchIntegrationTests extends GrailsUnitTestCase {
     
     void testCollaboratorRequestsSearch(){
         searchableService.reindex()
-        CollaboratorRequest cr = new CollaboratorRequest(title:"Test RFC", description:"Test RFC", creator:Person.findById(1), dateCreated:new Date(), expiration:new Date())
-        cr.addToKeywords(Interest.findById(1))
-        cr.addToKeywords(Interest.findById(2))
-        cr.addToKeywords(Interest.findById(3))
-        cr.addToKeywords(Interest.findById(5))
+        CollaboratorRequest cr = new CollaboratorRequest(title:"Test RFC", description:"Test RFC", creator:personService.findByEmail("ssen@macalester.edu"), dateCreated:new Date(), expiration:new Date())
+        cr.addToKeywords(interestService.findByText("online communities"))
+        cr.addToKeywords(interestService.findByText("social networking"))
+        cr.addToKeywords(interestService.findByText("data mining"))
+        cr.addToKeywords(interestService.findByText("web2.0"))
         collaboratorRequestService.save(cr)
         //Utils.safeSave(cr)
         def requests =  searchService.searchCollaboratorRequests("Test")

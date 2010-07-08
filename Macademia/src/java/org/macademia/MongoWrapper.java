@@ -33,7 +33,7 @@ public class MongoWrapper {
 
     public static final String INSTITUTION_INTERESTS ="institutionInterests";
 
-    private static final String ARTICLES_DB = "experimental";
+    private static final String ARTICLES_DB = "fromWikipedia";
 
     private String dbName = null;
 
@@ -86,7 +86,7 @@ public class MongoWrapper {
         changeDB(dbName);
     }
 
-    public DBObject findById(String collection, Long id, boolean articleDb) throws IllegalArgumentException{
+    public DBObject findById(String collection, Object id, boolean articleDb) throws IllegalArgumentException{
         DBObject searchById= new BasicDBObject("_id", id);
         DBCollection coll = getDb().getCollection(collection);
         //System.out.println("DBCollection: " + coll.toString());
@@ -100,28 +100,9 @@ public class MongoWrapper {
         return res;
     }
 
-    public DBObject safeFindById(String collection, Long id, boolean articleDb){
+    public DBObject safeFindById(String collection, Object id, boolean articleDb){
         try{
             return findById(collection, id, articleDb);
-        }   catch(IllegalArgumentException e){
-            //System.out.println(e.getMessage());
-            return null;
-        }
-    }
-
-    public DBObject findByName(String collection, String name, boolean articleDb) throws IllegalArgumentException{
-        DBObject searchByName= new BasicDBObject("_id", name);
-        DBCollection coll = getDb().getCollection(collection);
-        DBObject res = coll.findOne(searchByName);
-        if(res==null){
-            throw new IllegalArgumentException("No articles found with the name "+name);
-        }
-        return res;
-    }
-
-    public DBObject safeFindByName(String collection, String name, boolean articleDb){
-        try{
-            return findByName(collection, name, articleDb);
         }   catch(IllegalArgumentException e){
             //System.out.println(e.getMessage());
             return null;
@@ -290,7 +271,7 @@ public class MongoWrapper {
         String tmpDBName=dbName;
         //we need to fix this stuff...
         changeDB(ARTICLES_DB);
-        DBObject res = safeFindByName(ARTICLES_TO_IDS, title, true);
+        DBObject res = safeFindById(ARTICLES_TO_IDS, title, true);
         changeDB(tmpDBName);
         if(res == null){
             System.out.println("Invalid article title no ID found");
@@ -373,6 +354,9 @@ public class MongoWrapper {
 
     public SimilarInterestList getSimilarInterests(Long interest, Set<Long> institutionFilter) {
         DBObject i = safeFindById(INTERESTS, interest, false);
+        if (i == null) {
+            return new SimilarInterestList();
+        }
         //log.info(similar +" getSimilarInterests get")
         Set<Long> institutionInterests = new HashSet<Long>();
         for (long id : institutionFilter) {

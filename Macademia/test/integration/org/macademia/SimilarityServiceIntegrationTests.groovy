@@ -55,7 +55,7 @@ class SimilarityServiceIntegrationTests extends GrailsUnitTestCase {
         //assertTrue(graph.getAdjacentEdges(shilad).contains(e3))
         ///Edge e4 = new Edge( interest: interest, relatedInterest:interestService.findByText("globalization"))
         //assertTrue(graph.getAdjacentEdges(interest).contains(e4))
-        CollaboratorRequest cr = new CollaboratorRequest(title:"Test RFC", description:"This is a test request for collaboratorRequest", creator:Person.findById(1), dateCreated: new Date(), expiration: new Date())
+        CollaboratorRequest cr = new CollaboratorRequest(title:"Test RFC", description:"This is a test request for collaboratorRequest", creator:Person.findByEmail("ssen@macalester.edu"), dateCreated: new Date(), expiration: new Date())
         cr.addToKeywords(interestService.findByText("web20"))
         collaboratorRequestService.save(cr)
         graph= similarityService.calculateInterestNeighbors(interest,10, 100)
@@ -65,58 +65,58 @@ class SimilarityServiceIntegrationTests extends GrailsUnitTestCase {
     }
 
     void testCalculatePersonNeighbors () {
-        Person p=Person.get(4)
+        Person p=Person.findByEmail("michelfelder@macalester.edu")
         Graph graph= similarityService.calculatePersonNeighbors(p,10)
         assertEquals(graph.getAdjacentEdges(p).size(),15)
-        Edge e = new Edge(person:Person.get(1),interest:Interest.get(42), relatedInterest:Interest.get(5))
-        assertFalse(graph.getAdjacentEdges(Person.get(1)).contains(e))
-        e=new Edge(person:Person.get(4),interest:Interest.get(42))
-        assertTrue(graph.getAdjacentEdges(Person.get(4)).contains(e))
-        e=new Edge(person:Person.get(3),interest:Interest.get(5), relatedInterest:Interest.get(30))
-        //assertTrue(graph.getAdjacentEdges(Person.get(3)).contains(e))
-        assertEquals(graph.getPeople().size(),4) //was 5
+        Edge e = new Edge(person:Person.findByEmail("ssen@macalester.edu"),interest:interestService.findByText("existentialism"), relatedInterest:interestService.findByText("web2.0"))
+        assertFalse(graph.getAdjacentEdges(Person.findByEmail("ssen@macalester.edu")).contains(e))
+        e=new Edge(person:Person.findByEmail("michelfelder@macalester.edu"),interest:interestService.findByText("existentialism"))
+        assertTrue(graph.getAdjacentEdges(Person.findByEmail("michelfelder@macalester.edu")).contains(e))
+        e=new Edge(person:Person.findByEmail("guneratne@macalester.edu"),interest:interestService.findByText("web2.0"), relatedInterest:interestService.findByText("globalization"))
+        //assertTrue(graph.getAdjacentEdges(Person.findByEmail("guneratne@macalester.edu")).contains(e))
+        assertEquals(graph.getPeople().size(),3) //was 5
         assertEquals(graph.getInterests().size(),15)
-        CollaboratorRequest cr = new CollaboratorRequest(title:"Test RFC", description:"This is a test request for collaboratorRequest", creator:Person.findById(1), dateCreated: new Date(), expiration: new Date())
-        cr.addToKeywords(Interest.get(5))
+        CollaboratorRequest cr = new CollaboratorRequest(title:"Test RFC", description:"This is a test request for collaboratorRequest", creator:Person.findByEmail("ssen@macalester.edu"), dateCreated: new Date(), expiration: new Date())
+        cr.addToKeywords(interestService.findByText("web2.0"))
         collaboratorRequestService.save(cr)
         graph= similarityService.calculatePersonNeighbors(p,10)
         assertEquals(graph.getRequests().size(),1)
-        assertEquals(graph.getPeople().size(),4) //was 5
+        assertEquals(graph.getPeople().size(),3) //was 5
         assertEquals(graph.getInterests().size(),15)
     }
 
     void testCalculateRequestNeighbors () {
-        CollaboratorRequest cr = new CollaboratorRequest(title:"Test RFC", description:"This is a test request for collaboratorRequest", creator:Person.findById(1), dateCreated: new Date(), expiration: new Date())
-        cr.addToKeywords(Interest.get(5))
-        cr.addToKeywords(Interest.get(1))
-        cr.addToKeywords(Interest.get(2))
-        cr.addToKeywords(Interest.get(3))
+        CollaboratorRequest cr = new CollaboratorRequest(title:"Test RFC", description:"This is a test request for collaboratorRequest", creator:Person.findByEmail("ssen@macalester.edu"), dateCreated: new Date(), expiration: new Date())
+        cr.addToKeywords(interestService.findByText("web2.0"))
+        cr.addToKeywords(interestService.findByText("online communities"))
+        cr.addToKeywords(interestService.findByText("social networking"))
+        cr.addToKeywords(interestService.findByText("data mining"))
         collaboratorRequestService.save(cr)
         Graph graph= similarityService.calculateRequestNeighbors(cr,10)
-        assertTrue(graph.getInterests().contains(Interest.get(1)))
-        assertTrue(graph.getInterests().contains(Interest.get(2)))
-        assertTrue(graph.getInterests().contains(Interest.get(3)))
-        assertTrue(graph.getInterests().contains(Interest.get(5)))
-        assertTrue(graph.getPeople().contains(Person.get(1)))
-        assertTrue(graph.getPeople().contains(Person.get(2)))
-        //assertTrue(graph.getPeople().contains(Person.get(3)))
-        assertTrue(graph.getPeople().contains(Person.get(4)))
+        assertTrue(graph.getInterests().contains(interestService.findByText("online communities")))
+        assertTrue(graph.getInterests().contains(interestService.findByText("social networking")))
+        assertTrue(graph.getInterests().contains(interestService.findByText("data mining")))
+        assertTrue(graph.getInterests().contains(interestService.findByText("web2.0")))
+        assertTrue(graph.getPeople().contains(Person.findByEmail("ssen@macalester.edu")))
+        assertTrue(graph.getPeople().contains(Person.findByEmail("strauss@macalester.edu")))
+        //assertTrue(graph.getPeople().contains(Person.findByEmail("guneratne@macalester.edu")))
+        assertTrue(graph.getPeople().contains(Person.findByEmail("michelfelder@macalester.edu")))
         assertEquals(graph.getPeople().size(),4) // was 3, then 5
         assertEquals(graph.getInterests().size(),4)
         assertEquals(graph.getRequests().size(),1)
         assertEquals(graph.getAdjacentEdges(cr).size(),4)
-        assertEquals(graph.getAdjacentEdges(Person.get(4)).size(),1) //was 3
-        //assertTrue(graph.getAdjacentEdges(Person.get(3)).contains(new Edge(interest: Interest.get(5), person: Person.get(3), relatedInterest: Interest.get(30))))
-        //assertEquals(graph.getAdjacentEdges(Person.get(3)).size(),1)
-        assertEquals(graph.getAdjacentEdges(Interest.get(1)).size(),4)
-        assertEquals(graph.getAdjacentEdges(Interest.get(3)).size(),4)//was 10
-        assertEquals(graph.getAdjacentEdges(Interest.get(2)).size(),2)
-        Edge e1 = new Edge(person:Person.get(1),interest:Interest.get(3),relatedInterest:Interest.get(9))
-        Edge e2 = new Edge(person:Person.get(1),interest:Interest.get(5),relatedInterest:Interest.get(3))
-        Edge e3 = new Edge(person:Person.get(1),interest:Interest.get(5),relatedInterest:Interest.get(2))
-        assertTrue(graph.getAdjacentEdges(Person.get(1)).contains(e1))
-        assertFalse(graph.getAdjacentEdges(Person.get(1)).contains(e2)) //shouldn't be in the graph, because a direct person 5 to interest 3 edge exists
-        assertFalse(graph.getAdjacentEdges(Person.get(1)).contains(e3))
+        assertEquals(graph.getAdjacentEdges(Person.findByEmail("michelfelder@macalester.edu")).size(),1) //was 3
+        //assertTrue(graph.getAdjacentEdges(Person.findByEmail("guneratne@macalester.edu")).contains(new Edge(interest: interestService.findByText("web2.0"), person: Person.findByEmail("guneratne@macalester.edu"), relatedInterest: interestService.findByText("globalization"))))
+        //assertEquals(graph.getAdjacentEdges(Person.findByEmail("guneratne@macalester.edu")).size(),1)
+        assertEquals(graph.getAdjacentEdges(interestService.findByText("online communities")).size(),4)
+        assertEquals(graph.getAdjacentEdges(interestService.findByText("data mining")).size(),4)//was 10
+        assertEquals(graph.getAdjacentEdges(interestService.findByText("social networking")).size(),2)
+        Edge e1 = new Edge(person:Person.findByEmail("ssen@macalester.edu"),interest:interestService.findByText("data mining"),relatedInterest:interestService.findByText("statistics"))
+        Edge e2 = new Edge(person:Person.findByEmail("ssen@macalester.edu"),interest:interestService.findByText("web2.0"),relatedInterest:interestService.findByText("data mining"))
+        Edge e3 = new Edge(person:Person.findByEmail("ssen@macalester.edu"),interest:interestService.findByText("web2.0"),relatedInterest:interestService.findByText("social networking"))
+        assertTrue(graph.getAdjacentEdges(Person.findByEmail("ssen@macalester.edu")).contains(e1))
+        assertFalse(graph.getAdjacentEdges(Person.findByEmail("ssen@macalester.edu")).contains(e2)) //shouldn't be in the graph, because a direct person 5 to interest 3 edge exists
+        assertFalse(graph.getAdjacentEdges(Person.findByEmail("ssen@macalester.edu")).contains(e3))
     }
 
     void testBuildInterestRelations () {

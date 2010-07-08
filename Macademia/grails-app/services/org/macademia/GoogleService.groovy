@@ -9,22 +9,24 @@ class GoogleService {
     ThreadLocal<Google> holder = new ThreadLocal<Google>()
 
     public List<String> query (String query, int maxResults) {
+        try {
+            return getGoogle().query(query, maxResults)
+        } catch (Exception e) {
+            holder.set(null)
+            log.error("google query for " + query + " failed (${e.getMessage()}... retrying");
+            return getGoogle().query(query, maxResults)
+        }
+    }
+
+    public Google getGoogle() {
         if (holder.get() == null) {
             if (googleCache != null) {
-                try {
-                    holder.set(new Google(googleCache))
-                } catch (Exception) {
-                    holder.set(new Google(googleCache))
-                }
-            }   else {
-                try {
-                    holder.set(new Google())
-                } catch (Exception) {
-                    holder.set(new Google())
-                }
+                holder.set(new Google(googleCache))
+            } else {
+                holder.set(new Google())
             }
         }
-        return holder.get().query(query, maxResults)
+        return holder.get()
     }
 
     public void setCache(File cache){
