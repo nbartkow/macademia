@@ -1,5 +1,14 @@
 var macademia = macademia || {};
 
+// calculates the number of properties (keys, values, etc.) for an object or associative array.
+macademia.size = function(obj) {
+    var size = 0, key;
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) size++;
+    }
+    return size;
+};
+
 //total number of institutions
 macademia.institutions = 26;
 
