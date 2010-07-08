@@ -20,7 +20,7 @@ The *institutionInterests* collections hold the information of which interests a
 
 The database fromWikipedia holds information about articles and their pairwise similarities it has two collections *articlesToIds*  and *articleSimilarities*.
 
-The *articlesToIds* collection maps article titles to their ids. It has two fields name which is the name of the articles and _id which is the article's id  number. It is important that the names field is *indexed*.
+The *articlesToIds* collection maps article titles to their ids. It has two fields _id which is the name of the articles and wpId which is the article's id  number. It is important that the names field is *indexed*.
 
 The *articleSimilarities* collection maps each wikipedia article to its most similar wikipedia articles. It has two fields _id which is the article id and similar which is a string that has the similar articles id and similarity score in a form similar to the similar field in the *interests* collection
 
