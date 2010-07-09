@@ -20,7 +20,7 @@ It generates ID and names for the chosen Wikipedia pages.
 
 
 
-== Stage 1: WordCounter ==
+== Stage 1: Wordcounter ==
 It takes each Wikipedia page and counts how many times a word appears in the page.
 
 === Mapper ===
