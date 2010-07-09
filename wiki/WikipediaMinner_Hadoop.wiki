@@ -66,7 +66,7 @@ This is used to calculate the tf-idf scores
    * output from stage 2
    * 1800000 (1.8 million) which is the total number of wikipedia pages by February 2010.
 
-== Final Output ===
+=== Final Output ===
    * Each line is an article, a word and the tf-idf score (34567821  developed@0.08).
 === Mapper ===
    * Key - article
@@ -82,23 +82,54 @@ This is used to calculate the tf-idf scores
 == Stage 4: DocSimScorer ==
 Calculates the similarities between two documents
 
+=== Optimizations ===
+   * Set the  maximum number of documents per terms to 1500 such that we have (1500)^2 article pairs for each word. 2000 will make the output files too big.
+   * Set the number of splits to 1 and split index to 0, because we can do all the data at once, because Amazon has the resources we need.
+=== Initial Input ===
+   * Output from step 3
+=== Final Output ===
+   * Each line has an article pair and their combined scores.
 === Mapper ===
-   * Input: wiki_page_name word@tf-idf_score
-   * Output: word wiki_page_name@score
-   * Output Example: developed Anarchism@32
-
+   * Key - article1
+   * Value - article2@score
 === Reducer ===
-   * Input: word wiki_page_name@score
-   * Output: wiki_page_name1@wiki_page_name2 (wp1.score*wp2.score) -- the multiplication of the scores is for cosine similarity
-   * Output example: Anarchism Decency@0.43
+   * Key - article1@article2
+   * Value - combined score (score1*score2)
+=== Hadoop job logistics ===
+   * Can use the large Amazon elastic cluster to run it ( 100 mappers and 200 reducers)
+   * The input file is "s3://macademia/step3" and the output file is "s3://macademia/step4" and additional inputs are 1 and 0 for number of splits and split index.
 
-== Stage 5 ==
-This adds the sim_scores for the pair of wiki articles being compared
+== Stage 5: Finaldocsim ==
+This adds the similarity scores for the pair of wiki articles being compared
 
+=== Initial Input ===
+   * output from step 4
+=== Final Output ===
+   * article pairs and the sum of all of their partial scores across all of the words
 === Mapper ===
-   * Identity
-
+   * Key - article1@article2
+   * Value - score
 === Reducer ===
-   * input: wiki_page_name1 wiki_page_name2@(wp1.score*wp2.score)
-   * Output: wiki_page_name1@wiki_page_name2 Combined_similairty_scores
-   * Anarchism@Decency 0.48
+   * Key - article1@article2
+   * Value - sum of score across pairs of articles
+=== Hadoop job logistics ===
+   * Can use the large Amazon elastic cluster to run it ( 100 mappers and 200 reducers)
+   * The input file is "s3://macademia/step4" and the output file is "s3://macademia/step5"
+
+
+== Stage 6: JSondocsim ==
+returns output that is formatted to be inserted into MongoDB
+
+=== Initial Input ===
+   * output from step 5
+=== Final Output ===
+   * article1 and all the articles that are related to it sorted by scores (article 1 article 2, score2 | ... | article n|score n)
+=== Mapper ===
+   * Key - article1@article2
+   * Value - score
+=== Reducer ===
+   * Key - article1 
+   * Value - \"article2,score2 | article3,score3 ... \"
+=== Hadoop job logistics ===
+   * Can use the large Amazon elastic cluster to run it ( 100 mappers and 100 reducers)
+   * The input file is "s3://macademia/step5" and the output file is "s3://macademia/step6"
