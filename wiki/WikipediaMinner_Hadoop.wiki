@@ -18,12 +18,12 @@ It generates ID and names for the chosen Wikipedia pages.
    * The input file is "s3://macademia/wiki/input" and the output file is "s3://macademia/step0"
 
 
-
 == Stage 1: Wordcounter ==
 It takes each Wikipedia page and counts how many times a word appears in the page.
 === Optimizations ===
+   * Only add pages that are in the ranked_pages file. The file is produces by a python file that is produced by combining the wikipedia_cache and pagecounts files. This allows to only add pages past a certain rank, no hard rank threshold needed.
 === Initial Input ===
-   * wikipedia pages
+   * wikipedia pages and rankedpages.txt
 === Final Ouput ===
    * A word, the wikipedia page ID, the number of times the word appears in the page and total number of words processed in that page (developed   @345263746@5@6249).
    * A word and the total count of Wikipedia pages from which the word was processed (developed#c1234). 
@@ -34,8 +34,6 @@ It takes each Wikipedia page and counts how many times a word appears in the pag
 === Reducer ===
    * Key - word
    * Value: a Wikipedia page, number of times the word appeared in the page, the number of words in the page.             
-         
-
 
 
 == Stage 2:DocFrequency ==
@@ -61,6 +59,7 @@ This is used to calculate the tf-idf scores
    * Input: wiki_page_name word@articleWordFrequency@articleWordCount@wordDocFrequency
    * Ouput: article word@tf-idf_score
    * Output Example: "Anarchism   developed@32.0"
+
 
 == Stage 4: DocSimScorer ==
 Calculates the similarities between two documents
