@@ -231,7 +231,7 @@ class SimilarityService {
             //log.info("Similar interest ID: "+ir.interestId+" similarity score "+ir.similarity+"calculate neighbors")
             if(ir.interestId!=null){
                 if(!inner.contains(ir.interestId)) {
-                    graph = findPeopleAndRequests(graph, maxPeople, i, ir.interestId, null)
+                    graph = findPeopleAndRequests(graph, maxPeople, i, ir.interestId, institutionFilter)
                 }
             }
 
