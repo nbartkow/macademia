@@ -1,136 +1,136 @@
 <wiki:toc max_depth="3" />
-== Stage 0: DocIDGenerator ==
+= Stage 0: DocIDGenerator =
 It generates ID and names for the chosen Wikipedia pages.
-=== Optimizations ===
+== Optimizations ==
    * Excludes any disambiguation, empty, redirect and stub pages
    * Excludes any words in the set of stop words
-=== Initial Input ===
+== Initial Input ==
    * Wikipedia pages
-=== Final output ===
+== Final output ==
    * A page name and ID (drama in the 1970's "\t" 12341367) a copy of this output is in MongoDB in the Poliwiki server
-=== Mapper ===
+== Mapper ==
    * Key - this is not the Wikipedia page ID, it is only a long value showing where in the file the page is
    * Value - this is the actual Wikipedia page: contains the actual text, page ID and other information.
-=== Reducer ===
+== Reducer ==
    * Key - page Title
    * Value - page ID
-=== Hadoop job logistics ===
+== Hadoop job logistics ==
    * Can use the medium Amazon elastic cluster to run it ( 20 mappers and 20 reducers)
    * The input file is "s3://macademia/wiki/input" and the output file is "s3://macademia/step0"
 
 
-== Stage 1: Wordcounter ==
+= Stage 1: Wordcounter =
 It takes each Wikipedia page and counts how many times a word appears in the page.
-=== Optimizations ===
+== Optimizations ==
    * Only add pages that are in the ranked_pages file. The file is produces by a python file that is produced by combining the wikipedia_cache and pagecounts files. This allows to only add pages past a certain rank, no hard rank threshold needed.
-=== Initial Input ===
+== Initial Input ==
    * wikipedia pages and rankedpages.txt
-=== Final Ouput ===
+== Final Ouput ==
    * A word, the wikipedia page ID, the number of times the word appears in the page and total number of words processed in that page (developed   @345263746@5@6249).
    * A word and the total count of Wikipedia pages from which the word was processed (developed#c1234). 
-=== Mapper ===
+== Mapper ==
    * Key - this is not the Wikipedia page ID, it is only a long value showing where in the file the page is 
    * Value: Wikipedia page
-=== Reducer ===
+== Reducer ==
    * Key - word
    * Value: a Wikipedia page, number of times the word appeared in the page, the number of words in the page.             
-=== Hadoop job logistics ===
+== Hadoop job logistics ==
    * Can use the small Amazon elastic cluster to run it ( 20 mappers and 20 reducers)
    * The input file is "s3://macademia/wiki/input" and the output file is "s3://macademia/step1 s3://macademia/wiki/rankedpages.txt"
 
-== Stage 2:Docfrequency ==
+= Stage 2:Docfrequency =
 Prepares the data pieces for the tf-idf calculations
 
-=== Initial Input ===
+== Initial Input ==
    * output from step 1.
-=== Final Ouput ===
+== Final Ouput ==
    * Each line contains a Wikipedia page ID, a word, the number of times the word appears in the page, the length of the page and the number of pages in which the word appears (1234567   developed@345@6249@32424).
-=== Mapper ===
+== Mapper ==
    * Key - word
    * Value1 - A word, the wikipedia page ID, the number of times the word appears in the page and total number of words processed in that page (developed   @345263746@5@6249).
    * Value2 - A word and the total count of Wikipedia pages from which the word was processed (developed#c1234).
-=== Reducer ===
+== Reducer ==
    * Key - word
    * value -   Each line contains a Wikipedia page ID, a word, the number of times the word appears in the page, the length of the page and the number of pages in which the word appears (1234567   developed@345@6249@32424).
-=== Hadoop job logistics ===
+== Hadoop job logistics ==
    * Can use the medium Amazon elastic cluster to run it ( 20 mappers and 20 reducers)
    * The input file is "s3://macademia/step1" and the output file is "s3://macademia/step2"
 
-== Stage 3:Tfidfvectorpruner ==
+= Stage 3:Tfidfvectorpruner =
 This is used to calculate the tf-idf scores
 
-=== Optimizations ===
+== Optimizations ==
    * Set the maximum number of pages in which a word appears to be a sixth of the total number of pages in the whole of Wikipedia and the minimum to be 3.
    * Set the vector size to 600. Used the python script wiki_stats.py to bin pages according to their number of words. We found that capping the # of words to 600 will cover all the words for 90% of documents, and that the remaining words are unlikely to be interesting.
    * Set smoothing constant to 100 to penalize pages in which the words have less weight, for more ask Shilad.
-=== Initial Input ===
+== Initial Input ==
    * output from stage 2
    * 1800000 (1.8 million) which is the total number of wikipedia pages by February 2010.
 
-=== Final Output ===
+== Final Output ==
    * Each line is an article, a word and the tf-idf score (34567821  developed@0.08).
-=== Mapper ===
+== Mapper ==
    * Key - article
    * Value - a word, the number of times the word appeared in the page that is the key, the number that word appeared in other pages and the length of the page.
-=== Reducer ===
+== Reducer ==
    * Key - article
    * Value - word and tf-idf score
-=== Hadoop job logistics ===
+== Hadoop job logistics ==
    * Can use the large Amazon elastic cluster to run it ( 50 mappers and 50 reducers)
    * The input file is "s3://macademia/step2" and the output file is "s3://macademia/step3" and the number of pages additional input is 1800000.
 
 
-== Stage 4: Docsimscorer ==
+= Stage 4: Docsimscorer =
 Calculates the similarities between two documents
 
-=== Optimizations ===
+== Optimizations ==
    * Set the  maximum number of documents per terms to 1500 such that we have (1500)^2 article pairs for each word. 2000 will make the output files too big.
    * Set the number of splits to 1 and split index to 0, because we can do all the data at once, because Amazon has the resources we need.
-=== Initial Input ===
+== Initial Input ==
    * Output from step 3
-=== Final Output ===
+== Final Output ==
    * Each line has an article pair and their combined scores.
-=== Mapper ===
+== Mapper ==
    * Key - article1
    * Value - article2@score
-=== Reducer ===
+== Reducer ==
    * Key - article1@article2
    * Value - combined score (score1*score2)
-=== Hadoop job logistics ===
+== Hadoop job logistics ==
    * Can use the large Amazon elastic cluster to run it ( 100 mappers and 200 reducers)
    * The input file is "s3://macademia/step3" and the output file is "s3://macademia/step4" and additional inputs are 1 and 0 for number of splits and split index.
 
-== Stage 5: Finaldocsim ==
+=Stage 5: Finaldocsim =
 This adds the similarity scores for the pair of wiki articles being compared
 
-=== Initial Input ===
+== Initial Input ==
    * output from step 4
-=== Final Output ===
+== Final Output ==
    * article pairs and the sum of all of their partial scores across all of the words
-=== Mapper ===
+== Mapper ==
    * Key - article1@article2
    * Value - score
-=== Reducer ===
+== Reducer ==
    * Key - article1@article2
    * Value - sum of score across pairs of articles
-=== Hadoop job logistics ===
+== Hadoop job logistics ==
    * Can use the large Amazon elastic cluster to run it ( 100 mappers and 200 reducers)
    * The input file is "s3://macademia/step4" and the output file is "s3://macademia/step5"
 
 
-== Stage 6: JSondocsim ==
+= Stage 6: JSondocsim =
 returns output that is formatted to be inserted into MongoDB
 
-=== Initial Input ===
+== Initial Input ==
    * output from step 5
-=== Final Output ===
+== Final Output ==
    * article1 and all the articles that are related to it sorted by scores (article 1 article 2, score2 | ... | article n|score n)
-=== Mapper ===
+== Mapper ==
    * Key - article1@article2
    * Value - score
-=== Reducer ===
+== Reducer ==
    * Key - article1 
    * Value - \"article2,score2 | article3,score3 ... \"
-=== Hadoop job logistics ===
+== Hadoop job logistics ==
    * Can use the large Amazon elastic cluster to run it ( 100 mappers and 100 reducers)
    * The input file is "s3://macademia/step5" and the output file is "s3://macademia/step6"
