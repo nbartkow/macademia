@@ -42,16 +42,15 @@ Prepares the data pieces for the tf-idf calculations
 === Initial Input ===
    * output from step 1.
 === Final Ouput ===
-   * Each line contains a Wikipedia page, a word, the number of times the word appears in the article, the length of the page and the number of times the  
+   * Each line contains a Wikipedia page ID, a word, the number of times the word appears in the page, the length of the page and the number of pages in which the word appears (1234567   developed@345@6249@32424).
 === Mapper ===
-   * Identity
+   * Key - word
+   * Value1 - A word, the wikipedia page ID, the number of times the word appears in the page and total number of words processed in that page (developed   @345263746@5@6249).
+   * Value2 - A word and the total count of Wikipedia pages from which the word was processed (developed#c1234).
 
 === Reducer ===
-   * Input: word #cnumber_of_occurrences_across_all_wikipages
-            word @ page_title @ word_count @ total_number_words 
-            
-   * Output: wiki_page word@articleWordFrequency@articleWordCount@wordDocFrequency
-   * Output Example: Anarchism   developed@345@6249@32424 
+   * Key - word
+   * value -   Each line contains a Wikipedia page ID, a word, the number of times the word appears in the page, the length of the page and the number of pages in which the word appears (1234567   developed@345@6249@32424).
 
 == Stage 3:TfidfVectorPruner ==
 This is used to calculate the tf-idf scores
