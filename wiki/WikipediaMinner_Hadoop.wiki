@@ -1,6 +1,5 @@
 == Stage 0: DocIDGenerator ==
 It generates ID and names for the chosen Wikipedia pages.
-
 === Optimizations ===
    * Excludes any disambiguation, empty, redirect and stub pages
    * Excludes any words in the set of stop words
@@ -22,19 +21,20 @@ It generates ID and names for the chosen Wikipedia pages.
 
 == Stage 1: Wordcounter ==
 It takes each Wikipedia page and counts how many times a word appears in the page.
-
+=== Optimizations ===
+=== Initial Input ===
+   * wikipedia pages
+=== Final Ouput ===
+   * A word, the wikipedia page ID, the number of times the word appears in the page and total number of words processed in that page (developed   @345263746@5@6249).
+   * A word and the total count of Wikipedia pages from which the word was processed (developed#c1234). 
 === Mapper ===
-   * Input: wikipedia pages
-   * Output: word @ page_title @ word_count @ total_number_words
-   * Example: Mathematics @Modern_Mathematics@12@120 per line
+   * Key - this is not the Wikipedia page ID, it is only a long value showing where in the file the page is 
+   * Value: Wikipedia page
 
 === Reducer ===
-   * Input: word @ page_title @ word_count @ total_number_words
-   * Outputs: word #cnumber_of_occurrences_across_all_wikipages
-              word @ page_title @ word_count @ total_number_words              
-
-   * Output Example: Mathematics #c1230
-                     Mathematics @Modern_Mathematics@12@120          
+   * Key - word
+   * Value: a Wikipedia page, number of times the word appeared in the page, the number of words in the page.             
+         
 
 
 
