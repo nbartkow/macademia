@@ -1,20 +1,22 @@
 == Stage 0: DocIDGenerator ==
 It generates ID and names for the chosen Wikipedia pages.
 
-=== Optmizations ===
+=== Optimizations ===
    * Excludes any disambiguation, empty, redirect and stub pages
    * Excludes any words in the set of stop words
 === Initial Input ===
    * Wikipedia pages
 === Final output ===
-   * A page name and ID (12341367 -tab character- drama in the 1970's)
+   * A page name and ID (drama in the 1970's "\t" 12341367)
 === Mapper ===
    * Key - this is not the Wikipedia page ID, it is only a long value showing where in the file the page is
    * Value - tis is the actual Wikipedia page: contains the actual text, page ID and other information, look up WikipediaPage to see what it contains.
 === Reducer ===
    * Key - page Title
    * Value - page ID
-
+=== Hadoop job logistics ===
+   * Can use the medium Amazon elastic cluster to run it ( 20 mappers and 20 reducers)
+   * The input file is "s3://macademia/wiki/input" and the output file is "s3://macademia/step0"
 
 
 
