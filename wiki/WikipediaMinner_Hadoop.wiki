@@ -62,14 +62,21 @@ This is used to calculate the tf-idf scores
    * Set the maximum number of pages in which a word appears to be a sixth of the total number of pages in the whole of Wikipedia and the minimum to be 3.
    * Set the vector size to 600. Used the python script wiki_stats.py to bin pages according to their number of words. We found that capping the # of words to 600 will cover all the words for 90% of documents, and that the remaining words are unlikely to be interesting.
    * Set smoothing constant to 100 to penalize pages in which the words have less weight, for more ask Shilad.
+=== Initial Input ===
+   * output from stage 2
+   * 1800000 (1.8 million) which is the total number of wikipedia pages by February 2010.
 
+== Final Output ===
+   * Each line is an article, a word and the tf-idf score (34567821  developed@0.08).
 === Mapper ===
-   * Identity
-
+   * Key - article
+   * Value - a word, the number of times the word appeared in the page that is the key, the number that word appeared in other pages and the length of the page.
 === Reducer ===
-   * Input: wiki_page_name word@articleWordFrequency@articleWordCount@wordDocFrequency
-   * Ouput: article word@tf-idf_score
-   * Output Example: "Anarchism   developed@32.0"
+   * Key - article
+   * Value - word and tf-idf score
+=== Hadoop job logistics ===
+   * Can use the large Amazon elastic cluster to run it ( 50 mappers and 50 reducers)
+   * The input file is "s3://macademia/step2" and the output file is "s3://macademia/step3" and the number of pages additional input is 1800000.
 
 
 == Stage 4: DocSimScorer ==
