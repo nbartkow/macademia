@@ -1,6 +1,7 @@
 var macademia = macademia || {};
 macademia.rootId;
 macademia.distance = 150;
+macademia.refreshNeeded = true;
 
 
 
@@ -89,14 +90,33 @@ macademia.init = function(rootType,id){
                     $(this).css('opacity', 0.75);
                     $(this).css('z-index', 50);
                     $(this).css('background-color', '#A2AB8E');
+
+//                    node.eachAdjacency(function(adj){
+//                        adjacentNodes.push(adj.nodeTo.id);
+//                        adj.data.$lineWidth = 2.5;
+//                    });
+                    macademia.highlightAdjacenciesOn(node);
+                    macademia.rgraph.refresh();
+
                 });
                 $(d).mouseout(function() {
                     $(this).css('font-weight', 'normal');
                     $(this).css('opacity', 0.8);
                     $(this).css('z-index', 10);
                     $(this).css('background-color','transparent');
+
+//                    node.eachAdjacency(function(adj){
+//                        adjacentNodes.push(adj.nodeTo.id);
+//                        adj.data.$lineWidth = 1;
+//                    });
+                    if (macademia.refreshNeeded){
+                        macademia.highlightAdjacenciesOff(node);
+                        macademia.rgraph.refresh();
+                    }
                 });
                 $(d).click(function() {
+                    macademia.refreshNeeded = false;
+                    macademia.highlightAdjacenciesOff(node);
                     macademia.navInfovis(node);
 //                  rgraph.onClick(node.id);
 
@@ -173,6 +193,7 @@ macademia.init = function(rootType,id){
                             duration:100,
                             hideLabels:false,
                             onComplete:function(){
+
                                 //macademia.updateSidebar(rgraph.graph.getNode(rgraph.root));
 
                             }
@@ -180,6 +201,7 @@ macademia.init = function(rootType,id){
                     });
                 }
                 macademia.nextNode = null;
+                macademia.refreshNeeded = true;
             }
 
         });

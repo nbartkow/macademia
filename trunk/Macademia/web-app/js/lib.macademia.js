@@ -1,5 +1,6 @@
 var macademia = macademia || {};
-
+//total number of institutions
+macademia.institutions = 26;
 // calculates the number of properties (keys, values, etc.) for an object or associative array.
 macademia.size = function(obj) {
     var size = 0, key;
@@ -8,10 +9,59 @@ macademia.size = function(obj) {
     }
     return size;
 };
-
-//total number of institutions
-macademia.institutions = 26;
-
+// highlights adjacencies during mouseover
+macademia.highlightAdjacenciesOn = function(node){
+    var adjacentNodes = [];
+    var root = macademia.rgraph.graph.getNode(macademia.rgraph.root);
+    root.eachSubnode(function(n){
+        n.eachAdjacency(function(adj){
+            if (adj.nodeTo.id != node.id && adj.nodeFrom.id != node.id){
+                if (adj.data.$color != "#999"){
+                    adj.data.$colorB = adj.data.$color;
+                    adj.data.$color = "#999";
+                }
+            }else if (adj.nodeTo.id != node.id){
+                adjacentNodes.push(adj.nodeTo.id);
+                adj.data.$lineWidth = 1.8;
+            }else{
+                adjacentNodes.push(adj.nodeFrom.id);
+                adj.data.$lineWidth = 1.8;
+            }
+        })
+    });
+    for (var i = 0; i < adjacentNodes.length; i++){
+        var adjN = "#" + adjacentNodes[i];
+        $(adjN).css('font-weight', 'bold');
+        $(adjN).css('opacity', 0.75);
+        $(adjN).css('z-index', 50);
+        $(adjN).css('background-color', '#A2AB8E');
+    }
+};
+// returns graph to original coloring during mouseout
+macademia.highlightAdjacenciesOff = function(node){
+    var adjacentNodes = [];
+    var root = macademia.rgraph.graph.getNode(macademia.rgraph.root);
+    root.eachSubnode(function(n){
+        n.eachAdjacency(function(adj){
+            if (adj.nodeTo.id != node.id && adj.nodeFrom.id != node.id){
+                adj.data.$color = adj.data.$colorB;
+            }else if (adj.nodeTo.id != node.id){
+                adjacentNodes.push(adj.nodeTo.id);
+                adj.data.$lineWidth = 1;
+            }else{
+                adjacentNodes.push(adj.nodeFrom.id);
+                adj.data.$lineWidth = 1;
+            }
+        })
+    });
+    for (var i = 0; i < adjacentNodes.length; i++){
+        var adjN = "#" + adjacentNodes[i];
+        $(adjN).css('font-weight', 'normal');
+        $(adjN).css('opacity', 0.8);
+        $(adjN).css('z-index', 10);
+        $(adjN).css('background-color','transparent');
+    }
+};
 //holds query string values
 macademia.queryString = {nodeId:'p_1', navVisibility:'true', navFunction:'search', institutions:'all', searchBox:null, interestId:null, personId:null, requestId:null};
 
@@ -292,6 +342,12 @@ macademia.createInstitutionString = function(collegeArray) {
     }
     $.address.parameter('institutions', colleges);
 };
+//returns array of college ids
+macademia.getInstitutions = function(){
+    var collegeString = $.address.parameter('institutions');
+    var collegeIds = collegeString.split('&').split('c_');
+    return collegeIds;
+}
 // controls view of right nav (incomplete)
 macademia.updateNav = function(){
      var navFunction = $.address.parameter('navFunction');
