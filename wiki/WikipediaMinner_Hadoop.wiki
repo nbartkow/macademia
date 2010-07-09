@@ -55,8 +55,13 @@ Prepares the data pieces for the tf-idf calculations
    * Can use the medium Amazon elastic cluster to run it ( 20 mappers and 20 reducers)
    * The input file is "s3://macademia/step1" and the output file is "s3://macademia/step2"
 
-== Stage 3:TfidfVectorPruner ==
+== Stage 3:Tfidfvectorpruner ==
 This is used to calculate the tf-idf scores
+
+=== Optimizations ===
+   * Set the maximum number of pages in which a word appears to be a sixth of the total number of pages in the whole of Wikipedia and the minimum to be 3.
+   * Set the vector size to 600. Used the python script wiki_stats.py to bin pages according to their number of words. We found that capping the # of words to 600 will cover all the words for 90% of documents, and that the remaining words are unlikely to be interesting.
+   * Set smoothing constant to 100 to penalize pages in which the words have less weight, for more ask Shilad.
 
 === Mapper ===
    * Identity
