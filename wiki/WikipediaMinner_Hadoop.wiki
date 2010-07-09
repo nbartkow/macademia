@@ -30,11 +30,12 @@ It takes each Wikipedia page and counts how many times a word appears in the pag
 === Mapper ===
    * Key - this is not the Wikipedia page ID, it is only a long value showing where in the file the page is 
    * Value: Wikipedia page
-
 === Reducer ===
    * Key - word
    * Value: a Wikipedia page, number of times the word appeared in the page, the number of words in the page.             
-
+=== Hadoop job logistics ===
+   * Can use the small Amazon elastic cluster to run it ( 20 mappers and 20 reducers)
+   * The input file is "s3://macademia/wiki/input" and the output file is "s3://macademia/step1 s3://macademia/wiki/rankedpages.txt"
 
 == Stage 2:Docfrequency ==
 Prepares the data pieces for the tf-idf calculations
@@ -47,10 +48,12 @@ Prepares the data pieces for the tf-idf calculations
    * Key - word
    * Value1 - A word, the wikipedia page ID, the number of times the word appears in the page and total number of words processed in that page (developed   @345263746@5@6249).
    * Value2 - A word and the total count of Wikipedia pages from which the word was processed (developed#c1234).
-
 === Reducer ===
    * Key - word
    * value -   Each line contains a Wikipedia page ID, a word, the number of times the word appears in the page, the length of the page and the number of pages in which the word appears (1234567   developed@345@6249@32424).
+=== Hadoop job logistics ===
+   * Can use the medium Amazon elastic cluster to run it ( 20 mappers and 20 reducers)
+   * The input file is "s3://macademia/step1" and the output file is "s3://macademia/step2"
 
 == Stage 3:TfidfVectorPruner ==
 This is used to calculate the tf-idf scores
