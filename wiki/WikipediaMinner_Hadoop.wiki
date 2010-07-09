@@ -7,7 +7,7 @@ It generates ID and names for the chosen Wikipedia pages.
 === Initial Input ===
    * Wikipedia pages
 === Final output ===
-   * A page name and ID (drama in the 1970's "\t" 12341367)
+   * A page name and ID (drama in the 1970's "\t" 12341367) a copy of this output is in MongoDB in the Poliwiki server
 === Mapper ===
    * Key - this is not the Wikipedia page ID, it is only a long value showing where in the file the page is
    * Value - this is the actual Wikipedia page: contains the actual text, page ID and other information.
