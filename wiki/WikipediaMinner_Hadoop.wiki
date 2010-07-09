@@ -36,9 +36,13 @@ It takes each Wikipedia page and counts how many times a word appears in the pag
    * Value: a Wikipedia page, number of times the word appeared in the page, the number of words in the page.             
 
 
-== Stage 2:DocFrequency ==
+== Stage 2:Docfrequency ==
 Prepares the data pieces for the tf-idf calculations
 
+=== Initial Input ===
+   * output from step 1.
+=== Final Ouput ===
+   * Each line contains a Wikipedia page, a word, the number of times the word appears in the article, the length of the page and the number of times the  
 === Mapper ===
    * Identity
 
