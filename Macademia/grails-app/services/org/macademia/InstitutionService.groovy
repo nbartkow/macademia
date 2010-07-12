@@ -8,11 +8,25 @@ class InstitutionService {
 
     static transactional = true
 
+    def get(long id) {
+        return Institution.get(id)
+    }
+
     public Institution findByEmailDomain(String domain) {
         return Institution.findByEmailDomain(domain)
     }
 
     public List<Institution> findAll() {
         return Institution.findAll()
+    }
+
+    public Set<Long> getFilteredIds(String institutions) {
+        List<String> collegesAsStrings = institutions.tokenize("c_")
+        Set<Long> collegeIds = new HashSet<Long>()
+        for(String college: collegesAsStrings){
+            Long id = college.toLong()
+            collegeIds.add(id)
+        }
+        return collegeIds
     }
 }

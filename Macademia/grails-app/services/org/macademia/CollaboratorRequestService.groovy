@@ -1,15 +1,12 @@
 package org.macademia
 
-/**
- * Authors: Nathaniel Miller and Alex Schneeman
- */
 class CollaboratorRequestService {
 
     def interestService
     def databaseService
 
     static transactional = true
-    
+
     def findByInterest(Interest i) {
         return i.requests
     }
@@ -28,7 +25,7 @@ class CollaboratorRequestService {
             } else if (res != null && interest.id == null) {
                 remove.put(interest,res)
 
-            } 
+            }
         }
         for (Interest interest in remove.keySet()) {
             cr.removeFromKeywords(interest)
@@ -36,5 +33,9 @@ class CollaboratorRequestService {
         }
         Utils.safeSave(cr)
         databaseService.addCollaboratorRequest(cr)
+    }
+
+    public List<CollaboratorRequest> findAllByCreator(Person creator){
+        return CollaboratorRequest.findAllByCreator(creator)
     }
 }

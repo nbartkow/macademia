@@ -3,11 +3,14 @@ package org.macademia
 import grails.converters.*
 import org.codehaus.groovy.grails.web.json.*
 
-class  PersonController {
+class  PersonController{
 
     def personService
     def similarityService
     def jsonService
+    def collaboratorRequestService
+    def userService
+    def institutionService
 
     def index = {
         Random r = new Random()
@@ -25,27 +28,41 @@ class  PersonController {
         def target = personService.get((params.id as long))
         def link = null
         if (params.root) {
-            link = personService.get((params.root.split("_")[1]) as long)
+            if(params.root.contains("p")){
+                link = personService.get((params.root.split("_")[1]) as long)
+            } else if (params.root.contains("r")){
+                link = collaboratorRequestService.get((params.root.split("_")[1]) as long)
+            }
+
         }
 
         def exact = [:]
         def close = [:]
+        def linkName = ''
 
         // Are we mousing over a user who has a link to the root?
         if (link != null && target != link) {
-            for(Interest i: link.interests) {
+            def allInterests = []
+            if(params.root.contains("p")){
+                allInterests = link.interests
+                linkName = link.fullName
+            } else if (params.root.contains("r")){
+                allInterests = link.keywords
+                linkName = link.title
+            }
+            for(Interest i: allInterests) {
+                if(target.interests.contains(i)){
+                    exact[i] = i
+                }
                 for(SimilarInterest sim: similarityService.getSimilarInterests(i).list){
                     //println("first: $ir.first second: $ir.second")
                     Interest second = Interest.findById(sim.interestId)
+
                     if(target.interests.contains(second)){
-                        if (i.id == sim.interestId) {
-                            exact[i] = i
-                        } else {
-                            if (!close[i]) {
-                                close[i] = []
-                            }
-                            close[i].add(second)
+                        if (!close[second]) {
+                            close[second] = []
                         }
+                        close[second].add(i)
                     }
                 }
             }
@@ -54,7 +71,7 @@ class  PersonController {
             }
         }
 
-        [target: target, link: link, close: close, exact: exact]
+        [target: target, link: link, close: close, exact: exact, linkName: linkName]
     }
 
     def asynchJit = {
@@ -69,19 +86,33 @@ class  PersonController {
 
 
     def json = {
-        def person = personService.get((params.id as long))
-        def data = jsonService.buildUserCentricGraph(person)
+        def root = personService.get((params.id as long))
+        Graph graph
+        if(params.institutions.equals("all")){
+            graph = similarityService.calculatePersonNeighbors(root, jsonService.DEFAULT_MAX_NEIGHBORS_PERSON_CENTRIC)
+        }
+        else{
+            Set<Long> institutionFilter = institutionService.getFilteredIds(params.institutions)
+            graph = similarityService.calculatePersonNeighbors(root, jsonService.DEFAULT_MAX_NEIGHBORS_PERSON_CENTRIC, institutionFilter)
+        }
+        def data = jsonService.buildUserCentricGraph(root, graph)
         render(data as JSON)
     }
 
     def show = {
         def person = Person.get(params.id)
+        def auth = false
+        if (authenticatedUser){
+            auth = userService.isAdmin(authenticatedUser,User.get(params.id))
+        }
+        def interests = person.interests
+        def collaboratorRequests = collaboratorRequestService.findAllByCreator(person)
         if (!person) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'collaboratorRequest.label', default: 'CollaboratorRequest'), params.id])}"
             redirect(action: "list")
         }
         else {
-            [person: person]
+            [person: person, interests: interests, collaboratorRequests: collaboratorRequests, authenticatedUser:authenticatedUser, auth: auth]
         }
     }
 

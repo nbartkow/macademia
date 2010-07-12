@@ -94,6 +94,10 @@ def prepDirectories(prefix) {
     }
 }
 
+
+absoluteThreshold = 0.001
+refinedThreshold = 0.08
+roughThreshold = 0.15
 // environment specific settings
 environments {
     development {
@@ -104,6 +108,14 @@ environments {
         //prepDirectories("test")
         wikipediaService.wikiCache = new File("db/test_backup/wikipedia.cache.txt")
         googleService.googleCache = new File("db/test_backup/google.cache.txt")
+        absoluteThreshold = 0.01
+        refinedThreshold = 0.08
+        roughThreshold = 0.15
+    }
+    populateTest{
+        absoluteThreshold = 0.15
+        refinedThreshold = 0.08
+        roughThreshold = 0.15
     }
     populate {
     }

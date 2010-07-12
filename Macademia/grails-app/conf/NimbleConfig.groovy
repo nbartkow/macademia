@@ -52,6 +52,10 @@ nimble {
         enduserEdit {
             user = ['fullName', 'department']
         }
+
+        collaboratorRequestEdit {
+            collaboratorRequest =  ['creator', 'title', 'description', 'expiration']
+        }
     }
 
 	layout {

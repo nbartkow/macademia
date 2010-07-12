@@ -35,7 +35,7 @@ public class NimbleSecurityFilters extends grails.plugins.nimble.security.Nimble
         }
 
         // Account management requiring authentication
-        accountsecure(controller: "(account|collaboratorRequest)", action: "(changepassword|updatepassword|changedpassword|edit|editprofile|list|create)") {
+        accountsecure(controller: "(account|request)", action: "(changepassword|updatepassword|changedpassword|edit|editprofile|list|create|manage)") {
             before = {
                 accessControl {
                     true

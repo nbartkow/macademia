@@ -1,7 +1,6 @@
 package org.macademia
 
 import grails.converters.JSON
-import java.awt.Color
 
 class JsonService {
 
@@ -15,11 +14,6 @@ class JsonService {
     int DEFAULT_MAX_INTERESTS_INTEREST_CENTRIC = 25
 
     boolean transactional = true
-
-    SimilarityService similarityService
-    InterestService interestService
-    PersonService personService
-    CollaboratorRequestService collaboratorRequestService
 
     def parseJsonToGroovy(json) {
         def data = JSON.parse(json)
@@ -39,7 +33,7 @@ class JsonService {
             } else if (splitId[0] == "i") {
                 node['id'] = splitId[1]
                 interestNodes.putAt(splitId[1], node)
-            } else if (splitId[0] == "c") {
+            } else if (splitId[0] == "r") {
                 node['id'] = splitId[1]
                 collaboratorRequestNodes.putAt(splitId[1], node)
             }
@@ -82,7 +76,7 @@ class JsonService {
         return [personNodes: personNodes, interestNodes: interestNodes, collaboratorRequestNodes: collaboratorRequestNodes]
     }
 
-    def buildUserCentricGraph(Person person) {
+    def buildUserCentricGraph(Person person, Graph graph) {
         // Mapping from ids to nodes
         // Begin by adding root and root interests
         // then collaboratorRequests related to root interests
@@ -97,7 +91,6 @@ class JsonService {
             personNodes["p_" + person.id]['adjacencies'].add("i_" + i.id)
         }
 
-        Graph graph = similarityService.calculatePersonNeighbors(person, DEFAULT_MAX_NEIGHBORS_PERSON_CENTRIC)
         for (Person p: graph.getPeople()){
             if(p==person){
                 continue
@@ -118,22 +111,22 @@ class JsonService {
                 interestNodes[iid]['adjacencies'].add(pid)
             }
         }
-        for (CollaboratorRequest c: graph.getRequests()) {
-            def cid = "c_${c.id}"
-            collaboratorRequestNodes[cid] = makeJsonForCollaboratorRequest(c)
-            for (Edge e: graph.getAdjacentEdges(c)){
+        for (CollaboratorRequest r: graph.getRequests()) {
+            def rid = "r_${r.id}"
+            collaboratorRequestNodes[rid] = makeJsonForCollaboratorRequest(r)
+            for (Edge e: graph.getAdjacentEdges(r)){
 
                 def iid = "i_${e.interest.id}"
                 if(!interestNodes[iid]){
                     interestNodes[iid] = makeJsonForInterest(e.interest)
                 }
                 if(e.hasRelatedInterest()){
-                   collaboratorRequestNodes[cid]['data']['sharedInterest'].add(e.relatedInterest.text)
+                   collaboratorRequestNodes[rid]['data']['sharedInterest'].add(e.relatedInterest.text)
                 } else if (e.hasSharedInterest()){
-                   collaboratorRequestNodes[cid]['data']['sharedInterest'].add(e.interest.text)
+                   collaboratorRequestNodes[rid]['data']['sharedInterest'].add(e.interest.text)
                 }
-                collaboratorRequestNodes[cid]['adjacencies'].add(iid)
-                interestNodes[iid]['adjacencies'].add(cid)
+                collaboratorRequestNodes[rid]['adjacencies'].add(iid)
+                interestNodes[iid]['adjacencies'].add(rid)
             }
         }
 
@@ -145,25 +138,23 @@ class JsonService {
         return personNodes.values() + interestNodes.values() + collaboratorRequestNodes.values()
     }
 
-    def buildInterestCentricGraph(Interest root) {
+    def buildInterestCentricGraph(Interest interest, Graph graph) {
         // Mapping from ids to nodes
         // Begin by adding root and root interests
         Map<Long, Object> personNodes = [:]
         Map<Long, Object> interestNodes = [:]
         Map<Long, Object> collaboratorRequestNodes = [:]
-        def rid = "i_${root.id}"
-        interestNodes[rid] = makeJsonForInterest(root)
-
-        Graph graph = similarityService.calculateInterestNeighbors(root, DEFAULT_MAX_NEIGHBORS_INTEREST_CENTRIC, DEFAULT_MAX_INTERESTS_INTEREST_CENTRIC)
+        def riid = "i_${interest.id}"
+        interestNodes[riid] = makeJsonForInterest(interest)
 
         for (Interest i: graph.getInterests()) {
             def iid = "i_${i.id}"
             if(!interestNodes[iid]) {
                interestNodes[iid] = makeJsonForInterest(i)
             }
-            if(iid!=rid){
-                interestNodes[rid]['adjacencies'].add(iid)
-                interestNodes[iid]['adjacencies'].add(rid)
+            if(iid!=riid){
+                interestNodes[riid]['adjacencies'].add(iid)
+                interestNodes[iid]['adjacencies'].add(riid)
             }
             for(Edge e: graph.getAdjacentEdges(i)){
                 if(e.person){
@@ -175,12 +166,12 @@ class JsonService {
                     personNodes[pid]['adjacencies'].add(iid)
                 }
                 if(e.request){
-                  def cid = "c_${e.request.id}"
-                  if(!personNodes[cid]) {
-                      personNodes[cid] = makeJsonForCollaboratorRequest(e.request)
+                  def rid = "r_${e.request.id}"
+                  if(!collaboratorRequestNodes[rid]) {
+                      collaboratorRequestNodes[rid] = makeJsonForCollaboratorRequest(e.request)
                   }
-                  interestNodes[iid]['adjacencies'].add(cid)
-                  collaboratorRequestNodes[cid]['adjacencies'].add(iid)
+                  interestNodes[iid]['adjacencies'].add(rid)
+                  collaboratorRequestNodes[rid]['adjacencies'].add(iid)
                 }
             }
 
@@ -191,43 +182,42 @@ class JsonService {
         adjacencyMap(collaboratorRequestNodes)
         addColors(personNodes, interestNodes, collaboratorRequestNodes)
 
-        return interestNodes.values() + personNodes.values() + collaboratorRequestNodes.values()
+        return interestNodes.values() + collaboratorRequestNodes.values() + personNodes.values()
     }
 
-    def buildCollaboratorRequestCentricGraph(CollaboratorRequest request) {
+    def buildCollaboratorRequestCentricGraph(CollaboratorRequest request, Graph graph) {
         // Mapping from ids to nodes
         // Begin by adding root and root interests
         // then collaboratorRequests related to root interests
         Map<Long, Object> personNodes = [:]
         Map<Long, Object> interestNodes = [:]
         Map<Long, Object> collaboratorRequestNodes = [:]
-        collaboratorRequestNodes["c_" + request.id] = makeJsonForCollaboratorRequest(request)
+        collaboratorRequestNodes["r_" + request.id] = makeJsonForCollaboratorRequest(request)
 
         for (Interest i: request.keywords) {
             interestNodes["i_" + i.id] = makeJsonForInterest(i)
-            interestNodes["i_" + i.id]['adjacencies'].add("c_" + request.id)
-            collaboratorRequestNodes["c_" + request.id]['adjacencies'].add("i_" + i.id)
+            interestNodes["i_" + i.id]['adjacencies'].add("r_" + request.id)
+            collaboratorRequestNodes["r_" + request.id]['adjacencies'].add("i_" + i.id)
         }
 
-        Graph graph = similarityService.calculateRequestNeighbors(request, DEFAULT_MAX_NEIGHBORS_PERSON_CENTRIC)
-        for (CollaboratorRequest c: graph.getRequests()){
-            if(c==request){
+        for (CollaboratorRequest r: graph.getRequests()){
+            if(r==request){
                continue
             }
-            def cid = "c_${c.id}"
-            collaboratorRequestNodes[cid] = makeJsonForCollaboratorRequest(c)
-            for (Edge e: graph.getAdjacentEdges(c)){
+            def rid = "r_${r.id}"
+            collaboratorRequestNodes[rid] = makeJsonForCollaboratorRequest(r)
+            for (Edge e: graph.getAdjacentEdges(r)){
                 def iid = "i_${e.interest.id}"
                 if(!interestNodes[iid]){
                     interestNodes[iid] = makeJsonForInterest(e.interest)
                 }
                 if(e.hasRelatedInterest()){
-                   collaboratorRequestNodes[cid]['data']['sharedInterest'].add(e.relatedInterest.text)
+                   collaboratorRequestNodes[rid]['data']['sharedInterest'].add(e.relatedInterest.text)
                 } else if (e.hasSharedInterest()){
-                   collaboratorRequestNodes[cid]['data']['sharedInterest'].add(e.interest.text)
+                   collaboratorRequestNodes[rid]['data']['sharedInterest'].add(e.interest.text)
                 }
-                collaboratorRequestNodes[cid]['adjacencies'].add(iid)
-                interestNodes[iid]['adjacencies'].add(cid)
+                collaboratorRequestNodes[rid]['adjacencies'].add(iid)
+                interestNodes[iid]['adjacencies'].add(rid)
             }
         }
         for (Person p: graph.getPeople()){
@@ -260,18 +250,20 @@ class JsonService {
     def addColors(personNodes, interestNodes, collaboratorRequestNodes) {
         def personAndRequestColors = [:]
 
-        for (String id in personNodes.keySet()) {
-            int personId = jsIdToId(id).toInteger()
-            Person p = personService.get(personId)
-            int i = p.hashCode() % org.macademia.MacademiaConstants.COLORS.size()
-            personAndRequestColors[id] = org.macademia.MacademiaConstants.COLORS[i]
+        for (String pid in personNodes.keySet()) {
+//            int personId = jsIdToId(id).toInteger()
+//            Person p = personService.get(personId)
+            String fullName = personNodes[pid]['data']['name']
+            int i = fullName.hashCode() % org.macademia.MacademiaConstants.COLORS.size()
+            personAndRequestColors[pid] = org.macademia.MacademiaConstants.COLORS[i]
         }
 
-        for (String id in collaboratorRequestNodes.keySet()) {
-            int requestId = jsIdToId(id).toInteger()
-            CollaboratorRequest c = collaboratorRequestService.get(requestId)
-            int i = c.creator.hashCode() % org.macademia.MacademiaConstants.COLORS.size()
-            personAndRequestColors[id] = org.macademia.MacademiaConstants.COLORS[i]
+        for (String rid in collaboratorRequestNodes.keySet()) {
+//            int requestId = jsIdToId(id).toInteger()
+//            CollaboratorRequest c = collaboratorRequestService.get(requestId)
+            String creator = collaboratorRequestNodes[rid]['data']['creator']
+            int i = creator.hashCode() % org.macademia.MacademiaConstants.COLORS.size()
+            personAndRequestColors[rid] = "#FF0000"//org.macademia.MacademiaConstants.COLORS[i]
         }
 
         for (String pid in personNodes.keySet()) {
@@ -335,14 +327,14 @@ class JsonService {
         ]
     }
 
-    def makeJsonForCollaboratorRequest(CollaboratorRequest c) {
+    def makeJsonForCollaboratorRequest(CollaboratorRequest r) {
         return [
-                id: "c_" + c.id,
-                name: c.title,
+                id: "r_" + r.id,
+                name: r.title,
                 data: [
-                        unmodifiedId: c.id,
-                        name: c.title,
-                        creator: c.creator,
+                        unmodifiedId: r.id,
+                        name: r.title,
+                        creator: r.creator.fullName,
                         sharedInterest: [],
                         type: 'request'
                 ],
