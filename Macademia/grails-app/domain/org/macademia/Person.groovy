@@ -4,10 +4,14 @@ class Person extends grails.plugins.nimble.core.ProfileBase {
     // fullName, owner, and email are inherited.
     
     String department
-    Institution institution
+    Institution institution    
+    String imageSubpath
 
     static hasMany = [interests: Interest]
     static searchable = [only: ['fullName', 'email', 'department']]
+    static constraints = {
+            imageSubpath(nullable : true)
+    }
     
     static mapping = {
         interests fetch: "join", cache: true
