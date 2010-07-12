@@ -6,11 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<g:javascript>
-  $().ready(function() {
-    macademia.clearSearch();
-  });
-</g:javascript>
+
 
 <div id="searchDiv">
   <%--<g:formRemote id="searchForm"

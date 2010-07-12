@@ -1,7 +1,10 @@
 package org.macademia
 
+import grails.converters.JSON
+
 class CollaboratorRequestController {
     def collaboratorRequestService
+    def institutionService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -98,5 +101,18 @@ class CollaboratorRequestController {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'collaboratorRequest.label', default: 'CollaboratorRequest'), params.id])}"
             redirect(action: "list")
         }
+    }
+  def json = {
+        def root = collaboratorRequestService.get((params.id as long))
+        Graph graph
+        if(params.institutions.equals("all")){
+            graph = similarityService.calculateRequestNeighbors(root, jsonService.DEFAULT_MAX_NEIGHBORS_PERSON_CENTRIC)
+        }
+        else{
+            Set<Long> institutionFilter = institutionService.getFilteredIds(params.institutions)
+            graph = similarityService.calculateRequestNeighbors(root, jsonService.DEFAULT_MAX_NEIGHBORS_PERSON_CENTRIC, institutionFilter)
+        }
+        def data = jsonService.buildCollaboratorRequestCentricGraph(root, graph)
+        render(data as JSON)
     }
 }

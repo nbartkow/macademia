@@ -6,7 +6,7 @@ macademia.refreshNeeded = true;
 
 
 macademia.makeJsonUrl = function(type, id) {
-    return "/Macademia/" + type + "/json/" + id;
+    return "/Macademia/" + type + "/json/" + id + "?institutions="+$.address.parameter('institutions');
 };
 
 
@@ -115,10 +115,12 @@ macademia.init = function(rootType,id){
                     }
                 });
                 $(d).click(function() {
-                    macademia.refreshNeeded = false;
-                    macademia.highlightAdjacenciesOff(node);
-                    macademia.navInfovis(node);
-//                  rgraph.onClick(node.id);
+                    if(macademia.refreshNeeded){
+                        macademia.refreshNeeded = false;
+                        macademia.highlightAdjacenciesOff(node);
+                        macademia.navInfovis(node);
+                        //                  rgraph.onClick(node.id);
+                    }
 
                 });
 
@@ -129,7 +131,7 @@ macademia.init = function(rootType,id){
                         text:'loading...'
                     },
                     api: {
-                        beforeShow:function() {
+                        beforeShow:function() {                   
                             var url = this.elements.target.attr('alt');
                             if (url != '') {
                                 var params = {};
@@ -193,7 +195,6 @@ macademia.init = function(rootType,id){
                             duration:100,
                             hideLabels:false,
                             onComplete:function(){
-
                                 //macademia.updateSidebar(rgraph.graph.getNode(rgraph.root));
 
                             }

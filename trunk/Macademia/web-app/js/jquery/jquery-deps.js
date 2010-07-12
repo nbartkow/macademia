@@ -102,7 +102,7 @@
 
       if (loadQueue.length == 0) return;
 
-      var item = loadQueue[0];
+        var item = loadQueue[0];
 
       // if we have a function, it means all of the function's dependencies
       // (which should have been on the queue preceding the function)
@@ -197,8 +197,8 @@
   }
 
   // request loading of certain dependencies
-  function loadDeps(deps, callback) {
-    if (!(deps instanceof Array)) deps = [deps];
+    function loadDeps(deps, callback) {
+        if (!(deps instanceof Array)) deps = [deps];
 
     // push all dependencies onto the queue
     for (var i = 0; i < deps.length; i++)

@@ -12,5 +12,8 @@ $.deps.init('/Macademia', {
         NIMBLE_BASE + "/css/famfamfam.css",
         NIMBLE_BASE + "/css/administration.css",
         NIMBLE_BASE + "/css/jquery/jgrowl.css"
+    ],
+    'none' : [
+        NIMBLE_BASE + "/js/jquery/jquery.url.js",
     ]
 });
