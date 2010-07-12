@@ -3,6 +3,7 @@ package org.macademia
 import com.aliasi.tokenizer.IndoEuropeanTokenizerFactory
 import com.aliasi.tokenizer.TokenizerFactory
 import com.aliasi.spell.TfIdfDistance
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 class SimilarityService {
 
@@ -19,13 +20,13 @@ class SimilarityService {
     int maxSimsPerInterest = 10
 
     // Only similarities in the top fraction are stored in the database.
-    double roughThreshold = 0.15
+    double roughThreshold = ConfigurationHolder.config.roughThreshold
 
     // Only similarities in the top fraction are used to fill out interests
-    double refinedThreshold = 0.08
+    double refinedThreshold = ConfigurationHolder.config.refinedThreshold
 
     // The lowest possible acceptable similarity score
-    double absoluteThreshold = 0.01
+    double absoluteThreshold = ConfigurationHolder.config.absoluteThreshold
 
     // This is a temporary value designed to allow the new methods to approximate the outputs of the old ones
     double threshold = refinedThreshold/roughThreshold

@@ -9,7 +9,7 @@
 
   <g:if test="${exact || close}">
   <div class="ttRel medium">
-    <b>related to ${link.fullName} by:</b>
+    <b>related to ${linkName} by:</b>
     <g:if test="${exact}">
       <g:each in="${exact.keySet()}" var="i">
         <li><i>${i.text}</i></li>
@@ -17,8 +17,8 @@
     </g:if>
     <g:if test="${close}">
       <g:each in="${close.keySet()}" var="i">
-        <li><i>${close[i]}</i>
-        (similar to ${i.text})</li>
+        <li><i>${i.text}</i>
+        (similar to ${close[i]})</li>
       </g:each>
     </g:if>
     </div>

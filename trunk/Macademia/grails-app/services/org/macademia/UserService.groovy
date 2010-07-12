@@ -5,11 +5,36 @@ import grails.plugins.nimble.core.Role
 import grails.plugins.nimble.core.Permission
 import grails.plugins.nimble.auth.CorePermissions
 import org.apache.shiro.crypto.hash.Sha256Hash
+import grails.plugins.nimble.core.Group
 
 class UserService extends grails.plugins.nimble.core.UserService{
 
     def roleService
     def groupService
+
+    def isAdmin(User authenticatedUser){
+        boolean admin = false
+        authenticatedUser.roles.each { role ->
+            if(role.name == AdminsService.ADMIN_ROLE){
+                admin = true
+            }
+        }
+        return admin
+    }
+
+    def isAdmin(User authenticatedUser, User user){
+        boolean admin = false
+        authenticatedUser.roles.each { role ->
+            if(role.name == AdminsService.ADMIN_ROLE){
+                admin = true
+            } else if(role.name == AdminsService.INSTITUTIONAL_ADMIN_ROLE){
+                if(authenticatedUser.profile.institution == user.profile.institution){
+                    admin = true
+                }
+            }
+        }
+        return admin
+    }
 
     def deleteUser(UserBase user) {
 
@@ -107,7 +132,7 @@ class UserService extends grails.plugins.nimble.core.UserService{
     }
 
 
-    def createUser(UserBase user) {
+    def createUser(User user) {
         user.username = user.profile.email
         if (user==null){
             log.error("USER IS NULL! WARNING!")
@@ -125,6 +150,15 @@ class UserService extends grails.plugins.nimble.core.UserService{
 
         if (!user.hasErrors()) {
 
+            // Add user to group (named after his institution)
+            def existingGroup = Group.findByName(user.profile.institution.name)
+            if (!existingGroup){
+                Group newGroup = groupService.createGroup(user.profile.institution.name, user.profile.institution.name, false)
+                groupService.addMember(user, newGroup)
+            } else {
+                groupService.addMember(user, existingGroup)
+            }
+
             // Add default role for users
             def defaultRole = Role.findByName(UserService.USER_ROLE)
 
@@ -132,6 +166,7 @@ class UserService extends grails.plugins.nimble.core.UserService{
                 log.error("Unable to locate default user role, aborting user creation")
                 throw new RuntimeException("Unable to locate default user role, aborting user creation")
             }
+
 
             user.addToRoles(defaultRole)
 

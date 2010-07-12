@@ -16,15 +16,6 @@
           <div id="account" class="btxt">
           <g:link controller="auth" action="logout" class="icon icon_cross">Logout</g:link>
           </div>
-          <li>
-          <g:link controller="account" action="edit" class="icon icon_user_go">Edit Profile</g:link>
-		  </li>
-          <li>
-          <g:link controller="account" action="changepassword" ><g:message code="nimble.link.changepassword" /></g:link>
-          </li>
-          <li>
-          <g:link controller="collaboratorRequest" action="manage" ><g:message code="Manage collaborator requests" /></g:link>
-          </li>
           <n:hasRole name="${AdminsService.ADMIN_ROLE}">
             <li>
               <g:link controller="user" action="list" class="icon icon_user_go">Admin controls</g:link>

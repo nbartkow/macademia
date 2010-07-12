@@ -5,6 +5,40 @@ import grails.plugins.nimble.core.Role
 
 class UserController extends grails.plugins.nimble.core.UserController{
 
+  def list = {
+    if (!params.max) {
+      params.max = 10
+    }
+    def users = UserBase.list(params)
+    if (params.username){
+        users = User.findAllByUsername(params.username)
+    }
+    log.debug("Listing users")
+    [users: users]
+  }
+
+  def search = {
+    def q = "%" + params.q + "%"
+
+    log.debug("Performing search for users matching $q")
+
+    def users = User.findAllByUsernameIlike(q)
+    def profiles = Person.findAllByFullNameIlikeOrEmailIlike(q, q)
+    def searchedUsers = []
+
+    users.each {
+		searchedUsers.add(it)
+    }
+
+    profiles.each {
+		  if(!searchedUsers.contains(it.owner))
+			searchedUsers.add(it.owner)
+    }
+
+    log.info("Search for new administrators complete, returning $searchedUsers.size records")
+    return [users: searchedUsers]   // Should always be the case
+  }
+
   def delete = {
     def user = UserBase.get(params.id)
     if (!user) {

@@ -25,13 +25,14 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
         if (params.interests){
             interestParse(user)
         }
-        // create institution  - remove this eventually
-        String institutionName = params.email.split("@")[1]
-        Institution institution = Institution.findByName(institutionName)
+        // create institution  - replace this eventually
+        String institutionDomain = params.email.split("@")[1]
+        Institution institution = Institution.findByEmailDomain(institutionDomain)
         if (institution == null){
-            institution= new Institution(name:institutionName, emailDomain:user.profile.email.split("@.")[1])
+            institution= new Institution(name:institutionDomain, emailDomain:user.profile.email.split("@.")[1])
             Utils.safeSave(institution)
         }
+        //
         user.profile.institution = institution
 
         user.username = user.profile.email
@@ -141,20 +142,25 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
         user.passConfirm = ""
     }
 
-    def edit = {
-        redirect(uri:'/account/editprofile/')
-    }
-
     def editprofile = {
-        def user = User.findByid(authenticatedUser.id)
+        User user = null;
+        if (!params.id){
+            user = User.get(authenticatedUser.id)
+        } else {
+            user = User.get(params.id)
+            //admin check
+            if (user.id != authenticatedUser.id && !userService.isAdmin(authenticatedUser, user)){
+                redirect(controller: 'auth', action:'unauthorized')
+            }
+        }
         if (!user) {
             log.warn("User identified by id '$authenticatedUser.id' was not located")
             flash.type = "error"
             flash.message = message(code: 'nimble.user.nonexistant', args: [params.id])
             redirect(uri: '/')
         }
-	    else {
-    	    log.debug("Editing user [$user.id]$user.username")                       
+        else {
+            log.debug("Editing user [$user.id]$user.username")
             log.info("Editing user [$user.id]$user.username")
             def fields = grailsApplication.config.nimble.fields.enduserEdit.user
             user.properties[fields] = params
@@ -163,18 +169,23 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
                 allInterests += interest.text+" ,"
             }
             log.info(allInterests)
-	        [user: authenticatedUser, allInterests: allInterests]
-	    }
-
+            [user: user, allInterests: allInterests]
+        }
     }
 
     def updateuser = {
-        def user = User.get(authenticatedUser.id)
+        def user
+        if(!params.id){
+            user = get(authenticatedUser.id)
+        }
+        else{
+            user = User.get(params.id)
+        }
         if (!user) {
             log.warn("User identified by id '$params.id' was not located")
             flash.type = "error"
             flash.message = message(code: 'nimble.user.nonexistant', args: [params.id])
-            redirect action: edit, id: params.id
+            redirect action: editprofile, id: params.id
         }
 	    else {
             def fields = grailsApplication.config.nimble.fields.enduserEdit.user
@@ -192,7 +203,13 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
 	            log.info("Successfully updated details for user [$user.id]$user.username")
 	            flash.type = "success"
 	            flash.message = message(code: 'nimble.user.update.success', args: [user.username])
-	            redirect(uri:'/')
+	            if (userService.isAdmin(authenticatedUser)){
+                    redirect controller: 'user', action: 'show', id: user.id
+                } else {
+                    redirect(uri:'/')
+                }
+                //redirect(uri:'/')
+                // postponing - if authenticatedUser is ADMIN_ROLE, bring him back to general admin controls?
 	        }
 	    }
 
@@ -202,6 +219,7 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
         user->
         String allInterests = params.interests
         String[] tokens = allInterests.trim().split(",")
+        user.profile.interests = []
         for (i in tokens){
             Interest existingInterest = interestService.findByText(i);
             if (existingInterest != null){
