@@ -19,7 +19,8 @@
   
 </head>
 <body>
-<g:render template="../templates/macademia/collegeFilterDialog"/>
+
+
 <g:render template="../layouts/components"/>
 <div id="infovis">
   &nbsp;

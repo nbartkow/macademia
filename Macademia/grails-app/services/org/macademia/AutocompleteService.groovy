@@ -28,7 +28,7 @@ class AutocompleteService implements PostInsertEventListener {
         Institution.findAll().each { addInstitution(it) }
         log.info("processing autocomplete interest...")
         Interest.findAll().each { addInterest(it) }
-        
+
         sessionFactory.eventListeners.with {
             postInsertEventListeners = addListener(sessionFactory.eventListeners.postInsertEventListeners)
         }
@@ -105,6 +105,7 @@ class AutocompleteService implements PostInsertEventListener {
         }
         return interests
     }
+
     Map<Class, Collection<AutocompleteEntity>> getOverallAutocomplete(String query, int maxResults) {
         Map<Class, Collection<AutocompleteEntity>> result = [:]
         SortedSet<AutocompleteEntry<Long, AutocompleteEntity>> results = overallTree.autocomplete(query, maxResults)

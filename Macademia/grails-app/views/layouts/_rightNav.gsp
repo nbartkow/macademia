@@ -24,12 +24,12 @@
           </n:hasRole>
       </ul>
       </div>
-      <div id="mac_logo" class="atxt center">
+      <div id="mac_logo" class="btxt center">
         <img id="logoImage" src="${createLinkTo(dir: 'images', file: 'mac_logo.png')}"/><br/>
         <div id="description"><b>Macademia</b> connects colleagues who have shared interests.<br/></div>
       </div>
       <g:render template="../templates/macademia/searchBar"/>
-      <div id="rightContent" class="medium">
+      <div id="rightContent" class="medium padded2">
         <ul id="instruct_list">
           <li>
             <b>Click</b> on a name or interest to recenter.
@@ -38,19 +38,19 @@
             <b>Hover</b> over a name to show more info.
           </li>
           <li>
-            <b>Search</b> below for a person or interest.
+            <b>Search</b> above for a person or interest.
           </li>
         </ul>
-        <div id="searchBoxDiv">
+        <div id="searchBoxDiv" class="atxt">
           &nbsp;
         </div>
-        <div id="personIdDiv">
+        <div id="personIdDiv" class="btxt">
           &nbsp;
         </div>
-        <div id="interestIdDiv">
+        <div id="interestIdDiv" class="btxt">
           &nbsp;
         </div>
-        <div id="requestIdDiv">
+        <div id="requestIdDiv" class="btxt">
           &nbsp;
           <g:formRemote id="" class="center"
               name="a"
@@ -75,6 +75,8 @@
       <div id="registerDialog" class="jqmWindow">
         <h3>(to be filled with registration page)</h3>
       </div>
+
+      <div class="jqmWindow padded2 medium btxt" id="filterDialog">&nbsp;</div>
     </div>
   </div>
   <div id="hide" class="btxt">

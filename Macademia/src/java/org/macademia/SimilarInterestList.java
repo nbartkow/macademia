@@ -29,6 +29,8 @@ public class SimilarInterestList {
                 }
 
             }
+        } else {
+            list = new ArrayList<SimilarInterest>();
         }
     }
 

@@ -1,6 +1,7 @@
 var macademia = macademia || {};
 //total number of institutions
-macademia.institutions = 26;
+macademia.totalInstitutions;
+macademia.visibleInstitutions;
 // calculates the number of properties (keys, values, etc.) for an object or associative array.
 macademia.size = function(obj) {
     var size = 0, key;
@@ -16,7 +17,8 @@ macademia.highlightAdjacenciesOn = function(node){
     root.eachSubnode(function(n){
         n.eachAdjacency(function(adj){
             if (adj.nodeTo.id != node.id && adj.nodeFrom.id != node.id){
-                if (adj.data.$color != "#999"){
+                if (adj.data.$color != "#999" && adj.data.$color != undefined){
+                    if(adj.data.$color)
                     adj.data.$colorB = adj.data.$color;
                     adj.data.$color = "#999";
                 }
@@ -33,7 +35,7 @@ macademia.highlightAdjacenciesOn = function(node){
         var adjN = "#" + adjacentNodes[i];
         $(adjN).css('font-weight', 'bold');
         $(adjN).css('opacity', 0.75);
-        $(adjN).css('z-index', 50);
+        $(adjN).css('z-index', 30);
         $(adjN).css('background-color', '#A2AB8E');
     }
 };
@@ -44,7 +46,9 @@ macademia.highlightAdjacenciesOff = function(node){
     root.eachSubnode(function(n){
         n.eachAdjacency(function(adj){
             if (adj.nodeTo.id != node.id && adj.nodeFrom.id != node.id){
-                adj.data.$color = adj.data.$colorB;
+                if(adj.data.$colorB != "#999" && adj.data.$colorB != undefined){
+                    adj.data.$color = adj.data.$colorB;
+                }
             }else if (adj.nodeTo.id != node.id){
                 adjacentNodes.push(adj.nodeTo.id);
                 adj.data.$lineWidth = 1;
@@ -63,7 +67,7 @@ macademia.highlightAdjacenciesOff = function(node){
     }
 };
 //holds query string values
-macademia.queryString = {nodeId:'p_1', navVisibility:'true', navFunction:'search', institutions:'all', searchBox:null, interestId:null, personId:null, requestId:null};
+macademia.queryString = {nodeId:'p_1', navVisibility:'true', navFunction:'search', institutions:'all', searchBox:null, interestId:null, personId:null, requestId:null, searchPage:null};
 
 //sets the sidebar's visibility according to original status.  Initializes jit visualization
 macademia.pageLoad = function() {
@@ -80,21 +84,21 @@ macademia.initialSettings = function(){
         if($.address.parameter('nodeId')){
             macademia.queryString.nodeId = $.address.parameter('nodeId');
         }else{
-            $.address.parameter('nodeId',macademia.queryString.nodeId)
+            $.address.parameter('nodeId',macademia.queryString.nodeId);
         }
         if(!$.address.parameter('navVisibility')){
-            $.address.parameter('navVisibility',macademia.queryString.navVisibility)        
+            $.address.parameter('navVisibility',macademia.queryString.navVisibility);        
         }if($.address.parameter('navFunction')){
             macademia.queryString.navFunction = $.address.parameter('navFunction');
         }else{
-            $.address.parameter('navFunction',macademia.queryString.navFunction)
+            $.address.parameter('navFunction',macademia.queryString.navFunction);
         }
         if($.address.parameter('institutions')){
             macademia.queryString.institutions = $.address.parameter('institutions');
         }else{
-            $.address.parameter('institutions',macademia.queryString.institutions)
+            $.address.parameter('institutions',macademia.queryString.institutions);
         }
-        macademia.sortParameters(macademia.queryString.navFunction)
+        macademia.sortParameters(macademia.queryString.navFunction);
         $.address.update();
 };
 //calls the init function in jitConfig
@@ -127,9 +131,12 @@ macademia.drawCircles = function(canvas, ctx) {
 };
 // clears the value of the text input box when clicked
 macademia.clearSearch = function() {
-    var textToClear = "Search people or interests";
-    $(".clearDefault").val(textToClear);
     $(".clearDefault").focus(function() {
+        if ($(this).attr('id') == 'searchBox'){
+             var textToClear = "Search people or interests";
+        }else if ($(this).attr('id') == 'collegeSearchAuto'){
+             var textToClear = "Type college name";
+        }
         if ($(this).val() == textToClear) {
             $(this).data("clearedText", $(this).val());
             $(this).val('');
@@ -162,6 +169,7 @@ macademia.navInfovis = function(node) {
 macademia.nav = function() {
     macademia.modalLogin();
     macademia.modalRegister();
+    macademia.clearSearch();
     macademia.collegeFilter();
     $.address.change(function() {
         macademia.showHide();
@@ -185,13 +193,11 @@ macademia.nav = function() {
             $.address.update();
         }
     });
-    $("#select").click(function() {
-        macademia.collegeSelection();
-    });
     $('#searchForm').submit(function(){
         var search =($('#searchBox').serialize()).split('=');
         if (search[1] != 'Search+people+or+interests' && search[1] != ""){
             $.address.parameter('navFunction','search');
+            $.address.parameter('searchPage', 'all_0');
             macademia.sortParameters('search',search[1]);
             $.address.update();
         }
@@ -262,6 +268,9 @@ macademia.changeGraph = function(nodeId){
               }
               macademia.queryString.nodeId = param;
         }
+    }if($.address.parameter('institutions') != macademia.queryString.institutions){
+        macademia.initiateGraph();
+        macademia.queryString.institutions = $.address.parameter('institutions');
     }
 };
 // resizes canvas according to original dimensions
@@ -302,17 +311,81 @@ macademia.changeQueryString = function(query) {
 };
 // controller for the select colleges filter
 macademia.collegeFilter = function() {
-    $('#filterDialog').jqm({trigger: '#collegeFilterTrigger', modal: true});
+    macademia.setupModal('#filterDialog', '#collegeFilterTrigger', 'institution/filter?institutions=all', 'none', 'macademia.initCollegeFilter()');
+//    $('#collegeFilterTrigger').click(function(){
+//        $('#filterDialog').jqmShow();
+//        var colleges = $.address.parameter('institutions');
+//        $('#selectedColleges').load(
+//                '/Macademia/institution/filter',
+//                {institutions:colleges}
+//            );
+//    });
+
+};
+
+macademia.initCollegeFilter = function() {
+    macademia.showColleges();
+    macademia.clearSearch();
+    $("#closeCollegeFilter a").click(function(){
+        $('#filterDialog').jqmHide();
+    });
     $(".college a").click(function() {
         $(this).parents("li").animate({opacity: "hide" }, "normal")
+        macademia.visibleInstitutions--;
+        if(macademia.visibleInstitutions == 0){
+            $("#clearMessage").show();
+        }
+    });
+    $("#addCollege").click(function() {
+        var college = $("#collegeSearchAuto").val();
+        $(".college").each(function(){
+            if ($(this).text().indexOf($("#collegeSearchAuto").val()) >= 0){
+                $(this).show();
+                macademia.visibleInstitutions++;
+                if ($("#clearMessage").is(":visible")){
+                    $("#clearMessage").hide();
+                }
+            }
+        });
+
     });
     $("#clear").click(function() {
+        macademia.visibleInstitutions = 0;
         $("#selectedColleges > ul > li").hide();
+        $("#clearMessage").show();
     });
     $("#add").click(function() {
         $("#selectedColleges > ul > li").show();
+        macademia.visibleInstitutions = macademia.totalInstitutions;
+        if ($("#clearMessage").is(":visible")){
+            $("#clearMessage").hide();
+        }
+    });
+    $("#select").click(function() {
+        macademia.collegeSelection();
     });
 };
+// shows colleges that are currently selected under the filter
+macademia.showColleges = function(){
+    var visible = 0;
+    if (macademia.totalInstitutions == undefined){
+        macademia.getTotalInstitutions();
+    }
+    if ($.address.parameter('institutions') == 'all'){
+        $("#selectedColleges > ul > li").show();
+        visible = macademia.totalInstitutions;
+    }else{
+        var collegeIds = $.address.parameter('institutions').split("+");
+        for (var i = 0; i<collegeIds.length; i++){
+            var college = "#" + collegeIds[i];
+            $(college).show();
+            visible ++;
+        }
+    }
+    macademia.visibleInstitutions = visible;
+
+};
+
 // puts the selected colleges from the college filter into the address bar
 macademia.collegeSelection = function() {
     var colleges = new Array();
@@ -321,51 +394,64 @@ macademia.collegeSelection = function() {
             colleges.push($(this).attr('id'));
         }
     });
-    macademia.createInstitutionString(colleges);
-    $.address.update();
-    $('#filterDialog').jqmHide();
-};
-// takes an array of college ids and creates a string to stick in the url
-macademia.createInstitutionString = function(collegeArray) {
-    var colleges = "";
-    if (collegeArray.length == 0 || collegeArray.length == macademia.institutions) {
-        // if no colleges selected, default to all
-        colleges = "all";
-    } else {
-        for (var i = 0; i < collegeArray.length; i++) {
-            if (i < collegeArray.length - 1) {
-                colleges = colleges + collegeArray[i] + '+';
-            } else {
-                colleges = colleges + collegeArray[i];
-            }
+    if (colleges.length >0){
+        var collegeString = macademia.createInstitutionString(colleges);
+        if(collegeString != $.address.parameter('institutions')){
+            $.address.parameter('institutions', collegeString);
+            $.address.update();
         }
     }
-    $.address.parameter('institutions', colleges);
+    $('#filterDialog').jqmHide();
 };
-//returns array of college ids
-macademia.getInstitutions = function(){
-    var collegeString = $.address.parameter('institutions');
-    var collegeIds = collegeString.split('&').split('c_');
-    return collegeIds;
-}
+
+// takes an array of college ids and creates a string to stick in the url
+macademia.createInstitutionString = function(collegeArray) {
+        var colleges = "";
+        if (collegeArray.length == macademia.totalInstitutions) {
+            // if no colleges selected, default to all
+            colleges = "all";
+        } else {
+            for (var i = 0; i < collegeArray.length; i++) {
+                if (i < collegeArray.length - 1) {
+                    colleges = colleges + collegeArray[i] + '+';
+                } else {
+                    colleges = colleges + collegeArray[i];
+                }
+            }
+        }
+        return colleges;
+};
+//sets total number of institutions
+macademia.getTotalInstitutions = function(){
+     var colleges = 0;
+     $(".college").each(function(){
+            colleges ++;
+     });
+     macademia.totalInstitutions = colleges;
+};
 // controls view of right nav (incomplete)
 macademia.updateNav = function(){
      var navFunction = $.address.parameter('navFunction');
+     macademia.showDivs(navFunction);
      if ($("#instruct_list").is(":visible")){
         macademia.clearInstructions();
      }
      if (navFunction == 'search'){
-         macademia.submitSearch();
+            macademia.submitSearch();
+            macademia.queryString.searchPage = $.address.parameter('searchPage');
          // go to search page
-     }else if (navFunction == 'person'){
+     }else if (navFunction == 'person' && $.address.parameter('personId') != macademia.queryString.personId){
          var rootId = $.address.parameter('nodeId');
          document.getElementById('personIdDiv').innerHTML = '<p>to show user profile</p>';
+         macademia.queryString.personId = $.address.parameter('personId');
      }else if (navFunction == 'request'){
          var rootId = $.address.parameter('nodeId');
          document.getElementById('requestIdDiv').innerHTML = '<p>to show collaboration request page</p>';
+         macademia.queryString.requestId = $.address.parameter('requestId');
      }else if (navFunction == 'interest'){
          var rootId = $.address.parameter('nodeId');
          document.getElementById('interestIdDiv').innerHTML = '<p>to show interest page</p>';
+         macademia.queryString.interestId = $.address.parameter('interestId');
      }//else if etc...
      macademia.queryString.navFunction = navFunction;
 };
@@ -378,23 +464,28 @@ macademia.sortParameters = function(type,value){
                 $.address.parameter(queries[i],null);
                 macademia.queryString[queries[i]] = null;
             }
+        }else if (value){
+                $.address.parameter(queries[i],value);
+        }
+    }
+    if (type != 'search'){
+        $.address.parameter('searchPage', null);
+        macademia.queryString.searchPage = null;
+    }
+};
+// hides and shows appropriate divs in right content div
+macademia.showDivs = function(type){
+    var queries = ['searchBox','interestId','personId','requestId'];
+    for(var i = 0; i < queries.length; i++){
+        if (queries[i].indexOf(type) < 0){
             var divName = "#" + queries[i] + "Div";
-            if ($(divName).is(":visible")){
-                $(divName).hide();
-            }
+            $(divName).hide();
         }else{
             var divName = "#" + queries[i] + "Div";
-            if (value){
-                $.address.parameter(queries[i],value);
-            }
             if ($.address.parameter(queries[i])){
-                if (!$(divName).is(":visible")){
-                    $(divName).show();
-                }
+                $(divName).show();
             }else{
-                if ($(divName).is(":visible")){
-                    $(divName).hide();
-                }
+                $(divName).hide();
             }
 
         }
@@ -405,16 +496,24 @@ macademia.clearInstructions = function(){
     if($.address.parameter('searchBox') || $.address.parameter('personId') || $.address.parameter('interestId') || $.address.parameter('requestId')){
         $("#instruct_list").hide();
     }
-}
+};
 // submits the search query from the url
 macademia.submitSearch = function(){
-    if(($.address.parameter('searchBox') != macademia.queryString.searchBox || $('#searchResults').is(':empty')) && ($.address.parameter('searchBox') != undefined || macademia.queryString.searchBox != null)){
+    console.log(1);
+    if(($.address.parameter('searchPage') != macademia.queryString.searchPage || $.address.parameter('searchBox') != macademia.queryString.searchBox || $('#searchResults').is(':empty')) && ($.address.parameter('searchBox') != undefined || macademia.queryString.searchBox != null)){
         if($.address.parameter('searchBox') != undefined){
             var searchBox = $.address.parameter('searchBox');
             var search = searchBox.replace('+', ' ');
+            var institutions = $.address.parameter('institutions');
+            var page = $.address.parameter('searchPage').split('_');
+            var type = page[0];
+            var number = page[1];
             $('#searchBoxDiv').load(
                 '/Macademia/search/search',
-                {searchBox:search}
+                {searchBox:search,
+                institutions: institutions,
+                type: type,
+                pageNumber: number}
             );
         }else{
             $('#searchBoxDiv').empty();
@@ -425,4 +524,23 @@ macademia.submitSearch = function(){
 
 macademia.makeActionUrl = function(controller, action) {
     return "/Macademia/" + controller + "/" + action;
-}
+};
+
+macademia.setupModal = function(modalDialog, trigger, url, depModule, fnString) {
+    $(modalDialog).jqm({modal: false});
+    $(trigger).click(function(){
+        $(modalDialog).load(
+                "/Macademia/" + url,
+                    function(responseText, textStatus, xmlHttpRequest) {
+                        $.deps.load(depModule, function() {
+                            try {
+                                eval(fnString);
+                            } catch (error) {
+                                debug.log('evaluation of ' + fnString + ' failed: ' + error);
+                            }
+                         });
+                    }
+                );
+        $(modalDialog).jqmShow();
+    });
+};

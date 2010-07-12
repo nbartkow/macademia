@@ -59,28 +59,28 @@ html, body {
     font-family: helvetica, arial;
     font-size: 14px;
     line-height: 1.2em;
-    color: #777777;
+    color: #000000;
 }
 
 .atxt a {
     font-family: helvetica, arial;
     font-size: 14px;
     line-height: 1.2em;
-    color: #7777AA;
+    color: #2F9599;
 }
 
 .btxt {
     font-family: helvetica, arial;
     font-size: 14px;
     line-height: 1.2em;
-    color: #000000;
+    color: #777777;
 }
 
 .btxt a {
     font-family: helvetica, arial;
     font-size: 14px;
     line-height: 1.2em;
-    color: #7777AA;
+    color: #2F9599;
     text-decoration: none;
 }
 
@@ -239,6 +239,13 @@ ul#instruct_list li:before {
 .searchHeader {
 /*font-weight : bold;*/
     margin-top: 15px;
+    margin-bottom: 5px;
+}
+.searchHeader a{
+    text-decoration: none;
+    font-size: 12px;
+
+    margin-left: 20px;
 }
 
 #hide {
@@ -250,7 +257,7 @@ ul#instruct_list li:before {
     clear: both;
 }
 #hide a{
-   color: #7777AA;
+
    font-size: 12px;
    line-height: 1em;
 }
@@ -272,11 +279,41 @@ ul#instruct_list li:before {
 
 #editColleges {
     -moz-border-radius: 5px 5px 5px 5px;
-    padding-top: 10px;
-    height: 420px;
+    min-height: 420px;
+    overflow: hidden;
 
 }
-
+#closeCollegeFilter {
+    float: right;
+}
+#closeCollegeFilter a{
+    color: #FFFFEE;
+    font-size: 20px;
+}
+#collegeSearch{
+    margin-top: 20px;
+    clear:both;
+}
+#collegeSearchAuto{
+    -moz-border-radius: 5px 5px 5px 5px;
+    background: none repeat scroll 0 0 #B2D4EC;
+    border: 0 none;
+    color: #474953;
+    padding:5px 3px;
+    margin-top:0;
+    margin-bottom: 0;
+    width: 150px;
+}
+#collegeSearchAuto:focus{
+    background-color: #FFF;
+    border: 1px solid #000;
+    padding: 4px 2px;
+}
+#addClear{
+    clear:both;
+    margin-left: 50px;
+    margin-right: 50px;
+}
 #add {
     float: left;
 }
@@ -286,21 +323,19 @@ ul#instruct_list li:before {
 }
 #submitColleges{
     text-align:center;
-    padding:5px;
+
 }
 
 #selectedColleges {
     -moz-border-radius: 5px 5px 5px 5px;
     background-color: #ffe;
+    border: 1px solid #CCCCCC;
     height: 300px;
     padding: 5px;
-    margin: 5px;
+    margin: 20px;
     margin-top: 40px;
+    margin-bottom: 15px;
     overflow: auto;
-}
-
-#close {
-
 }
 
 #descriptionParagraph {
@@ -329,4 +364,19 @@ ul#instruct_list li:before {
 
 #loginButton, #registerButton {
     cursor: pointer;
+}
+#pageNav{
+    margin: auto;
+    padding-top: 20px;
+    overflow: hidden;
+    width:250px;
+    clear:both;
+    height:30px;
+}
+#searchWrapper{
+    min-height: 85px;
+}
+
+#searchBoxDiv, #personIdDiv, #interestIdDiv, #requestIdDiv{
+    min-height: 135px;
 }
