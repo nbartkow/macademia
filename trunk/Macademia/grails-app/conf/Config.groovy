@@ -105,7 +105,7 @@ environments {
         //prepDirectories("dev")
     }
     test {
-        //prepDirectories("test")
+        prepDirectories("test")
         wikipediaService.wikiCache = new File("db/test_backup/wikipedia.cache.txt")
         googleService.googleCache = new File("db/test_backup/google.cache.txt")
         absoluteThreshold = 0.01
