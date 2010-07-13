@@ -9,7 +9,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
   <head>
-    <g:include view="/layouts/headers.gsp"/>
     <title>Macalester College - Macademia</title>
   </head>
   <body>
@@ -18,11 +17,10 @@
     <tr>
       <td>People With Interest:</td>
     </tr>
-    <g:if test= "${peopleWithInterest.isEmpty()}"> <td>No people with interest</td> </g:if>
     <g:each in="${peopleWithInterest}" var="person">
       <tr>
         <td>
-          <g:link url="[controller:'person',action:'show',id:person.id]">
+          <g:link url="#/?nodeId=p_${person.id}&navFunction=person&personId=${person.id}">
             ${person.fullName}
           </g:link>
         </td>
@@ -33,12 +31,12 @@
     <tr>
       <td>Related Interests:</td>
     </tr>
-    <g:if test= "${relatedInterests.isEmpty()}"> <td>No related interests</td> </g:if>
+    <g:if test= "${relatedInterests.isEmpty()}"> <td>No related Interests</td> </g:if>
     <g:each in="${relatedInterests}" var="interest">
       <g:if test= "${interest != null}">
       <tr>
         <td>
-          <g:link url="[controller:'interest',action:'show',id:interest.id]">
+          <g:link url="#/?nodeId=i_${interest.id}&navFunction=interest&interestId=${interest.id}">
             ${interest.text}
           </g:link>
         </td>
@@ -46,6 +44,5 @@
       </g:if>
     </g:each>
   </table>
-
 </body>
 </html>

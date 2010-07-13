@@ -6,7 +6,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
   <title><g:layoutTitle default="Grails"/></title>
 
-  <nh:nimblecore/>
+  <mn:mnnimblecore/>
   
   <nh:nimbleui/>
 
@@ -16,6 +16,8 @@
 
   <g:layoutHead/>
 
+  
+
 %{--<g:if test="${grailsApplication.config.nimble.layout.customcss != ''}">--}%
 %{--<link rel="stylesheet" href="${resource(dir: 'css', file: 'style_editprofile.css')}"/>--}%
 %{--</g:if>--}%
@@ -23,7 +25,6 @@
 </head>
 
 <body>
-<link rel="stylesheet" href="${resource(dir: 'css', file: 'style_editprofile.css')}"/>
 <div id="doc">
   
   <div id="hd">

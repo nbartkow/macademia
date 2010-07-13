@@ -32,14 +32,13 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
             institution= new Institution(name:institutionDomain, emailDomain:user.profile.email.split("@.")[1])
             Utils.safeSave(institution)
         }
-        //
         user.profile.institution = institution
 
         user.username = user.profile.email
         user.profile.owner = user
         user.enabled = grailsApplication.config.nimble.localusers.provision.active
         user.external = false
-
+  
         user.validate()
 
         log.debug("Attempting to create new user account identified as $user.username")
@@ -62,7 +61,7 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
             }
 
             resetNewUser(user)
-            render(view: 'createuser', model: [user: user])
+            render(view: 'modalcreateuser', model: [user: user])     // make this call javascript function to stop redirection
             return
         }
 
@@ -79,7 +78,7 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
                 render(view: 'createuser', model: [user: user])
                 return
             } else {
-                
+
                 personService.save(user.profile)
             }
         }
@@ -87,7 +86,7 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
             log.debug("Captcha entry was invalid for user account creation")
             resetNewUser(user)
             user.errors.reject('nimble.invalid.captcha')
-            render(view: 'createuser', model: [user: user])
+            render(view: 'createuser', model: [user: user])      // similiarly
             return
         }
 
@@ -112,6 +111,15 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
 
         redirect action: createduser
         return
+    }
+
+    def modalcreateuser = {
+      def model = createuser()
+      return render(view: 'modalcreateuser', model: model)
+    }
+
+    def login = {
+      return render(view: 'login')
     }
 
     def validemail = {
@@ -151,7 +159,7 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
             //admin check
             if (user.id != authenticatedUser.id && !userService.isAdmin(authenticatedUser, user)){
                 redirect(controller: 'auth', action:'unauthorized')
-            }
+    }
         }
         if (!user) {
             log.warn("User identified by id '$authenticatedUser.id' was not located")
@@ -159,8 +167,8 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
             flash.message = message(code: 'nimble.user.nonexistant', args: [params.id])
             redirect(uri: '/')
         }
-        else {
-            log.debug("Editing user [$user.id]$user.username")
+	    else {
+    	    log.debug("Editing user [$user.id]$user.username")
             log.info("Editing user [$user.id]$user.username")
             def fields = grailsApplication.config.nimble.fields.enduserEdit.user
             user.properties[fields] = params
@@ -170,7 +178,7 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
             }
             log.info(allInterests)
             [user: user, allInterests: allInterests]
-        }
+	    }
     }
 
     def updateuser = {
@@ -206,11 +214,11 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
 	            if (userService.isAdmin(authenticatedUser)){
                     redirect controller: 'user', action: 'show', id: user.id
                 } else {
-                    redirect(uri:'/')
-                }
+	            redirect(uri:'/')
+	        }
                 //redirect(uri:'/')
                 // postponing - if authenticatedUser is ADMIN_ROLE, bring him back to general admin controls?
-	        }
+	    }
 	    }
 
     }

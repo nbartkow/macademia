@@ -6,80 +6,43 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<%@ page import="org.macademia.AdminsService" contentType="text/html;charset=UTF-8" %>
-<html>
-<head>
-  <title>Macalester College - Macademia</title>
-  <g:include view="/layouts/headers.gsp"/>
-</head>
-<body>
-${person.fullName}
-<br/>
-<a href="mailto:${person.email}">${person.email}</a>
-<br/>
-${person.institution}
-<br/>
-${person.department}
-<br/>
-<br/>
-
-<table>
-  <tr>
-    <td>
-      Interests:
-    </td>
-  </tr>
-  <g:each in="${interests}" var="interest">
-    <tr>
-      <td>
-        <g:link url="[controller:'interest',action:'show',id:interest.id]">
+<div class="medium padded2" id="profile">
+  <div id="pf_top_container">
+    <div id="pf_left">
+    no profile image
+    </div>
+    <div id="pf_right">
+      <h2 id="pf_name">${person.fullName}</h2>
+      <h3 id="pf_dept">${person.department}</h3>
+    </div>
+  </div>
+  <div id="pf_interests">
+    <h4>Interests</h4>
+    <p class="atxt">
+      <g:each in="${interests}" var="interest">
+        <g:link url="#/?nodeId=i_${interest.id}&navFunction=interest&interestId=${interest.id}">
           ${interest.text}
         </g:link>
-      </td>
-    </tr>
-  </g:each>
-</table>
-
-<br/>
-<table>
-  <tr>
-    <td>
-      Requests for Collaboration:
-    </td>
-  </tr>
-  <g:if test= "${collaboratorRequests.isEmpty()}"> <td>No collaborator requests</td> </g:if>
-  <g:each in="${collaboratorRequests}" var="collaboratorRequest">
-    <tr>
-      <td>
+      </g:each>
+    </p>
+  </div>
+  <div id="pf_requests">
+    <h4>Collaborator Requests</h4>
+    <ul class="atxt">
+      <g:each in="${collaboratorRequests}" var="collaboratorRequest">
         <g:link url="[controller:'request',action:'show',id:collaboratorRequest.id]">
-          ${collaboratorRequest.title}
+          <li>${collaboratorRequest.title}</li>
         </g:link>
-      </td>
-    </tr>
-  </g:each>
-</table>
-<br/>
-<g:if test= "${authenticatedUser}">
-  <g:if test="${person.id == authenticatedUser.id}">
-    <li>
-      <g:link url="[controller:'request',action:'manage' ]" ><g:message code="Manage collaborator requests" /></g:link>
-    </li>
-    <li>
-      <g:link url="[controller:'account',action:'editprofile' ]">Edit Profile</g:link>
-    </li>
-  </g:if>
-  <g:else>
-    <g:if test="${auth}">
-      <li>
-      <g:link url="[controller:'request',action:'manage', id:person.owner.id ]" ><g:message code="Manage collaborator requests" /></g:link>
-      </li>
-      <li>
-      <g:link url="[controller:'account',action:'editprofile', id:person.owner.id ]">Edit Profile</g:link>
-      </li>
-    </g:if>
-  </g:else>
-</g:if>
+      </g:each>
+    </ul>
+  </div>
+  <div id="pf_links">
+				<h4>Links</h4>
+				<ul class="atxt">
+					<li><a href="#">Homepage</a></li>
+					<li><a href="#">Department website</a></li>
+					<li><a href="#">Facebook</a></li>
+				</ul>
+			</div>
+</div>
 
-
-</body>
-</html>
