@@ -26,11 +26,19 @@
                             if (data[i][2] == "collaboratorrequest"){
                                 data[i][2] = "request"    
                             }
-                            result.push({
+                            if (data[i][2] == "institution"){
+                                result.push({
 
-                                label : data[i][1] + " (" + data[i][2] + ")",
-                                data : data[i]
-                            })
+                                    label : data[i][1],
+                                    data : data[i]
+                                })
+                            } else {
+                                result.push({
+
+                                    label : data[i][1] + " (" + data[i][2] + ")",
+                                    data : data[i]
+                                })
+                            }
                         }
                         cache[request.term] = result;
 						response(result);
