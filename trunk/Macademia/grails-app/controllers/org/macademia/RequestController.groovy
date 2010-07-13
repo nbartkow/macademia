@@ -10,6 +10,7 @@ class RequestController {
     def personService
     def userService
     def institutionService
+    def autocompleteService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -82,7 +83,8 @@ class RequestController {
             }
         }
         collaboratorRequestService.save(collaboratorRequest)
-        redirect(action: "manage")
+        autocompleteService.addRequest(collaboratorRequest)
+        redirect(uri: "/")
         [collaboratorRequest: collaboratorRequest]
     }
 

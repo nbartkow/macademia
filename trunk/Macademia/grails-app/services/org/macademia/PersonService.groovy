@@ -10,6 +10,7 @@ class PersonService {
     def interestService
     def userService
     def databaseService
+    def autocompleteService
 
 
     def get(long id) {
@@ -29,12 +30,15 @@ class PersonService {
         Map<Interest,Interest> remove = new HashMap<Interest,Interest>()
         //log.info("$person.interests[0]")
 
-        for(Interest interest in person.interests){            
+        for(Interest interest in person.interests){
+            // brand new interest
             if (interestService.findByText(interest.text) == null) {
                 interestService.save(interest)
-            } else if (interest.id == null) {
+            } // new interest, but .text of interest exists in database
+              else if (interest.id == null) {
                 remove.put(interest,interestService.findByText(interest.text))
-            } else if (interest.lastAnalyzed == null) {
+            } // existing interest
+              else if (interest.lastAnalyzed == null) {
                 interestService.save(interest)
             }
         }
@@ -49,6 +53,7 @@ class PersonService {
         }
         Utils.safeSave(person)
         databaseService.addUser(person)
+        autocompleteService.addPerson(person)
     }
 
 

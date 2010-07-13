@@ -6,6 +6,7 @@ import org.apache.commons.validator.EmailValidator
 class AccountController extends grails.plugins.nimble.core.AccountController{
     def personService
     def interestService
+    def autocompleteService
 
     def saveuser = {
 
@@ -29,8 +30,9 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
         String institutionDomain = params.email.split("@")[1]
         Institution institution = Institution.findByEmailDomain(institutionDomain)
         if (institution == null){
-            institution= new Institution(name:institutionDomain, emailDomain:user.profile.email.split("@.")[1])
+            institution= new Institution(name:institutionDomain, emailDomain:institutionDomain)
             Utils.safeSave(institution)
+            autocompleteService.addInstitution(institution)
         }
         user.profile.institution = institution
 
@@ -234,6 +236,7 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
                 user.profile.addToInterests(existingInterest)
             } else {
                 Interest newInterest = new Interest(i);
+
                 user.profile.addToInterests(newInterest)
             }
         }

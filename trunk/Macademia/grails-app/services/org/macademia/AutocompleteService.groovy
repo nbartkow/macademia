@@ -15,10 +15,9 @@ class AutocompleteService implements PostInsertEventListener {
 
     //this is the maximum number of autocomplete results
     static int MAX_NUMBER_RES = 10
-    AutocompleteTree<Long, AutocompleteEntity> personTree = new AutocompleteTree<Long, AutocompleteEntity>()
-    AutocompleteTree<Long, AutocompleteEntity> institutionTree = new AutocompleteTree<Long, AutocompleteEntity>()
-    AutocompleteTree<Long, AutocompleteEntity> interestTree = new AutocompleteTree<Long, AutocompleteEntity>()
-    AutocompleteTree<Long, AutocompleteEntity> overallTree = new AutocompleteTree<Long, AutocompleteEntity>()
+    AutocompleteTree<String, AutocompleteEntity> institutionTree = new AutocompleteTree<String, AutocompleteEntity>()
+    AutocompleteTree<String, AutocompleteEntity> interestTree = new AutocompleteTree<String, AutocompleteEntity>()
+    AutocompleteTree<String, AutocompleteEntity> overallTree = new AutocompleteTree<String, AutocompleteEntity>()
     SessionFactory sessionFactory
 
     def init() {
@@ -28,7 +27,9 @@ class AutocompleteService implements PostInsertEventListener {
         Institution.findAll().each { addInstitution(it) }
         log.info("processing autocomplete interest...")
         Interest.findAll().each { addInterest(it) }
-
+        log.info("processing autocomplete collaborator requests...")
+        CollaboratorRequest.findAll().each { addRequest(it) }
+        
         sessionFactory.eventListeners.with {
             postInsertEventListeners = addListener(sessionFactory.eventListeners.postInsertEventListeners)
         }
@@ -58,32 +59,28 @@ class AutocompleteService implements PostInsertEventListener {
         if (Interest.isInstance(entity)) {
             addInterest(entity)
         }
+        if (CollaboratorRequest.isInstance(entity)){
+            addRequest(entity)
+        }
     }
 
     def addPerson = { person ->
         def entity = new AutocompleteEntity(person.id, person.fullName, Person.class)
-        overallTree.add(person.id, entity)
-        personTree.add(person.id, entity)
+        overallTree.add("p" + person.id, entity)
     }
     def addInstitution = { institution ->
         def entity = new AutocompleteEntity(institution.id, institution.name, Institution.class)
-//        overallTree.add(institution.id, entity)
         institutionTree.add(institution.id, entity)
     }
     def addInterest = { interest ->
         def entity = new AutocompleteEntity(interest.id, interest.text, Interest.class)
-        overallTree.add(interest.id, entity)
+        overallTree.add("i" + interest.id, entity)
         interestTree.add(interest.id, entity)
     }
 
-    Collection<AutocompleteEntity> getPersonAutocomplete(String query, int maxResults) {
-        // Returns the top three cities that start with "ch" ordered by score.
-        List<AutocompleteEntity> people = new ArrayList<AutocompleteEntity>()
-        SortedSet<AutocompleteEntry<Long, AutocompleteEntity>> results = personTree.autocomplete(query, maxResults)
-        for (AutocompleteEntry<Long, AutocompleteEntity> entry: results) {
-            people.add((AutocompleteEntity) entry.getValue())
-        }
-        return people
+    def addRequest = { collaboratorRequest ->
+        def entity = new AutocompleteEntity(collaboratorRequest.id, collaboratorRequest.title, CollaboratorRequest.class)
+        overallTree.add("r"+ collaboratorRequest.id, entity)
     }
 
     Collection<AutocompleteEntity> getInstitutionAutocomplete(String query, int maxResults) {
@@ -105,7 +102,6 @@ class AutocompleteService implements PostInsertEventListener {
         }
         return interests
     }
-
     Map<Class, Collection<AutocompleteEntity>> getOverallAutocomplete(String query, int maxResults) {
         Map<Class, Collection<AutocompleteEntity>> result = [:]
         SortedSet<AutocompleteEntry<Long, AutocompleteEntity>> results = overallTree.autocomplete(query, maxResults)

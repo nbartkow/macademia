@@ -14,6 +14,7 @@ class InterestService implements ApplicationContextAware {
     def googleService
     def wikipediaService
     def databaseService
+    def autocompleteService
 
     boolean transactional = true
 
@@ -86,6 +87,7 @@ class InterestService implements ApplicationContextAware {
                 xSimilarityService.buildInterestRelations(interest)
             }
             Utils.safeSave(interest)
+            autocompleteService.addInterest(interest)
         }
     }
 
