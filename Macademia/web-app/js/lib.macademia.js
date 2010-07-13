@@ -544,7 +544,7 @@ macademia.initializeModalLogin = function() {
       spikeLength:9,
       hoverIntentOpts: {interval: 100,
           timeout: 1000}
-          );
+  });
   if($('#username')) $('#username').blur(function() {$('#pass').focus();});
   if($('#pass')) $('#pass').blur(function() {$('#passConfirm').focus();});
   $('.password').pstrength();
