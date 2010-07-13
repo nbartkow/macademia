@@ -26,17 +26,9 @@
                             if (data[i][2] == "collaboratorrequest"){
                                 data[i][2] = "request"    
                             }
-
-                            // adds the brackets and type to all types but institutions. For institutions it removes it.
-                            if (data[i][2] != "institution"){
-                                data[i][2] = " (" + data[i][2] + ")"
-                            } else {
-                                data[i][2] = ""
-                            }
-
                             result.push({
 
-                                label : data[i][1] + data[i][2],
+                                label : data[i][1] + " (" + data[i][2] + ")",
                                 data : data[i]
                             })
                         }
