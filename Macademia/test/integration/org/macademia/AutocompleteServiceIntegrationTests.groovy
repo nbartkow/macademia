@@ -28,9 +28,7 @@ class AutocompleteServiceIntegrationTests extends GrailsUnitTestCase {
 
     void testSimple() {
         Interest i = Interest.findByText("web 3.0")
-        if (i != null) {
-            autocompleteService.removeInterest(i)
-        }
+        assertNull(i)
         Collection<AutocompleteEntity> results = autocompleteService.getInterestAutocomplete('web', 5)
         System.out.println(results)
         assertEquals(1, results.size())
@@ -38,7 +36,8 @@ class AutocompleteServiceIntegrationTests extends GrailsUnitTestCase {
         //There is some problem with normalize text for the space character
         Interest interest = new Interest("web 3.0")
         interestService.save(interest)
-//        Utils.cleanUpGorm(sessionFactory)
+        Utils.cleanUpGorm(sessionFactory)
+        
         results = autocompleteService.getInterestAutocomplete('web', 5)
         assertEquals(2, results.size())
     }
