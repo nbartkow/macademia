@@ -21,6 +21,10 @@ class AutocompleteService implements PostInsertEventListener {
     SessionFactory sessionFactory
 
     def init() {
+        institutionTree.clear()
+        interestTree.clear()
+        overallTree.clear()
+
         log.info("processing autocomplete people...")
         Person.findAll().each { addPerson(it) }
         log.info("processing autocomplete institution...")
