@@ -47,7 +47,7 @@ macademia.highlightAdjacenciesOff = function(node){
         n.eachAdjacency(function(adj){
             if (adj.nodeTo.id != node.id && adj.nodeFrom.id != node.id){
                 if(adj.data.$colorB != "#999" && adj.data.$colorB != undefined){
-                    adj.data.$color = adj.data.$colorB;
+                adj.data.$color = adj.data.$colorB;
                 }
             }else if (adj.nodeTo.id != node.id){
                 adjacentNodes.push(adj.nodeTo.id);
@@ -75,6 +75,7 @@ macademia.pageLoad = function() {
     $.address.autoUpdate(false);
     macademia.initialSettings();
     macademia.showHide();
+    macademia.loginShowHide();
     macademia.initiateGraph();
     macademia.nav();
 };
@@ -87,7 +88,7 @@ macademia.initialSettings = function(){
             $.address.parameter('nodeId',macademia.queryString.nodeId);
         }
         if(!$.address.parameter('navVisibility')){
-            $.address.parameter('navVisibility',macademia.queryString.navVisibility);        
+            $.address.parameter('navVisibility',macademia.queryString.navVisibility);
         }if($.address.parameter('navFunction')){
             macademia.queryString.navFunction = $.address.parameter('navFunction');
         }else{
@@ -133,7 +134,7 @@ macademia.drawCircles = function(canvas, ctx) {
 macademia.clearSearch = function() {
     $(".clearDefault").focus(function() {
         if ($(this).attr('id') == 'searchBox'){
-             var textToClear = "Search people or interests";
+    var textToClear = "Search people or interests";
         }else if ($(this).attr('id') == 'collegeSearchAuto'){
              var textToClear = "Type college name";
         }
@@ -159,6 +160,8 @@ macademia.navInfovis = function(node) {
         $.address.parameter('navFunction','person');
     } else if (type == 'interest' && $.address.parameter('navFunction') != 'interest') {
         $.address.parameter('navFunction','interest');
+    } else if (type == 'request' && $.address.parameter('navFunction') != 'request') {
+        $.address.parameter('navFunction','request');
     }
     macademia.sortParameters(type,rootId.substr(2));
     $.address.update();
@@ -167,8 +170,10 @@ macademia.navInfovis = function(node) {
 
 // click navigation for the rightDiv
 macademia.nav = function() {
-    macademia.modalLogin();
-    macademia.modalRegister();
+//    macademia.modalLogin();
+//    macademia.modalRegister();
+    macademia.setupModal("#registerDialog", "#registerButton", "account/modalcreateuser/", 'nimble-login-register', "macademia.initializeModalLogin()");
+//    macademia.setupModal("#loginDialog", "#loginButton", "account", "login", {}, 'nimble-login-register', "macademia.initializeModalLogin()");
     macademia.clearSearch();
     macademia.collegeFilter();
     $.address.change(function() {
@@ -209,18 +214,13 @@ macademia.nav = function() {
     });
 };
 macademia.modalLogin = function() {
-    $('#loginDialog').jqm({modal: false});
+    $('#loginDialog').jqm({modal: false, ajax:"/Macademia/account/login"});
     $('#loginButton').click(function(){
         $('#loginDialog').jqmShow()
     });
 };
 
-macademia.modalRegister = function() {
-    $('#registerDialog').jqm({modal: false});
-    $('#registerButton').click(function(){
-        $('#registerDialog').jqmShow()
-    });
-};
+
 // controls the show and hide options
 macademia.showHide = function() {
     if ($.address.parameter('navVisibility') != macademia.queryString.navVisibility) {
@@ -311,6 +311,7 @@ macademia.changeQueryString = function(query) {
 };
 // controller for the select colleges filter
 macademia.collegeFilter = function() {
+    console.log('a');
     macademia.setupModal('#filterDialog', '#collegeFilterTrigger', 'institution/filter?institutions=all', 'none', 'macademia.initCollegeFilter()');
 //    $('#collegeFilterTrigger').click(function(){
 //        $('#filterDialog').jqmShow();
@@ -324,6 +325,7 @@ macademia.collegeFilter = function() {
 };
 
 macademia.initCollegeFilter = function() {
+    console.log('c');
     macademia.showColleges();
     macademia.clearSearch();
     $("#closeCollegeFilter a").click(function(){
@@ -398,7 +400,7 @@ macademia.collegeSelection = function() {
         var collegeString = macademia.createInstitutionString(colleges);
         if(collegeString != $.address.parameter('institutions')){
             $.address.parameter('institutions', collegeString);
-            $.address.update();
+    $.address.update();
         }
     }
     $('#filterDialog').jqmHide();
@@ -406,19 +408,19 @@ macademia.collegeSelection = function() {
 
 // takes an array of college ids and creates a string to stick in the url
 macademia.createInstitutionString = function(collegeArray) {
-        var colleges = "";
+    var colleges = "";
         if (collegeArray.length == macademia.totalInstitutions) {
-            // if no colleges selected, default to all
-            colleges = "all";
-        } else {
-            for (var i = 0; i < collegeArray.length; i++) {
-                if (i < collegeArray.length - 1) {
-                    colleges = colleges + collegeArray[i] + '+';
-                } else {
-                    colleges = colleges + collegeArray[i];
-                }
+        // if no colleges selected, default to all
+        colleges = "all";
+    } else {
+        for (var i = 0; i < collegeArray.length; i++) {
+            if (i < collegeArray.length - 1) {
+                colleges = colleges + collegeArray[i] + '+';
+            } else {
+                colleges = colleges + collegeArray[i];
             }
         }
+    }
         return colleges;
 };
 //sets total number of institutions
@@ -437,7 +439,7 @@ macademia.updateNav = function(){
         macademia.clearInstructions();
      }
      if (navFunction == 'search'){
-            macademia.submitSearch();
+         macademia.submitSearch();
             macademia.queryString.searchPage = $.address.parameter('searchPage');
          // go to search page
      }else if (navFunction == 'person' && $.address.parameter('personId') != macademia.queryString.personId){
@@ -479,14 +481,14 @@ macademia.showDivs = function(type){
     for(var i = 0; i < queries.length; i++){
         if (queries[i].indexOf(type) < 0){
             var divName = "#" + queries[i] + "Div";
-            $(divName).hide();
+                $(divName).hide();
         }else{
             var divName = "#" + queries[i] + "Div";
             if ($.address.parameter(queries[i])){
-                $(divName).show();
+                    $(divName).show();
             }else{
-                $(divName).hide();
-            }
+                    $(divName).hide();
+                }
 
         }
     }
@@ -499,7 +501,6 @@ macademia.clearInstructions = function(){
 };
 // submits the search query from the url
 macademia.submitSearch = function(){
-    console.log(1);
     if(($.address.parameter('searchPage') != macademia.queryString.searchPage || $.address.parameter('searchBox') != macademia.queryString.searchBox || $('#searchResults').is(':empty')) && ($.address.parameter('searchBox') != undefined || macademia.queryString.searchBox != null)){
         if($.address.parameter('searchBox') != undefined){
             var searchBox = $.address.parameter('searchBox');
@@ -524,9 +525,44 @@ macademia.submitSearch = function(){
 
 macademia.makeActionUrl = function(controller, action) {
     return "/Macademia/" + controller + "/" + action;
-};
+}
+
+macademia.initializeModalLogin = function() {
+  $("#passwordpolicy").hide();
+  $("#passwordpolicybtn").bt({
+      contentSelector: $("#passwordpolicy"),
+      width: '350px',
+      closeWhenOthersOpen: true,
+      shrinkToFit: 'true',
+      positions: ['right', 'top', 'left'],
+      margin: 0,
+      padding: 6,
+      fill: '#fff',
+      strokeWidth: 1,
+      strokeStyle: '#c2c2c2',
+      spikeGirth: 12,
+      spikeLength:9,
+      hoverIntentOpts: {interval: 100,
+          timeout: 1000}
+          );
+  if($('#username')) $('#username').blur(function() {$('#pass').focus();});
+  if($('#pass')) $('#pass').blur(function() {$('#passConfirm').focus();});
+  $('.password').pstrength();
+  $('.password').keyup();
+    nimble.createTip('usernamepolicybtn', 'Username Policy', 'Choose a good username');
+    nimble.createTip('passwordpolicybtn', 'Password Policy', 'Choose a good password');
+}
+
+macademia.loginShowHide = function() {
+		$("#login").hide();
+		$("#login_link").click(function(event) {
+			$("#login").slideToggle();
+		});
+}
+
 
 macademia.setupModal = function(modalDialog, trigger, url, depModule, fnString) {
+    console.log(fnString);
     $(modalDialog).jqm({modal: false});
     $(trigger).click(function(){
         $(modalDialog).load(
