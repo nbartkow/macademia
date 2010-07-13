@@ -27,6 +27,10 @@ class AutocompleteServiceIntegrationTests extends GrailsUnitTestCase {
     }
 
     void testSimple() {
+        Interest i = Interest.findByText("web 3.0")
+        if (i != null) {
+            autocompleteService.removeInterest(i)
+        }
         Collection<AutocompleteEntity> results = autocompleteService.getInterestAutocomplete('web', 5)
         System.out.println(results)
         assertEquals(1, results.size())
