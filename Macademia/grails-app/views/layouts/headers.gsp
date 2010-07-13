@@ -9,7 +9,7 @@
 
 <g:javascript src="jquery/jquery-deps.js"/>
 <g:javascript src="lib.macademia.deps.js"/>
-                                                   
+
 <!--[if IE]><g:javascript src="jit/Extras/excanvas.js"/><![endif]-->
 
 <!-- JIT Library File -->
@@ -20,6 +20,8 @@
 <g:javascript src="jquery/jqModal.js"/>
 <g:javascript src="jquery/jquery.address-1.2.1.js"/>
 <g:javascript src="lib.macademia.js"/>
+<g:javascript src="lib.macademia.collegefilter.js"/>
 <g:javascript src="lib.macademia.autocomplete.js"/>
 <g:javascript src="lib.macademia.json.js"/>
+
 <title>Macademia - Macalester College</title>

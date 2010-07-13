@@ -11,7 +11,7 @@
   </div>
 
   <div id="rfcKeywords" class="medium padded2 endBorder">
-    <h3 class=css/request_style.css"padded">Keywords:</h3>
+    <h3 class=css/request_style.css>Keywords:</h3>
     <p class="spacedSmall padded2"><ul>
     <g:each in="${collaboratorRequest.keywords}" var="k">
       <li><g:link controller="interest" action="show" id="${k.id}">${k.text?.encodeAsHTML()}</g:link></li>

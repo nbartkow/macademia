@@ -8,9 +8,9 @@ a:visited {
     color: #2F9599;
 }
 
-.medium {
-    font-size: 14px;
-    line-height: 1.2em;
+#wrapper {
+    background: #ffe;
+    min-height: 100%;
 }
 
 .small{
@@ -297,16 +297,53 @@ margin-bottom:4px;}
     border: 1px solid #000;
     padding: 9px 4px;
 }
-
-#searchResults {
-    margin-left: 10px;
+#searchBoxDiv{
+    margin-left:10px;
+    margin-right:10px;
 }
-
 .searchHeader {
-/*font-weight : bold;*/
     margin-top: 15px;
 }
+.searchHeader a{
+    font-size: 12px;
+}
+#pageNav{
+    text-align: center;
+    margin: auto;
+    padding-top: 15px;
+    width:300px;
+    clear:both;
+    height:30px;
+}
+#deepSearchWrapper{
+    min-height: 500px;
+}
 
+#searchBoxDiv, #personIdDiv, #interestIdDiv, #requestIdDiv{
+    min-height: 135px;
+}
+#personResults li, #interestResults li{
+    margin-top:5px;
+    margin-bottom:5px;
+}
+#personResults a{
+    font-size:16px;
+}
+#interestResults a{
+    font-size: 16px;
+}
+#requestResults #requestTittle{
+    font-size: 16px;
+    font-weight: 600;
+}
+#requestResults p{
+    margin: 0;
+    margin-left: 10px;
+}
+#requestResults li{
+    margin-top:10px;
+    margin-bottom:10px;
+}
 #hide {
     position: relative;
     text-align: left;
@@ -402,19 +439,15 @@ margin-bottom:4px;}
     cursor: pointer;
 }
 
-#closeFilterDialog {
+#closeCollegeFilter {
     padding: 0px;
     margin: 0px;
     float: right;
-    cursor: pointer;
 }
-
-/*#infovis-canvaswidget {*/
-/*position: absolute;*/
-/*top: 0px;*/
-/*left: 0px;*/
-/*}*/
-
+#closeCollegeFilter a{
+    font-size:20px;
+    color: #FFFFEE;
+}
 #profile {
     margin-top: 10px;
     padding-right: 5px;

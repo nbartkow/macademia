@@ -76,7 +76,7 @@
             <b>Search</b> below for a person or interest.
           </li>
         </ul>
-        <div id="searchBoxDiv">
+        <div id="searchBoxDiv" class="atxt">
           &nbsp;
         </div>
         <div id="personIdDiv">

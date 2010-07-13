@@ -86,15 +86,10 @@ macademia.init = function(rootType,id){
                 d.css('font-size', '14px');
                 d.css('background-color','transparent');
                 $(d).mouseover(function() {
-                    $(this).css('font-weight', 'bold');
+                    $(this).css('font-weight', 600);
                     $(this).css('opacity', 0.75);
                     $(this).css('z-index', 50);
                     $(this).css('background-color', '#A2AB8E');
-
-//                    node.eachAdjacency(function(adj){
-//                        adjacentNodes.push(adj.nodeTo.id);
-//                        adj.data.$lineWidth = 2.5;
-//                    });
                     macademia.highlightAdjacenciesOn(node);
                     macademia.rgraph.refresh();
 
@@ -104,11 +99,6 @@ macademia.init = function(rootType,id){
                     $(this).css('opacity', 0.8);
                     $(this).css('z-index', 10);
                     $(this).css('background-color','transparent');
-
-//                    node.eachAdjacency(function(adj){
-//                        adjacentNodes.push(adj.nodeTo.id);
-//                        adj.data.$lineWidth = 1;
-//                    });
                     if (macademia.refreshNeeded){
                         macademia.highlightAdjacenciesOff(node);
                         macademia.rgraph.refresh();
@@ -135,7 +125,7 @@ macademia.init = function(rootType,id){
                             var url = this.elements.target.attr('alt');
                             if (url != '') {
                                 var params = {};
-                                if (node.data.type == 'person') {
+                                if (node.data.type == 'person'|| node.data.type == 'request') {
                                     var rootId =macademia.rgraph.graph.getNode(macademia.rgraph.root).id;
                                     params = {node : node.id, root: rootId};
                                 }
