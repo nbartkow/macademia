@@ -78,6 +78,12 @@ class AutocompleteService implements PostInsertEventListener {
         interestTree.add(interest.id, entity)
     }
 
+    def removeInterest = {interest ->
+        def entity = new AutocompleteEntity(interest.id, interest.text, Interest.class)
+        overallTree.remove(entity.getName())
+        interestTree.remove(entity.getName())
+    }
+
     def addRequest = { collaboratorRequest ->
         def entity = new AutocompleteEntity(collaboratorRequest.id, collaboratorRequest.title, CollaboratorRequest.class)
         overallTree.add("r"+ collaboratorRequest.id, entity)
