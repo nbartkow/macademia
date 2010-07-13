@@ -12,9 +12,7 @@ class AutocompleteController {
         }
         List<AutocompleteEntity> results = null
         if (params.klass) {
-            if (params.klass == 'person') {
-                results = autocompleteService.getPersonAutocomplete(params.term, max)
-            } else if (params.klass == 'interest') {
+            if (params.klass == 'interest') {
                 results = autocompleteService.getInterestAutocomplete(params.term, max)
             } else if (params.klass == 'institution') {
                 results = autocompleteService.getInstitutionAutocomplete(params.term, max)
@@ -23,7 +21,8 @@ class AutocompleteController {
             }
         } else {
             def resultsByClass = autocompleteService.getOverallAutocomplete(params.term, max)
-            results = resultsByClass.get(Person.class, []) + resultsByClass.get(Interest.class, [])
+            log.info("1")
+            results = resultsByClass.get(Person.class, []) + resultsByClass.get(Interest.class, []) + resultsByClass.get(CollaboratorRequest.class, [])
         }
 
         def responseStr = ''

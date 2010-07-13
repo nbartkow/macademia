@@ -3,9 +3,9 @@
  */
 (function($) {
 
-    $.fn.macademiaAutocomplete = function(settings) {
+    $.fn.macademiaAutocomplete = function(settings, url) {
         var cache = {};
-
+        
         var config = {
             source : function(request, response) {
                 if (request.term in cache) {
@@ -15,14 +15,28 @@
 
 
 				$.ajax({
-					url: "/Macademia/autocomplete",
+					url: url,
 					dataType: "json",
 					data: request,
 					success: function( data ) {
                         var result = [];
                         for (var i =0; i < data.length; i++) {
+
+                            // change the type of Collaborator Request from "collaboratorrequest" to "request" (for aesthetic purposes)
+                            if (data[i][2] == "collaboratorrequest"){
+                                data[i][2] = "request"    
+                            }
+
+                            // adds the brackets and type to all types but institutions. For institutions it removes it.
+                            if (data[i][2] != "institution"){
+                                data[i][2] = " (" + data[i][2] + ")"
+                            } else {
+                                data[i][2] = ""
+                            }
+
                             result.push({
-                                label : data[i][1] + " (" + data[i][2] + ")",
+
+                                label : data[i][1] + data[i][2],
                                 data : data[i]
                             })
                         }
@@ -39,22 +53,24 @@
 
     };
 
-    $.fn.userEditAutocomplete = function(settings) {
+    $.fn.editAutocomplete = function(settings, url) {
+        function split(val) {
+                  return val.split(/,\s*/);
+              }
+        function extractLast(term) {
+                  return split(term).pop();
+              }
         var cache = {};
 
         var config = {
-            source : function(request, response) {
-                if (request.term in cache) {
-                    response(cache[request.term]);
-                    return;
-                }
-
-
-				$.ajax({
-					url: "/Macademia/autocomplete/index?klass=interest",
-					dataType: "json",
-					data: request,
-					success: function( data ) {
+            source: function(request, response) {
+                    if (request.term in cache) {
+                      response(cache[request.term]);
+                      return;
+                    }
+                      $.getJSON(url, {
+                          term: extractLast(request.term)
+                      }, function( data ) {
                         var result = [];
                         for (var i =0; i < data.length; i++) {
                             result.push({
@@ -64,44 +80,8 @@
                         }
                         cache[request.term] = result;
 						response(result);
-					}
-				})}
-        };
-
-        if (settings) $.extend(config, settings);
-        this.autocomplete(config);
-
-        return this;
-
-    };
-
-    $.fn.collegeSearchAutocomplete = function(settings) {
-        var cache = {};
-
-        var config = {
-            source : function(request, response) {
-                if (request.term in cache) {
-                    response(cache[request.term]);
-                    return;
-                }
-
-
-				$.ajax({
-					url: "/Macademia/autocomplete/index?klass=institution",
-					dataType: "json",
-					data: request,
-					success: function( data ) {
-                        var result = [];
-                        for (var i =0; i < data.length; i++) {
-                            result.push({
-                                label : data[i][1],
-                                data : data[i]
-                            })
-                        }
-                        cache[request.term] = result;
-						response(result);
-					}
-				})}
+					});
+                  }
         };
 
         if (settings) $.extend(config, settings);
@@ -126,9 +106,7 @@ $().ready(
                         var id = ui.item.data[0];
                         var name = ui.item.data[1];
                         var type = ui.item.data[2];
-                        if (type == "collaboratorrequest"){
-                            type = "request"
-                        }
+                        
                         $.address.parameter('nodeId', type.substring(0, 1) + "_" + id);
                         $.address.parameter('navFunction', type);
                         macademia.sortParameters(type, id);
@@ -140,33 +118,86 @@ $().ready(
 
                         return false;
                     }
-                });
+                }, "/Macademia/autocomplete");
         }
     );
 $().ready(
         function () {
-            $("#interests").userEditAutocomplete(
+            function split(val) {
+                  return val.split(/,\s*/);
+              }
+              function extractLast(term) {
+                  return split(term).pop();
+              }
+            $("#interests").editAutocomplete(
                 {
-                    multiple : true,
-                    select : function (event, ui) {
-                        var id = ui.item.data[0];
-                        var name = ui.item.data[1];
-                        var type = ui.item.data[2];
-                        macademia.sortParameters(type, id);
-                        $.address.update();
-                        $("#interests").val("");
-                        window.setTimeout(function () {
-                                $("#interests").blur();
-                            }, 100);
-
-                        return false;
-                    }
-                });
+                  multiple : true,
+                  search: function() {
+                      // custom minLength
+                      var term = extractLast(this.value);
+                      if (term.length < 1) {
+                          return false;
+                      }
+                  },
+                  focus: function() {
+                      // prevent value inserted on focus
+                      return false;
+                  },
+                  select: function(event, ui) {
+                      var terms = split( this.value );
+                      // remove the current input
+                      terms.pop();
+                      // add the selected item
+                      terms.push( ui.item.value );
+                      // add placeholder to get the comma-and-space at the end
+                      terms.push("");
+                      this.value = terms.join(", ");
+                      return false;
+                  }
+                }, "/Macademia/autocomplete/index?klass=interest");
         }
     );
+
 $().ready(
         function () {
-            $("#collegeSearchAuto").collegeSearchAutocomplete(
+            function split(val) {
+                  return val.split(/,\s*/);
+              }
+              function extractLast(term) {
+                  return split(term).pop();
+              }
+            $("#keywords").editAutocomplete(
+                {
+                  multiple : true,
+                  search: function() {
+                      // custom minLength
+                      var term = extractLast(this.value);
+                      if (term.length < 1) {
+                          return false;
+                      }
+                  },
+                  focus: function() {
+                      // prevent value inserted on focus
+                      return false;
+                  },
+                  select: function(event, ui) {
+                      var terms = split( this.value );
+                      // remove the current input
+                      terms.pop();
+                      // add the selected item
+                      terms.push( ui.item.value );
+                      // add placeholder to get the comma-and-space at the end
+                      terms.push("");
+                      this.value = terms.join(", ");
+                      return false;
+                  }
+                }, "/Macademia/autocomplete/index?klass=interest");
+        }
+    );
+
+$().ready(
+        function () {
+            $("#collegeSearchAuto").macademiaAutocomplete(
                 {
                     multiple : true,
                     select : function (event, ui) {
@@ -178,6 +209,6 @@ $().ready(
 
                         return false;
                     }
-                });
+                }, "/Macademia/autocomplete/index?klass=institution");
         }
     );

@@ -6,6 +6,12 @@
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'collaboratorRequest.label', default: 'CollaboratorRequest')}" />
         <title><g:message code="default.create.label" args="[entityName]" /></title>
+      <!-- Jquery-UI for autocomplete, etc. -->
+        <g:javascript library="jquery"/>
+        <link type="text/css" rel="stylesheet" href="${createLinkTo(dir:"css",file:"ui-lightness/jquery-ui-1.8.2.custom.css")}">
+        <g:javascript src="jquery/jquery-ui-1.8.2.custom.min.js"/>
+        <g:javascript src="lib.macademia.js"/>
+        <g:javascript src="lib.macademia.autocomplete.js"/>
     </head>
     <body>
         <div class="nav">
@@ -60,15 +66,6 @@
                                 <textarea id="keywords" class="textInput easyInput" name="keywords" value="${collaboratorRequest?.keywords}"></textarea>
                               </td>
                             </tr>
-
-                            %{--<tr class="prop">--}%
-                                %{--<td valign="top" class="name">--}%
-                                    %{--<label for="creator"><g:message code="collaboratorRequest.creator.label" default="Creator" /></label>--}%
-                                %{--</td>--}%
-                                %{--<td valign="top" class="value ${hasErrors(bean: collaboratorRequest, field: 'creator', 'errors')}">--}%
-                                    %{--<p>${user.profile?.fullName}</p>--}%
-                                %{--</td>--}%
-                            %{--</tr>--}%
 
                         </tbody>
                     </table>

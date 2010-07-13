@@ -11,9 +11,15 @@
 <head>
   <meta name="layout" content="userCreate"/>
   %{--<meta name="layout" content="${grailsApplication.config.nimble.layout.application}"/>--}%
-  <title><g:message code="nimble.view.account.registeraccount.initiate.title" /></title>
+  <title><g:message code="Edit Profile" /></title>
   <link rel="stylesheet" href="${resource(dir: 'css', file: 'style_editprofile.css')}"/>
-  <nh:pstrength />
+  <g:javascript library="jquery"/>
+
+<!-- Jquery-UI for autocomplete, etc. -->
+<link type="text/css" rel="stylesheet" href="${createLinkTo(dir:"css",file:"ui-lightness/jquery-ui-1.8.2.custom.css")}">
+  <g:javascript src="jquery/jquery-ui-1.8.2.custom.min.js"/>
+  <g:javascript src="lib.macademia.js"/>
+  <g:javascript src="lib.macademia.autocomplete.js"/>
 </head>
 
 <body>
@@ -26,7 +32,7 @@
   <n:errors bean="${user}"/>
   <n:errors bean="${user.profile}"/>
 <div id = editAccountInformation>
-  <g:form action="updateuser">
+  <g:form action="updateuser" id="${user.id}">
     <table>
       <tbody>
 
@@ -48,25 +54,28 @@
       <tr id= interestField>
         <td valign="top" class="name"><label for="interests"><g:message code="nimble.label.interests" /></label></td>
         <td valign="top" class="value ${hasErrors(bean: user, field: 'interests', 'errors')}">
-          <textarea id="interests" class="textInput easyInput" name="interests" value="${user.profile?.interests?.encodeAsHTML()}">
-            ${allInterests}
-          </textarea>
+          <g:textArea id="interests" class="textInput easyInput" name="interests">${allInterests}</g:textArea>
+            
         </td>
       </tr>
 
-    </div>
-    </div>
 
     <tr>
-      <td/>
+      <td></td>
+
       <td>
+        <g:link controller="account" action="changepassword" ><g:message code="nimble.link.changepassword" /></g:link>
+        <br/>
         <button class="button icon icon_user" type="submit"><g:message code="nimble.link.updateuser" /></button>
       </td>
     </tr>
 
     </tbody>
     </table>
+
   </g:form>
+    </div>
+    </div>
 
   <script type="text/javascript">
     nimble.createTip('usernamepolicybtn','<g:message code="nimble.template.usernamepolicy.title" />','<g:message code="nimble.template.usernamepolicy" encodeAs="JavaScript"/>');
