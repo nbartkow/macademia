@@ -76,6 +76,8 @@ macademia.pageLoad = function() {
     macademia.loginShowHide();
     macademia.initiateGraph();
     macademia.nav();
+
+    macademia.setupModal("#registerDialog", "#registerButton", "account/modalcreateuser/", 'nimble-login-register', "macademia.initializeModalRegister()");    
 };
 //sets macademia.queryString values and initial page settings
 macademia.initialSettings = function(){
@@ -170,7 +172,6 @@ macademia.navInfovis = function(node) {
 macademia.nav = function() {
 //    macademia.modalLogin();
 //    macademia.modalRegister();
-    macademia.setupModal("#registerDialog", "#registerButton", "account/modalcreateuser/", 'nimble-login-register', "macademia.initializeModalLogin()");
 //    macademia.setupModal("#loginDialog", "#loginButton", "account", "login", {}, 'nimble-login-register', "macademia.initializeModalLogin()");
     macademia.clearSearch();
     macademia.collegeFilter();
@@ -224,23 +225,23 @@ macademia.showHide = function() {
     if ($.address.parameter('navVisibility') != macademia.queryString.navVisibility) {
         var navVisibility = $.address.parameter('navVisibility');
         if (navVisibility == 'true' && !$("#wrapper").is(":visible")) {
-            $("#rightDiv").animate({width: "320"}, "slow");
+            $("#sidebar").animate({width: "320"}, "slow");
             $("#infovis").animate({right: "320"}, "slow", function() {
-                $("#rightDiv > *").show();
-                $("#show").hide();
+                $("#sidebar > *").show();
+                $("#sidebar").hide();
             });
             // resize visual
             if (macademia.rgraph) {
                 macademia.resizeCanvas($("body").width() - 320);
             }
         } else if (navVisibility == 'false' && $("#wrapper").is(":visible")) {
-            $("#rightDiv > *").hide();
+            $("#sidebar > *").hide();
             if (macademia.rgraph) {
-                $("#rightDiv").animate({width: "0"}, "slow");
+                $("#sidebar").animate({width: "0"}, "slow");
                 $("#infovis").animate({right: "0"}, "slow");
             } else {
                 // on page load rightDiv will not slide over
-                $("#rigthDiv").css('width', '0');
+                $("#sidebar").css('width', '0');
                 $("#infovis").css('right', '0');
             }
             $("#show").show();
@@ -299,6 +300,7 @@ macademia.changeQueryString = function(query) {
         $.address.parameter(paramValue[0], paramValue[1]);
     }
 };
+
 
 // controls view of right nav (incomplete)
 macademia.updateNav = function(){
@@ -394,7 +396,7 @@ macademia.makeActionUrl = function(controller, action) {
     return "/Macademia/" + controller + "/" + action;
 };
 
-macademia.initializeModalLogin = function() {
+macademia.initializeModalRegister = function() {
   $("#passwordpolicy").hide();
   $("#passwordpolicybtn").bt({
       contentSelector: $("#passwordpolicy"),
@@ -410,22 +412,54 @@ macademia.initializeModalLogin = function() {
       spikeGirth: 12,
       spikeLength:9,
       hoverIntentOpts: {interval: 100,
-          timeout: 1000}
+                        timeout: 1000}
   });
   if($('#username')) $('#username').blur(function() {$('#pass').focus();});
   if($('#pass')) $('#pass').blur(function() {$('#passConfirm').focus();});
-  $('.password').pstrength();
+ // $('.password').pstrength();
   $('.password').keyup();
     nimble.createTip('usernamepolicybtn', 'Username Policy', 'Choose a good username');
     nimble.createTip('passwordpolicybtn', 'Password Policy', 'Choose a good password');
-}
+  $('#edit_profile_container form').submit(function() {
+      var a = new Array();
+      var formData = $(this).serialize();
+      a = formData.split('&');
+      var pass = a[1].substring(5);
+      var confirm = a[2].substring(12);
+      var formCheck = true;
+      if (pass!=confirm) {
+          alert("passwords don't match")
+          formCheck=false;
+      }
+      if (pass.length<6) {
+          alert("password is not long enough")
+          formCheck=false;
+      }
+      
+      alert(pass);
+      jQuery.ajax({
+          url: '/Macademia/account/saveuser/',
+          type: "POST",
+          data: $(this).serialize(),
+          dataType: "text",
+          success: function(data) {
+              alert('success: ' + data);
+
+
+          }
+        
+      });
+      return false;
+  });
+
+};
 
 macademia.loginShowHide = function() {
 		$("#login").hide();
 		$("#login_link").click(function(event) {
 			$("#login").slideToggle();
 		});
-}
+};
 
 
 macademia.setupModal = function(modalDialog, trigger, url, depModule, fnString) {

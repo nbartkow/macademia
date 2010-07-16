@@ -13,9 +13,9 @@ a:visited {
     min-height: 100%;
 }
 
-.small{
-	font-size:12px;
-	line-height:1em;
+.small {
+    font-size: 12px;
+    line-height: 1em;
 }
 
 .atxt {
@@ -71,12 +71,12 @@ a:visited {
     text-align: left;
 }
 
-.lined{
-	outline:thin solid #496181;
+.lined {
+    outline: thin solid #496181;
 }
 
-.bullets{
-	list-style-type:disc;
+.bullets {
+    list-style-type: disc;
 }
 
 /* Styles dealing with the general layout of the page */
@@ -88,7 +88,7 @@ html, body {
     min-width: 1040px;
 }
 
-#rightDiv {
+#sidebar {
     background: #ffe;
     height: 100%;
     min-height: 720px;
@@ -156,7 +156,7 @@ html, body {
 /* Styles that affect the sidebar in general */
 
 #account {
-	text-align: right;
+    text-align: right;
     font-size: 14px;
     font-family: helvetica, arial;
     margin: 5px;
@@ -181,13 +181,13 @@ h2#about {
 }
 
 ul#instruct_list {
-	border-bottom:1px dotted #CCCCCC;
-	border-top:1px dotted #CCCCCC;
-	font-size:0.9em;
-	list-style:none outside none;
-	margin-left:0;
-	padding:10px 0 10px 40px;
-	text-indent:-1em;
+    border-bottom: 1px dotted #CCCCCC;
+    border-top: 1px dotted #CCCCCC;
+    font-size: 0.9em;
+    list-style: none outside none;
+    margin-left: 0;
+    padding: 10px 0 10px 40px;
+    text-indent: -1em;
 }
 
 ul#instruct_list li:hover {
@@ -204,47 +204,67 @@ ul#instruct_list li:before {
 
 /* Styles that affect the profile view */
 
-#profile{
-margin-top:10px;
-padding-right:5px;}
-#profile a{
-text-decoration:none;}
-#profile a:hover{
-text-decoration:underline;}
-#pf_top_container{
-clear:both;
-display:block;
-overflow:hidden;
-margin-bottom:10px;
+#profile {
+    margin-top: 10px;
+    padding-right: 5px;
 }
-#pf_left{
-width:50%;
-float:left;}
-#pf_right{
-width:50%;
-float:left;
-padding-top:10px;
-text-align:right;}
-#pf_name{
-	font-size:24px;
-	padding-bottom:5px;
-	}
-#pf_dept{
-color:#777;
-font-style: italic;}
-#profile div h4{
-padding-bottom:3px;
-margin-bottom:2px;
-border-bottom: 3px #aaa solid;
-font-size:16px;}
-#profile div h4:hover{
-font-style: italic;}
-#profile div ul,#profile div p{
-margin:5px 4px;}
-#pf_interests,#pf_projects,#pf_links{
-margin-bottom:10px;
-line-height:1.25em;}
-#profile div ul li{
+
+#profile a {
+    text-decoration: none;
+}
+
+#profile a:hover {
+    text-decoration: underline;
+}
+
+#pf_top_container {
+    clear: both;
+    display: block;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+#pf_left {
+    width: 50%;
+    float: left;
+}
+
+#pf_right {
+    width: 50%;
+    float: left;
+    padding-top: 10px;
+    text-align: right;
+}
+
+#pf_name {
+    font-size: 24px;
+    padding-bottom: 5px;
+}
+#pf_dept {
+    color: #777;
+    font-style: italic;
+}
+
+#profile div h4 {
+    padding-bottom: 3px;
+    margin-bottom: 2px;
+    border-bottom: 3px #aaa solid;
+    font-size: 16px;
+}
+
+#profile div h4:hover {
+    font-style: italic;
+}
+
+#profile div ul, #profile div p {
+    margin: 5px 4px;
+}
+
+#pf_interests, #pf_projects, #pf_links {
+    margin-bottom: 10px;
+    line-height: 1.25em;
+}
+
+#profile div ul li {
 margin-bottom:4px;}
 #pf_interests{}
 #pf_interests p{}
@@ -306,6 +326,10 @@ margin-bottom:4px;}
 }
 .searchHeader a{
     font-size: 12px;
+    margin-left: 5px;
+}
+#searchWrapper p{
+    margin: 0;
 }
 #pageNav{
     text-align: center;
@@ -491,7 +515,7 @@ margin-bottom:4px;}
     font-weight: normal;
     color: #777;
     font-style: italic;
-    padding-right:2px;
+    padding-right: 2px;
 }
 
 #profile div h4 {
@@ -520,27 +544,27 @@ margin-bottom:4px;}
 
 }
 h2 {
-	line-height: 24px;
-	font-style: normal;
-	font-weight: normal;
+    line-height: 24px;
+    font-style: normal;
+    font-weight: normal;
 }
 
 h3 {
-	font-weight: bold;
+    font-weight: bold;
 }
 
-.left label{
-	font-size:28px;
+.left label {
+    font-size: 28px;
 }
-.left label span{
-	font-size: 12px;
-	padding-top:6px;
-	font-family: Arial;
-	display:block;
-	color:#4F6F6E;
+.left label span {
+    font-size: 12px;
+    padding-top: 6px;
+    font-family: Arial;
+    display: block;
+    color: #4F6F6E;
 }
 
-#edit_profile_container{
-    width:700px;
+#edit_profile_container {
+    width: 700px;
 }
 

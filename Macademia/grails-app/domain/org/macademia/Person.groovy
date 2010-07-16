@@ -10,7 +10,9 @@ class Person extends grails.plugins.nimble.core.ProfileBase {
     static hasMany = [interests: Interest]
     static searchable = [only: ['fullName', 'email', 'department']]
     static constraints = {
-            imageSubpath(nullable : true)
+        imageSubpath(nullable : true, blank:false)
+        fullName(nullable: false, blank:false)
+        email(nullable:false, blank:false, email: true, unique: true)
     }
     
     static mapping = {
