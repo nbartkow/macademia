@@ -7,63 +7,120 @@ class SearchController {
   def index = { }
 
   def search = {
-    def query
+    def query = params.searchBox
     def offset
-    def max
+    def allMax = 10
     def pResults
     def iResults
     def rResults
-    if (params.searchBox) {
-      query = params.searchBox
-    }
+
     def institutionString = params.institutions
     def pageNumber = params.pageNumber.toInteger()
-    def type = params.type
+
 
     // Prefix match!
     def cleanedQuery = query.toLowerCase()
     if (cleanedQuery[-1] != '*') {
       cleanedQuery += "*"
     }
-    if (type == 'all'){
-      if(institutionString.equals("all")){
-        pResults = searchService.searchPeople(cleanedQuery, 0, 10)
-        iResults = searchService.searchInterests(cleanedQuery, 0, 10)
-        rResults = searchService.searchCollaboratorRequests(cleanedQuery, 0, 10)
-      }
-      else{
-        pResults = searchService.searchPeople(cleanedQuery, 0, 100)
-        iResults = searchService.searchInterests(cleanedQuery, 0, 100)
-        rResults = searchService.searchCollaboratorRequests(cleanedQuery, 0, 100)
-        def splitInstitutions = ("+" + institutionString).tokenize("//+c_")
-        Set<Long> institutions = []
-        for(String id: splitInstitutions) {
-          def institutionId = id.toLong()
-          institutions.add(institutionId)
-        }
-        pResults = searchService.filterPeopleByInstitution(pResults, institutions)
-        iResults = searchService.filterInterestsByInstitution(iResults, institutions)
-        rResults = searchService.filterRequestsByInstitution(rResults, institutions)
-      }
-      render(template: "/search/searchResults", model: [people: pResults, interests: iResults, requests: rResults, query : query])
-    }else if(type == 'interest'){
-      def total = searchService.numInterestResults(cleanedQuery)/20
-      offset = pageNumber * 20
-      max = 20
-      iResults = searchService.searchInterests(cleanedQuery, offset, max)
-      render(template: "/search/deepSearchResults", model: [results: iResults, query : query, type : type, index : pageNumber, total : total])
-    }else if(type == 'person'){
-      def total = searchService.numPersonResults(cleanedQuery)/10
-      offset = pageNumber * 10
-      max = 10
-      pResults = searchService.searchPeople(cleanedQuery, offset, max)
-      render(template: "/search/deepSearchResults", model: [results: pResults, query : query, type : type, index : pageNumber, total : total])
-    }else if(type == 'request'){
-      def total = searchService.numRequestResults(cleanedQuery)/3
-      offset = pageNumber * 3
-      max = 3
-      rResults = searchService.searchCollaboratorRequests(cleanedQuery, offset, max)
-      render(template: "/search/deepSearchResults", model: [results: rResults, query : query, type : type, index : pageNumber, total : total])
+    def pTotal = searchService.numPersonResults(cleanedQuery)
+    def iTotal = searchService.numInterestResults(cleanedQuery)
+    def rTotal = searchService.numRequestResults(cleanedQuery)
+    if(institutionString == "all"){
+      pResults = searchService.searchPeople(cleanedQuery, pageNumber, allMax)
+      iResults = searchService.searchInterests(cleanedQuery, pageNumber, allMax)
+      rResults = searchService.searchCollaboratorRequests(cleanedQuery, pageNumber, allMax)
     }
+    else{
+      def institutions = getinstitutions(institutionString)
+      pResults = searchService.filterSearchPeople(cleanedQuery, pageNumber, allMax, pTotal, institutions)
+      iResults = searchService.filterSearchInterests(cleanedQuery, pageNumber, allMax, iTotal, institutions)
+      rResults = searchService.filterSearchCollaboratorRequests(cleanedQuery, pageNumber, allMax, rTotal, institutions)
+    }
+    render(template: "/search/searchResults", model: [people: pResults, totalPeople: pTotal, interests: iResults, totalInterests: iTotal, requests: rResults, totalRequests: rTotal, query : query, institutions: institutionString])
+
+
   }
+
+  def deepsearch = {
+    def query = params.searchBox
+    def offset
+    def pResults
+    def iResults
+    def rResults
+    def institutionString = params.institutions
+    def pageNumber = params.pageNumber.toInteger()
+    def type = params.type
+    def personMax = 10
+    def interestMax = 20
+    def requestMax = 3
+    def results= []
+    def total
+
+    // Prefix match!
+    def cleanedQuery = query.toLowerCase()
+    if (cleanedQuery[-1] != '*') {
+      cleanedQuery += "*"
+    }
+
+    if(institutionString == 'all'){
+      log.info("here")
+      if(type == "interest"){
+        results = searchService.searchInterests(cleanedQuery, pageNumber*interestMax, interestMax)
+        total = searchService.numInterestResults(cleanedQuery)/interestMax
+      } else if(type == "person"){
+        results = searchService.searchPeople(cleanedQuery, pageNumber*personMax, personMax)
+        total = searchService.numPersonResults(cleanedQuery)/personMax
+      } else {
+        results = searchService.searchCollaboratorRequests(cleanedQuery, pageNumber*requestMax, requestMax)
+        total = searchService.numRequestResults(cleanedQuery)/requestMax
+      }
+
+    }else{
+      def preResults
+      def max
+      def i = 0
+      def institutions = getinstitutions(institutionString)
+      if(type == "interest"){
+        offset = pageNumber * interestMax
+        max = interestMax
+        def iTotal = searchService.numInterestResults(cleanedQuery)
+        preResults = searchService.filterSearchInterests(cleanedQuery, 0, iTotal, iTotal, institutions)
+
+      } else if(type == "person"){
+        offset = pageNumber * personMax
+        max = personMax
+        def pTotal = searchService.numPersonResults(cleanedQuery)
+        preResults = searchService.filterSearchPeople(cleanedQuery, 0, pTotal, pTotal, institutions)
+      } else {
+        offset = pageNumber * requestMax
+        max = interestMax
+        def rTotal = searchService.numRequestResults(cleanedQuery)
+        preResults = searchService.filterSearchCollaboratorRequests(cleanedQuery, 0, rTotal, rTotal, institutions)
+      }
+      for(Object x: preResults){
+        if (i >= offset){
+          results.add(x)
+        }
+        if(i >= (offset + max - 1)){
+          break;
+        }
+        i ++
+      }
+      total = preResults.size()/max
+    }
+    render(template: "/search/deepSearchResults", model: [results: results, query : query, type : type, index : pageNumber, total : total, institutions: institutionString])
+  }
+
+  def getinstitutions = {
+      institutionString->
+      def splitInstitutions = ("+" + institutionString).tokenize("//+c_")
+      Set<Long> institutions = []
+      for(String id: splitInstitutions) {
+        def institutionId = id.toLong()
+        institutions.add(institutionId)
+      }
+      return institutions
+  }
+
 }

@@ -5,13 +5,6 @@
   Time: 4:33:59 PM
   To change this template use File | Settings | File Templates.
 --%>
-<!-- Jquery-UI for autocomplete, etc. -->
-
-<link type="text/css" rel="stylesheet" href="${createLinkTo(dir:"css",file:"ui-lightness/jquery-ui-1.8.2.custom.css")}">
-  <g:javascript src="jquery/jquery-ui-1.8.2.custom.min.js"/>
-  <g:javascript src="lib.macademia.js"/>
-  <g:javascript src="lib.macademia.autocomplete.js"/>
-</link>
 
 <div class="padded medium btxt">
   <div id="closeCollegeFilter">

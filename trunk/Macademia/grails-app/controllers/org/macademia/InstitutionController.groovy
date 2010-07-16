@@ -1,5 +1,7 @@
 package org.macademia
 
+import grails.converters.JSON
+
 class InstitutionController {
   def institutionService
 
@@ -7,17 +9,26 @@ class InstitutionController {
 
   def filter = {
     List<Institution> institutions = []
-    if(params.institutions =="all"){
-      institutions = institutionService.findAll()
-    }
-    else if(params.institutions) {
-      def institutionIds = institutionService.getFilteredIds(params.institutions)
-      for(Long id: institutionIds){
-        def institution = institutionService.get(id)
-        institutions.add(institution)
+    render(view: "/templates/macademia/_collegeFilterDialog", model: [institutions: Institution.findAll()])
+  }
+
+
+  def idstonames= {
+    ArrayList institutionList = new ArrayList()
+    if (params.ids){
+      def institutionIds
+      if(params.ids.equals('all')){
+        institutionIds = 'all'
+      }else{
+        institutionIds= institutionService.getFilteredIds(params.ids)
+        for(Long id: institutionIds){
+          def institution = institutionService.get(id)
+          institutionList.add(institution.name)
+        }
       }
     }
-    render(view: "/templates/macademia/_collegeFilterDialog", model: [institutions: institutions])
+
+    render(institutionList as JSON)
   }
 }
 

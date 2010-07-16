@@ -106,10 +106,12 @@ macademia.init = function(rootType,id){
                 });
                 $(d).click(function() {
                     if(macademia.refreshNeeded){
-                        macademia.refreshNeeded = false;
-                        macademia.highlightAdjacenciesOff(node);
+                        if(macademia.rootId != parseFloat(node.id.substr(2))){
+                            macademia.refreshNeeded = false;
+                            macademia.highlightAdjacenciesOff(node);
+                        }
                         macademia.navInfovis(node);
-                        //                  rgraph.onClick(node.id);
+//                      rgraph.onClick(node.id);
                     }
 
                 });
@@ -154,14 +156,12 @@ macademia.init = function(rootType,id){
 
                 });
 
-                //alert('here 4');
 
             },
             onBeforeCompute:function(node) {
                 if (node.data.unmodifiedId) {
                     macademia.nextNode = node;
                 }
-                ;
             },
             
             //morph to new data after anim and if user has clicked a person node
@@ -171,23 +171,10 @@ macademia.init = function(rootType,id){
                     var rootType = macademia.nextNode.data.type;
                     $.getJSON(macademia.makeJsonUrl(rootType, macademia.rootId), function(data) {
                         macademia.checkBrowser();
-                        //alert(rgraph.fx.getLabelContainer().innerHTML);
-                        //apparently destroying a label here means it doesn't
-                        //get recreated after the morph.
-                        //rgraph.fx.disposeLabel('p_17');
-
-                        //have we considered summing (rgraph.op.sum()) graphs?
-                        //with jquery's draggable plugin, and some clever
-                        //zoom-tools, it could be an even more compelling visualization
-                        //or...feature bloat?
                         macademia.rgraph.op.morph(data, {
                             type:'replot',
                             duration:100,
-                            hideLabels:false,
-                            onComplete:function(){
-                                //macademia.updateSidebar(rgraph.graph.getNode(rgraph.root));
-
-                            }
+                            hideLabels:false
                         });
                     });
                 }
