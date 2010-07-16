@@ -21,5 +21,5 @@
   <%--</g:formRemote>--%>
 </div>
 <div id="collegeFilterButton" class="center">
-  <input type="submit" id="collegeFilterTrigger" value="Filter by college"/>
+  Showing <b>all institutions</b>. <a href="#" id="collegeFilterTrigger">(filter by institution)</a>
 </div>

@@ -96,6 +96,9 @@ macademia.initialSettings = function(){
         }
         if($.address.parameter('institutions')){
             macademia.queryString.institutions = $.address.parameter('institutions');
+            if(macademia.queryString.institutions != "all"){
+                macademia.initiateCollegeString(macademia.queryString.institutions);
+            }
         }else{
             $.address.parameter('institutions',macademia.queryString.institutions);
         }
@@ -174,11 +177,12 @@ macademia.nav = function() {
 //    macademia.modalRegister();
 //    macademia.setupModal("#loginDialog", "#loginButton", "account", "login", {}, 'nimble-login-register', "macademia.initializeModalLogin()");
     macademia.clearSearch();
-    macademia.collegeFilter();
+    macademia.wireupCollegeFilter();
     $.address.change(function() {
         macademia.showHide();
         macademia.updateNav();
         macademia.changeGraph();
+        macademia.changeDisplayedColleges();
     });
     $(window).resize(function() {
         if (macademia.rgraph) {
@@ -254,7 +258,7 @@ macademia.showHide = function() {
 };
 // Changes the visualization to new root node
 macademia.changeGraph = function(nodeId){
-    if ($.address.parameter('nodeId') != macademia.queryString.nodeId) {
+    if ($.address.parameter('nodeId') != macademia.queryString.nodeId && $.address.parameter('institutions') == macademia.queryString.institutions) {
         if (macademia.rgraph){
               var param = $.address.parameter('nodeId');
               if (macademia.rgraph.graph.getNode(param)) {
@@ -266,9 +270,8 @@ macademia.changeGraph = function(nodeId){
               }
               macademia.queryString.nodeId = param;
         }
-    }if($.address.parameter('institutions') != macademia.queryString.institutions){
+    }else if($.address.parameter('institutions') != macademia.queryString.institutions){
         macademia.initiateGraph();
-        macademia.queryString.institutions = $.address.parameter('institutions');
     }
 };
 // resizes canvas according to original dimensions
@@ -377,12 +380,16 @@ macademia.submitSearch = function(){
             var page = $.address.parameter('searchPage').split('_');
             var type = page[0];
             var number = page[1];
+            var url = '/Macademia/search/search';
+            if(type != 'all'){
+                url = '/Macademia/search/deepsearch';
+            }
             $('#searchBoxDiv').load(
-                '/Macademia/search/search',
+                url,
                 {searchBox:search,
                 institutions: institutions,
                 type: type,
-                pageNumber: number}
+                pageNumber: number}   
             );
         }else{
             $('#searchBoxDiv').empty();

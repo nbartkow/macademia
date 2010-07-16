@@ -10,11 +10,12 @@
 <div id="deepSearchWrapper" class="atxt">
   <div class="searchHeader">
     <g:if test="${results}">
-      Unfiltered <b>${type.encodeAsHTML()}</b> results for <b>${query.encodeAsHTML()}</b>:
+      Matching <b>${type}</b> results for <b>${query}</b>:
     </g:if>
     <g:else>
-      No <b>${type.encodedAsHTML()}</b> results found for <b>${query.encodeAsHTML()}.</b>
+      No <b>${type}</b> results found for <b>${query}.</b>
     </g:else>
+    <a href="#/?searchPage=all_0">(back to all results)</a>
   </div>
 
   <g:if test="${results}">
@@ -78,7 +79,7 @@
     </g:if>
     <g:else>
       <a href="#/?searchPage=${type + '_' + (index + 1)}" id = "nextPage"> Next ></a> |
-      <a href="#/?searchPage=${type + '_' + total}" id = "lastPage"> Last >></a>
+      <a href="#/?searchPage=${type + '_' + total.toInteger()}" id = "lastPage"> Last >></a>
     </g:else>
   </p>
 </div>

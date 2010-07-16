@@ -2,7 +2,9 @@ package org.macademia
 
 class SearchService {
   boolean transactional = true
-  int maxFilteredResults = 10
+  def personMax = 10
+  def interestMax = 20
+  def requestMax = 3
 
   Collection<Person> searchPeople(String query, int offset, int max) {
     return Person.search(query, [reload: true, offset:offset, max:max]).results
@@ -33,42 +35,69 @@ class SearchService {
     return Interest.search(query, [reload: true]).total
   }
 
-  Collection<Person> filterPeopleByInstitution(Collection<Person> pResults, Set<Long> institutionFilter) {
+  Collection<Person> filterSearchPeople(String query, int offset, int max, int pTotal, Set<Long> institutions){
+    Collection<Person> allPeople = searchPeople(query, 0, pTotal)
+    return filterPeopleByInstitution(allPeople, institutions, offset, max)
+  }
+
+  Collection<Interest> filterSearchInterests(String query, int offset, int max, int iTotal, Set<Long> institutions){
+    Collection<Interest> allInterests = searchInterests(query, 0, iTotal)
+    return filterInterestsByInstitution(allInterests, institutions, offset, max)
+  }
+
+  Collection<CollaboratorRequest> filterSearchCollaboratorRequests(String query, int offset, int rTotal, int max, Set<Long> institutions){
+    Collection<CollaboratorRequest> allRequests = searchCollaboratorRequests(query, 0, rTotal)
+    return filterRequestsByInstitution(allRequests, institutions, offset, max)
+  }
+
+  Collection<Person> filterPeopleByInstitution(Collection<Person> pResults, Set<Long> institutionFilter, int offset, int max) {
     Collection<Person> filteredPeople = new ArrayList<Person>()
+    int index = 0
     for(Person p: pResults){
       if(institutionFilter.contains(p.institution.id)){
-        filteredPeople.add(p)
+        if(index >= offset){
+          filteredPeople.add(p)
+        }
+        index ++
       }
-      if(filteredPeople.size() >= maxFilteredResults){
+      if(index >= (offset + max)){
         break;
       }
     }
     return filteredPeople
   }
 
-  Collection<Interest> filterInterestsByInstitution(Collection<Interest> iResults, Set<Long> institutionFilter) {
+  Collection<Interest> filterInterestsByInstitution(Collection<Interest> iResults, Set<Long> institutionFilter, int offset, int max) {
     Collection<Interest> filteredInterests = new ArrayList<Interest>()
+    int index = 0
     for(Interest i: iResults){
       for(Person p: i.people){
         if(institutionFilter.contains(p.institution.id)){
-          filteredInterests.add(i)
+          if (index >= offset){
+            filteredInterests.add(i)
+          }
+          index ++
           break
         }
       }
-      if(filteredInterests.size() >= maxFilteredResults){
+      if(index >= (offset + max)){
         break;
       }
     }
     return filteredInterests
   }
 
-  Collection<CollaboratorRequest> filterRequestsByInstitution(Collection<CollaboratorRequest> rResults, Set<Long> institutionFilter) {
+  Collection<CollaboratorRequest> filterRequestsByInstitution(Collection<CollaboratorRequest> rResults, Set<Long> institutionFilter, int offset, int max) {
     Collection<CollaboratorRequest> filteredRequests = new ArrayList<CollaboratorRequest>()
+    int index = 0
     for(CollaboratorRequest r: rResults){
       if(institutionFilter.contains(r.creator.institution.id)){
-        filteredRequests.add(r)
+        if (index >= offset){
+          filteredRequests.add(r)
+        }
+        index ++
       }
-      if(filteredRequests.size() >= maxFilteredResults){
+      if(index >= (offset + max)){
         break;
       }
     }

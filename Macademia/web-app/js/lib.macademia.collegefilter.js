@@ -1,6 +1,6 @@
 // controller for the select colleges filter
-macademia.collegeFilter = function() {
-    macademia.setupModal('#filterDialog', '#collegeFilterTrigger', 'institution/filter?institutions=all', 'none', 'macademia.initCollegeFilter()');
+macademia.wireupCollegeFilter = function() {
+    macademia.setupModal('#filterDialog', '#collegeFilterTrigger', 'institution/filter', 'none', 'macademia.initCollegeFilter()');
 };
 
 macademia.initCollegeFilter = function() {
@@ -28,11 +28,11 @@ macademia.initCollegeFilter = function() {
 
     });
     $("#clear").click(function() {
-        $("#selectedColleges > ul > li").hide();
+        $(".college").hide();
         $("#clearMessage").show();
     });
     $("#add").click(function() {
-        $("#selectedColleges > ul > li").show();
+        $(".college").show();
         if ($("#clearMessage").is(":visible")){
             $("#clearMessage").hide();
         }
@@ -44,7 +44,9 @@ macademia.initCollegeFilter = function() {
 // shows colleges that are currently selected under the filter
 macademia.showColleges = function(){
     if ($.address.parameter('institutions') == 'all'){
-        $("#selectedColleges > ul > li").show();
+        $(".college").each(function(){
+            $(this).show();
+        });
     }else{
         var collegeIds = $.address.parameter('institutions').split("+");
         for (var i = 0; i<collegeIds.length; i++){
@@ -70,6 +72,7 @@ macademia.collegeSelection = function() {
             $.address.update();
         }
     }
+
     $('#filterDialog').jqmHide();
 };
 
@@ -89,4 +92,46 @@ macademia.createInstitutionString = function(collegeArray) {
             }
         }
         return colleges;
+};
+macademia.initiateCollegeString = function(ids){
+    $.getJSON('/Macademia/institution/idstonames', {ids: ids.replace(/\+/g, " ")}, function(institutionList){
+       macademia.changeCollegeString(institutionList);
+    });
+};
+macademia.changeCollegeString = function(institutionNames){
+    var results = "";
+    if(institutionNames.length == $(".college").size() || institutionNames[0] == 'all'){
+        results = 'Showing <b>all institutions</b>. <div><a href="#" id="collegeFilterTrigger">(filter by institution)</a></div>';
+    }else if(institutionNames.length == 1){
+        results= ('Showing <b>' + institutionNames[0] + '</b>. <div><a href="#/?institutions=all" class="showAllInstitutions">(show all institutions)</a> | <a href="#" id="collegeFilterTrigger">(change filter)</a></div>');
+    }else if(institutionNames.length == 2){
+        results= ('Showing <b>' + institutionNames[0] + " and " + institutionNames[1] + '</b>. <div><a href="#/?institutions=all" class="showAllInstitutions">(show all institutions)</a>');
+    }else if(institutionNames.length == 3){
+        results= ('Showing <b>' + institutionNames[0] + ", " + institutionNames[1] + ", and " + institutionNames[2] + '</b>. <div><a href="#/?institutions=all" class="showAllInstitutions">(show all institutions)</a> | <a href="#" id="collegeFilterTrigger">(change filter)</a></div>');
+    }else if(institutionNames.length > 3){
+        results= ('Showing <b>' + institutionNames[0] + ", " + institutionNames[1] + ", and " + (institutionNames.length - 2) + " others" + '</b>. <div><a href="#/?institutions=all" class="showAllInstitutions">(show all institutions)</a> | <a href="#" id="collegeFilterTrigger">(change filter)</a></div>');
+    }
+    if (results != ""){
+        $("#collegeFilterButton").html(results);
+        macademia.wireupCollegeFilter();
+    }
+};
+macademia.changeDisplayedColleges = function(){
+    if ($.address.parameter('institutions') != macademia.queryString.institutions){
+        if ($(".college").size() > 0){
+            var collegeNames = new Array();
+            $(".college").each(function(){
+                if($(this).attr("style")!="display: none;"){
+                    var collegeName = $(this).text();
+                    var removable = collegeName.indexOf(" (x)");
+                    collegeName = collegeName.substr(0, removable);
+                    collegeNames.push(collegeName);
+                }
+            });
+            macademia.changeCollegeString(collegeNames);
+        }else{
+            macademia.initiateCollegeString($.address.parameter('institutions'));
+        }
+        macademia.queryString.institutions = $.address.parameter('institutions');
+    }
 };
