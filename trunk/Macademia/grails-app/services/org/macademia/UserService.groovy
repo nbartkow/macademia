@@ -131,6 +131,14 @@ class UserService extends grails.plugins.nimble.core.UserService{
         return true
     }
 
+  public def passCheck(User user) {
+    if (!(user.pass =~ /^.*[0-9].*$/)) {
+      return false
+    } else {
+      return true
+    }
+  }
+
 
     def createUser(User user) {
         user.username = user.profile.email
@@ -152,6 +160,7 @@ class UserService extends grails.plugins.nimble.core.UserService{
 
             // Add user to group (named after his institution)
             def existingGroup = Group.findByName(user.profile.institution.name)
+
             if (!existingGroup){
                 Group newGroup = groupService.createGroup(user.profile.institution.name, user.profile.institution.name, false)
                 groupService.addMember(user, newGroup)

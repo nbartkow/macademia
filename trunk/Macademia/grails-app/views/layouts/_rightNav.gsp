@@ -2,7 +2,7 @@
 <div id="show" class="btxt">
   <a href="#/?navVisibility=true"><-show</a>
 </div>
-<div id="rightDiv">
+<div id="sidebar">
   <div id="wrapper">
     <div id="main">
       <n:notUser>

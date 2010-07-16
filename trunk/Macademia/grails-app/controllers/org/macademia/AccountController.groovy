@@ -6,10 +6,9 @@ import org.apache.commons.validator.EmailValidator
 class AccountController extends grails.plugins.nimble.core.AccountController{
     def personService
     def interestService
-    def autocompleteService
+  
 
     def saveuser = {
-
         if (!grailsApplication.config.nimble.localusers.registration.enabled) {
             log.warn("Account registration is not enabled for local users, skipping request")
             response.sendError(404)
@@ -30,9 +29,8 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
         String institutionDomain = params.email.split("@")[1]
         Institution institution = Institution.findByEmailDomain(institutionDomain)
         if (institution == null){
-            institution= new Institution(name:institutionDomain, emailDomain:institutionDomain)
+            institution= new Institution(name:institutionDomain, emailDomain:user.profile.email.split("@.")[1])
             Utils.safeSave(institution)
-            autocompleteService.addInstitution(institution)
         }
         user.profile.institution = institution
 
@@ -40,7 +38,7 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
         user.profile.owner = user
         user.enabled = grailsApplication.config.nimble.localusers.provision.active
         user.external = false
-  
+
         user.validate()
 
         log.debug("Attempting to create new user account identified as $user.username")
@@ -48,23 +46,39 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
         log.info("$user.username is $user.id")
 
         // Enforce email address for account registrations
-        if (user.profile.email == null || user.profile.email.length() == 0)
-        user.profile.email = 'invalid'
-
+        if (user.profile.email == null || user.profile.email.length() == 0)  {
+          user.profile.email = 'invalid'
+          render('No email provided')
+          return
+        }
 		// Allow host application to do some validation, etc.
 		if(userService.events['beforeregister']) {
 			userService.events['beforeregister'](user)
 		}
 
+        def emailCheckVar = User.findAllByUsername(user.username)
+        if (emailCheckVar != null && emailCheckVar.size() > 0) {
+          render("Email already in use")
+          return
+        }
+
+        if (!userService.passCheck(user)) {
+            render("You need numbers in your password");
+            return
+        } else {
+          log.info("?!?!?!")
+        }
+
         if (user.hasErrors()) {
-            log.debug("Submitted values for new user are invalid")
+            render("Submitted values for new user are invalid")
+            return
             user.errors.each {
                 log.debug it
             }
 
             resetNewUser(user)
-            render(view: 'modalcreateuser', model: [user: user])     // make this call javascript function to stop redirection
-            return
+            //render(view: 'modalcreateuser', model: [user: user])     // make this call javascript function to stop redirection
+            //return
         }
 
         def savedUser
@@ -77,8 +91,8 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
             if (savedUser.hasErrors()) {
                 log.debug("UserService returned invalid account details when attempting account creation")
                 resetNewUser(user)
-                render(view: 'createuser', model: [user: user])
-                return
+                //render(view: 'createuser', model: [user: user])
+                //return
             } else {
 
                 personService.save(user.profile)
@@ -88,8 +102,8 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
             log.debug("Captcha entry was invalid for user account creation")
             resetNewUser(user)
             user.errors.reject('nimble.invalid.captcha')
-            render(view: 'createuser', model: [user: user])      // similiarly
-            return
+            //render(view: 'createuser', model: [user: user])      // similiarly
+            //return
         }
 
 		if(userService.events['afterregister']) {
@@ -111,8 +125,7 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
 
         log.info("Created new account identified as $user.username with internal id $savedUser.id")
 
-        redirect action: createduser
-        return
+        render('okay')
     }
 
     def modalcreateuser = {
@@ -236,7 +249,6 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
                 user.profile.addToInterests(existingInterest)
             } else {
                 Interest newInterest = new Interest(i);
-
                 user.profile.addToInterests(newInterest)
             }
         }
