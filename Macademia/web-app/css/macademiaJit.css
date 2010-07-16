@@ -94,7 +94,6 @@ html, body {
     min-height: 720px;
     width: 320px;
     float: right;
-    box-shadow: 10px 10px 5px #888;
     font-family: helvetica, verdana, arial, sans-serif;
 }
 
@@ -106,7 +105,6 @@ html, body {
 #main {
     overflow: auto;
     padding-bottom: 25px;
-    overflow-x: hidden;
 
 }
 
@@ -153,7 +151,7 @@ html, body {
 .ttRel {
 }
 
-/* Styles that affect the sidebar in general */
+/* Styles that affect the sidebar*/
 
 #account {
     text-align: right;
@@ -171,9 +169,8 @@ h2#about {
     overflow: hidden;
 }
 
-#mac_logo img {
-/*width: 300px;*/
-/*height: auto;*/
+#searchBoxDiv, #personIdDiv, #interestIdDiv, #requestIdDiv{
+    min-height: 135px;
 }
 
 #instructions {
@@ -198,8 +195,41 @@ ul#instruct_list li:before {
     content: "\00BB \0020";
 }
 
-#searchDiv {
-    margin: 5px 5px 5px 5px;
+#logoImage {
+    padding-bottom: 10px;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+}
+
+#hide {
+    position: relative;
+    text-align: left;
+    padding: 5px;
+    height: 15px;
+    margin-top: -25px;
+    clear: both;
+}
+
+#hide a {
+    color: #2f9599;
+    font-size: 12px;
+    line-height: 1em;
+}
+
+#show {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    text-align: right;
+    height: 15px;
+    padding: 5px;
+}
+
+#show a {
+    color: #FFFFEE;
+    font-size: 12px;
+    line-height: 1em;
 }
 
 /* Styles that affect the profile view */
@@ -238,10 +268,14 @@ ul#instruct_list li:before {
 #pf_name {
     font-size: 24px;
     padding-bottom: 5px;
+    margin:0px;
+    padding-top:0px;
+    margin-left:5px;
 }
 #pf_dept {
     color: #777;
     font-style: italic;
+    padding-right:2px;
 }
 
 #profile div h4 {
@@ -265,7 +299,9 @@ ul#instruct_list li:before {
 }
 
 #profile div ul li {
-margin-bottom:4px;}
+margin-bottom:4px;
+}
+
 #pf_interests{}
 #pf_interests p{}
 #pf_projects{}
@@ -280,24 +316,7 @@ margin-bottom:4px;}
 #pf_links ul li{}
 #pf_links ul li a{}
 
-
-.accountButton {
-    background: #a2ab8e;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    color: #ffffee;
-    font-size: 13px;
-    font-family: Helvetica, Arial, Sans-Serif;
-    text-decoration: none;
-    vertical-align: middle;
-}
-
-.accountButton:hover {
-}
-
-.accountButton:active {
-    background: #b2d4ec;
-}
+/* properties that affect the search bar and search view*/
 
 #searchBox {
     -moz-border-radius: 5px 5px 5px 5px;
@@ -343,9 +362,6 @@ margin-bottom:4px;}
     min-height: 500px;
 }
 
-#searchBoxDiv, #personIdDiv, #interestIdDiv, #requestIdDiv{
-    min-height: 135px;
-}
 #personResults li, #interestResults li{
     margin-top:5px;
     margin-bottom:5px;
@@ -368,35 +384,12 @@ margin-bottom:4px;}
     margin-top:10px;
     margin-bottom:10px;
 }
-#hide {
-    position: relative;
-    text-align: left;
-    padding: 5px;
-    height: 15px;
-    margin-top: -25px;
-    clear: both;
+
+#searchDiv {
+    margin: 5px 5px 5px 5px;
 }
 
-#hide a {
-    color: #2f9599;
-    font-size: 12px;
-    line-height: 1em;
-}
-
-#show {
-    position: absolute;
-    right: 0px;
-    bottom: 0px;
-    text-align: right;
-    height: 15px;
-    padding: 5px;
-}
-
-#show a {
-    color: #FFFFEE;
-    font-size: 12px;
-    line-height: 1em;
-}
+/* college filter related stuff*/
 
 #editColleges {
     -moz-border-radius: 5px 5px 5px 5px;
@@ -434,6 +427,18 @@ margin-bottom:4px;}
 
 }
 
+#closeCollegeFilter {
+    padding: 0px;
+    margin: 0px;
+    float: right;
+}
+#closeCollegeFilter a{
+    font-size:20px;
+    color: #FFFFEE;
+}
+
+/* styles that affect the request for collaboration view*/
+
 #descriptionParagraph {
     padding-left: 10px;
     padding-right: 10px;
@@ -446,103 +451,15 @@ margin-bottom:4px;}
     font-size: 12px;
 }
 
-#logoImage {
-    padding-bottom: 10px;
-    position: absolute;
-    left: 10px;
-    top: 10px;
-}
-
 #description {
     margin-left: 44px;
     margin-right: 44px;
     padding: 10px;
 }
 
-#loginButton, #registerButton {
-    cursor: pointer;
-}
 
-#closeCollegeFilter {
-    padding: 0px;
-    margin: 0px;
-    float: right;
-}
-#closeCollegeFilter a{
-    font-size:20px;
-    color: #FFFFEE;
-}
-#profile {
-    margin-top: 10px;
-    padding-right: 5px;
-}
+/* other stuff */
 
-#profile a {
-    text-decoration: none;
-}
-
-#profile a:hover {
-    text-decoration: underline;
-}
-
-#pf_top_container {
-    clear: both;
-    display: block;
-    overflow: hidden;
-    margin-bottom: 10px;
-}
-
-#pf_left {
-    text-align: left;
-    width: 40%;
-    float: left;
-    border-left: 1px;
-}
-
-#pf_right {
-    width: 60%;
-    float: right;
-    padding-top: 10px;
-    text-align: right;
-}
-
-#pf_name {
-    font-size: 24px;
-    padding-bottom: 5px;
-}
-
-#pf_dept {
-    font-weight: normal;
-    color: #777;
-    font-style: italic;
-    padding-right: 2px;
-}
-
-#profile div h4 {
-    padding-bottom: 3px;
-    margin-bottom: 2px;
-    border-bottom: 3px #aaa solid;
-    font-size: 16px;
-}
-
-#profile div h4:hover {
-    font-style: italic;
-}
-
-#profile div ul, #profile div p {
-    margin: 5px 4px;
-}
-
-#pf_interests, #pf_projects, #pf_links {
-    margin-bottom: 10px;
-    line-height: 1.25em;
-}
-
-#profile div ul li {
-    margin-bottom: 4px;
-}
-
-}
 h2 {
     line-height: 24px;
     font-style: normal;

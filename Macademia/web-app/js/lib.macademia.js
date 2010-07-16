@@ -228,7 +228,6 @@ macademia.showHide = function() {
             $("#sidebar").animate({width: "320"}, "slow");
             $("#infovis").animate({right: "320"}, "slow", function() {
                 $("#sidebar > *").show();
-                $("#sidebar").hide();
             });
             // resize visual
             if (macademia.rgraph) {
