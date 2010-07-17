@@ -77,4 +77,15 @@ class ImageTests extends GrailsUnitTestCase {
         largeDest.delete()
     }
 
+    public void testCreateRandomImage() {
+        MultipartFile file = new MockMultipartFile("foo", TEST_IMG.newInputStream())
+        def id = is.createNewImages(file, -1)
+        File largeDest = is.constructPath(ImageService.LARGE_IMAGES_PATH, id, false)
+        RenderedOp image = JAI.create("fileload", largeDest.toString())
+        assertEquals(image.getWidth(), 56)
+        assertEquals(image.getHeight(), 59)
+        image.dispose()
+        largeDest.delete()
+    }
+
 }

@@ -2,7 +2,6 @@ package org.macademia
 
 import javax.media.jai.RenderedOp
 import javax.media.jai.JAI
-import javax.media.jai.OpImage
 import java.awt.RenderingHints
 
 class ImageService {
@@ -33,17 +32,22 @@ class ImageService {
     public static final String BASE_URL = "/Macademia/images/db"
     public static final String SMALL_URL = BASE_URL + "/small"
     public static final String LARGE_URL = BASE_URL + "/large"
+    public static final Random random = new Random()
 
     /**
-     * This method should be called on a MultipartFile retrieved by calling request.getFile("foo").
-     * It creates small and large images whose paths can be obtained by calling smallUrl(), or largeUrl().
-     * @param file
+     * Creates small and large images whose paths can be obtained by calling smallUrl(), or largeUrl().
+     * @param file MultipartFile as retrieved by calling request.getFile("foo")
+     * @param id Desired id of the image, or null.
      * @return
      */
-    def createNewImages(def upload, int id) {
+    def createNewImages(def upload, long id) {
+        if (id < 0) {
+            id = getUnusedImageId(id)
+        }
         if (!new File(TEMP_IMAGES_PATH).exists()) {
             new File(TEMP_IMAGES_PATH).mkdirs()
         }
+
         File tempImage = File.createTempFile(TEMP_IMAGES_PREFIX, IMAGE_TYPE, new File(TEMP_IMAGES_PATH))
         tempImage.deleteOnExit()
         upload.transferTo(tempImage)
@@ -54,7 +58,21 @@ class ImageService {
         resize(tempImage, 1.0 * LARGE_SIZE / maxDim, constructPath(LARGE_IMAGES_PATH, id, true))
 
         tempImage.delete();
+        
+        return id
+    }
 
+    private long getUnusedImageId(long id) {
+        synchronized (random) {
+            while (true) {
+                id = Math.abs(random.nextLong())
+                if (!constructPath(SMALL_IMAGES_PATH, id, false).isFile()) {
+                    return id
+                }
+                log.info("random collision for image with id ${id}")
+            }
+        }
+        throw new IllegalStateException();
     }
 
     public void resize(File inputFile, double scale, File outputFile) {

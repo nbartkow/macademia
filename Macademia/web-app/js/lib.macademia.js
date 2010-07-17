@@ -403,6 +403,7 @@ macademia.makeActionUrl = function(controller, action) {
 };
 
 macademia.initializeModalRegister = function() {
+  macademia.upload.init();
   $("#passwordpolicy").hide();
   $("#passwordpolicybtn").bt({
       contentSelector: $("#passwordpolicy"),

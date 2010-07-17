@@ -9,7 +9,9 @@
 <div class="medium padded2" id="profile">
   <div id="pf_top_container">
     <div id="pf_left">
-    no profile image
+      <g:if test="${person.imageSubpath}">
+        <img src="/Macademia/images/db/large/${person.imageSubpath}"/>
+      </g:if>
     </div>
     <div id="pf_right">
       <h2 id="pf_name">${person.fullName}</h2>
@@ -37,12 +39,12 @@
     </ul>
   </div>
   <div id="pf_links">
-				<h4>Links</h4>
-				<ul class="atxt">
-					<li><a href="#">Homepage</a></li>
-					<li><a href="#">Department website</a></li>
-					<li><a href="#">Facebook</a></li>
-				</ul>
-			</div>
+      <h4>Links</h4>
+      <ul class="atxt">
+          <li><a href="#">Homepage</a></li>
+          <li><a href="#">Department website</a></li>
+          <li><a href="#">Facebook</a></li>
+      </ul>
+  </div>
 </div>
 
