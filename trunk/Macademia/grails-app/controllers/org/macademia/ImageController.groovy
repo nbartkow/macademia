@@ -4,7 +4,7 @@ import grails.converters.JSON
 
 class ImageController {
 
-    def ImageService
+    def imageService
 
     def retrieve = {
         // should be key-value pairs that checks to see if
@@ -13,13 +13,8 @@ class ImageController {
     }
 
     def upload = {
-        def f = request.getFile('Filedata')
-        def images = imageService.saveImages(f.inputStream, [Person.LARGE, Person.MEDIUM, Person.SMALL])
-        render ([
-                'large' : images[Person.LARGE].id,
-                'medium' : images[Person.MEDIUM].id,
-                'small' : images[Person.SMALL].id,
-                'path' : images[Person.LARGE].retrieveWebPath()
-        ] as JSON)
+        def imageId = imageService.createNewImages(request.getFile('Filedata'), -1)
+        def path = imageService.constructPath("", imageId, false)
+        render(path)
     }
 }

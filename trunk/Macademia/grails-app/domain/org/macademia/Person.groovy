@@ -6,6 +6,7 @@ class Person extends grails.plugins.nimble.core.ProfileBase {
     String department
     Institution institution    
     String imageSubpath
+    String links  // represented as a series of <li><a href="http://foo.com">foo</a></li> items
 
     static hasMany = [interests: Interest]
     static searchable = [only: ['fullName', 'email', 'department']]
@@ -13,6 +14,7 @@ class Person extends grails.plugins.nimble.core.ProfileBase {
         imageSubpath(nullable : true, blank:false)
         fullName(nullable: false, blank:false)
         email(nullable:false, blank:false, email: true, unique: true)
+        links(nullable:true)
     }
     
     static mapping = {

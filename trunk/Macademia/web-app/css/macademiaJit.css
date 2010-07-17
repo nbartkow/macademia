@@ -485,3 +485,41 @@ h3 {
     width: 700px;
 }
 
+
+/**
+ * Image uploader configuration
+ */
+.editPicture {
+    margin-top : 10px;
+    float : right;
+    font-size : 14px;
+    text-align : center;
+    line-height : 16px;
+}
+.editPicture .links {
+    position : relative;
+}
+.editPicture .links a {
+    z-index : -1;
+}
+#imgUploaderUploader {
+    position : absolute;
+    top : 0px;
+    left : 0px;
+    width : 100px;
+    height : 25px;
+    z-index : 100;
+}
+
+/**
+ * Shilad's hacks to get the jqmodal looking better for development.
+ */
+#edit_pf .left {
+    float : left;
+}
+#edit_pf .right {
+    float : right;
+}
+#edit_pf .clear {
+    clear : both;
+}
