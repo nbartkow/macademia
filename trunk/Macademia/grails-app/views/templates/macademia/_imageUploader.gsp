@@ -1,6 +1,6 @@
      %{--Warning: the upload javascript relies on the class and id names below.--}%
      %{--Change them at your own risk--}%
-     <div class="editPicture">
+     <div class="editPicture left">
       <div>
         <g:if test="${user?.profile?.imageSubpath}">
           <img src="/Macademia/images/db/large/${user.profile.imageSubpath}" alt="" defaultImage="/Macademia/images/scholar_cat.gif"/>
