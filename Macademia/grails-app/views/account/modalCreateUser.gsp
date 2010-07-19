@@ -36,14 +36,11 @@
     <g:render template="../templates/macademia/imageUploader"/>
   </div>
   <input type="hidden" name="links" value="${user.profile?.links?.encodeAsHTML()}">
-  <div class="personLinks left"><h4>Links:</h4>
-    <div class="standardLink clear">
-      <div class="clear linkField left">Homepage</div>
-      <div class="linkValue left"><input type="text" class="clearDefault" prompt="url"></div>
-    </div>
-    <div class="standardLink clear">
-      <div class="clear linkField left">Department website</div>
-      <div class="linkValue left"><input type="text" class="clearDefault" prompt="url"></div>
+  <div class="personLinks left">
+    <h4>Links:</h4>
+    <div class="customLink clear example">
+      <div class="clear linkField left">Homepage, Facebook, etc.</div>
+      <div class="linkValue left">http://www.whitehouse.gov</div>
     </div>
     <div class="addLink clear"><a href="#">add other link</a></div>  
     <div class="customLink customLinkTemplate clear">
