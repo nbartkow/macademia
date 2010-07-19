@@ -32,6 +32,7 @@ macademia.pageLoad = function() {
     macademia.loginShowHide();
     macademia.initiateGraph();
     macademia.nav();
+    macademia.autocomplete.initSearch();
 
     macademia.setupModal("#registerDialog", "#registerButton", "account/modalcreateuser/", 'nimble-login-register', "macademia.initializeModalRegister()");    
 };
@@ -330,6 +331,7 @@ macademia.clearInstructions = function(){
 };
 // submits the search query from the url
 macademia.submitSearch = function(){
+    $("#searchBox").autocomplete("close");
     if(($.address.parameter('institutions') != macademia.queryString.institutions || $.address.parameter('searchPage') != macademia.queryString.searchPage || $.address.parameter('searchBox') != macademia.queryString.searchBox || $('#searchResults').is(':empty')) && ($.address.parameter('searchBox') != undefined || macademia.queryString.searchBox != null)){
         if($.address.parameter('searchBox') != undefined){
             var searchBox = $.address.parameter('searchBox');
