@@ -40,7 +40,9 @@ macademia.initCollegeFilter = function() {
     $("#select").click(function() {
         macademia.collegeSelection();
     });
+    macademia.autocomplete.initCollegeSearch();
 };
+
 // shows colleges that are currently selected under the filter
 macademia.showColleges = function(){
     if ($.address.parameter('institutions') == 'all'){
@@ -93,12 +95,14 @@ macademia.createInstitutionString = function(collegeArray) {
         }
         return colleges;
 };
+
 macademia.initiateCollegeString = function(ids){
     console.log(1);
     $.getJSON('/Macademia/institution/idstonames', {ids: ids.replace(/\+/g, " ")}, function(institutionList){
     macademia.changeCollegeString(institutionList);
     });
 };
+
 macademia.changeCollegeString = function(institutionNames){
     console.log(institutionNames);
     var results = "";
@@ -119,6 +123,7 @@ macademia.changeCollegeString = function(institutionNames){
     }
     macademia.queryString.institutions = $.address.parameter('institutions');
 };
+
 macademia.changeDisplayedColleges = function(){
     if ($.address.parameter('institutions') != macademia.queryString.institutions){
         if($.address.parameter('institutions') == 'all'){

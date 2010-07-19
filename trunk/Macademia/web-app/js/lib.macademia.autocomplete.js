@@ -200,7 +200,8 @@ macademia.autocomplete.initCollegeSearch = function() {
                 window.setTimeout(function () {
                         $("#collegeSearch").blur();
                     }, 100);
-
+                // simulate a click of the add college button
+                $("#addCollege").click();
                 return false;
             }
         }, "/Macademia/autocomplete/index?klass=institution");
