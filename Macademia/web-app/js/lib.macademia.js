@@ -1,5 +1,5 @@
 var macademia = macademia || {};
-macademia.unfocusedEdgeColor = "#999";
+
 // calculates the number of properties (keys, values, etc.) for an object or associative array.
 macademia.size = function(obj) {
     var size = 0, key;
@@ -8,64 +8,20 @@ macademia.size = function(obj) {
     }
     return size;
 };
-// highlights adjacencies during mouseover
-macademia.highlightAdjacenciesOn = function(node){
-    var adjacentNodes = [];
-    var root = macademia.rgraph.graph.getNode(macademia.rgraph.root);
-    root.eachSubnode(function(n){
-        n.eachAdjacency(function(adj){
-            if (adj.nodeTo.id != node.id && adj.nodeFrom.id != node.id){
-                if (adj.data.$color != macademia.unfocusedEdgeColor && adj.data.$color != undefined){
-                    if(adj.data.$color)
-                    adj.data.$colorB = adj.data.$color;
-                    adj.data.$color = macademia.unfocusedEdgeColor;
-                }
-            }else if (adj.nodeTo.id != node.id){
-                adjacentNodes.push(adj.nodeTo.id);
-                adj.data.$lineWidth = 1.8;
-            }else{
-                adjacentNodes.push(adj.nodeFrom.id);
-                adj.data.$lineWidth = 1.8;
-            }
-        })
-    });
-    for (var i = 0; i < adjacentNodes.length; i++){
-        var adjN = "#" + adjacentNodes[i];
-        $(adjN).css('font-weight', 600);
-        $(adjN).css('opacity', 0.75);
-        $(adjN).css('z-index', 30);
-        $(adjN).css('background-color', '#A2AB8E');
-    }
-};
-// returns graph to original coloring during mouseout
-macademia.highlightAdjacenciesOff = function(node){
-    var adjacentNodes = [];
-    var root = macademia.rgraph.graph.getNode(macademia.rgraph.root);
-    root.eachSubnode(function(n){
-        n.eachAdjacency(function(adj){
-            if (adj.nodeTo.id != node.id && adj.nodeFrom.id != node.id){
-                if(adj.data.$colorB != macademia.unfocusedEdgeColor && adj.data.$colorB != undefined){
-                    adj.data.$color = adj.data.$colorB;
-                }
-            }else if (adj.nodeTo.id != node.id){
-                adjacentNodes.push(adj.nodeTo.id);
-                adj.data.$lineWidth = 1;
-            }else{
-                adjacentNodes.push(adj.nodeFrom.id);
-                adj.data.$lineWidth = 1;
-            }
-        })
-    });
-    for (var i = 0; i < adjacentNodes.length; i++){
-        var adjN = "#" + adjacentNodes[i];
-        $(adjN).css('font-weight', 'normal');
-        $(adjN).css('opacity', 0.8);
-        $(adjN).css('z-index', 10);
-        $(adjN).css('background-color','transparent');
-    }
-};
+
+
 //holds query string values
-macademia.queryString = {nodeId:'p_1', navVisibility:'true', navFunction:'search', institutions:'all', searchBox:null, interestId:null, personId:null, requestId:null, searchPage:null};
+macademia.queryString = {
+    nodeId:'p_1',
+    navVisibility:'true',
+    navFunction:'search',
+    institutions:'all',
+    searchBox:null,
+    interestId:null,
+    personId:null,
+    requestId:null,
+    searchPage:null
+};
 
 //sets the sidebar's visibility according to original status.  Initializes jit visualization
 macademia.pageLoad = function() {
@@ -79,6 +35,7 @@ macademia.pageLoad = function() {
 
     macademia.setupModal("#registerDialog", "#registerButton", "account/modalcreateuser/", 'nimble-login-register', "macademia.initializeModalRegister()");    
 };
+
 //sets macademia.queryString values and initial page settings
 macademia.initialSettings = function(){
         $("#show").hide();
@@ -105,13 +62,15 @@ macademia.initialSettings = function(){
         macademia.sortParameters(macademia.queryString.navFunction);
         $.address.update();
 };
+
 //calls the init function in jitConfig
 macademia.initiateGraph = function() {
     var param = $.address.parameter('nodeId');
     var type = macademia.getType(param);
     var id = parseFloat(param.substr(2));
-    macademia.init(type, id);
+    macademia.jit.init(type, id);
 };
+
 // determines the type according to the node's id (eg p_4)
 macademia.getType = function(nodeId) {
     if (nodeId.indexOf('p') >= 0) {
@@ -124,7 +83,7 @@ macademia.getType = function(nodeId) {
 };
 //canvas background circles
 macademia.drawCircles = function(canvas, ctx) {
-    var times = 2, d = macademia.distance;
+    var times = 2, d = macademia.jit.distance;
     var pi2 = Math.PI * 2;
     for (var i = 1; i <= times; i++) {
         ctx.beginPath();
@@ -401,74 +360,6 @@ macademia.makeActionUrl = function(controller, action) {
     return "/Macademia/" + controller + "/" + action;
 };
 
-macademia.initializeModalRegister = function() {
-  macademia.upload.init();
-  macademia.links.init();
-  $("#passwordpolicy").hide();
-  $("#passwordpolicybtn").bt({
-      contentSelector: $("#passwordpolicy"),
-      width: '350px',
-      closeWhenOthersOpen: true,
-      shrinkToFit: 'true',
-      positions: ['right', 'top', 'left'],
-      margin: 0,
-      padding: 6,
-      fill: '#fff',
-      strokeWidth: 1,
-      strokeStyle: '#c2c2c2',
-      spikeGirth: 12,
-      spikeLength:9,
-      hoverIntentOpts: {interval: 100,
-                        timeout: 1000}
-  });
-  if($('#username')) $('#username').blur(function() {$('#pass').focus();});
-  if($('#pass')) $('#pass').blur(function() {$('#passConfirm').focus();});
- // $('.password').pstrength();
-  $('.password').keyup();
-    nimble.createTip('usernamepolicybtn', 'Username Policy', 'Choose a good username');
-    nimble.createTip('passwordpolicybtn', 'Password Policy', 'Choose a good password');
-  $('#edit_profile_container form').submit(function() {
-      macademia.links.serialize();
-      var a = new Array();
-      var formData = $(this).serialize();
-      a = formData.split('&');
-      var pass = a[1].substring(5);
-      var confirm = a[2].substring(12);
-      var formCheck = true;
-      if (pass!=confirm) {
-          alert("passwords don't match")
-          formCheck=false;
-      }
-      if (pass.length<6) {
-          alert("password is not long enough")
-          formCheck=false;
-      }
-      
-      alert(pass);
-      jQuery.ajax({
-          url: '/Macademia/account/saveuser/',
-          type: "POST",
-          data: $(this).serialize(),
-          dataType: "text",
-          success: function(data) {
-              alert('success: ' + data);
-
-
-          }
-        
-      });
-      return false;
-  });
-
-};
-
-macademia.loginShowHide = function() {
-		$("#login").hide();
-		$("#login_link").click(function(event) {
-			$("#login").slideToggle();
-		});
-};
-
 
 macademia.setupModal = function(modalDialog, trigger, url, depModule, fnString) {
     $(modalDialog).jqm({modal: false});
@@ -493,53 +384,6 @@ macademia.trim = function(stringToTrim) {
 	return stringToTrim.replace(/^\s+|\s+$/g,"");
 };
 
-// Code for managing the links on the edit page.
-macademia.links = {};
-macademia.links.init = function() {
-    $(".personLinks .addLink").click(
-            function () {macademia.links.addNewLink("name", "url")}
-        );
-    macademia.links.deserialize();
-    $(".personLinks .clearDefault").clearDefault();
-};
-
-macademia.links.addNewLink = function(linkName, linkUrl) {
-    var newDiv = $(".personLinks .customLinkTemplate").clone();
-    newDiv.removeClass("customLinkTemplate");
-    $(".personLinks .addLink").before(newDiv);
-    newDiv.find(".removeLink").click(
-                function () {
-                    $(this).parent().parent().remove();
-                    return false;
-                }
-            );
-    newDiv.show();
-    newDiv.find(' .clearDefault').clearDefault();
-};
-
-macademia.links.serialize = function() {
-    var linkStr = "";
-    $(".personLinks .standardLink,.customLink").each(function () {
-        var name;
-        // handles custom and default named fields separately.
-        if ($(this).find('.linkField input').length > 0) {
-            name = $(this).find('.linkField input').val();
-        } else {
-            name = $(this).find('.linkField').html();
-        }
-        var value= $(this).find('.linkValue input').val();
-        if (value && value != (this).find('.linkValue input').attr('defaultvalue')) {
-            linkStr += "<li><a href=\"" + encodeURI(value) + "\">";
-            linkStr += macademia.htmlEncode(name) + "</a>\n";
-        }
-    });
-    alert('setting value to ' + linkStr);
-    $("#edit_pf input[name='links']").val(linkStr);
-};
-macademia.links.deserialize = function() {
-    var linksStr =$("#edit_pf input[name='links']").val();
-    var linksDom = $(linksStr);
-};
 
 macademia.htmlEncode = function(value){
   return $('<div/>').text(value).html();

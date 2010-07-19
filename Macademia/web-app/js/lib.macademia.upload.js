@@ -2,6 +2,7 @@
  * This upload functionality assumes the following:
  */
 
+macademia = macademia || {};
 macademia.upload = {};
 
 macademia.upload.complete = function(event, queueId, fileObj, response, data) {
