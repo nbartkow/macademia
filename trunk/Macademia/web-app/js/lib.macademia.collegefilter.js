@@ -120,10 +120,10 @@ macademia.changeCollegeString = function(institutionNames){
     macademia.queryString.institutions = $.address.parameter('institutions');
 };
 macademia.changeDisplayedColleges = function(){
-    if($.address.parameter('institutions') == 'all'){
-        macademia.changeCollegeString(['all']);
-    }else if ($.address.parameter('institutions') != macademia.queryString.institutions){
-        if ($(".college").size() > 0){
+    if ($.address.parameter('institutions') != macademia.queryString.institutions){
+        if($.address.parameter('institutions') == 'all'){
+            macademia.changeCollegeString(['all']);
+        }else if ($(".college").size() > 0){
             var collegeNames = new Array();
             $(".college").each(function(){
                 if($(this).attr("style")!="display: none;"){
