@@ -78,16 +78,17 @@ macademia.loginShowHide = function() {
 macademia.links = {};
 macademia.links.init = function() {
     $(".personLinks .addLink").click(
-            function () {macademia.links.addNewLink("name", "url")}
+            function () {return macademia.links.addNewLink();}
         );
     macademia.links.deserialize();
     $(".personLinks .clearDefault").clearDefault();
+    macademia.links.addNewLink();
 };
 
 macademia.links.addNewLink = function(linkName, linkUrl) {
     var newDiv = $(".personLinks .customLinkTemplate").clone();
     newDiv.removeClass("customLinkTemplate");
-    $(".personLinks .addLink").before(newDiv);
+    $(".personLinks .example").before(newDiv);
     newDiv.find(".removeLink").click(
                 function () {
                     $(this).parent().parent().remove();
@@ -96,6 +97,7 @@ macademia.links.addNewLink = function(linkName, linkUrl) {
             );
     newDiv.show();
     newDiv.find(' .clearDefault').clearDefault();
+    return false;
 };
 
 macademia.links.serialize = function() {

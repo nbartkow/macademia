@@ -532,10 +532,18 @@ h3 {
  * Shilad's link widget.
  */
 .personLinks {float : left; }
-.linkField { width : 200px; }
-.linkValue { width : 200px; }
+.linkField { width : 150px; }
+.linkValue { width : 150px; }
 .customLinkTemplate {
     display : none;
+}
+.personLinks .removeLink {
+    font-size : 12px;
+}
+.personLinks .example {
+    font-size : 11px;
+    font-style: italic;
+    padding-bottom : 20px;
 }
 
 #submit_edits { margin-top : 40px;}
