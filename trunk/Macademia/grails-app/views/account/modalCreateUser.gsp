@@ -39,20 +39,19 @@
   <div class="personLinks left"><h4>Links:</h4>
     <div class="standardLink clear">
       <div class="clear linkField left">Homepage</div>
-      <div class="linkValue left"><input type="text"></div>
+      <div class="linkValue left"><input type="text" class="clearDefault" prompt="url"></div>
     </div>
     <div class="standardLink clear">
       <div class="clear linkField left">Department website</div>
-      <div class="linkValue left"><input type="text"></div>
+      <div class="linkValue left"><input type="text" class="clearDefault" prompt="url"></div>
     </div>
     <div class="addLink clear"><a href="#">add other link</a></div>  
     <div class="customLink customLinkTemplate clear">
-      <div class="clear linkField left"><input type="text" value="name"></div>
-      <div class="linkValue left"><input type="text" value="url"></div>
+      <div class="clear linkField left"><input type="text" class="clearDefault" prompt="link name"></div>
+      <div class="linkValue left"><input type="text" class="clearDefault" prompt="link url"></div>
       <div class="left"><a href="#" class="removeLink">(remove)</a></div>
     </div>
   </div>
-  <div><a href="#" onclick="macademia.links.serialize(); return false;">unserialze</a></div>
 </div>
   
 <div class="clear" id="submit_edits"><button class="button icon icon_user" type="submit"><g:message code="nimble.link.registeraccount" /></button> or <a href="#">Cancel</a></div>
