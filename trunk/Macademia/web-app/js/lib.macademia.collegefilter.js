@@ -94,11 +94,13 @@ macademia.createInstitutionString = function(collegeArray) {
         return colleges;
 };
 macademia.initiateCollegeString = function(ids){
+    console.log(1);
     $.getJSON('/Macademia/institution/idstonames', {ids: ids.replace(/\+/g, " ")}, function(institutionList){
-       macademia.changeCollegeString(institutionList);
+    macademia.changeCollegeString(institutionList);
     });
 };
 macademia.changeCollegeString = function(institutionNames){
+    console.log(institutionNames);
     var results = "";
     if(institutionNames.length == $(".college").size() || institutionNames[0] == 'all'){
         results = 'Showing <b>all institutions</b>. <div><a href="#" id="collegeFilterTrigger">(filter by institution)</a></div>';
@@ -115,9 +117,12 @@ macademia.changeCollegeString = function(institutionNames){
         $("#collegeFilterButton").html(results);
         macademia.wireupCollegeFilter();
     }
+    macademia.queryString.institutions = $.address.parameter('institutions');
 };
 macademia.changeDisplayedColleges = function(){
-    if ($.address.parameter('institutions') != macademia.queryString.institutions){
+    if($.address.parameter('institutions') == 'all'){
+        macademia.changeCollegeString(['all']);
+    }else if ($.address.parameter('institutions') != macademia.queryString.institutions){
         if ($(".college").size() > 0){
             var collegeNames = new Array();
             $(".college").each(function(){
@@ -132,6 +137,6 @@ macademia.changeDisplayedColleges = function(){
         }else{
             macademia.initiateCollegeString($.address.parameter('institutions'));
         }
-        macademia.queryString.institutions = $.address.parameter('institutions');
+
     }
 };
