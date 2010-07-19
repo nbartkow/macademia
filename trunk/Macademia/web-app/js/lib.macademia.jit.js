@@ -1,14 +1,15 @@
 var macademia = macademia || {};
-macademia.rootId;
-macademia.distance = 150;
-macademia.refreshNeeded = true;
 
+macademia.jit = {};
 
+macademia.jit.unfocusedEdgeColor = "#999";
+macademia.jit.rootId;
+macademia.jit.distance = 150;
+macademia.jit.refreshNeeded = true;
 
 macademia.makeJsonUrl = function(type, id) {
     return "/Macademia/" + type + "/json/" + id + "?institutions="+$.address.parameter('institutions');
 };
-
 
 macademia.checkBrowser = function() {
     if (!$.browser.mozilla && !$.browser.safari) {
@@ -16,13 +17,72 @@ macademia.checkBrowser = function() {
     }
 };
 
-macademia.init = function(rootType,id){
+// highlights adjacencies during mouseover
+macademia.jit.highlightAdjacenciesOn = function(node){
+    var adjacentNodes = [];
+    var root = macademia.rgraph.graph.getNode(macademia.rgraph.root);
+    root.eachSubnode(function(n){
+        n.eachAdjacency(function(adj){
+            if (adj.nodeTo.id != node.id && adj.nodeFrom.id != node.id){
+                if (adj.data.$color != macademia.jit.unfocusedEdgeColor && adj.data.$color != undefined){
+                    if(adj.data.$color)
+                    adj.data.$colorB = adj.data.$color;
+                    adj.data.$color = macademia.jit.unfocusedEdgeColor;
+                }
+            }else if (adj.nodeTo.id != node.id){
+                adjacentNodes.push(adj.nodeTo.id);
+                adj.data.$lineWidth = 1.8;
+            }else{
+                adjacentNodes.push(adj.nodeFrom.id);
+                adj.data.$lineWidth = 1.8;
+            }
+        })
+    });
+    for (var i = 0; i < adjacentNodes.length; i++){
+        var adjN = "#" + adjacentNodes[i];
+        $(adjN).css('font-weight', 600);
+        $(adjN).css('opacity', 0.75);
+        $(adjN).css('z-index', 30);
+        $(adjN).css('background-color', '#A2AB8E');
+    }
+};
+
+// returns graph to original coloring during mouseout
+macademia.jit.highlightAdjacenciesOff = function(node){
+    var adjacentNodes = [];
+    var root = macademia.rgraph.graph.getNode(macademia.rgraph.root);
+    root.eachSubnode(function(n){
+        n.eachAdjacency(function(adj) {
+            if (adj.nodeTo.id != node.id && adj.nodeFrom.id != node.id){
+                if(adj.data.$colorB != macademia.jit.unfocusedEdgeColor && adj.data.$colorB != undefined){
+                    adj.data.$color = adj.data.$colorB;
+                }
+            } else if (adj.nodeTo.id != node.id) {
+                adjacentNodes.push(adj.nodeTo.id);
+                adj.data.$lineWidth = 1;
+            } else {
+                adjacentNodes.push(adj.nodeFrom.id);
+                adj.data.$lineWidth = 1;
+            }
+        })
+    });
+
+    for (var i = 0; i < adjacentNodes.length; i++){
+        var adjN = "#" + adjacentNodes[i];
+        $(adjN).css('font-weight', 'normal');
+        $(adjN).css('opacity', 0.8);
+        $(adjN).css('z-index', 10);
+        $(adjN).css('background-color','transparent');
+    }
+};
+            
+macademia.jit.init = function(rootType,id){
     macademia.checkBrowser();
 
     if(macademia.rgraph){
         $("#infovis").empty();
     }
-    macademia.rootId = id;
+    macademia.jit.rootId = id;
     if (rootType != 'person' && rootType != 'interest' && rootType != 'request'){
         alert('unknown root type: ' + rootType);
         return false;
@@ -35,9 +95,9 @@ macademia.init = function(rootType,id){
                   'width': 680,
                   'height': 660,
                 withLabels : true,
-                levelDistance: macademia.distance,
+                levelDistance: macademia.jit.distance,
                 background: {
-                          levelDistance: macademia.distance,
+                          levelDistance: macademia.jit.distance,
                           numberOfCircles: 2,
                           CanvasStyles: {
                             strokeStyle: '#6A705D'
@@ -90,7 +150,7 @@ macademia.init = function(rootType,id){
                     $(this).css('opacity', 0.75);
                     $(this).css('z-index', 50);
                     $(this).css('background-color', '#A2AB8E');
-                    macademia.highlightAdjacenciesOn(node);
+                    macademia.jit.highlightAdjacenciesOn(node);
                     macademia.rgraph.refresh();
 
                 });
@@ -99,16 +159,16 @@ macademia.init = function(rootType,id){
                     $(this).css('opacity', 0.8);
                     $(this).css('z-index', 10);
                     $(this).css('background-color','transparent');
-                    if (macademia.refreshNeeded){
-                        macademia.highlightAdjacenciesOff(node);
+                    if (macademia.jit.refreshNeeded){
+                        macademia.jit.highlightAdjacenciesOff(node);
                         macademia.rgraph.refresh();
                     }
                 });
                 $(d).click(function() {
-                    if(macademia.refreshNeeded){
-                        if(macademia.rootId != parseFloat(node.id.substr(2))){
-                            macademia.refreshNeeded = false;
-                            macademia.highlightAdjacenciesOff(node);
+                    if(macademia.jit.refreshNeeded){
+                        if(macademia.jit.rootId != parseFloat(node.id.substr(2))){
+                            macademia.jit.refreshNeeded = false;
+                            macademia.jit.highlightAdjacenciesOff(node);
                         }
                         macademia.navInfovis(node);
 //                      rgraph.onClick(node.id);
@@ -167,9 +227,9 @@ macademia.init = function(rootType,id){
             //morph to new data after anim and if user has clicked a person node
             onAfterCompute:function() {
                 if (macademia.nextNode) {
-                    macademia.rootId = macademia.nextNode.data.unmodifiedId;
+                    macademia.jit.rootId = macademia.nextNode.data.unmodifiedId;
                     var rootType = macademia.nextNode.data.type;
-                    $.getJSON(macademia.makeJsonUrl(rootType, macademia.rootId), function(data) {
+                    $.getJSON(macademia.makeJsonUrl(rootType, macademia.jit.rootId), function(data) {
                         macademia.checkBrowser();
                         macademia.rgraph.op.morph(data, {
                             type:'replot',
@@ -179,7 +239,7 @@ macademia.init = function(rootType,id){
                     });
                 }
                 macademia.nextNode = null;
-                macademia.refreshNeeded = true;
+                macademia.jit.refreshNeeded = true;
             }
 
         });

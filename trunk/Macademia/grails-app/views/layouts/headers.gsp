@@ -15,13 +15,14 @@
 <!-- JIT Library File -->
 %{--<g:javascript src="jit/jit-yc.js"/>--}%
 <g:javascript src="jit/jit.js"/>
-<g:javascript src="jitConfig.js"/>
 <g:javascript src="jquery/jquery.qtip-1.0.0-rc3.js"/>
 <g:javascript src="jquery/jqModal.js"/>
 <g:javascript src="jquery/jquery.address-1.2.1.js"/>
+<g:javascript src="lib.macademia.json.js"/>
 <g:javascript src="lib.macademia.js"/>
+<g:javascript src="lib.macademia.jit.js"/>
 <g:javascript src="lib.macademia.collegefilter.js"/>
 <g:javascript src="lib.macademia.autocomplete.js"/>
-<g:javascript src="lib.macademia.json.js"/>
+<g:javascript src="lib.macademia.profile.js"/>
 
 <title>Macademia - Macalester College</title>
