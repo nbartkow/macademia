@@ -133,25 +133,23 @@ macademia.drawCircles = function(canvas, ctx) {
         ctx.closePath();
     }
 };
-// clears the value of the text input box when clicked
-macademia.clearSearch = function() {
-    $(".clearDefault").focus(function() {
-        if ($(this).attr('id') == 'searchBox'){
-             var textToClear = "Search people or interests";
-        }else if ($(this).attr('id') == 'collegeSearchAuto'){
-             var textToClear = "Type college name";
-        }
-        if ($(this).val() == textToClear) {
-            $(this).data("clearedText", $(this).val());
-            $(this).val('');
-        }
-    });
-    $(".clearDefault").blur(function() {
-        var value = $(this).val();
-        if (!value && $(this).data("clearedText")) {
-            $(this).val($(this).data("clearedText"));
-        }
-    });
+
+$.fn.clearDefault = function() {
+    this.each(
+        function () {
+            $(this).focus(function() {
+                if( $(this).val() == $(this).attr('prompt')) {
+                    $(this).val("");
+                }
+            });
+            $(this).blur(function() {
+                if( !$(this).val().length ) {
+                    $(this).val($(this).attr('prompt'));
+                }
+            });
+            $(this).val($(this).attr('prompt'));
+        });
+    return this;
 };
 
 // changes the address when a node is clicked
@@ -176,7 +174,6 @@ macademia.nav = function() {
 //    macademia.modalLogin();
 //    macademia.modalRegister();
 //    macademia.setupModal("#loginDialog", "#loginButton", "account", "login", {}, 'nimble-login-register', "macademia.initializeModalLogin()");
-    macademia.clearSearch();
     macademia.wireupCollegeFilter();
     $.address.change(function() {
         macademia.showHide();
@@ -215,6 +212,8 @@ macademia.nav = function() {
         }
         return false;
     });
+
+    $(".clearDefault").clearDefault();
 };
 macademia.modalLogin = function() {
     $('#loginDialog').jqm({modal: false, ajax:"/Macademia/account/login"});
@@ -497,11 +496,11 @@ macademia.trim = function(stringToTrim) {
 // Code for managing the links on the edit page.
 macademia.links = {};
 macademia.links.init = function() {
-    var linkHtml = $(".personLinks .linkValues").html();
     $(".personLinks .addLink").click(
             function () {macademia.links.addNewLink("name", "url")}
         );
-    macademia.links.unserialize();
+    macademia.links.deserialize();
+    $(".personLinks .clearDefault").clearDefault();
 };
 
 macademia.links.addNewLink = function(linkName, linkUrl) {
@@ -515,6 +514,7 @@ macademia.links.addNewLink = function(linkName, linkUrl) {
                 }
             );
     newDiv.show();
+    newDiv.find(' .clearDefault').clearDefault();
 };
 
 macademia.links.serialize = function() {
@@ -528,7 +528,7 @@ macademia.links.serialize = function() {
             name = $(this).find('.linkField').html();
         }
         var value= $(this).find('.linkValue input').val();
-        if (name && name != 'name' && value) {
+        if (value && value != (this).find('.linkValue input').attr('defaultvalue')) {
             linkStr += "<li><a href=\"" + encodeURI(value) + "\">";
             linkStr += macademia.htmlEncode(name) + "</a>\n";
         }
@@ -536,7 +536,7 @@ macademia.links.serialize = function() {
     alert('setting value to ' + linkStr);
     $("#edit_pf input[name='links']").val(linkStr);
 };
-macademia.links.unserialize = function() {
+macademia.links.deserialize = function() {
     var linksStr =$("#edit_pf input[name='links']").val();
     var linksDom = $(linksStr);
 };

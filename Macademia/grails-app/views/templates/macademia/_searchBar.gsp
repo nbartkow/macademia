@@ -15,7 +15,7 @@
           update="rightContent">
     <br>--%>
   <form method="POST" action="#" id="searchForm" name="searchForm" update="searchBoxDiv">
-    <input type="text" id="searchBox" name="searchBox" class="clearDefault" value="Search people or interests"/>
+    <input type="text" id="searchBox" name="searchBox" class="clearDefault" prompt="Search people or interests"/>
     <input type="submit" id="searchSubmitButton" value="Search"/>
   </form>
   <%--</g:formRemote>--%>
