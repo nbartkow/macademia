@@ -489,9 +489,13 @@ h3 {
 /**
  * Image uploader configuration
  */
-.editPicture {
+.profileImage {
     margin-top : 10px;
-    float : right;
+    margin-left : 30px;
+    margin-right : 30px;
+    float : left;
+}
+.editPicture {
     font-size : 14px;
     text-align : center;
     line-height : 16px;
@@ -523,3 +527,15 @@ h3 {
 #edit_pf .clear {
     clear : both;
 }
+
+/**
+ * Shilad's link widget.
+ */
+.personLinks {float : left; }
+.linkField { width : 200px; }
+.linkValue { width : 200px; }
+.customLinkTemplate {
+    display : none;
+}
+
+#submit_edits { margin-top : 40px;}

@@ -38,13 +38,13 @@
       </g:each>
     </ul>
   </div>
-  <div id="pf_links">
-      <h4>Links</h4>
-      <ul class="atxt">
-          <li><a href="#">Homepage</a></li>
-          <li><a href="#">Department website</a></li>
-          <li><a href="#">Facebook</a></li>
-      </ul>
-  </div>
+  <g:if test="${person.links}">
+    <div id="pf_links">
+        <h4>Links</h4>
+        <ul class="atxt">
+          ${person.links}
+        </ul>
+    </div>
+  </g:if>
 </div>
 

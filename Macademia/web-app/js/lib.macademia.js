@@ -404,6 +404,7 @@ macademia.makeActionUrl = function(controller, action) {
 
 macademia.initializeModalRegister = function() {
   macademia.upload.init();
+  macademia.links.init();
   $("#passwordpolicy").hide();
   $("#passwordpolicybtn").bt({
       contentSelector: $("#passwordpolicy"),
@@ -428,6 +429,7 @@ macademia.initializeModalRegister = function() {
     nimble.createTip('usernamepolicybtn', 'Username Policy', 'Choose a good username');
     nimble.createTip('passwordpolicybtn', 'Password Policy', 'Choose a good password');
   $('#edit_profile_container form').submit(function() {
+      macademia.links.serialize();
       var a = new Array();
       var formData = $(this).serialize();
       a = formData.split('&');
@@ -479,7 +481,7 @@ macademia.setupModal = function(modalDialog, trigger, url, depModule, fnString) 
                             try {
                                 eval(fnString);
                             } catch (error) {
-                                debug.log('evaluation of ' + fnString + ' failed: ' + error);
+                                alert('evaluation of ' + fnString + ' failed: ' + error);
                             }
                          });
                     }
@@ -487,3 +489,62 @@ macademia.setupModal = function(modalDialog, trigger, url, depModule, fnString) 
         $(modalDialog).jqmShow();
     });
 };
+
+macademia.trim = function(stringToTrim) {
+	return stringToTrim.replace(/^\s+|\s+$/g,"");
+};
+
+// Code for managing the links on the edit page.
+macademia.links = {};
+macademia.links.init = function() {
+    var linkHtml = $(".personLinks .linkValues").html();
+    $(".personLinks .addLink").click(
+            function () {macademia.links.addNewLink("name", "url")}
+        );
+    macademia.links.unserialize();
+};
+
+macademia.links.addNewLink = function(linkName, linkUrl) {
+    var newDiv = $(".personLinks .customLinkTemplate").clone();
+    newDiv.removeClass("customLinkTemplate");
+    $(".personLinks .addLink").before(newDiv);
+    newDiv.find(".removeLink").click(
+                function () {
+                    $(this).parent().parent().remove();
+                    return false;
+                }
+            );
+    newDiv.show();
+};
+
+macademia.links.serialize = function() {
+    var linkStr = "";
+    $(".personLinks .standardLink,.customLink").each(function () {
+        var name;
+        // handles custom and default named fields separately.
+        if ($(this).find('.linkField input').length > 0) {
+            name = $(this).find('.linkField input').val();
+        } else {
+            name = $(this).find('.linkField').html();
+        }
+        var value= $(this).find('.linkValue input').val();
+        if (name && name != 'name' && value) {
+            linkStr += "<li><a href=\"" + encodeURI(value) + "\">";
+            linkStr += macademia.htmlEncode(name) + "</a>\n";
+        }
+    });
+    alert('setting value to ' + linkStr);
+    $("#edit_pf input[name='links']").val(linkStr);
+};
+macademia.links.unserialize = function() {
+    var linksStr =$("#edit_pf input[name='links']").val();
+    var linksDom = $(linksStr);
+};
+
+macademia.htmlEncode = function(value){
+  return $('<div/>').text(value).html();
+}
+
+macademia.htmlDecode = function(value){ 
+  return $('<div/>').html(value).text();
+}
