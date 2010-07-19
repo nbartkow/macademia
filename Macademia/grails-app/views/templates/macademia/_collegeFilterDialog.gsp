@@ -13,7 +13,7 @@
     <div id="editColleges">
 
       <div id="collegeSearch" class="center padded2">
-        <input id="collegeSearchAuto" type="text" value="Type college name" class="clearDefault"/>
+        <input id="collegeSearchAuto" type="text" prompt="Type college name" class="clearDefault"/>
         <input id= "addCollege" type="submit" value="Add"/>
       </div>
       <div id="addClear" class="padded2">
