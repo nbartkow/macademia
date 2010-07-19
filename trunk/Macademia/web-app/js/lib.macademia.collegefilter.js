@@ -5,7 +5,7 @@ macademia.wireupCollegeFilter = function() {
 
 macademia.initCollegeFilter = function() {
     macademia.showColleges();
-    macademia.clearSearch();
+    $("#editColleges .clearDefault").clearDefault();
     $("#closeCollegeFilter a").click(function(){
         $('#filterDialog').jqmHide();
     });
