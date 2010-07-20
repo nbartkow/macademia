@@ -232,6 +232,49 @@ ul#instruct_list li:before {
     line-height: 1em;
 }
 
+#login_form {
+    border-bottom: 1px solid #CCCCCC;
+    border-top: 1px solid #CCCCCC;
+    display: block;
+    font-size: 13px;
+    margin: 15px 5px 15px 70px;
+    padding: 10px 0;
+    width: 200px;
+}
+
+#login_form label {
+    display: block;
+    margin: 3px 0;
+    text-align: left;
+}
+
+#login_form input.login_input {
+    -moz-border-radius: 5px 5px 5px 5px;
+    border: 1px solid #EEEEEE;
+    margin-bottom: 7px;
+    margin-top: 2px;
+    min-height: 20px;
+    padding: 5px 2px;
+    width: 190px;
+}
+
+#login_form input.login_input:focus {
+    border: 1px solid #000000;
+}
+
+#login_form a.forgot_password {
+    display: block;
+    float: right;
+    font-size: 10px;
+    margin-right: 10px;
+}
+
+.login_submit {
+    margin-bottom: 5px;
+    margin-left: 75px;
+    padding: 2px;
+}
+
 /* Styles that affect the profile view */
 
 #profile {
@@ -253,6 +296,11 @@ ul#instruct_list li:before {
     overflow: hidden;
     margin-bottom: 10px;
 }
+
+#pf_top_container_no_img {
+    border-bottom: 3px #aaa solid;
+}
+
 #pf_left {
     width: 50%;
     float: left;
@@ -267,21 +315,21 @@ ul#instruct_list li:before {
 
 #pf_name {
     font-size: 24px;
-    padding-bottom: 5px;
-    margin:0px;
-    padding-top:0px;
-    margin-left:5px;
+    padding-bottom: 0px;
+    margin: 0px;
+    padding-top: 0px;
+    margin-left: 5px;
 }
+
 #pf_dept {
     color: #777;
     font-style: italic;
-    padding-right:2px;
+    padding-right: 2px;
 }
 
 #profile div h4 {
     padding-bottom: 3px;
-    margin-bottom: 2px;
-    border-bottom: 3px #aaa solid;
+    margin-bottom: 2px; /*border-bottom: 3px #aaa solid;*/
     font-size: 16px;
 }
 
@@ -299,24 +347,131 @@ ul#instruct_list li:before {
 }
 
 #profile div ul li {
-margin-bottom:4px;
+    margin-bottom: 4px;
 }
 
-#pf_interests{}
-#pf_interests p{}
-#pf_projects{}
-#pf_projects h4{}
-#pf_projects ul{}
-#pf_projects ul li{}
-#pf_projects ul li a{}
+h2#pf_name_no_img {
+    font-size: 24px;
+    padding: 5px 0;
+    margin-bottom: 0px;
+    margin-top: 5px;
+}
 
-#pf_links{}
-#pf_links h4{}
-#pf_links ul{}
-#pf_links ul li{}
-#pf_links ul li a{}
+h2#pf_name_no_img:after {
+
+}
+
+h3#pf_dept_no_img {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color: #777;
+    font-style: italic;
+    padding-right: 2px;
+}
+
+#pf_email {
+    margin-top: 5px;
+}
+
+#pf_interests {
+}
+
+#pf_interests p {
+}
+
+#pf_projects {
+}
+
+#pf_projects h4 {
+}
+
+#pf_projects ul {
+}
+
+#pf_projects ul li {
+}
+
+#pf_projects ul li a {
+}
+
+#pf_links {
+}
+
+#pf_links h4 {
+}
+
+#pf_links ul {
+}
+
+#pf_links ul li {
+}
+
+#pf_links ul li a {
+}
+
+/* Styles that affect the account creation view*/
+
+#registerDialog .left {
+    border-top: 1px solid #D7D7D7;
+    padding: 10px;
+    text-align: right;
+    width: 160px;
+    background-color: #FFFFEE;
+}
+
+#right_value.email {
+    float: right;
+}
+
+.icon {
+    position: absolute;
+    left: -1000px;
+}
+
+.registerRight input{
+	padding:3px;
+	width:380px;
+	height:40px;
+	font-size:24px;
+}
+.registerRight input, .registerRight textarea{
+	border: thin 1px #ccc;
+
+}
+
+.registerRight{
+	background:none repeat scroll 0 0 #FFFFFF;
+	border-top:1px solid #D7D7D7;
+	float:right;
+	padding:20px 10px;
+	width:400px;
+}
+
+.profileImage{
+    width:195px;
+    float: left;
+}
+
+.personLinks{
+    float: right;
+    width: 395px;
+}
+
+#other_info {
+    width:600px;
+    margin:0px;
+    padding: 0px;
+}
+
+
+
 
 /* properties that affect the search bar and search view*/
+
+.moreSearchResults {
+    position: relative;                               4
+    top: 5px;
+}
 
 #searchBox {
     -moz-border-radius: 5px 5px 5px 5px;
@@ -336,53 +491,64 @@ margin-bottom:4px;
     border: 1px solid #000;
     padding: 9px 4px;
 }
-#searchBoxDiv{
-    margin-left:10px;
-    margin-right:10px;
+
+#searchBoxDiv {
+    margin-left: 10px;
+    margin-right: 10px;
 }
+
 .searchHeader {
-    margin-top: 15px;
+    margin-top: 20px;
 }
-.searchHeader a{
+
+.searchHeader a {
     font-size: 12px;
     margin-left: 5px;
 }
-#searchWrapper p{
+
+#searchWrapper p {
     margin: 0;
 }
-#pageNav{
+
+#pageNav {
     text-align: center;
     margin: auto;
     padding-top: 15px;
-    width:300px;
-    clear:both;
-    height:30px;
+    width: 300px;
+    clear: both;
+    height: 30px;
 }
-#deepSearchWrapper{
+
+#deepSearchWrapper {
     min-height: 500px;
 }
 
-#personResults li, #interestResults li{
-    margin-top:5px;
-    margin-bottom:5px;
+#personResults li, #interestResults li {
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
-#personResults a{
-    font-size:16px;
-}
-#interestResults a{
+
+#personResults a {
     font-size: 16px;
 }
-#requestResults #requestTittle{
+
+#interestResults a {
+    font-size: 16px;
+}
+
+#requestResults #requestTittle {
     font-size: 16px;
     font-weight: 600;
 }
-#requestResults p{
+
+#requestResults p {
     margin: 0;
     margin-left: 10px;
 }
-#requestResults li{
-    margin-top:10px;
-    margin-bottom:10px;
+
+#requestResults li {
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 #searchDiv {
@@ -437,26 +603,112 @@ margin-bottom:4px;
     color: #FFFFEE;
 }
 
+#collegeSearchAuto {
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px;
+    background: none repeat scroll 0 0 #B2D4EC;
+    border: 0 none;
+    height: 25px;
+    width: 160px;
+    padding: 5px 3px;
+
+}
+
+#collegeSearchAuto:focus {
+    background-color: #FFF;
+    border: 1px solid #000;
+    padding: 4px 2px;
+
+}
+
 /* styles that affect the request for collaboration view*/
 
-#descriptionParagraph {
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    line-height: 18px;
-    font-size: 12px;
+#coll_top_container {
+    clear: both;
+    display: block;
+    overflow: hidden;
+    margin-bottom: 10px;
 }
 
-#rfcHeader {
-    font-size: 12px;
+#coll_request {
 }
 
-#description {
-    margin-left: 44px;
-    margin-right: 44px;
-    padding: 10px;
+#coll_request p {
+    margin-bottom: 8px;
 }
 
+#coll_request p span {
+    margin-right: 3px;
+    font-weight: bold;
+}
+
+#coll_title {
+    font-size: 18px;
+    margin-bottom: 10px;
+    padding: 5px 0;
+    margin-bottom: 10px;
+    border-bottom: 3px #aaa solid;
+}
+
+#coll_kw {
+}
+
+#coll_created {
+}
+
+#coll_due {
+}
+
+#coll_desc {
+    line-height: 1.33em;
+}
+
+/* Styles for the interest view*/
+
+#interest_info {
+}
+
+h2#interest_selected {
+    font-size: 24px;
+    padding: 5px 0;
+    margin-bottom: 10px;
+    border-bottom: 3px #aaa solid;
+}
+
+/*h2#interest_selected:before {*/
+/*content: url(../assets/int_tag.png);*/
+/*}*/
+
+#interest_related {
+}
+
+#interest_people {
+}
+
+#interest_related h3, #interest_people h3 {
+}
+
+#interest_related ul, #interest_people ul {
+    padding-left: 15px;
+}
+
+#interest_related ul li, #interest_people ul li {
+    list-style-type: none;
+    margin: 2px 0 0 8px;
+}
+
+#interest_related ul li:before, #interest_people ul li:before {
+    content: "\00BB \0020";
+}
+
+#interest_related ul li a, #interest_people ul li a {
+    margin-right: 3px;
+}
+
+#interest_related ul li span {
+    font-size: 11px;
+    color: #bbb;
+}
 
 /* other stuff */
 
@@ -482,50 +734,53 @@ h3 {
 }
 
 #edit_profile_container {
-    width: 700px;
+    width: 600px;
 }
-
 
 /**
- * Image uploader configuration
- */
-.profileImage {
-    margin-top : 10px;
-    margin-left : 30px;
-    margin-right : 30px;
-    float : left;
-}
+* Image uploader configuration
+*/
+/*.profileImage {*/
+    /*margin-top: 10px;*/
+    /*margin-left: 30px;*/
+    /*margin-right: 30px;*/
+    /*float: left;*/
+/*}*/
+
 .editPicture {
-    font-size : 14px;
-    text-align : center;
-    line-height : 16px;
+    font-size: 14px;
+    text-align: center;
+    line-height: 16px;
 }
+
 .editPicture .links {
-    position : relative;
+    position: relative;
 }
+
 .editPicture .links a {
-    z-index : -1;
+    z-index: -1;
 }
+
 #imgUploaderUploader {
-    position : absolute;
-    top : 0px;
-    left : 0px;
-    width : 100px;
-    height : 25px;
-    z-index : 100;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100px;
+    height: 25px;
+    z-index: 100;
 }
 
 /**
  * Shilad's hacks to get the jqmodal looking better for development.
  */
 #edit_pf .left {
-    float : left;
+    float: left;
 }
 #edit_pf .right {
-    float : right;
+    float: right;
 }
 #edit_pf .clear {
-    clear : both;
+    clear: both;
 }
 
 /**
@@ -546,4 +801,14 @@ h3 {
     padding-bottom : 20px;
 }
 
-#submit_edits { margin-top : 40px;}
+.linkField {
+    width: 200px;
+}
+
+.linkValue {
+    width: 200px;
+}
+
+.customLinkTemplate {
+    display: none;
+}

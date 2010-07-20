@@ -7,6 +7,7 @@
 .jqmWindow {
     display: none;
     -moz-border-radius:5px 5px 5px 5px;
+    -webkit-border-radius: 5px;
     
     
     position: fixed;
@@ -14,7 +15,7 @@
     left: 40%;
     
     margin-left: -200px;
-    width: 700px;
+    width: 600px;
     
     background-color: #A2AB8E;
     color: #333;
@@ -23,6 +24,21 @@
 }
 
 .jqmOverlay { background-color: #000; }
+
+#registerDialog.jqmWindow {
+    background-color: #FFF;
+    -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    padding:0px;
+}
+
+#filterDialog.jqmWindow {
+    width:400px;
+    margin-left: -100px;
+}
+
+
+
 
 /* Background iframe styling for IE6. Prevents ActiveX bleed-through (<select> form elements, etc.) */
 * iframe.jqm {position:absolute;top:0;left:0;z-index:-1;

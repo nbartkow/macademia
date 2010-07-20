@@ -21,7 +21,7 @@ class AutocompleteController {
             }
         } else {
             def resultsByClass = autocompleteService.getOverallAutocomplete(params.term, max)
-            log.info("1")
+           
             results = resultsByClass.get(Person.class, []) + resultsByClass.get(Interest.class, []) + resultsByClass.get(CollaboratorRequest.class, [])
         }
 

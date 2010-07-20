@@ -41,13 +41,13 @@
         </div>
 
         <div id="local" class="localonlymethod">
-          <g:form controller="auth" action="signin" name="signin">
+          <g:form id="login_form" controller="auth" action="signin" name="signin">
             <div id="login" style="display: block;">
                 <input type="hidden" name="targetUri" value="${targetUri}"/>
 				<label for="username">Email Address</label>
 				<input type="text" tabindex="1" name="username" class="login_input" id="username" />
 				<label for="password"><a href="index.html#" class="forgot_password">forgot?</a>Password</label>
-				<input type="text" tabindex="2" name="password" class="login_input" id="password">
+				<input type="password" tabindex="2" name="password" class="login_input" id="password">
 				<input type="submit" tabindex="3" value="Login" class="login_submit">
             </div>
           </g:form>
@@ -59,9 +59,6 @@
             </g:if>
           </div>
         </div>
-      </div>
-      <div id="mac_logo" class="atxt center">
-        <div id="description"><b>Macademia</b> connects colleagues who have shared interests.<br/></div>
       </div>
       <g:render template="../templates/macademia/searchBar"/>
       <div id="rightContent" class="medium">
