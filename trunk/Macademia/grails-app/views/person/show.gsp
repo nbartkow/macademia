@@ -13,26 +13,30 @@
         <img src="/Macademia/images/db/large/${person.imageSubpath}"/>
       </g:if>
     </div>
-    <div id="pf_right">
-      <h2 id="pf_name">${person.fullName}</h2>
-      <h3 id="pf_dept">${person.department}</h3>
+    <div id="pf_top_container_no_img">
+      <h2 id="pf_name_no_img">${person.fullName}</h2>
+      <h3 id="pf_dept_no_img">${person.department}</h3>
+      <h4 id="pf_email">
+      <g:link url="mailto:${person.email}">${person.email}</g:link>
+      </h4>
     </div>
   </div>
   <div id="pf_interests">
-    <h4>Interests</h4>
+    <h4>Interests:</h4>
     <p class="atxt">
-      <g:each in="${interests}" var="interest">
-        <g:link url="#/?nodeId=i_${interest.id}&navFunction=interest&interestId=${interest.id}">
-          ${interest.text}
-        </g:link>
+      <g:set var="counter" value="${0}"/>
+      <g:each in="${interests}" var="interest" >
+
+        <g:set var="counter" value="${counter + 1}"/>
+        <g:link url="#/?nodeId=i_${interest.id}&navFunction=interest&interestId=${interest.id}">${interest.text}<g:if test="${counter!=interests.size()}">,</g:if></g:link>
       </g:each>
     </p>
   </div>
   <div id="pf_requests">
-    <h4>Collaborator Requests</h4>
+    <h4>Collaborator Requests:</h4>
     <ul class="atxt">
       <g:each in="${collaboratorRequests}" var="collaboratorRequest">
-        <g:link url="[controller:'request',action:'show',id:collaboratorRequest.id]">
+        <g:link url = "#/?nodeId=r_${collaboratorRequest.id}&navFunction=request&interestId=${collaboratorRequest.id}&searchBox=">
           <li>${collaboratorRequest.title}</li>
         </g:link>
       </g:each>

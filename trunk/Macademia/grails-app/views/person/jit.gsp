@@ -22,8 +22,10 @@
 
 
 <g:render template="../layouts/components"/>
+<div id="mainContent">
 <div id="infovis">
   &nbsp;
+</div>
 </div>
 <div id="extendedInfo">
   <g:render template="../layouts/rightNav"/>

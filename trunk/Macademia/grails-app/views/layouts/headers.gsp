@@ -25,4 +25,4 @@
 <g:javascript src="lib.macademia.autocomplete.js"/>
 <g:javascript src="lib.macademia.profile.js"/>
 
-<title>Macademia - Macalester College</title>
+<title>Macademia - connecting colleagues who have shared interests</title>
