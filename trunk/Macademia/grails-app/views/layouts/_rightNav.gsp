@@ -13,23 +13,23 @@
       <div id="account" class="btxt">
         <n:hasRole name="${UserService.USER_ROLE}">
           <div id="account" class="btxt">
-            <g:link controller="auth" action="logout" class="icon icon_cross">Logout</g:link>
+            <g:link controller="auth" action="logout" class="icon_cross">Logout</g:link> | <a href="#" id="toggleControls">More</a>
           </div>
         </n:hasRole>
-        <ul>
+        <ul id="accountControlList" class="left">
           <n:hasRole name="${UserService.USER_ROLE}">
             <li>
-              <g:link controller="account" action="edit" class="icon icon_user_go">Edit Profile</g:link>
+              <g:link controller="account" action="edit" class="icon_user_go">Edit Profile</g:link>
             </li>
             <li>
               <g:link controller="account" action="changepassword"><g:message code="nimble.link.changepassword"/></g:link>
             </li>
             <li>
-              <g:link controller="collaboratorRequest" action="manage"><g:message code="Manage collaborator requests"/></g:link>
+              <a href="#" id="makeRequestButton">Create request for collaboration</a>
             </li>
             <n:hasRole name="${AdminsService.ADMIN_ROLE}">
               <li>
-                <g:link controller="user" action="list" class="icon icon_user_go">Admin controls</g:link>
+                <g:link controller="user" action="list" class="icon_user_go">Admin controls</g:link>
               </li>
             </n:hasRole>
           </n:hasRole>
@@ -43,12 +43,12 @@
         <div id="local" class="localonlymethod">
           <g:form id="login_form" controller="auth" action="signin" name="signin">
             <div id="login" style="display: block;">
-                <input type="hidden" name="targetUri" value="${targetUri}"/>
-				<label for="username">Email Address</label>
-				<input type="text" tabindex="1" name="username" class="login_input" id="username" />
-				<label for="password"><a href="index.html#" class="forgot_password">forgot?</a>Password</label>
-				<input type="password" tabindex="2" name="password" class="login_input" id="password">
-				<input type="submit" tabindex="3" value="Login" class="login_submit">
+              <input type="hidden" name="targetUri" value="${targetUri}"/>
+              <label for="username">Email Address</label>
+              <input type="text" tabindex="1" name="username" class="login_input" id="username"/>
+              <label for="password"><g:link controller="account" action="forgottenpassword">forgot?</g:link>Password</label>
+              <input type="password" tabindex="2" name="password" class="login_input" id="password">
+              <input type="submit" tabindex="3" value="Login" class="login_submit">
             </div>
           </g:form>
 
@@ -87,7 +87,6 @@
         </div>
 
       </div>
-      <img id="logoImage" src="${createLinkTo(dir: 'images', file: 'macademia-logo.png')}"/>
 
 
 
@@ -102,10 +101,11 @@
         </div>
         <div id="registerScript">
         </div>
-       </div>
+      </div>
+      <div id="makeRequestDialog" class="jqmWindow">
+        testing
+      </div>
       <div class="jqmWindow padded2 medium btxt" id="filterDialog">&nbsp;</div>
-
-
 
     </div>
   </div>

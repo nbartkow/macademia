@@ -62,7 +62,7 @@
       <ul>
         <g:each in="${requests}" var="r">
           <li>
-            <g:link url = "#/?nodeId=r_${r.id}&navFunction=request&interestId=${r.id}&searchBox=">${r.title}</g:link>
+            <g:link url = "#/?nodeId=r_${r.id}&navFunction=request&requestId=${r.id}&searchBox=">${r.title}</g:link>
           </li>
         </g:each>
         <g:if test="${totalRequests >10}">

@@ -20,7 +20,7 @@
         <input id="add" type="submit" value="Add all"/>
         <input id="clear" type="submit" value="Clear list"/>
       </div>
-      <div id="selectedColleges" class="medium lined">
+      <div id="selectedColleges" class="medium">
           <div id = "clearMessage" class = "center" style = "display:none"> Visualization cannot display a filter of 0 colleges </div>
           <ul>
             <g:each in="${institutions}" var="c">

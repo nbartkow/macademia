@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 
+
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
@@ -14,19 +15,21 @@
   <g:javascript>
     $().ready(function(){
        macademia.pageLoad();
+
     });
   </g:javascript>
   
 </head>
 <body>
 
-
 <g:render template="../layouts/components"/>
 <div id="mainContent">
+
 <div id="infovis">
   &nbsp;
 </div>
 </div>
+<img id="logoImage" src="${createLinkTo(dir: 'images', file: 'macademia-logo.png')}"/>
 <div id="extendedInfo">
   <g:render template="../layouts/rightNav"/>
 </div>

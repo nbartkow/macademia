@@ -32,16 +32,18 @@
       </g:each>
     </p>
   </div>
+  <g:if test="${collaboratorRequests}">
   <div id="pf_requests">
     <h4>Collaborator Requests:</h4>
     <ul class="atxt">
       <g:each in="${collaboratorRequests}" var="collaboratorRequest">
-        <g:link url = "#/?nodeId=r_${collaboratorRequest.id}&navFunction=request&interestId=${collaboratorRequest.id}&searchBox=">
-          <li>${collaboratorRequest.title}</li>
-        </g:link>
+        
+          <li><g:link url = "#/?nodeId=r_${collaboratorRequest.id}&navFunction=request&requestId=${collaboratorRequest.id}&searchBox=">${collaboratorRequest.title}</g:link></li>
+
       </g:each>
     </ul>
   </div>
+  </g:if>
   <g:if test="${person.links}">
     <div id="pf_links">
         <h4>Links</h4>
