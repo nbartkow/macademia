@@ -1,22 +1,24 @@
 <div id="interestPage" class="medium padded2">
   <div id="interest_top_container">
     <div id="interest_info">
-      <h2 id="interest_selected"><img id="tagPicture" src="${createLinkTo(dir: 'images', file:'int_tag.png')}"/>${interest.text}</h2>
-      <div id="interest_related">
-        <h3>Related interests:</h3>
-        <ul>
-          <g:each in="${relatedInterests}" var="interest">
-            <g:if test="${interest != null}">
-              <li>
-                <g:link url="#/?nodeId=i_${interest.id}&navFunction=interest&interestId=${interest.id}">
-                  ${interest.text}
-                </g:link>
-              </li>
-            </g:if>
-          </g:each>
+      <h2 id="interest_selected"><img id="tagPicture" src="${createLinkTo(dir: 'images', file: 'int_tag.png')}"/>${interest.text}</h2>
+      <g:if test="${relatedInterests}">
+        <div id="interest_related">
+          <h3>Related interests:</h3>
+          <ul>
+            <g:each in="${relatedInterests}" var="interest">
+              <g:if test="${interest != null}">
+                <li>
+                  <g:link url="#/?nodeId=i_${interest.id}&navFunction=interest&interestId=${interest.id}">
+                    ${interest.text}
+                  </g:link>
+                </li>
+              </g:if>
+            </g:each>
 
-        </ul>
-      </div>
+          </ul>
+        </div>
+      </g:if>
       <div id="interest_people">
         <h3>People with this interest:</h3>
         <ul>

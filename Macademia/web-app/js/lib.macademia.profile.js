@@ -25,14 +25,16 @@ macademia.initializeModalRegister = function() {
       hoverIntentOpts: {interval: 100,
                         timeout: 1000}
   });
-  if($('#username')) $('#username').blur(function() {$('#pass').focus();});
-  if($('#pass')) $('#pass').blur(function() {$('#passConfirm').focus();});
+//  if($('#username')) $('#username').blur(function() {$('#pass').focus();});
+//  if($('#pass')) $('#pass').blur(function() {$('#passConfirm').focus();});
  // $('.password').pstrength();
-  $('.password').keyup();
+//  $('.password').keyup();
     nimble.createTip('usernamepolicybtn', 'Username Policy', 'Choose a good username');
     nimble.createTip('passwordpolicybtn', 'Password Policy', 'Choose a good password');
   $('#edit_profile_container form').submit(function() {
-      macademia.links.serialize();
+      $(this).serialize();
+      alert("hey");
+
       var a = new Array();
       var formData = $(this).serialize();
       a = formData.split('&');
@@ -47,8 +49,6 @@ macademia.initializeModalRegister = function() {
           alert("password is not long enough")
           formCheck=false;
       }
-
-      alert(pass);
       jQuery.ajax({
           url: '/Macademia/account/saveuser/',
           type: "POST",

@@ -411,10 +411,9 @@ h3#pf_dept_no_img {
 
 /* Styles that affect the account creation view*/
 
-#registerDialog .left {
+#registerDialog .registerLeft, #makeRequestDialog .registerLeft {
     border-top: 1px solid #D7D7D7;
-    padding: 10px;
-    text-align: right;
+    padding: 10px 10px 20px 10px;
     width: 160px;
     background-color: #FFFFEE;
 }
@@ -425,7 +424,7 @@ h3#pf_dept_no_img {
 
 .icon {
     position: absolute;
-    left: -1000px;
+    left: -9999px;
 }
 
 .registerRight input{
@@ -443,33 +442,52 @@ h3#pf_dept_no_img {
 	background:none repeat scroll 0 0 #FFFFFF;
 	border-top:1px solid #D7D7D7;
 	float:right;
-	padding:20px 10px;
+	padding:19px 10px;
 	width:400px;
 }
 
+#editInterests, #requestDescriptionBox, #requestKeywordsBox{
+    width:380px;
+}
+
+#formBox{
+    border-bottom: 1px solid #D7D7D7;
+}
+
 .profileImage{
-    width:195px;
-    float: left;
+    width:200px;
+    float:left;
 }
 
 .personLinks{
     float: right;
-    width: 395px;
+    width: 350px;
 }
 
 #other_info {
     width:600px;
-    margin:0px;
-    padding: 0px;
 }
 
+.linkField {
+    float:left;
+}
 
+.linkValue {
+    float:right;
+}
+
+.linkField input {
+    width:150px;
+}
+
+#submit_edits {
+}
 
 
 /* properties that affect the search bar and search view*/
 
 .moreSearchResults {
-    position: relative;                               4
+    position: relative;
     top: 5px;
 }
 
@@ -722,10 +740,10 @@ h3 {
     font-weight: bold;
 }
 
-.left label {
+.registerLeft label {
     font-size: 28px;
 }
-.left label span {
+.registerLeft label span {
     font-size: 12px;
     padding-top: 6px;
     font-family: Arial;
@@ -773,13 +791,13 @@ h3 {
 /**
  * Shilad's hacks to get the jqmodal looking better for development.
  */
-#edit_pf .left {
+#edit_pf .registerLeft, #makeRequestDialog .registerLeft{
     float: left;
 }
-#edit_pf .right {
+#edit_pf .right, #makeRequestDialog .registerRight {
     float: right;
 }
-#edit_pf .clear {
+#edit_pf .clear, #rfcForm .clear{
     clear: both;
 }
 
@@ -802,11 +820,11 @@ h3 {
 }
 
 .linkField {
-    width: 200px;
+    width: 170px;
 }
 
 .linkValue {
-    width: 200px;
+    width: 170px;
 }
 
 .customLinkTemplate {

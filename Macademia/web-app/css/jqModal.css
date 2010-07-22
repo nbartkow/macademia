@@ -25,11 +25,17 @@
 
 .jqmOverlay { background-color: #000; }
 
-#registerDialog.jqmWindow {
+#registerDialog.jqmWindow , #makeRequestDialog.jqmWindow{
     background-color: #FFF;
     -moz-border-radius: 0px;
     -webkit-border-radius: 0px;
     padding:0px;
+}
+
+#registerDialog.jqmWindow{
+    height:600px;
+    width:620px;
+    overflow:auto;
 }
 
 #filterDialog.jqmWindow {

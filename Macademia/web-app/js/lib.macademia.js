@@ -33,8 +33,9 @@ macademia.pageLoad = function() {
     macademia.initiateGraph();
     macademia.nav();
     macademia.autocomplete.initSearch();
-
-    macademia.setupModal("#registerDialog", "#registerButton", "account/modalcreateuser/", 'nimble-login-register', "macademia.initializeModalRegister()");    
+    macademia.toggleAccountControls();
+    macademia.setupModal("#registerDialog", "#registerButton", "account/modalcreateuser/", 'nimble-login-register', "macademia.initializeModalRegister()");
+    macademia.setupRequestCreation();
 };
 
 //sets macademia.queryString values and initial page settings
@@ -147,15 +148,17 @@ macademia.nav = function() {
         }
     });
     $("a").address(function() {
-        var url = $(this).attr('href');
-        if (url && url.length > 1) {
-            if (url.indexOf("#") == 0) {
-                macademia.changeQueryString(url);
-            } else {
-                $.address.value(url);
+        if(macademia.jit.refreshNeeded){
+            var url = $(this).attr('href');
+            if (url && url.length > 1) {
+                if (url.indexOf("#") == 0) {
+                    macademia.changeQueryString(url);
+                } else {
+                    $.address.value(url);
+                }
+                macademia.sortParameters($.address.parameter('navFunction'));
+                $.address.update();
             }
-            macademia.sortParameters($.address.parameter('navFunction'));
-            $.address.update();
         }
     });
     $('#searchForm').submit(function(){
@@ -393,4 +396,15 @@ macademia.htmlEncode = function(value){
 
 macademia.htmlDecode = function(value){ 
   return $('<div/>').html(value).text();
+}
+
+macademia.toggleAccountControls = function() {
+  $('#accountControlList').hide();
+  $('#toggleControls').click(function() {
+      $('#accountControlList').slideToggle();
+  })
+}
+
+macademia.setupRequestCreation = function() {
+    $("#makeRequestDialog").jqm({ajax: '/Macademia/request/create/', trigger:'#makeRequestButton',  modal: false});
 }
