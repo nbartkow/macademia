@@ -9,7 +9,7 @@ class GoogleService {
     ThreadLocal<Google> holder = new ThreadLocal<Google>()
 
     public List<String> query (String query, int maxResults) {
-        return query(query, maxResults, null)
+        return this.query(query, maxResults, null)
     }
     
     public List<String> query (String query, int maxResults, String ipAddress) {
