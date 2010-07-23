@@ -367,7 +367,7 @@ macademia.makeActionUrl = function(controller, action) {
 
 
 macademia.setupModal = function(modalDialog, trigger, url, depModule, fnString) {
-    $(modalDialog).jqm({modal: false});
+    $(modalDialog).jqm({modal: true});
     $(trigger).click(function(){
         $(modalDialog).load(
                 "/Macademia/" + url,
