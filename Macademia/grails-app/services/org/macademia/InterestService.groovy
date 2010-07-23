@@ -45,7 +45,7 @@ class InterestService implements ApplicationContextAware {
     }
 
     public void buildDocuments(Interest interest) {
-        buildDocuments(interest, null)
+        this.buildDocuments(interest, null)
     }
     
    /**
@@ -73,7 +73,7 @@ class InterestService implements ApplicationContextAware {
     }
 
     public void save(Interest interest) {
-        save(interest, null)
+        this.save(interest, null)
     }
     public void save(Interest interest, String ipAddr) {
         if (interest.id == null) {

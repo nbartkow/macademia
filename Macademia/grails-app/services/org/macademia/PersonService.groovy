@@ -26,7 +26,7 @@ class PersonService {
     }
 
     public void save(Person person){
-        save(person, null)
+        this.save(person, null)
     }
     public void save(Person person, String ipAddr){
         //Maps wrong interest to right interest
