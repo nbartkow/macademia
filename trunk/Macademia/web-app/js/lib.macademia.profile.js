@@ -8,6 +8,7 @@ var macademia = macademia || {};
 macademia.initializeModalRegister = function() {
   macademia.upload.init();
   macademia.links.init();
+  $("#registerDialog").jqmAddClose('#cancelAccountCreation');
   $("#passwordpolicy").hide();
   $("#passwordpolicybtn").bt({
       contentSelector: $("#passwordpolicy"),
@@ -32,8 +33,8 @@ macademia.initializeModalRegister = function() {
     nimble.createTip('usernamepolicybtn', 'Username Policy', 'Choose a good username');
     nimble.createTip('passwordpolicybtn', 'Password Policy', 'Choose a good password');
   $('#edit_profile_container form').submit(function() {
+      $(".warning").hide();
       $(this).serialize();
-      alert("hey");
 
       var a = new Array();
       var formData = $(this).serialize();
@@ -41,22 +42,56 @@ macademia.initializeModalRegister = function() {
       var pass = a[1].substring(5);
       var confirm = a[2].substring(12);
       var formCheck = true;
+
+      if (a[0].length < 10) {
+          $('#nameErrors').html("<b>Name must be provided to register</b>");
+          $('#nameErrors').show();
+          formCheck=false;
+      }
+
       if (pass!=confirm) {
-          alert("passwords don't match")
+          $("#passConfirmErrors").html("<b>Passwords do not match</b>");
+          $("#passConfirmErrors").show();
           formCheck=false;
       }
       if (pass.length<6) {
-          alert("password is not long enough")
+          $("#passErrors").html("<b>Password is not long enough</b>");
+          $("#passErrors").show();
+          formCheck=false;
+
+      }
+
+      if (a[3].length<7) {
+          $('#emailErrors').html("<b>Valid email must be provided to register</b>");
+          $('#emailErrors').show();
           formCheck=false;
       }
+
+      if (a[4].length<12) {
+          $('#deptErrors').html("<b>Department must be provided to register</b>");
+          $('#deptErrors').show();
+          formCheck=false;
+      }
+
+      if (!formCheck)
+      $('#registerDialog').animate({scrollTop:0}, 'slow');
+      
       jQuery.ajax({
           url: '/Macademia/account/saveuser/',
           type: "POST",
           data: $(this).serialize(),
           dataType: "text",
           success: function(data) {
-              alert('success: ' + data);
-
+              if (data.indexOf('Email') == 0) {
+                  $('#emailErrors').html("<b>" + data + "</b>");
+                  $('#emailErrors').show();
+                  $('#registerDialog').animate({scrollTop:0}, 'slow');
+              }
+              if (data.indexOf('You') == 0) {
+                  $('#passErrors').html("<b>" + data + "</b>");
+                  $('#passErrors').show();
+                  $('#registerDialog').animate({scrollTop:0}, 'slow');
+              }
 
           }
 
