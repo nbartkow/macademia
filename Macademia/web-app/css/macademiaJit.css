@@ -844,3 +844,14 @@ h3 {
 .customLinkTemplate {
     display: none;
 }
+
+/**
+ * Progress bar
+ */
+.progressBar {
+    display : none;
+    background-image: url(../images/pbar-ani.gif);
+}
+.progressBar span {
+    position : absolute;
+}

@@ -95,7 +95,7 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
                 //return
             } else {
 
-                personService.save(user.profile)
+                personService.save(user.profile, Utils.getIpAddress(request))
             }
         }
         else {
@@ -222,7 +222,7 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
                 if (params.interests){
                     interestParse(user)
                 }
-	            personService.save(user.profile)
+	            personService.save(user.profile, Utils.getIpAddress(request))
 	            log.info("Successfully updated details for user [$user.id]$user.username")
 	            flash.type = "success"
 	            flash.message = message(code: 'nimble.user.update.success', args: [user.username])

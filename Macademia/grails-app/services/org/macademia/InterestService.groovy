@@ -44,17 +44,20 @@ class InterestService implements ApplicationContextAware {
         wikipediaService.setCache(new File(fileDirectory+"wikipedia_cache.txt"))
     }
 
+    public void buildDocuments(Interest interest) {
+        buildDocuments(interest, null)
+    }
+    
    /**
     * Finds the most relevant document(s) for the interest
     * @param interest : an interest in the interest list
     * @param wikipedia : wikipedia
     * @param google : google
     */
-    public void buildDocuments(Interest interest) {
-
+    public void buildDocuments(Interest interest, String ipAddr) {
         log.info("doing interest ${interest}")
         double weight = 1.0
-        for (String url : googleService.query(interest.text, 1)) {
+        for (String url : googleService.query(interest.text, 1, ipAddr)) {
             weight *= 0.5;
             String articleName = wikipediaService.decodeWikiUrl(url)
             interest.articleId = databaseService.articleToId(articleName)
@@ -70,6 +73,9 @@ class InterestService implements ApplicationContextAware {
     }
 
     public void save(Interest interest) {
+        save(interest, null)
+    }
+    public void save(Interest interest, String ipAddr) {
         if (interest.id == null) {
             //no interest with text in db, new interest
             if (xSimilarityService == null) {
@@ -79,7 +85,7 @@ class InterestService implements ApplicationContextAware {
             Utils.safeSave(interest)
         }
         if (interest.articleId < 1 || interest.articleId == null) {
-            buildDocuments(interest)
+            buildDocuments(interest, ipAddr)
             if (xSimilarityService == null) {
                   xSimilarityService = applicationContext.getBean("similarityService")
             }

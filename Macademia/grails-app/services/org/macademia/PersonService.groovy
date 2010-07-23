@@ -26,6 +26,9 @@ class PersonService {
     }
 
     public void save(Person person){
+        save(person, null)
+    }
+    public void save(Person person, String ipAddr){
         //Maps wrong interest to right interest
         Map<Interest,Interest> remove = new HashMap<Interest,Interest>()
         //log.info("$person.interests[0]")
@@ -33,13 +36,13 @@ class PersonService {
         for(Interest interest in person.interests){
             // brand new interest
             if (interestService.findByText(interest.text) == null) {
-                interestService.save(interest)
+                interestService.save(interest, ipAddr)
             } // new interest, but .text of interest exists in database
               else if (interest.id == null) {
                 remove.put(interest,interestService.findByText(interest.text))
             } // existing interest
               else if (interest.lastAnalyzed == null) {
-                interestService.save(interest)
+                interestService.save(interest, ipAddr)
             }
         }
         for (Interest interest in remove.keySet()) {
@@ -55,6 +58,4 @@ class PersonService {
         databaseService.addUser(person)
         autocompleteService.addPerson(person)
     }
-
-
 }

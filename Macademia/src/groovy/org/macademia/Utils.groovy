@@ -5,7 +5,7 @@ import grails.util.Environment
 import org.apache.log4j.Logger
 import org.hibernate.SessionFactory
 import java.security.MessageDigest
-
+import javax.servlet.http.HttpServletRequest
 
 /**
  * Utility methods
@@ -44,5 +44,13 @@ class Utils {
        byte[] md5sum = digest.digest()
        BigInteger bigInt = new BigInteger(1, md5sum)
        return bigInt.toString(16).padLeft(32, "0")
+    }
+
+    public static String getIpAddress(HttpServletRequest request) {
+        String ipAddr = request.getHeader("X-Forwarded-For")
+        if (ipAddr == null) {
+            ipAddr = request.getRemoteAddr()
+        }
+        return ipAddr
     }
 }

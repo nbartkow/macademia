@@ -71,6 +71,7 @@
     </div>
     <br clear=left>
     <br clear=left>
+    <div class="progressBar"><span></span></div> 
     <div class="clear center" id="submit_edits"><button class="button icon_user" type="submit"><g:message code="nimble.link.registeraccount"/></button> or <a href="#" id="cancelAccountCreation">Cancel</a></div>
   </form>
 </div>

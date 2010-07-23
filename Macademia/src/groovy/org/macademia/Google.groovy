@@ -44,12 +44,17 @@ public class  Google {
          cache = new DiskMap(file)
     }
 
+
+    public List<String> query(String query, int maxResults) throws IOException, JSONException {
+        return this.query(query, maxResults, null);
+    }
+
     /**
      * Returns a list of urls matching the specified query.
      * @param query The textual query.
      * @param maxResults the maximum number of results to return.
      */
-    public List<String> query(String query, int maxResults) throws IOException, JSONException {
+    public List<String> query(String query, int maxResults, String ipAddress) throws IOException, JSONException {
         // Convert spaces to +, etc. to make a valid URL
         query = URLEncoder.encode(query, "UTF-8");
         if (cache != null && cache.contains(query)) {
@@ -57,7 +62,11 @@ public class  Google {
         }
 
 
-        URL url = new URL(API_PREFIX + query + "+site:" + site);
+        String userIpSuffix = "";
+        if (ipAddress) {
+            userIpSuffix = "&userip=" + ipAddress;
+        }
+        URL url = new URL(API_PREFIX + query + "+site:" + site + userIpSuffix);
         URLConnection connection = url.openConnection();
         connection.addRequestProperty("Referer", referrer);
 
