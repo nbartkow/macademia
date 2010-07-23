@@ -14,6 +14,10 @@ class CollaboratorRequestService {
     def get(long id) {
         return CollaboratorRequest.get(id)
     }
+    
+    public void save(CollaboratorRequest cr) {
+        this.save(cr, null)
+    }
 
     public void save(CollaboratorRequest cr, String ipAddr) {
         //Maps wrong interest to right interest
