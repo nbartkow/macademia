@@ -82,7 +82,7 @@ class RequestController {
                 }
             }
         }
-        collaboratorRequestService.save(collaboratorRequest)
+        collaboratorRequestService.save(collaboratorRequest, Utils.getIpAddress(request))
         autocompleteService.addRequest(collaboratorRequest)
         redirect(uri: "/")
         [collaboratorRequest: collaboratorRequest]

@@ -8,7 +8,7 @@ var macademia = macademia || {};
 macademia.initializeModalRegister = function() {
   macademia.upload.init();
   macademia.links.init();
-  $("#registerDialog").jqmAddClose('#cancelAccountCreation');
+  macademia.initAnalyzeInterests();
   $("#passwordpolicy").hide();
   $("#passwordpolicybtn").bt({
       contentSelector: $("#passwordpolicy"),
@@ -33,7 +33,6 @@ macademia.initializeModalRegister = function() {
     nimble.createTip('usernamepolicybtn', 'Username Policy', 'Choose a good username');
     nimble.createTip('passwordpolicybtn', 'Password Policy', 'Choose a good password');
   $('#edit_profile_container form').submit(function() {
-      $(".warning").hide();
       $(this).serialize();
 
       var a = new Array();
@@ -73,15 +72,28 @@ macademia.initializeModalRegister = function() {
           formCheck=false;
       }
 
-      if (!formCheck)
-      $('#registerDialog').animate({scrollTop:0}, 'slow');
-      
-      jQuery.ajax({
+      if (formCheck) {
+          $("#submit_edits").hide();
+          var interests = $('#editInterests').val().split(',');
+          macademia.analyzeInterests(interests, 0, $("#edit_profile_container .progressBar"), macademia.saveUserProfile);
+      } else {
+          $('#registerDialog').animate({scrollTop:0}, 'slow');  
+      }
+      return false;
+  });
+};
+
+macademia.saveUserProfile = function() {
+   jQuery.ajax({
           url: '/Macademia/account/saveuser/',
           type: "POST",
-          data: $(this).serialize(),
+          data: $('#edit_profile_container form').serialize(),
           dataType: "text",
           success: function(data) {
+              if (data == 'okay') {
+                    window.location.reload();                   
+              }
+              macademia.initAnalyzeInterests();
               if (data.indexOf('Email') == 0) {
                   $('#emailErrors').html("<b>" + data + "</b>");
                   $('#emailErrors').show();
@@ -92,13 +104,45 @@ macademia.initializeModalRegister = function() {
                   $('#passErrors').show();
                   $('#registerDialog').animate({scrollTop:0}, 'slow');
               }
-
+          }, 
+          error: function(request, status, errorThrown) {
+              macademia.initAnalyzeInterests();
+              alert('error occurred when saving user: ' + status + ', ' + errorThrown);
+              return;
           }
-
       });
-      return false;
-  });
+};
 
+macademia.initAnalyzeInterests = function() {
+    $("#submit_edits").show();      // in case we are recovering from a submission error.
+    $(".progressBar").hide();
+    $(".progressBarCaption").hide();
+    $(".progressBar").progressbar({ value : 10});
+};
+
+macademia.analyzeInterests = function(interests, index, progressBar, callback) {
+    if (index >= interests.length) {
+        return callback();
+    }
+    progressBar.show();
+    var i = interests[index];
+    progressBar.progressbar('value', 100 * (index+1) / interests.length);
+    progressBar.find("span").text("learning about '" + i + "'");
+    jQuery.ajax({
+          url: '/Macademia/interest/analyze/',
+          type: "POST",
+          data: {interest : i},
+          dataType: "text",
+          success: function(data) {
+              var relatedPage = data;   // not using this for now.
+              return macademia.analyzeInterests(interests, index+1, progressBar, callback);
+          },
+          error: function(request, status, errorThrown) {
+              macademia.initAnalyzeInterests();
+              alert('error occurred when processing interest ' + i + ': ' + status + ', ' + errorThrown);
+              return;
+          }
+      });
 };
 
 macademia.loginShowHide = function() {
@@ -107,7 +151,6 @@ macademia.loginShowHide = function() {
 			$("#login").slideToggle();
 		});
 };
-
 
 // Code for managing the links on the edit page.
 macademia.links = {};

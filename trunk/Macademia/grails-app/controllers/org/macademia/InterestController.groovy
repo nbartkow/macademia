@@ -73,4 +73,17 @@ class InterestController {
         }
     }
 
+    def analyze = {
+        if (!params.interest) {
+            render('unknown')
+        } else {
+            Interest interest = interestService.findByText(params.interest)
+            if (interest == null) {
+                interest = new Interest(params.interest)
+                interestService.save(interest, Utils.getIpAddress(request))
+            }
+            render(interest.articleName)
+        }
+    }
+
 }
