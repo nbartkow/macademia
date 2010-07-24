@@ -18,6 +18,8 @@
  * Use consistent vertical dividers on the right hand nav
  * Bold the root node by default
  * Add "edit profile" links to person view on right nav when relevant
+ * Hyperlinks: underlined or not (college filter is, others aren't).
+ * Tooltip emails should be clickable.
 
 =Bugs=
  * Profile images
