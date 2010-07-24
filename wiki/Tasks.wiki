@@ -1,28 +1,33 @@
-== Login tasks ==
-  * Login for faculty
-  * Login for administrators
+=Design Tweaks=
+ * Fonts:
+    * Consolidate fonts to (ideally) three different sizes. 
+    * Decrease number of other treatments.
+ * Update jquery-ui themes.
+ * Add "corporate" links:
+    * Powered by google
+    * Tagline
+    * Something with Shilad and Macalester College, funded by....
+ * Should logout / more shift to left edge of right nav?  It's strange when it drops down on left side.
+ * Reduce size of filter by institution dialog
+ * Change password (low priority)
+ * Edit profile:
+    * Add unscrollable div top and bottom
+    * Fix spacing
+    * Should "cancel" be a button?
+    * Use jquery-ui button for register?    
+ * Use consistent vertical dividers on the right hand nav
+ * Bold the root node by default
+ * Add "edit profile" links to person view on right nav when relevant
 
-== User Profile tasks ==
-  === New user profile interface ===
-      * User inputted user information
-      * Hyperlinks to users' profiles on other internet site (e.g: Facebook)
-      * Teaching and research areas
+=Bugs=
+ * Profile images
+ * Update profile
+ * Update collaborator request
+ * Interest autocomplete
 
-  === Edit user profile interface ===
-
-== Collab Advertisement ===
-  * Advertisement interface 
-  * Proposal interface 
-
-
-== Algorithms ==
-   * Interest similarity algorithm
-
-== Interface ==
-  * Create links to profile editing, adding collaborator requests, etc. for logged in users
-  * Sidebar page for interests
-
-  === Search ===
-  * Implement way of selecting filtered/non-filtered search results
-  * Implement way of managing searches with a large number of results
-  
+=Misc=
+ * Tagline
+ * Cut over to new database
+ * Test on IE
+ * Speed up first half of the animation
+ * 
