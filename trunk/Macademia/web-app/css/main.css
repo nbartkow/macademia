@@ -294,28 +294,3 @@ th.desc a {
     background: transparent url(../images/skin/database_save.png) 5px 50% no-repeat;
     padding-left: 28px;
 }
-
-/**
- * Image uploader configuration
- */
-.editPicture {
-    margin-top : 10px;
-    float : right;
-    font-size : 14px;
-    text-align : center;
-    line-height : 16px;
-}
-.editPicture .links {
-    position : relative;
-}
-.editPicture .links a {
-    z-index : -1;
-}
-#imgUploaderUploader {
-    position : absolute;
-    top : 0px;
-    left : 0px;
-    width : 100px;
-    height : 25px;
-    z-index : 100;
-}

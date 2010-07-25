@@ -12,6 +12,8 @@
       <div id="nameErrors" class="warning">
       </div>
 
+      <g:if test="${!user.id}">  %{-- Handle new users differently--}%
+
       <div class="registerRight value ${hasErrors(bean: user, field: 'pass', 'errors')}"><input type="password" name="pass" id="pass" class="textInput password easyinput" value="${user.pass?.encodeAsHTML()}"/></div>
       <div class="registerLeft"><label for="pass">Password<span>You can change your password here.</span></label></div>
       <div class="clear"></div>
@@ -33,6 +35,8 @@
       <div id="emailErrors" class="warning">
       </div>
 
+      </g:if>
+
       <div class="registerRight value ${hasErrors(bean: user, field: 'profile.department', 'errors')}"><input type="text" id="department" class="textInput easyinput" name="department" value="${user.profile?.department?.encodeAsHTML()}"/></div>
       <div class="registerLeft"><label for="department">Department<span>lorem ipsum</span></label></div>
       <div class="clear"></div>
@@ -40,7 +44,7 @@
       <div id="deptErrors" class="warning">
       </div>
 
-      <div class="registerRight"><textarea id="editInterests" class="textInput easyInput" name="interests" value="${user.profile?.interests?.encodeAsHTML()}" cols="20" rows="3"></textarea></div>
+      <div class="registerRight"><textarea id="editInterests" class="textInput easyInput" name="interests" cols="20" rows="3">${interests?.encodeAsHTML()}</textarea></div>
       <div class="registerLeft"><label for="editInterests">Interests<span>List your research interests, separated by commas.</span></label></div>
       <div class="clear"></div>
       
@@ -72,6 +76,10 @@
     <br clear=left>
     <br clear=left>
     <div class="progressBar"><span></span></div> 
-    <div class="clear center" id="submit_edits"><button class="button icon_user" type="submit"><g:message code="nimble.link.registeraccount"/></button> or <a href="#" id="cancelAccountCreation">Cancel</a></div>
+    <div class="clear center" id="submit_edits">
+      <button class="button icon_user" type="submit">
+        <g:if test="${user.id}">update</g:if><g:else>create</g:else>
+      </button> or
+      <a href="#" id="cancelAccountCreation">Cancel</a></div>
   </form>
 </div>

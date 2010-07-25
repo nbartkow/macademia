@@ -26,48 +26,46 @@ macademia.initializeModalRegister = function() {
       hoverIntentOpts: {interval: 100,
                         timeout: 1000}
   });
-//  if($('#username')) $('#username').blur(function() {$('#pass').focus();});
-//  if($('#pass')) $('#pass').blur(function() {$('#passConfirm').focus();});
- // $('.password').pstrength();
-//  $('.password').keyup();
-    nimble.createTip('usernamepolicybtn', 'Username Policy', 'Choose a good username');
-    nimble.createTip('passwordpolicybtn', 'Password Policy', 'Choose a good password');
+
   $('#edit_profile_container form').submit(function() {
       $(this).serialize();
+      macademia.links.serialize();
 
-      var a = new Array();
-      var formData = $(this).serialize();
-      a = formData.split('&');
-      var pass = a[1].substring(5);
-      var confirm = a[2].substring(12);
+      var name = $(this).find('[name=fullName]').val();
+      var pass = $(this).find('[name=pass]').val();
+      var confirm = $(this).find('[name=passConfirm]').val();
+      var email = $(this).find('[name=email]').val();
+      var department = $(this).find('[name=department]').val();
       var formCheck = true;
 
-      if (a[0].length < 10) {
-          $('#nameErrors').html("<b>Name must be provided to register</b>");
+      if (name.length < 5) {
+          $('#nameErrors').html("<b>Name must be provided</b>");
           $('#nameErrors').show();
           formCheck=false;
       }
 
-      if (pass!=confirm) {
-          $("#passConfirmErrors").html("<b>Passwords do not match</b>");
-          $("#passConfirmErrors").show();
-          formCheck=false;
-      }
-      if (pass.length<6) {
-          $("#passErrors").html("<b>Password is not long enough</b>");
-          $("#passErrors").show();
-          formCheck=false;
+      // If we are in edit profile skip password and email
+      if (macademia.isNewUser()) {
+          if (pass!=confirm) {
+              $("#passConfirmErrors").html("<b>Passwords do not match</b>");
+              $("#passConfirmErrors").show();
+              formCheck=false;
+          }
+          if (pass.length<6) {
+              $("#passErrors").html("<b>Password must be at least six characters</b>");
+              $("#passErrors").show();
+              formCheck=false;
 
+          }
+          if (email.length<5) {
+              $('#emailErrors').html("<b>Valid email must be provided</b>");
+              $('#emailErrors').show();
+              formCheck=false;
+          }
       }
 
-      if (a[3].length<7) {
-          $('#emailErrors').html("<b>Valid email must be provided to register</b>");
-          $('#emailErrors').show();
-          formCheck=false;
-      }
-
-      if (a[4].length<12) {
-          $('#deptErrors').html("<b>Department must be provided to register</b>");
+      if (department.length<3) {
+          $('#deptErrors').html("<b>Department must be provided</b>");
           $('#deptErrors').show();
           formCheck=false;
       }
@@ -83,9 +81,17 @@ macademia.initializeModalRegister = function() {
   });
 };
 
+/**
+ * Returns true if we are showing the create user dialog, false otherwise.
+ */
+macademia.isNewUser = function() {
+    return $('#edit_profile_container form').find('[name=pass').is(':visibile');
+};
+
 macademia.saveUserProfile = function() {
+   var url = '/Macademia/account/' + (macademia.isNewUser() ? 'saveuser' : 'updateuser');
    jQuery.ajax({
-          url: '/Macademia/account/saveuser/',
+          url: url,
           type: "POST",
           data: $('#edit_profile_container form').serialize(),
           dataType: "text",
@@ -166,21 +172,29 @@ macademia.links.init = function() {
 macademia.links.addNewLink = function(linkName, linkUrl) {
     var newDiv = $(".personLinks .customLinkTemplate").clone();
     newDiv.removeClass("customLinkTemplate");
+     if (linkName) {
+        newDiv.find('.linkField input').val(linkName);
+    }
+    if (linkUrl) {
+        newDiv.find('.linkValue input').val(linkUrl);
+    }
+
     $(".personLinks .example").before(newDiv);
+
     newDiv.find(".removeLink").click(
                 function () {
                     $(this).parent().parent().remove();
                     return false;
                 }
             );
+    newDiv.find('.clearDefault').clearDefault();
     newDiv.show();
-    newDiv.find(' .clearDefault').clearDefault();
     return false;
 };
 
 macademia.links.serialize = function() {
     var linkStr = "";
-    $(".personLinks .standardLink,.customLink").each(function () {
+    $(".personLinks .customLink").each(function () {
         var name;
         // handles custom and default named fields separately.
         if ($(this).find('.linkField input').length > 0) {
@@ -189,15 +203,22 @@ macademia.links.serialize = function() {
             name = $(this).find('.linkField').html();
         }
         var value= $(this).find('.linkValue input').val();
-        if (value && value != (this).find('.linkValue input').attr('defaultvalue')) {
+        if (value && value != $(this).find('.linkValue input').attr('prompt')) {
             linkStr += "<li><a href=\"" + encodeURI(value) + "\">";
             linkStr += macademia.htmlEncode(name) + "</a>\n";
         }
     });
-    alert('setting value to ' + linkStr);
-    $("#edit_pf input[name='links']").val(linkStr);
+    $("#edit_profile_container input[name='links']").val(linkStr);
 };
 macademia.links.deserialize = function() {
-    var linksStr =$("#edit_pf input[name='links']").val();
-    var linksDom = $(linksStr);
+    try {
+    var linksStr =$("#edit_profile_container input[name='links']").val();
+    $(linksStr).find('a').each(
+        function() {
+            macademia.links.addNewLink($(this).text(), decodeURI($(this).attr('href')));
+        });
+    } catch (err) {
+        alert('error during link deserialization: ' + err);
+    }
+
 };
