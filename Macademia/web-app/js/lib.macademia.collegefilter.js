@@ -107,15 +107,15 @@ macademia.changeCollegeString = function(institutionNames){
     console.log(institutionNames);
     var results = "";
     if(institutionNames.length == $(".college").size() || institutionNames[0] == 'all'){
-        results = 'Showing <b>all institutions</b>. <div><a href="#" id="collegeFilterTrigger">(filter by institution)</a></div>';
+        results = 'Showing <b>all institutions</b>. <div>(<a href="#" id="collegeFilterTrigger">filter by institution</a>)</div>';
     }else if(institutionNames.length == 1){
-        results= ('Showing <b>' + institutionNames[0] + '</b>. <div><a href="#/?institutions=all" class="showAllInstitutions">(show all institutions)</a> | <a href="#" id="collegeFilterTrigger">(change filter)</a></div>');
+        results= ('Showing <b>' + institutionNames[0] + '</b>. <div>(<a href="#/?institutions=all" class="showAllInstitutions">show all institutions</a>) | (<a href="#" id="collegeFilterTrigger">change filter</a>)</div>');
     }else if(institutionNames.length == 2){
-        results= ('Showing <b>' + institutionNames[0] + " and " + institutionNames[1] + '</b>. <div><a href="#/?institutions=all" class="showAllInstitutions">(show all institutions)</a>');
+        results= ('Showing <b>' + institutionNames[0] + " and " + institutionNames[1] + '</b>. <div>(<a href="#/?institutions=all" class="showAllInstitutions">show all institutions</a>)');
     }else if(institutionNames.length == 3){
-        results= ('Showing <b>' + institutionNames[0] + ", " + institutionNames[1] + ", and " + institutionNames[2] + '</b>. <div><a href="#/?institutions=all" class="showAllInstitutions">(show all institutions)</a> | <a href="#" id="collegeFilterTrigger">(change filter)</a></div>');
+        results= ('Showing <b>' + institutionNames[0] + ", " + institutionNames[1] + ", and " + institutionNames[2] + '</b>. <div>(<a href="#/?institutions=all" class="showAllInstitutions">show all institutions</a>) | (<a href="#" id="collegeFilterTrigger">change filter</a>)</div>');
     }else if(institutionNames.length > 3){
-        results= ('Showing <b>' + institutionNames[0] + ", " + institutionNames[1] + ", and " + (institutionNames.length - 2) + " others" + '</b>. <div><a href="#/?institutions=all" class="showAllInstitutions">(show all institutions)</a> | <a href="#" id="collegeFilterTrigger">(change filter)</a></div>');
+        results= ('Showing <b>' + institutionNames[0] + ", " + institutionNames[1] + ", and " + (institutionNames.length - 2) + " others" + '</b>. <div>(<a href="#/?institutions=all" class="showAllInstitutions">show all institutions</a>) | (<a href="#" id="collegeFilterTrigger">change filter</a>)</div>');
     }
     if (results != ""){
         $("#collegeFilterButton").html(results);

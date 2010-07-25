@@ -165,7 +165,7 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
         user.passConfirm = ""
     }
 
-    def editprofile = {
+    def modaledituser = {
         User user = null;
         if (!params.id){
             user = User.get(authenticatedUser.id)
@@ -187,53 +187,45 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
             log.info("Editing user [$user.id]$user.username")
             def fields = grailsApplication.config.nimble.fields.enduserEdit.user
             user.properties[fields] = params
-            def String allInterests = ""
-            for (interest in user.profile.interests){
-                allInterests += interest.text+" ,"
-            }
+            String allInterests = user.profile.interests.collect({it.text}).join(', ')
             log.info(allInterests)
-            [user: user, allInterests: allInterests]
+            return render(view: 'modalcreateuser', model: [user: user, interests : allInterests])
 	    }
     }
 
     def updateuser = {
         def user
-        if(!params.id){
-            user = get(authenticatedUser.id)
-        }
-        else{
+        if(params.id){
             user = User.get(params.id)
+            if (user.id != authenticatedUser.id && !userService.isAdmin(authenticatedUser, user)){
+                redirect(controller: 'auth', action:'unauthorized')
+            }
+        } else{
+            user = User.get(authenticatedUser.id)
         }
         if (!user) {
             log.warn("User identified by id '$params.id' was not located")
             flash.type = "error"
             flash.message = message(code: 'nimble.user.nonexistant', args: [params.id])
             redirect action: editprofile, id: params.id
-        }
-	    else {
+        } else {
             def fields = grailsApplication.config.nimble.fields.enduserEdit.user
+            println('fields are ' + fields);
+            println('params are ' + params)
             user.profile.properties[fields] = params
+            println('email is ' + user.profile.email)
             //password check
             if (!user.validate()) {
                 log.debug("Updated details for user [$user.id]$user.username are invalid")
                 render view: 'edit', model: [user: user]
-            }
-            else {
+            } else {
                 if (params.interests){
                     interestParse(user)
                 }
 	            personService.save(user.profile, Utils.getIpAddress(request))
 	            log.info("Successfully updated details for user [$user.id]$user.username")
-	            flash.type = "success"
-	            flash.message = message(code: 'nimble.user.update.success', args: [user.username])
-	            if (userService.isAdmin(authenticatedUser)){
-                    redirect controller: 'user', action: 'show', id: user.id
-                } else {
-	            redirect(uri:'/')
-	        }
-                //redirect(uri:'/')
-                // postponing - if authenticatedUser is ADMIN_ROLE, bring him back to general admin controls?
-	    }
+                render('okay')
+            }
 	    }
 
     }

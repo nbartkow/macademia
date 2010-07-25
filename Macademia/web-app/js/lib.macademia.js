@@ -35,6 +35,7 @@ macademia.pageLoad = function() {
     macademia.autocomplete.initSearch();
     macademia.toggleAccountControls();
     macademia.setupModal("#registerDialog", "#registerButton", "account/modalcreateuser/", 'nimble-login-register', "macademia.initializeModalRegister()");
+    macademia.setupModal("#registerDialog", "#accountControlList .editProfile", "account/modaledituser", 'nimble-login-register', "macademia.initializeModalRegister()");
     macademia.setupRequestCreation();
 };
 
@@ -108,7 +109,9 @@ $.fn.clearDefault = function() {
                     $(this).val($(this).attr('prompt'));
                 }
             });
-            $(this).val($(this).attr('prompt'));
+            if (!$(this).val()) {
+                $(this).val($(this).attr('prompt'));
+            }
         });
     return this;
 };
@@ -367,7 +370,9 @@ macademia.makeActionUrl = function(controller, action) {
 
 
 macademia.setupModal = function(modalDialog, trigger, url, depModule, fnString) {
-    $(modalDialog).jqm({modal: true});
+//    if (!$(modalDialog).hasClass("jqmWindow")) {
+        $(modalDialog).jqm({modal: true});
+//    }
     $(trigger).click(function(){
         $(modalDialog).load(
                 "/Macademia/" + url,

@@ -8,7 +8,7 @@ macademia.upload = {};
 macademia.upload.complete = function(event, queueId, fileObj, response, data) {
     var path = response;
     $(".editPicture img").attr("src", '/Macademia/images/db/large/' + path);
-    $(".editPicture input[name='imageSubpath']").attr('value', path);
+    $(".editPicture input[name='imageSubpath']").val(path);
     macademia.upload.updateCaptions();
     return true;
 };

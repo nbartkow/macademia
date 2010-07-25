@@ -19,10 +19,10 @@
         <ul id="accountControlList" class="left">
           <n:hasRole name="${UserService.USER_ROLE}">
             <li>
-              <g:link controller="account" action="edit" class="icon_user_go">Edit Profile</g:link>
+              <a href="#" class="editProfile">Edit profile</a>
             </li>
             <li>
-              <g:link controller="account" action="changepassword"><g:message code="nimble.link.changepassword"/></g:link>
+              <g:link controller="account" action="changepassword">Change password</g:link>
             </li>
             <li>
               <a href="#" id="makeRequestButton">Create request for collaboration</a>
