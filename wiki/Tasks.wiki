@@ -31,5 +31,5 @@
  * Tagline
  * Cut over to new database
  * Test on IE
- * Speed up first half of the animation
+ * ~~Speed up first half of the animation~~
  * 
