@@ -14,12 +14,12 @@
     * ~~Add unscrollable div top and bottom~~
     * Fix spacing
     * Should "cancel" be a button?
-    * Use jquery-ui button for register?    
- * Use consistent vertical dividers on the right hand nav
+    * Use jquery-ui button for register?   
+ * ~~Use consistent vertical dividers on the right hand nav~~(initial instructions still use a different divider, but that is only shown on the 'home page load', and I felt it looks best with it's current divider)
  * Bold the root node by default
  * Add "edit profile" links to person view on right nav when relevant
  * ~~Hyperlinks: underlined or not (college filter is, others aren't).~~
- *  ~~Tooltip emails should be clickable.~~
+ * ~~Tooltip emails should be clickable.~~
 
 =Bugs=
  * Profile images
