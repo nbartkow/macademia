@@ -1,8 +1,8 @@
 =Design Tweaks=
  * Fonts:
-    * Consolidate fonts to (ideally) three different sizes. 
-    * Decrease number of other treatments.
- * Update jquery-ui themes.
+    * ~~Consolidate fonts to (ideally) three different sizes.~~ 
+    * ~~Decrease number of other treatments.~~
+ * ~~Update jquery-ui themes.~~
  * Add "corporate" links:
     * Powered by google
     * Tagline
@@ -11,19 +11,19 @@
  * Reduce size of filter by institution dialog
  * Look of change password (low priority)
  * Edit profile:
-    * Add unscrollable div top and bottom
+    * ~~Add unscrollable div top and bottom~~
     * Fix spacing
     * Should "cancel" be a button?
     * Use jquery-ui button for register?    
  * Use consistent vertical dividers on the right hand nav
  * Bold the root node by default
  * Add "edit profile" links to person view on right nav when relevant
- * Hyperlinks: underlined or not (college filter is, others aren't).
+ * ~~Hyperlinks: underlined or not (college filter is, others aren't).~~
  *  ~~Tooltip emails should be clickable.~~
 
 =Bugs=
  * Profile images
- * Update profile
+ * ~~Update profile~~
  * Update collaborator request
  * Interest autocomplete
 
