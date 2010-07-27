@@ -13,7 +13,7 @@
  * Edit profile:
     * ~~Add unscrollable div top and bottom~~
     * Fix spacing
-    * Should "cancel" be a button?
+    * ~~Should "cancel" be a button?~~
     * Use jquery-ui button for register?   
  * ~~Use consistent vertical dividers on the right hand nav~~(initial instructions still use a different divider, but that is only shown on the 'home page load', and I felt it looks best with it's current divider)
  * Bold the root node by default
