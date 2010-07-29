@@ -4,9 +4,10 @@
     * ~~Decrease number of other treatments.~~
  * ~~Update jquery-ui themes.~~
  * Add "corporate" links:
-    * Powered by google
-    * Tagline
-    * Something with Shilad and Macalester College, funded by....
+    * Tagline: Connecting colleagues with shared interests. (put this under logo?)
+    * Other information: Macademia is developed by students at Macalester College under the direction of Shilad Sen.  The project is funded by Macalester College, the National Science Foundation, and The Associated Colleges of the Midwest.
+    * Links: about, feedback, privacy, code
+
  * ~~Should logout / more shift to left edge of right nav?  It's strange when it drops down on left side.~~
  * ~~Reduce size of filter by institution dialog~~
  * Look of change password (low priority)
