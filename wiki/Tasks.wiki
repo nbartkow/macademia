@@ -7,8 +7,8 @@
     * Powered by google
     * Tagline
     * Something with Shilad and Macalester College, funded by....
- * Should logout / more shift to left edge of right nav?  It's strange when it drops down on left side.
- * Reduce size of filter by institution dialog
+ * ~~Should logout / more shift to left edge of right nav?  It's strange when it drops down on left side.~~
+ * ~~Reduce size of filter by institution dialog~~
  * Look of change password (low priority)
  * Edit profile:
     * ~~Add unscrollable div top and bottom~~
