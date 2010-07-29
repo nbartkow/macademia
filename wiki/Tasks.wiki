@@ -1,30 +1,19 @@
 =Design Tweaks=
  * Fonts:
-    * ~~Consolidate fonts to (ideally) three different sizes.~~ 
-    * ~~Decrease number of other treatments.~~
- * ~~Update jquery-ui themes.~~
  * Add "corporate" links:
     * Tagline: Connecting colleagues with shared interests. (put this under logo?)
     * Other information: Macademia is developed by students at Macalester College under the direction of Shilad Sen.  The project is funded by Macalester College, the National Science Foundation, and The Associated Colleges of the Midwest.
     * Links: about, feedback, privacy, code
 
- * ~~Should logout / more shift to left edge of right nav?  It's strange when it drops down on left side.~~
  * ~~Reduce size of filter by institution dialog~~
  * Look of change password (low priority)
  * Edit profile:
-    * ~~Add unscrollable div top and bottom~~
     * Fix spacing
-    * ~~Should "cancel" be a button?~~
-    * Use jquery-ui button for register?   
- * ~~Use consistent vertical dividers on the right hand nav~~(initial instructions still use a different divider, but that is only shown on the 'home page load', and I felt it looks best with it's current divider)
- * ~~Bold the root node by default~~
+    * Use jquery-ui button for register?
  * Add "edit profile" links to person view on right nav when relevant
- * ~~Hyperlinks: underlined or not (college filter is, others aren't).~~ (all are now underlined only when hovered over)
- * ~~Tooltip emails should be clickable.~~
 
 =Bugs=
  * Profile images
- * ~~Update profile~~
  * Update collaborator request
  * Interest autocomplete
 
@@ -32,5 +21,3 @@
  * Tagline
  * Cut over to new database
  * Test on IE
- * ~~Speed up first half of the animation~~
- * 
