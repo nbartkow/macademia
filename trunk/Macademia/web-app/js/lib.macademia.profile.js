@@ -25,9 +25,15 @@ macademia.initializeModalRegister = function() {
       spikeLength:9,
       hoverIntentOpts: {interval: 100,
                         timeout: 1000}
-  });
+  })
+      
+          ;
 
-  $('#edit_profile_container form').submit(function() {
+    $("#cancelAccountCreation").click(function() {
+       $("#registerDialog").jqmHide(); 
+    })
+
+    $('#edit_profile_container form').submit(function() {
       $(this).serialize();
       macademia.links.serialize();
 

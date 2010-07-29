@@ -6,8 +6,8 @@
 	
 .jqmWindow {
     display: none;
-    -moz-border-radius:5px 5px 5px 5px;
-    -webkit-border-radius: 5px;
+    /*-moz-border-radius:5px 5px 5px 5px;*/
+    /*-webkit-border-radius: 5px;*/
     
     
     position: fixed;
@@ -33,13 +33,12 @@
 }
 
 #registerDialog.jqmWindow{
-    height:600px;
-    width:616px;
-    overflow:auto;
+    height:651px;
+    width:615px;
 }
 
 #filterDialog.jqmWindow {
-    width:400px;
+    width:250px;
     margin-left: -100px;
 }
 

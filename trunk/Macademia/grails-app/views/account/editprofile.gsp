@@ -1,34 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: jeremy
-  Date: Jun 22, 2010
-  Time: 10:13:53 AM
-  To change this template use File | Settings | File Templates.
---%>
-
-<html>
-
-<head>
-  <meta name="layout" content="userCreate"/>
-  %{--<meta name="layout" content="${grailsApplication.config.nimble.layout.application}"/>--}%
-  <title><g:message code="Edit Profile" /></title>
-  <link rel="stylesheet" href="${resource(dir: 'css', file: 'style_editprofile.css')}"/>
-  <g:javascript library="jquery"/>
-
-<!-- Jquery-UI for autocomplete, etc. -->
-<link type="text/css" rel="stylesheet" href="${createLinkTo(dir:"css",file:"ui-lightness/jquery-ui-1.8.2.custom.css")}">
-  <g:javascript src="jquery/jquery-ui-1.8.2.custom.min.js"/>
-  <g:javascript src="lib.macademia.js"/>
-  <g:javascript src="lib.macademia.autocomplete.js"/>
-</head>
-
-<body>
-<div id = main>
-<div id = page>
-  <div id="editProfile"><h1>Edit Profile</h1>
-  </div>
-  <div id = editAccountInformationDiv>
-  <h2><g:message code="Account Information" /></h2>
   <n:errors bean="${user}"/>
   <n:errors bean="${user.profile}"/>
 <div id = editAccountInformation>
@@ -75,16 +44,9 @@
 
   </g:form>
     </div>
-    </div>
 
   <script type="text/javascript">
     nimble.createTip('usernamepolicybtn','<g:message code="nimble.template.usernamepolicy.title" />','<g:message code="nimble.template.usernamepolicy" encodeAs="JavaScript"/>');
     nimble.createTip('passwordpolicybtn','<g:message code="nimble.template.passwordpolicy.title" />','<g:message code="nimble.template.passwordpolicy" encodeAs="JavaScript"/>');
   </script>
 
-</div>
-</div>
-
-</body>
-
-</html>

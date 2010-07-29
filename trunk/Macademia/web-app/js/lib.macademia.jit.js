@@ -69,13 +69,15 @@ macademia.jit.highlightAdjacenciesOff = function(node){
 
     for (var i = 0; i < adjacentNodes.length; i++){
         var adjN = "#" + adjacentNodes[i];
-        $(adjN).css('font-weight', 'normal');
+        if(root.id != $(adjN).attr('id')){
+            $(adjN).css('font-weight', 'normal');
+        }
         $(adjN).css('opacity', 0.8);
         $(adjN).css('z-index', 10);
         $(adjN).css('background-color','transparent');
     }
 };
-            
+
 macademia.jit.init = function(rootType,id){
     macademia.checkBrowser();
 
@@ -94,8 +96,8 @@ macademia.jit.init = function(rootType,id){
             'injectInto': 'infovis',
             'width': 680,
            'height': 660,
-            'duration' : 300,
-            'fps' : 20,
+            'duration' : 1000,
+            'fps' : 30,
             withLabels : true,
             levelDistance: macademia.jit.distance,
             background: {
@@ -139,6 +141,7 @@ macademia.jit.init = function(rootType,id){
         //Add a controller to make the tree move on click.
         onCreateLabel: function(domElement, node) {
             //alert('here 3');
+            var root = macademia.rgraph.graph.getNode(macademia.rgraph.root)
             var d = $(domElement);
             d.html(node.name);
             d.css('z-index', 10);
@@ -147,6 +150,9 @@ macademia.jit.init = function(rootType,id){
             d.css('margin-top', '3px');
             d.css('font-size', '14px');
             d.css('background-color','transparent');
+            if(node.id == root.id){
+                d.css('font-weight', 600);
+            }
             $(d).mouseover(function() {
                 $(this).css('font-weight', 600);
                 $(this).css('opacity', 0.75);
@@ -157,7 +163,9 @@ macademia.jit.init = function(rootType,id){
 
             });
             $(d).mouseout(function() {
-                $(this).css('font-weight', 'normal');
+                if(node.id != root.id){
+                    $(this).css('font-weight', 'normal');
+                }
                 $(this).css('opacity', 0.8);
                 $(this).css('z-index', 10);
                 $(this).css('background-color','transparent');
