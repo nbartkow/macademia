@@ -32,6 +32,7 @@ macademia.pageLoad = function() {
     macademia.loginShowHide();
     macademia.initiateGraph();
     macademia.nav();
+    
     macademia.autocomplete.initSearch();
     macademia.toggleAccountControls();
     macademia.setupModal("#registerDialog", "#registerButton", "account/modalcreateuser/", 'nimble-login-register', "macademia.initializeModalRegister()");

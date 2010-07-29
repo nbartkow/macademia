@@ -14,11 +14,11 @@
       </g:if>
     </div>
     <div id="pf_top_container_no_img">
-      <h2 id="pf_name_no_img">${person.fullName}</h2>
+      <h3 id="pf_name_no_img">${person.fullName}</h3>
       <h3 id="pf_dept_no_img">${person.department}</h3>
-      <h4 id="pf_email">
+      <h3 id="pf_email">
       <g:link url="mailto:${person.email}">${person.email}</g:link>
-      </h4>
+      </h3>
     </div>
   </div>
   <div id="pf_interests">
@@ -38,7 +38,7 @@
     <ul class="atxt">
       <g:each in="${collaboratorRequests}" var="collaboratorRequest">
         
-          <li><g:link url = "#/?nodeId=r_${collaboratorRequest.id}&navFunction=request&requestId=${collaboratorRequest.id}&searchBox=">${collaboratorRequest.title}</g:link></li>
+          <li><g:link url = "#/?nodeId=r_${collaboratorRequest.id}&navFunction=request&requestId=${collaboratorRequest.id}">${collaboratorRequest.title}</g:link></li>
 
       </g:each>
     </ul>
@@ -53,4 +53,27 @@
     </div>
   </g:if>
 </div>
+
+<g:if test= "${authenticatedUser}">
+  <g:if test="${person.id == authenticatedUser.id}">
+    <li>
+      <g:link url="[controller:'request',action:'manage' ]"><g:message code="Manage collaborator requests" /></g:link>
+    </li>
+    <li>
+      <g:link url="[controller:'account',action:'editprofile' ]">Edit Profile</g:link>
+    </li>
+  </g:if>
+  <g:else>
+    <g:if test="${auth}">
+      <ul>
+      <li>
+      <g:link url="[controller:'request',action:'manage', id:person.owner.id ]" ><g:message code="Manage collaborator requests" /></g:link>
+      </li>
+      <li>
+      <g:link url="[controller:'account',action:'editprofile', id:person.owner.id ]">Edit Profile</g:link>
+      </li>
+      </ul>
+    </g:if>
+  </g:else>
+</g:if>
 

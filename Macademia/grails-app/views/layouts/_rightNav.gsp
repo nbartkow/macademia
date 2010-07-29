@@ -16,7 +16,9 @@
             <g:link controller="auth" action="logout" class="icon_cross">Logout</g:link> | <a href="#" id="toggleControls">More</a>
           </div>
         </n:hasRole>
-        <ul id="accountControlList" class="left">
+        <ul id="accountControlList" class="left topBorder bottomBorder">
+
+          <div id="moreDropdown">
           <n:hasRole name="${UserService.USER_ROLE}">
             <li>
               <a href="#" class="editProfile">Edit profile</a>
@@ -33,6 +35,7 @@
               </li>
             </n:hasRole>
           </n:hasRole>
+            </div>
         </ul>
       </div>
       <div id="login" style="display: block;">
@@ -62,7 +65,7 @@
       </div>
       <g:render template="../templates/macademia/searchBar"/>
       <div id="rightContent" class="medium">
-        <ul id="instruct_list">
+        <ul id="instruct_list" class="topBorder bottomBorder">
           <li>
             <b>Click</b> on a name or interest to recenter.
           </li>
@@ -103,7 +106,7 @@
         </div>
       </div>
       <div id="makeRequestDialog" class="jqmWindow">
-        testing
+        
       </div>
       <div class="jqmWindow padded2 medium btxt" id="filterDialog">&nbsp;</div>
 

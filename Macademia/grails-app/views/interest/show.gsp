@@ -1,7 +1,7 @@
 <div id="interestPage" class="medium padded2">
   <div id="interest_top_container">
     <div id="interest_info">
-      <h2 id="interest_selected"><img id="tagPicture" src="${createLinkTo(dir: 'images', file: 'int_tag.png')}"/>${interest.text}</h2>
+      <h2 id="interest_selected"><img id="tagPicture" src="${createLinkTo(dir: 'images', file: 'int_tag.png')}"/>&nbsp;${interest.text}</h2>
       <g:if test="${relatedInterests}">
         <div id="interest_related">
           <h3>Related interests:</h3>
@@ -21,7 +21,7 @@
       </g:if>
       <div id="interest_people">
         <h3>People with this interest:</h3>
-        <ul>
+        <ul class="">
           <g:each in="${peopleWithInterest}" var="person">
             <li>
               <g:link url="#/?nodeId=p_${person.id}&navFunction=person&personId=${person.id}">

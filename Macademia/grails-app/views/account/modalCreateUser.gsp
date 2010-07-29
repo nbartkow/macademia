@@ -1,7 +1,14 @@
+<div>
+<form name="edit_pf">
+<div id="editProfileBar">
+  <h3 class="center">Create Account<a class="right" href="#" id="cancelAccountCreation">(X)</a></h3>
+
+</div>
+
 <div id="edit_profile_container">
   <n:errors bean="${user}"/>
   <n:errors bean="${user.profile}"/>
-  <form name="edit_pf">
+
 
     <div id="formBox">
 
@@ -12,28 +19,28 @@
       <div id="nameErrors" class="warning">
       </div>
 
-      <g:if test="${!user.id}">  %{-- Handle new users differently--}%
+      <g:if test="${!user.id}">%{-- Handle new users differently--}%
 
-      <div class="registerRight value ${hasErrors(bean: user, field: 'pass', 'errors')}"><input type="password" name="pass" id="pass" class="textInput password easyinput" value="${user.pass?.encodeAsHTML()}"/></div>
-      <div class="registerLeft"><label for="pass">Password<span>You can change your password here.</span></label></div>
-      <div class="clear"></div>
+        <div class="registerRight value ${hasErrors(bean: user, field: 'pass', 'errors')}"><input type="password" name="pass" id="pass" class="textInput password easyinput" value="${user.pass?.encodeAsHTML()}"/></div>
+        <div class="registerLeft"><label for="pass">Password<span>You can change your password here.</span></label></div>
+        <div class="clear"></div>
 
-      <div id="passErrors" class="warning">
-      </div>
+        <div id="passErrors" class="warning">
+        </div>
 
-      <div class="registerRight value ${hasErrors(bean: user, field: 'passConfirm', 'errors')}"><input type="password" name="passConfirm" id="passConfirm" class="textInput easyinput" value="${user.passConfirm?.encodeAsHTML()}"/></div>
-      <div class="registerLeft"><label for="passConfirm">Password<span>confirm</span></label></div>
-      <div class="clear"></div>
+        <div class="registerRight value ${hasErrors(bean: user, field: 'passConfirm', 'errors')}"><input type="password" name="passConfirm" id="passConfirm" class="textInput easyinput" value="${user.passConfirm?.encodeAsHTML()}"/></div>
+        <div class="registerLeft"><label for="passConfirm">Password<span>confirm</span></label></div>
+        <div class="clear"></div>
 
-      <div id="passConfirmErrors" class="warning">
-      </div>
+        <div id="passConfirmErrors" class="warning">
+        </div>
 
-      <div class="registerRight value ${hasErrors(bean: user, field: 'profile.email', 'errors')}"><n:verifyfield id="email" class="easyinput textInput" name="email" value="${fieldValue(bean: user.profile, field: 'email')}" required="true" controller="account" action="validemail" validmsg="valid" invalidmsg="invalid"/></div>
-      <div class="registerLeft"><label for="email">Email<span>Address at the institution where you research.</span></label></div>
-      <div class="clear"></div>
+        <div class="registerRight value ${hasErrors(bean: user, field: 'profile.email', 'errors')}"><n:verifyfield id="email" class="easyinput textInput" name="email" value="${fieldValue(bean: user.profile, field: 'email')}" required="true" controller="account" action="validemail" validmsg="valid" invalidmsg="invalid"/></div>
+        <div class="registerLeft"><label for="email">Email<span>Address at the institution where you research.</span></label></div>
+        <div class="clear"></div>
 
-      <div id="emailErrors" class="warning">
-      </div>
+        <div id="emailErrors" class="warning">
+        </div>
 
       </g:if>
 
@@ -47,7 +54,7 @@
       <div class="registerRight"><textarea id="editInterests" class="textInput easyInput" name="interests" cols="20" rows="3">${interests?.encodeAsHTML()}</textarea></div>
       <div class="registerLeft"><label for="editInterests">Interests<span>List your research interests, separated by commas.</span></label></div>
       <div class="clear"></div>
-      
+
       <div id="interestErrors" class="warning">
       </div>
 
@@ -65,21 +72,27 @@
           <div class="clear linkField left">Homepage, Facebook, etc.</div>
           <div class="linkValue left">http://www.whitehouse.gov</div>
         </div>
-        <div class="addLink clear"><a href="#">add other link</a></div>
+
         <div class="customLink customLinkTemplate clear">
           <div class="linkField left"><input type="text" class="clearDefault" prompt="link name"></div>
           <div class="linkValue left"><input type="text" class="clearDefault" prompt="link url"></div>
           <div class="removeLink left"><a href="#" class="removeLink">(x)</a></div>
         </div>
+
+        <div class=""></div>
+        <div class="center" id="addLinkDiv"><button class="addLink">add other link</button></div>
       </div>
     </div>
     <br clear=left>
     <br clear=left>
-    <div class="progressBar"><span></span></div> 
-    <div class="clear center" id="submit_edits">
+    <div class="progressBar"><span></span></div>
+
+</div>
+
+<div class="clear center" id="submit_edits">
       <button class="button icon_user" type="submit">
         <g:if test="${user.id}">update</g:if><g:else>create</g:else>
-      </button> or
-      <a href="#" id="cancelAccountCreation">Cancel</a></div>
-  </form>
+      </button>
+</div>
+</form>
 </div>

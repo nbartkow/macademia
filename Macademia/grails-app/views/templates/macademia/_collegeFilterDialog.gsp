@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<div class="padded medium btxt">
+<div class="padded medium btxt" id="filterModal">
   <div id="closeCollegeFilter">
     <a href ="#">X</a>
   </div>

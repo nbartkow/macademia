@@ -1,11 +1,24 @@
 /* Stylings for classes to apply across all parts of the page */
 
+body {
+    font-size: 14px;
+}
+
 a {
     color: #2f9599;
+    text-decoration:none;
+}
+
+a:hover {
+    text-decoration:underline;
 }
 
 a:visited {
     color: #2F9599;
+}
+
+a:visited:hover {
+    text-decoration:underline;
 }
 
 #wrapper {
@@ -14,35 +27,35 @@ a:visited {
 }
 
 .small {
-    font-size: 12px;
+    font-size: 1em;
     line-height: 1em;
 }
 
 .atxt {
     font-family: helvetica, arial;
-    font-size: 14px;
-    line-height: 1.2em;
+    font-size: 1em;
+    line-height: 1.25em;
     color: #000000;
 }
 
 .atxt a {
     font-family: helvetica, arial;
-    font-size: 14px;
-    line-height: 1.2em;
+    font-size: 1em;
+    line-height: 1.25em;
     color: #2f9599;
 }
 
 .btxt {
     font-family: helvetica, arial;
-    font-size: 14px;
-    line-height: 1.2em;
+    font-size: 1em;
+    line-height: 1.25em;
     color: #000000;
 }
 
 .btxt a {
     font-family: helvetica, arial;
-    font-size: 14px;
-    line-height: 1.2em;
+    font-size: 1em;
+    line-height: 1.25em;
     color: #2f9599;
     text-decoration: none;
 }
@@ -155,7 +168,7 @@ html, body {
 
 #account {
     text-align: right;
-    font-size: 14px;
+    font-size: 1em;
     font-family: helvetica, arial;
     margin: 5px;
 }
@@ -177,10 +190,16 @@ h2#about {
     margin: 10px;
 }
 
-ul#instruct_list {
-    border-bottom: 1px dotted #CCCCCC;
+.topBorder {
     border-top: 1px dotted #CCCCCC;
-    font-size: 0.9em;
+}
+
+.bottomBorder {
+    border-bottom: 1px dotted #CCCCCC;
+}
+
+ul {
+    font-size: 1em;
     list-style: none outside none;
     margin-left: 0;
     padding: 10px 0 10px 40px;
@@ -191,7 +210,7 @@ ul#instruct_list li:hover {
     font-style: italic;
 }
 
-ul#instruct_list li:before {
+ul#instruct_list li:before, li:before{
     content: "\00BB \0020";
 }
 
@@ -213,7 +232,7 @@ ul#instruct_list li:before {
 
 #hide a {
     color: #2f9599;
-    font-size: 12px;
+    font-size: 1em;
     line-height: 1em;
 }
 
@@ -228,7 +247,7 @@ ul#instruct_list li:before {
 
 #show a {
     color: #FFFFEE;
-    font-size: 12px;
+    font-size: 1em;
     line-height: 1em;
 }
 
@@ -236,7 +255,7 @@ ul#instruct_list li:before {
     border-bottom: 1px solid #CCCCCC;
     border-top: 1px solid #CCCCCC;
     display: block;
-    font-size: 13px;
+    font-size: 1em;
     margin: 15px 5px 15px 70px;
     padding: 10px 0;
     width: 200px;
@@ -265,7 +284,7 @@ ul#instruct_list li:before {
 #login_form a.forgot_password {
     display: block;
     float: right;
-    font-size: 10px;
+    font-size: 1em;
     margin-right: 10px;
 }
 
@@ -314,7 +333,7 @@ ul#instruct_list li:before {
 }
 
 #pf_name {
-    font-size: 24px;
+    font-size: 1em;
     padding-bottom: 0px;
     margin: 0px;
     padding-top: 0px;
@@ -323,14 +342,13 @@ ul#instruct_list li:before {
 
 #pf_dept {
     color: #777;
-    font-style: italic;
     padding-right: 2px;
 }
 
 #profile div h4 {
     padding-bottom: 3px;
-    margin-bottom: 2px; /*border-bottom: 3px #aaa solid;*/
-    font-size: 16px;
+    margin-bottom: 2px;
+    font-size: 1.125em;
 }
 
 #profile div h4:hover {
@@ -350,11 +368,12 @@ ul#instruct_list li:before {
     margin-bottom: 4px;
 }
 
-h2#pf_name_no_img {
-    font-size: 24px;
-    padding: 5px 0;
+#pf_name_no_img {
+    font-size: 1.5em;
+    padding: 0px 0;
     margin-bottom: 0px;
     margin-top: 5px;
+
 }
 
 h2#pf_name_no_img:after {
@@ -365,12 +384,13 @@ h3#pf_dept_no_img {
     margin-top: 0px;
     margin-bottom: 0px;
     color: #777;
-    font-style: italic;
     padding-right: 2px;
 }
 
 #pf_email {
-    margin-top: 5px;
+    margin-top:0px;
+    line-height:1.25em;
+    margin-bottom: 0px;
 }
 
 #pf_interests {
@@ -413,7 +433,7 @@ h3#pf_dept_no_img {
 
 #registerDialog .registerLeft, #makeRequestDialog .registerLeft {
     border-top: 1px solid #D7D7D7;
-    padding: 10px 10px 20px 10px;
+    padding: 15px 10px 20px 10px;
     width: 160px;
     background-color: #FFFFEE;
 }
@@ -424,14 +444,14 @@ h3#pf_dept_no_img {
 
 .icon {
     position: absolute;
-    left: -9999px;
+    left: -9999px;   /*hides icons so they don't push the email field in modalCreateUser out of the way*/
 }
 
 .registerRight input{
 	padding:3px;
 	width:380px;
 	height:40px;
-	font-size:24px;
+	font-size:1.125em;
 }
 .registerRight input, .registerRight textarea{
 	border: thin 1px #ccc;
@@ -485,7 +505,27 @@ h3#pf_dept_no_img {
 
 .warning {
     background:#FFDDDD;
-    font-size:24px;
+    font-size:1.125em;
+    text-align: center;
+}
+
+#edit_profile_container {
+    overflow-y:auto;
+    overflow-x:hidden;
+    height:600px;
+}
+
+#editProfileBar {
+    height: 30px;
+    border-bottom: 1px solid #D7D7D7;
+}
+
+#cancelAccountCreation {
+    float: right;
+}
+
+#addLinkDiv {
+    clear: both;
 }
 
 
@@ -525,7 +565,7 @@ h3#pf_dept_no_img {
 }
 
 .searchHeader a {
-    font-size: 12px;
+    font-size: 1em;
     margin-left: 5px;
 }
 
@@ -552,15 +592,15 @@ h3#pf_dept_no_img {
 }
 
 #personResults a {
-    font-size: 16px;
+    font-size: 1.125em;
 }
 
 #interestResults a {
-    font-size: 16px;
+    font-size: 1.125em;
 }
 
 #requestResults #requestTittle {
-    font-size: 16px;
+    font-size: 1.125em;
     font-weight: 600;
 }
 
@@ -581,10 +621,10 @@ h3#pf_dept_no_img {
 /* college filter related stuff*/
 
 #editColleges {
-    -moz-border-radius: 5px 5px 5px 5px;
-    -webkit-border-radius: 5px;
+    /*-moz-border-radius: 5px 5px 5px 5px;*/
+    /*-webkit-border-radius: 5px;*/
     padding-top: 10px;
-    height: 420px;
+    height: 320px;
 
 }
 
@@ -602,10 +642,10 @@ h3#pf_dept_no_img {
 }
 
 #selectedColleges {
-    -moz-border-radius: 5px 5px 5px 5px;
-    -webkit-border-radius: 5px;
+    /*-moz-border-radius: 5px 5px 5px 5px;*/
+    /*-webkit-border-radius: 5px;*/
     background-color: #ffe;
-    height: 300px;
+    height: 200px;
     padding: 5px;
     margin: 5px;
     margin-top: 40px;
@@ -622,7 +662,7 @@ h3#pf_dept_no_img {
     float: right;
 }
 #closeCollegeFilter a{
-    font-size:20px;
+    font-size:1.5em;
     color: #FFFFEE;
 }
 
@@ -644,6 +684,10 @@ h3#pf_dept_no_img {
 
 }
 
+#collegeFilterButton {
+    color: #333;
+}
+
 /* styles that affect the request for collaboration view*/
 
 #coll_top_container {
@@ -662,13 +706,14 @@ h3#pf_dept_no_img {
 
 #coll_request p span {
     margin-right: 3px;
+   line-height:1.5em;
     font-weight: bold;
 }
 
 #coll_title {
-    font-size: 18px;
+    font-size: 1.25em;
     margin-bottom: 10px;
-    padding: 5px 0;
+    padding: 0px 0;
     margin-bottom: 10px;
     border-bottom: 3px #aaa solid;
 }
@@ -683,7 +728,7 @@ h3#pf_dept_no_img {
 }
 
 #coll_desc {
-    line-height: 1.33em;
+    line-height: 1.25em;
 }
 
 /* Styles for the interest view*/
@@ -692,7 +737,7 @@ h3#pf_dept_no_img {
 }
 
 h2#interest_selected {
-    font-size: 24px;
+    font-size: 1.5em;                                                                 0
     padding: 5px 0;
     margin-bottom: 10px;
     border-bottom: 3px #aaa solid;
@@ -729,27 +774,27 @@ h2#interest_selected {
 }
 
 #interest_related ul li span {
-    font-size: 11px;
+    font-size: 1em;
     color: #bbb;
 }
 
 /* other stuff */
 
 h2 {
-    line-height: 24px;
+    line-height: 1.0em;
     font-style: normal;
     font-weight: normal;
 }
 
 h3 {
-    font-weight: bold;
+    font-weight: normal;
 }
 
 .registerLeft label {
-    font-size: 28px;
+    font-size: 1.5em;
 }
 .registerLeft label span {
-    font-size: 12px;
+    font-size: .66em;
     padding-top: 6px;
     font-family: Arial;
     display: block;
@@ -757,7 +802,6 @@ h3 {
 }
 
 #edit_profile_container {
-    width: 600px;
 }
 
 /**
@@ -771,9 +815,9 @@ h3 {
 /*}*/
 
 .editPicture {
-    font-size: 14px;
+    font-size: 1em;
     text-align: center;
-    line-height: 16px;
+    line-height: 1.25em;
 }
 
 .editPicture .links {
@@ -818,7 +862,7 @@ h3 {
 .personLinks {
 }
 .personLinks .example {
-    font-size : 11px;
+    font-size : 1em;
     font-style: italic;
     padding-bottom : 20px;
 }
@@ -838,7 +882,7 @@ h3 {
 .removeLink {
     float: right;
     padding: 1px;
-    font-size: 16px;
+    font-size: 1.125em;
 }
 
 .customLinkTemplate {

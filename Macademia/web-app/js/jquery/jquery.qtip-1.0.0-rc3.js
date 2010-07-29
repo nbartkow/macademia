@@ -1990,8 +1990,8 @@
             type: 'fade',
             length: 100
          },
-         delay: 0,
-         fixed: false
+         delay: 400,
+         fixed: true
       },
       // Callbacks
       api: {
