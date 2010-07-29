@@ -88,7 +88,7 @@ public class MongoWrapper {
 
     public DBObject findById(String collection, Object id, boolean articleDb) throws IllegalArgumentException{
         DBObject searchById= new BasicDBObject("_id", id);
-        DBCollection coll = getDb().getCollection(collection);
+        DBCollection coll = getDb(articleDb).getCollection(collection);
         //System.out.println("DBCollection: " + coll.toString());
         //for (DBObject o : coll.find()) {
             //System.out.println("DBObject in collection: " + o.toString());
@@ -268,11 +268,7 @@ public class MongoWrapper {
     }
 
     public long articleToId(String title){
-        String tmpDBName=dbName;
-        //we need to fix this stuff...
-        changeDB(ARTICLES_DB);
         DBObject res = safeFindById(ARTICLES_TO_IDS, title, true);
-        changeDB(tmpDBName);
         if(res == null){
             System.out.println("Invalid article title no ID found");
             return (long) -1;
@@ -294,7 +290,7 @@ public class MongoWrapper {
         Map<Long, Double> ids = new HashMap<Long, Double>();
         while (list.size() < 200 && i < articles.size()) {
             SimilarInterest check = articles.get(i);
-            DBObject articleToInterests = safeFindById(ARTICLES_TO_INTERESTS, check.interestId, true);
+            DBObject articleToInterests = safeFindById(ARTICLES_TO_INTERESTS, check.interestId, false);
             if (articleToInterests != null) {
                 Set<Long> similarInterests = interestStringToSet((String)articleToInterests.get("interests"));
                 for (long id : similarInterests) {
@@ -433,10 +429,7 @@ public class MongoWrapper {
     }
 
     public SimilarInterestList getArticleSimilarities(long article) {
-        String tmpDBName= dbName;
-        changeDB(ARTICLES_DB);
         DBObject similarities = safeFindById(ARTICLE_SIMILARITIES, article, true);
-        changeDB(tmpDBName);
         if (similarities == null) {
             System.out.println(article + " does not have an articleSimilarities entry");
             return new SimilarInterestList();
@@ -448,7 +441,7 @@ public class MongoWrapper {
     }
 
     public void addInterestToArticle(long interest, long article){
-        DBObject articleInterests = safeFindById(ARTICLES_TO_INTERESTS , article, true);
+        DBObject articleInterests = safeFindById(ARTICLES_TO_INTERESTS , article, false);
         DBCollection articlesToInterests = getDb().getCollection(ARTICLES_TO_INTERESTS);
         if(articleInterests==null){
             articleInterests=new BasicDBObject("_id", article);
@@ -458,7 +451,7 @@ public class MongoWrapper {
         Set<Long> interests = interestStringToSet((String)articleInterests.get("interests"));
         interests.add(interest);
         articleInterests.put("interests", interestSetToString(interests));
-        articlesToInterests.update(safeFindById(ARTICLES_TO_INTERESTS, article, true), articleInterests);
+        articlesToInterests.update(safeFindById(ARTICLES_TO_INTERESTS, article, false), articleInterests);
 
     }
 
