@@ -18,6 +18,9 @@ class BootStrap {
         case Environment.DEVELOPMENT:
             autocompleteService.init()
             break
+        case Environment.PRODUCTION:
+            autocompleteService.init()
+            break
         default:
             assert(false)
         }
