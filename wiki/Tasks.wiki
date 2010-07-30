@@ -1,5 +1,4 @@
 =Design Tweaks=
- * Fonts:
  * Add "corporate" links:
     * Tagline: Connecting colleagues with shared interests. (put this under logo?)
     * Other information: Macademia is developed by students at Macalester College under the direction of Shilad Sen.  The project is funded by Macalester College, the National Science Foundation, and The Associated Colleges of the Midwest.
@@ -11,14 +10,22 @@
     * Fix spacing
     * Use jquery-ui button for register?
  * Add "edit profile" links to person view on right nav when relevant
+ * Remove extra vertical space after right nav headers: "related interests," "people with this interest", etc.
+ * Remove extra vertical space before first college in dialog
+ * Lengthen college filter dialog.
+ * Fix font size in right nav drill-down search results (after click-through), also remove extra line
+ * Add page number when paging through search results in right nav.
+ * Increase fps
 
 =Bugs=
  * Profile images
  * Update collaborator request
  * Interest autocomplete
  * autocomplete line wraps
+ * Have Henry commit changes to AccountController (modalcreateuser  => modalCreateUser)
+ * Fix null pointer exceptions in logs
+
 
 =Misc=
- * Tagline
  * Cut over to new database
  * Test on IE
