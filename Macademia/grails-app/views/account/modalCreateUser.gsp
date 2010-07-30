@@ -1,9 +1,18 @@
-<div>
-<form name="edit_pf">
-<div id="editProfileBar">
-  <h3 class="center">Create Account<a class="right" href="#" id="cancelAccountCreation">(X)</a></h3>
 
-</div>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<html>
+<head>
+  <link type="text/css" rel="stylesheet" href="${createLinkTo(dir: "css", file: "createUser.css")}">
+
+  %{--<g:include view="/layouts/headers.gsp"/>--}%
+</head>
+<body>
+
+<div id="mainContent">
+
+
+<div id="editProfileWindow">
+<form name="edit_pf">
 
 <div id="edit_profile_container">
   <n:errors bean="${user}"/>
@@ -86,13 +95,18 @@
     <br clear=left>
     <br clear=left>
     <div class="progressBar"><span></span></div>
-
-</div>
-
-<div class="clear center" id="submit_edits">
+  <div class="clear center" id="submit_edits">
       <button class="button icon_user" type="submit">
         <g:if test="${user.id}">update</g:if><g:else>create</g:else>
       </button>
+
+</div>
+
+
 </div>
 </form>
 </div>
+</div>
+
+</body>
+</html>

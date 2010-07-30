@@ -35,8 +35,8 @@ macademia.pageLoad = function() {
     
     macademia.autocomplete.initSearch();
     macademia.toggleAccountControls();
-    macademia.setupModal("#registerDialog", "#registerButton", "account/modalcreateuser/", 'nimble-login-register', "macademia.initializeModalRegister()");
-    macademia.setupModal("#registerDialog", "#accountControlList .editProfile", "account/modaledituser", 'nimble-login-register', "macademia.initializeModalRegister()");
+//    macademia.setupModal("#registerDialog", "#registerButton", "account/modalcreateuser/", 'nimble-login-register', "macademia.initializeModalRegister()");
+//    macademia.setupModal("#registerDialog", "#accountControlList .editProfile", "account/modaledituser", 'nimble-login-register', "macademia.initializeModalRegister()");
     macademia.setupRequestCreation();
 };
 
@@ -195,10 +195,13 @@ macademia.showHide = function() {
     if ($.address.parameter('navVisibility') != macademia.queryString.navVisibility) {
         var navVisibility = $.address.parameter('navVisibility');
         if (navVisibility == 'true' && !$("#wrapper").is(":visible")) {
-            $("#sidebar").animate({width: "320"}, "slow");
-            $("#infovis").animate({right: "320"}, "slow", function() {
-                $("#sidebar > *").show();
+            $("#sidebar").animate({width: "320"}, "slow", function() {
+                  $("#sidebar > *").show();
             });
+            $("#tagContainer").animate({right: "0px"}, "slow");
+//            $("#infovis").animate({right: "320"}, "slow", function() {
+
+//            });
             // resize visual
             if (macademia.rgraph) {
                 macademia.resizeCanvas($("body").width() - 320);
@@ -207,6 +210,7 @@ macademia.showHide = function() {
             $("#sidebar > *").hide();
             if (macademia.rgraph) {
                 $("#sidebar").animate({width: "0"}, "slow");
+                $("#tagContainer").animate({right: "0px"}, "slow");
                 $("#infovis").animate({right: "0"}, "slow");
             } else {
                 // on page load rightDiv will not slide over
@@ -274,9 +278,7 @@ macademia.changeQueryString = function(query) {
 macademia.updateNav = function(){
      var navFunction = $.address.parameter('navFunction');
      macademia.showDivs(navFunction);
-     if ($("#instruct_list").is(":visible")){
-        macademia.clearInstructions();
-     }
+     macademia.clearInstructions();
      if (navFunction == 'search'){
             macademia.submitSearch();
             macademia.queryString.searchPage = $.address.parameter('searchPage');

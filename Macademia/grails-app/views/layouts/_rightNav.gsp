@@ -7,7 +7,8 @@
     <div id="main">
       <n:notUser>
         <div id="account" class="btxt right">
-          <a id="login_link" href="#" class="right">Login</a> | <a id="registerButton" href="#" class="right">Register</a>
+          <a id="login_link" href="#" class="right">Login</a> |
+          <g:link controller="account" action="createuser2" href="#" class="right">Register</g:link>
         </div>
       </n:notUser>
       <div id="account" class="btxt">
@@ -16,7 +17,7 @@
             <g:link controller="auth" action="logout" class="icon_cross">Logout</g:link> | <a href="#" id="toggleControls">More</a>
           </div>
         </n:hasRole>
-        <ul id="accountControlList" class="left topBorder bottomBorder">
+        <ul id="accountControlList" class="left topBorder bottomBorder styledList">
 
           <div id="moreDropdown">
           <n:hasRole name="${UserService.USER_ROLE}">
@@ -65,7 +66,7 @@
       </div>
       <g:render template="../templates/macademia/searchBar"/>
       <div id="rightContent" class="medium">
-        <ul id="instruct_list" class="topBorder bottomBorder">
+        <ul id="instruct_list" class="topBorder bottomBorder styledList">
           <li>
             <b>Click</b> on a name or interest to recenter.
           </li>

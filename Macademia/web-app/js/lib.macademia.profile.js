@@ -33,7 +33,7 @@ macademia.initializeModalRegister = function() {
        $("#registerDialog").jqmHide(); 
     })
 
-    $('#edit_profile_container form').submit(function() {
+    $('#editProfileWindow form').submit(function() {
       $(this).serialize();
       macademia.links.serialize();
 
@@ -79,7 +79,7 @@ macademia.initializeModalRegister = function() {
       if (formCheck) {
           $("#submit_edits").hide();
           var interests = $('#editInterests').val().split(',');
-          macademia.analyzeInterests(interests, 0, $("#edit_profile_container .progressBar"), macademia.saveUserProfile);
+          macademia.analyzeInterests(interests, 0, $("#editProfileWindow .progressBar"), macademia.saveUserProfile);
       } else {
           $('#registerDialog').animate({scrollTop:0}, 'slow');  
       }
@@ -103,7 +103,7 @@ macademia.saveUserProfile = function() {
           dataType: "text",
           success: function(data) {
               if (data == 'okay') {
-                    window.location.reload();                   
+                    window.location.href = 'http://localhost:8080/Macademia/person/jit/#/institutions=all&nodeId=p_'                   
               }
               macademia.initAnalyzeInterests();
               if (data.indexOf('Email') == 0) {
