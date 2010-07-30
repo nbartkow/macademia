@@ -30,3 +30,4 @@
 =Misc=
  * Cut over to new database
  * Test on IE
+ * Logging!
