@@ -31,3 +31,4 @@
  * Cut over to new database
  * Test on IE
  * Logging!
+ * Optimization: load next jit info while graph is initially spinning
