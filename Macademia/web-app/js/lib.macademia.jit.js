@@ -4,8 +4,11 @@ macademia.jit = {};
 
 macademia.jit.unfocusedEdgeColor = "#999";
 macademia.jit.rootId;
+macademia.nextNode = null;
+macademia.jit.nextJson = null;
 macademia.jit.distance = 150;
 macademia.jit.refreshNeeded = true;
+macademia.jit.intervalId = -1;
 
 macademia.makeJsonUrl = function(type, id) {
     return "/Macademia/" + type + "/json/" + id + "?institutions="+$.address.parameter('institutions');
@@ -231,25 +234,52 @@ macademia.jit.init = function(rootType,id){
         onBeforeCompute:function(node) {
             if (node.data.unmodifiedId) {
                 macademia.nextNode = node;
+
+                // Fetch the next data
+                var rootId = macademia.nextNode.data.unmodifiedId;
+                var rootType = macademia.nextNode.data.type;
+                macademia.jit.nextJson = null;
+
+                $(".qtip").hide();
+                $.getJSON(macademia.makeJsonUrl(rootType, rootId), function(data) {
+                    macademia.jit.nextJson = data;
+                });
+ 
+                if (macademia.jit.intervalId > 0) {
+                    clearInterval(macademia.jit.intervalId);
+                    macademia.jit.intervalId = -1;
+                }
             }
         },
 
         //morph to new data after anim and if user has clicked a person node
         onAfterCompute:function() {
             if (macademia.nextNode) {
-                macademia.jit.rootId = macademia.nextNode.data.unmodifiedId;
-                var rootType = macademia.nextNode.data.type;
-                $.getJSON(macademia.makeJsonUrl(rootType, macademia.jit.rootId), function(data) {
+                
+                macademia.jit.intervalId = setInterval(function () {
+                    if (macademia.jit.nextJson == null) {
+                        return;
+                    }
+                    var data = macademia.jit.nextJson;
+                    macademia.jit.nextJson = null;
+                    if (macademia.jit.intervalId > 0) {
+                        clearInterval(macademia.jit.intervalId);
+                        macademia.jit.intervalId = -1;
+                    }
+
+                    macademia.jit.rootId = macademia.nextNode.data.unmodifiedId;
+                    var rootType = macademia.nextNode.data.type;
                     macademia.checkBrowser();
                     macademia.rgraph.op.morph(data, {
                         type:'replot',
                         duration:100,
                         hideLabels:false
                     });
+                    macademia.nextNode = null;
+                    macademia.jit.refreshNeeded = true;
                 });
+                $(".qtip").hide();
             }
-            macademia.nextNode = null;
-            macademia.jit.refreshNeeded = true;
         }
 
     });
