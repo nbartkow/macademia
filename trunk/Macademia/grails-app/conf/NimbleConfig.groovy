@@ -47,10 +47,10 @@ nimble {
         }
         enduser {
             user = ['username', 'pass', 'passConfirm']
-            profile = ['fullName', 'email', 'department', 'institution', 'imageSubpath', 'links']
+            profile = ['fullName', 'email', 'department', 'institution', 'imageSubpath', 'links', 'title']
         }
         enduserEdit {
-            user = ['fullName', 'department', 'imageSubpath', 'links']
+            user = ['fullName', 'department', 'imageSubpath', 'links', 'title']
         }
 
         collaboratorRequestEdit {
