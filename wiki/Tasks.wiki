@@ -16,6 +16,7 @@
  * Fix font size in right nav drill-down search results (after click-through), also remove extra line
  * Add page number when paging through search results in right nav.
  * Increase fps
+ * Fix layout of login drop down (reposition "forgot?")
  * Rethink account options nav (future)
 
 =Bugs=
@@ -31,4 +32,4 @@
  * Cut over to new database
  * Test on IE
  * Logging!
- * Optimization: load next jit info while graph is initially spinning
+ * ~~Optimization: load next jit info while graph is initially spinning~~
