@@ -16,6 +16,7 @@
  * Fix font size in right nav drill-down search results (after click-through), also remove extra line
  * Add page number when paging through search results in right nav.
  * Increase fps
+ * Rethink account options nav (future)
 
 =Bugs=
  * Profile images
@@ -24,7 +25,7 @@
  * autocomplete line wraps
  * Have Henry commit changes to AccountController (modalcreateuser  => modalCreateUser)
  * Fix null pointer exceptions in logs
-
+ * Fix edit / create profile dialog
 
 =Misc=
  * Cut over to new database
