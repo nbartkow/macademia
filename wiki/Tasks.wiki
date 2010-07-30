@@ -16,6 +16,7 @@
  * Profile images
  * Update collaborator request
  * Interest autocomplete
+ * autocomplete line wraps
 
 =Misc=
  * Tagline
