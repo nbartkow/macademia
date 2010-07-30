@@ -29,7 +29,7 @@
  * Fix edit / create profile dialog
 
 =Misc=
- * Cut over to new database
+ * ~~Cut over to new database~~
  * Test on IE
  * Logging!
  * ~~Optimization: load next jit info while graph is initially spinning~~
