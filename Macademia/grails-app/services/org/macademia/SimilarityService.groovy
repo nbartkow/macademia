@@ -54,60 +54,6 @@ class SimilarityService {
         relationsBuilt = true
     }
 
-    public void buildAllInterestRelations() {
-        TfIdfDistance tfIdf = calculateDocumentDistances()
-        List<Long> intIds = Interest.findAll().collect{it.id}
-        int setSize = (int) intIds.size()*roughThreshold
-        HashMap<Long,String> docMap = new HashMap<Long,String>()
-        intIds.each({
-            Document doc = Interest.get(it).findMostRelevantDocument()
-            if (doc != null) {
-            String text = doc.text
-            docMap.put(it, text)
-            }
-        })
-        intIds.each({
-            String text = docMap.get(it)
-            //log.info("calculating all similarities for ${i}")
-            log.info("calculating all similarities for $it")
-            SimilarInterestList list = new SimilarInterestList()
-            int count = 0
-            for(Long id : intIds){
-                count++
-                String comp = docMap.get(id)
-                if(it != id){
-                    double sim
-                    if (comp == null || text == null) {
-                        sim = -1.0
-                    } else {
-                        sim = tfIdf.proximity(comp, text)
-                    }
-                    //we could check for precomputed relations here
-                    if (setSize > list.size() || sim > list.get(list.size()-1).similarity) {
-                        SimilarInterest s = new SimilarInterest(id, sim)
-                        list.add(s)
-                        if (setSize <= list.size()) {
-                            list.removeLowest()
-                        }
-                    }
-                }
-                if (count % 50 == 0) {
-                    //log.info("Cleaning up Gorm at interest relation $count for interest ${i}")
-                    log.info("Cleaning up Gorm at interest relation $count")
-                    Utils.cleanUpGorm(sessionFactory)
-                }
-            }
-            long intId = it
-            for (SimilarInterest s : list.list){
-                databaseService.addToInterests(intId, s.interestId, s.similarity)
-                //we could use this to do a lot less work later (some interest relations would be precomputed)
-                //InterestRelation ir=new InterestRelation(first:it.second, second:it.first, similarity:it.similarity)
-                //Utils.safeSave(ir)
-            }
-            Utils.cleanUpGorm(sessionFactory)
-        })
-        relationsBuilt = true
-    }
 
    /**
     *

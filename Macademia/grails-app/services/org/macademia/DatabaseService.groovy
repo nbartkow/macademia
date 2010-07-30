@@ -13,7 +13,11 @@ import org.codehaus.groovy.grails.commons.ConfigurationHolder
 class DatabaseService {
 
     Mongo mongo = new Mongo((String)ConfigurationHolder.config.dataSource.mongoDbUrl)
-    MongoWrapper wrapper = new MongoWrapper(mongo, (String)ConfigurationHolder.config.dataSource.mongoDbName)
+    MongoWrapper wrapper = new MongoWrapper(
+                                    mongo,
+                                    (String)ConfigurationHolder.config.dataSource.mongoDbName,
+                                    (String)ConfigurationHolder.config.dataSource.wpMongoDbName
+                                )
 
     public void changeDB(String dbName){
         wrapper.changeDB(dbName)

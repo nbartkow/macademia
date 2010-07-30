@@ -33,13 +33,14 @@ public class MongoWrapper {
 
     public static final String INSTITUTION_INTERESTS ="institutionInterests";
 
-    private static final String ARTICLES_DB = "fromWikipedia";
 
     private String dbName = null;
+    private String wpDbName = "fromWikipedia";
 
-    public MongoWrapper(Mongo mongo, String dbName){
+    public MongoWrapper(Mongo mongo, String dbName, String wpDbName){
         this.mongo=mongo;
         this.dbName = dbName;
+        this.wpDbName = wpDbName;
     }
 
     public void changeDB(String dbName) {
@@ -52,7 +53,7 @@ public class MongoWrapper {
 
     public DB getDb(boolean articleDb) {
         if (articleDb) {
-            return mongo.getDB(ARTICLES_DB);
+            return mongo.getDB(wpDbName);
         } else {
             return mongo.getDB(dbName);
         }
