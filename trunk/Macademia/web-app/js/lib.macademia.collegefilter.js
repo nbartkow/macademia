@@ -97,14 +97,14 @@ macademia.createInstitutionString = function(collegeArray) {
 };
 
 macademia.initiateCollegeString = function(ids){
-    console.log(1);
+    debug.log(1);
     $.getJSON('/Macademia/institution/idstonames', {ids: ids.replace(/\+/g, " ")}, function(institutionList){
     macademia.changeCollegeString(institutionList);
     });
 };
 
 macademia.changeCollegeString = function(institutionNames){
-    console.log(institutionNames);
+    debug.log(institutionNames);
     var results = "";
     if(institutionNames.length == $(".college").size() || institutionNames[0] == 'all'){
         results = 'Showing <b>all institutions</b>. <div>(<a href="#" id="collegeFilterTrigger">filter by institution</a>)</div>';
