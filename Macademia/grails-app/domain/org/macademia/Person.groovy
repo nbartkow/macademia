@@ -3,6 +3,7 @@ package org.macademia
 class Person extends grails.plugins.nimble.core.ProfileBase {
     // fullName, owner, and email are inherited.
     
+    String title
     String department
     Institution institution    
     String imageSubpath
@@ -15,6 +16,8 @@ class Person extends grails.plugins.nimble.core.ProfileBase {
         fullName(nullable: false, blank:false)
         email(nullable:false, blank:false, email: true, unique: true)
         links(nullable:true)
+        department(nullable:true)
+        title(nullable:true)
     }
     
     static mapping = {

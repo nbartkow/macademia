@@ -21,7 +21,7 @@
         <input id="clear" type="submit" value="Clear list"/>
       </div>
       <div id="selectedColleges" class="medium">
-          <div id = "clearMessage" class = "center" style = "display:none"> Visualization cannot display a filter of 0 colleges </div>
+          %{--<div id = "clearMessage" class = "center" style = "display:none"> Visualization cannot display a filter of 0 colleges </div>--}%
           <ul>
             <g:each in="${institutions}" var="c">
               <li id="c_${c.id}" class="college" style = "display:none">${c.name} <a href="#">(x)</a></li>

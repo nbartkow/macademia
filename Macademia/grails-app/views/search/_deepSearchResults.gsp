@@ -64,8 +64,7 @@
 
 </div>
 
-<div id = "pageNav" class="btxt">
-  <p>
+<div id = "pageNav" class="atxt">
     <g:if test="${index <= 0}">
        << First | < Previous |
     </g:if>
@@ -81,5 +80,4 @@
       <a href="#/?searchPage=${type + '_' + (index + 1)}" id = "nextPage"> Next ></a> |
       <a href="#/?searchPage=${type + '_' + total.toInteger()}" id = "lastPage"> Last >></a>
     </g:else>
-  </p>
 </div>
