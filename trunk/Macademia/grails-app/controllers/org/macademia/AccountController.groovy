@@ -125,11 +125,11 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
 
         log.info("Created new account identified as $user.username with internal id $savedUser.id")
 
-        render('okay')
+        render('okay ' + savedUser.id)
     }
 
-    def modalcreateuser = {
-      def model = createuser()
+    def createuser2 = {
+      def model = super.createuser()
       return render(view: 'modalcreateuser', model: model)
     }
 

@@ -101,6 +101,14 @@ html, body {
     min-width: 1040px;
 }
 
+#mainContent {
+    min-height:720px;
+    height:100%;
+    position: absolute;
+    left: 0px;
+    right: 320px;
+}
+
 #sidebar {
     background: #ffe;
     height: 100%;
@@ -130,7 +138,7 @@ html, body {
     height: 100%;
     min-height: 720px;
     position: absolute;
-    right: 320px;
+    right: 0px;
     left: 0px;
 }
 
@@ -198,7 +206,7 @@ h2#about {
     border-bottom: 1px dotted #CCCCCC;
 }
 
-ul {
+ul.styledList {
     font-size: 1em;
     list-style: none outside none;
     margin-left: 0;
@@ -210,7 +218,7 @@ ul#instruct_list li:hover {
     font-style: italic;
 }
 
-ul#instruct_list li:before, li:before{
+ul#instruct_list li:before, ul.styledList li:before{
     content: "\00BB \0020";
 }
 
@@ -371,7 +379,7 @@ ul#instruct_list li:before, li:before{
 #pf_name_no_img {
     font-size: 1.5em;
     padding: 0px 0;
-    margin-bottom: 0px;
+    margin-bottom: 5px;
     margin-top: 5px;
 
 }
@@ -472,6 +480,7 @@ h3#pf_dept_no_img {
 
 #formBox{
     border-bottom: 1px solid #D7D7D7;
+    max-width:800px;
 }
 
 .profileImage{
@@ -512,7 +521,7 @@ h3#pf_dept_no_img {
 #edit_profile_container {
     overflow-y:auto;
     overflow-x:hidden;
-    height:600px;
+    /*height:600px;*/
 }
 
 #editProfileBar {
@@ -898,4 +907,22 @@ h3 {
 }
 .progressBar span {
     position : absolute;
+}
+
+#tagContainer {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
+    min-width:720px;
+}
+
+#tagline {
+    position: relative;
+    margin: auto;
+    text-align: center;
+    color: #ffe;
+    font-family: serif;
+    font-size: .75em;
+    width: auto;
 }

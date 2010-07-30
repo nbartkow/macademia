@@ -13,23 +13,28 @@
   <g:include view="/layouts/headers.gsp"/>
   <link rel="stylesheet" href="${resource(dir: 'css', file: 'jqModal.css')}"/>
   <g:javascript>
-    $().ready(function(){
-       macademia.pageLoad();
+    $().ready(function() {
+      macademia.pageLoad();
 
     });
   </g:javascript>
-  
+
 </head>
 <body>
 
 <g:render template="../layouts/components"/>
 <div id="mainContent">
 
-<div id="infovis">
-  &nbsp;
-</div>
+  <div id="infovis">
+    &nbsp;
+
+  </div>
+  <div id="tagContainer">
+    <div id="tagline">Macademia is developed by students at Macalester College under the direction of Shilad Sen.<br> The project is funded by Macalester College, the National Science Foundation, and The Associated Colleges of the Midwest.</div>
+  </div>
 </div>
 <img id="logoImage" src="${createLinkTo(dir: 'images', file: 'macademia-logo.png')}"/>
+
 <div id="extendedInfo">
   <g:render template="../layouts/rightNav"/>
 </div>

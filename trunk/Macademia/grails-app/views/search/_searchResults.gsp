@@ -17,7 +17,7 @@
     <g:if test="${people}">
       <div class="searchHeader atxt">Matching <b>people:</b></div>
 
-      <ul>
+      <ul class="styledList">
         <g:each in="${people}" var="p">
           <li>
             <g:link url = "#/?nodeId=p_${p.id}&navFunction=person&personId=${p.id}&searchBox=">${p.fullName}</g:link>
@@ -38,7 +38,7 @@
     <g:if test="${interests}">
       <div class="searchHeader atxt">Matching <b>interests:</b></div>
 
-      <ul>
+      <ul class="styledList">
         <g:each in="${interests}" var="i">
           <li>
             <g:link url = "#/?nodeId=i_${i.id}&navFunction=interest&interestId=${i.id}&searchBox=">${i.text}</g:link>
@@ -59,7 +59,7 @@
     <g:if test="${requests}">
       <div class="searchHeader atxt">Matching <b>collaboration requests:</b></div>
         
-      <ul>
+      <ul class="styledList">
         <g:each in="${requests}" var="r">
           <li>
             <g:link url = "#/?nodeId=r_${r.id}&navFunction=request&requestId=${r.id}&searchBox=">${r.title}</g:link>

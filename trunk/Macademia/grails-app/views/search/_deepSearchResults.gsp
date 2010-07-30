@@ -21,7 +21,7 @@
   <g:if test="${results}">
 
     <g:if test= "${type == 'person'}">
-      <ul id="personResults">
+      <ul id="personResults" class="styledList">
         <g:each in="${results}" var="p">
           <li>
             <g:link url = "#/?nodeId=p_${p.id}&navFunction=person&personId=${p.id}">${p.fullName}</g:link>
@@ -33,7 +33,7 @@
     </g:if>
 
     <g:elseif test= "${type == 'request'}">
-      <ul id="requestResults">
+      <ul id="requestResults" class="styledList">
         <g:each in="${results}" var="r">
           <li>
             <g:link  id ="requestTittle" url = "#/?nodeId=r_${r.id}&navFunction=request&requestId=${r.id}">${r.title}</g:link>
@@ -51,7 +51,7 @@
     </g:elseif>
 
     <g:elseif test= "${type == 'interest'}">
-      <ul id="interestResults">
+      <ul id="interestResults" class="styledList">
         <g:each in="${results}" var="i">
           <li>
             <g:link url = "#/?nodeId=i_${i.id}&navFunction=interest&interestId=${i.id}">${i.text}</g:link>
