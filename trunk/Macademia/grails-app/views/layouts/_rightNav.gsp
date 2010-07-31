@@ -48,11 +48,12 @@
           <g:form id="login_form" controller="auth" action="signin" name="signin">
             <div id="login" style="display: block;">
               <input type="hidden" name="targetUri" value="${targetUri}"/>
-              <label for="username">Email Address</label>
+              <label for="username">Email:</label>
               <input type="text" tabindex="1" name="username" class="login_input" id="username"/>
-              <label for="password"><g:link controller="account" action="forgottenpassword">forgot?</g:link>Password</label>
+
+              <label for="password">Password:</label>
               <input type="password" tabindex="2" name="password" class="login_input" id="password">
-              <input type="submit" tabindex="3" value="Login" class="login_submit">
+              <input type="submit" tabindex="3" value="Login" class="login_submit"><g:link controller="account" action="forgottenpassword" class="forgot_password">forgot password?</g:link>
             </div>
           </g:form>
 

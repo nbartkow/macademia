@@ -314,44 +314,55 @@ ul#instruct_list li:before, ul.styledList li:before{
     line-height: 1em;
 }
 
-#login_form {
+#signin {
     border-bottom: 1px solid #CCCCCC;
     border-top: 1px solid #CCCCCC;
     display: block;
     font-size: 1em;
-    margin: 15px 5px 15px 70px;
+    margin: 15px 5px 15px 15px;
     padding: 10px 0;
-    width: 200px;
+    width: 90%;
+    height:89px;
 }
 
-#login_form label {
+#signin label {
     display: block;
-    margin: 3px 0;
-    text-align: left;
+    float : left;
+    clear : both;
+    margin: 3px 3px;
+    text-align: right;
+    width : 67px;
+    padding-top : 9px;
 }
 
-#login_form input.login_input {
+#signin input.login_input {
+    display: block;
+    float : left;
     -moz-border-radius: 5px 5px 5px 5px;
     border: 1px solid #EEEEEE;
     margin-bottom: 7px;
     margin-top: 2px;
     min-height: 20px;
     padding: 5px 2px;
-    width: 190px;
+    width: 200px;
 }
 
-#login_form input.login_input:focus {
+#signin input.login_input:focus {
     border: 1px solid #000000;
 }
 
-#login_form a.forgot_password {
+#signin a.forgot_password {
     display: block;
-    float: right;
+    float: left;
     font-size: 1em;
-    margin-right: 10px;
+    margin-left: 30px;
+    padding-top : 3px;
 }
 
 .login_submit {
+    display: block;
+    float: left;
+    clear:both;
     margin-bottom: 5px;
     margin-left: 75px;
     padding: 2px;
@@ -957,14 +968,28 @@ h3 {
     right: 0px;
     left: 0px;
     min-width:720px;
+    text-align: center;
+    color: #d0d3b3;
+}
+
+#tagContainer a {
+    color: #ffe;
+    /*text-decoration:underline;*/
 }
 
 #tagline {
     position: relative;
     margin: auto;
     text-align: center;
-    color: #ffe;
     font-family: serif;
-    font-size: .90em;
+    font-size: 1.0em;
     width: auto;
+}
+
+#taglineLinks {
+    color: #ffe;
+    font-size: 1.0em;
+}
+#taglineLinks a {
+    padding : 10px;
 }
