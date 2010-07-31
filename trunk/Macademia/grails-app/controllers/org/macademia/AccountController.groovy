@@ -130,7 +130,7 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
 
     def createuser2 = {
       def model = super.createuser()
-      return render(view: 'modalcreateuser', model: model)
+      return render(view: 'modalCreateUser', model: model)
     }
 
     def login = {
@@ -189,7 +189,7 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
             user.properties[fields] = params
             String allInterests = user.profile.interests.collect({it.text}).join(', ')
             log.info(allInterests)
-            return render(view: 'modalcreateuser', model: [user: user, interests : allInterests])
+            return render(view: 'modalCreateUser', model: [user: user, interests : allInterests])
 	    }
     }
 
