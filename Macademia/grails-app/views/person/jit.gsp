@@ -30,10 +30,17 @@
 
   </div>
   <div id="tagContainer">
-    <div id="tagline">Macademia is developed by students at Macalester College under the direction of Shilad Sen.<br> The project is funded by Macalester College, the National Science Foundation, and The Associated Colleges of the Midwest.</div>
+    <div id="taglineLinks">
+      <a href="#">about</a> &middot;
+      <a href="mailto:ssen@macalester.edu">feedback</a> &middot;
+      <a href="#">privacy</a> &middot;
+      <a href="http://code.google.com/p/macademia">code</a><br>
+    </div>
+    <div id="tagline">
+Macademia is developed by students at Macalester College under the direction of <a href="http://www.shilad.com">Shilad Sen</a>, and funded through<br> grants from <a href="http://www.macalester.edu">Macalester College</a>, the <a href="http://www.nsf.gov">National Science Foundation</a>, and <a href="http://www.acm.edu">The Associated Colleges of the Midwest</a>.</div>
   </div>
 </div>
-<img id="logoImage" src="${createLinkTo(dir: 'images', file: 'macademia-logo.png')}"/>
+<a href="/Macademia/"><img id="logoImage" src="${createLinkTo(dir: 'images', file: 'macademia-logo.png')}"/></a>
 
 <div id="extendedInfo">
   <g:render template="../layouts/rightNav"/>
