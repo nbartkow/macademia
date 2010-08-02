@@ -1,4 +1,190 @@
-body {
+/**
+ * Reset
+ */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: inherit;
+    font-size: 14px;
+	font-family: inherit;
+	vertical-align: baseline;
+}
+
+#center_wrapper {
+    width: 950px;
+    margin: 0px auto;
+}
+
+#sidebar {
+    width: 400px;
+    float: left;
+    margin-top: 0px;
+}
+
+#sidebar div {
+    font-size: 14px;
+    margin-top: 7px;
+}
+
+#sidebar h3 {
+    border-bottom: 1px #d7d7d7 solid;
     font-size: 16px;
-    background-color:white;
+}
+
+#sidebar h3 span {
+    font-size: 14px;
+    float: right;
+}
+
+#sidebar h3 span a {
+    text-decoration: none;
+    color: #aaa;
+}
+
+#sidebar h3 span a:hover {
+    color: #000;
+}
+
+#sidebar li {
+    margin-bottom: 5px;
+}
+
+#sidebar a {
+    color: #2F9599;
+}
+
+#profile_picture {
+    width: 90px;
+    margin: 0 auto;
+    text-align: center;
+    display: block;
+}
+
+#change_pf_picture {
+    margin-left: 75px;
+    margin-bottom: 10px;
+}
+
+#edit_profile_container {
+    width: 550px;
+    float: right;
+}
+
+#formBox {
+    width: 550px;
+    background-color: #FFFFEE;
+}
+
+.edit_profile_heading {
+    font-size: 36px;
+    text-align: center;
+    width: 600px;
+}
+
+.left {
+    float: left;
+    padding: 10px;
+    width: 160px;
+}
+
+.left label {
+    font-size: 28px;
+}
+
+.left label span {
+    font-size: 12px;
+    padding-top: 6px;
+    font-family: Arial;
+    display: block;
+    color: #4F6F6E;
+}
+
+.right {
+    background: none repeat scroll 0 0 #FFFFFF;
+    float: left;
+    padding: 20px 10px 30px 10px;
+    width: 350px;
+}
+
+.topBorder {
+     border-top: 1px solid #D7D7D7;
+}
+
+.right input {
+    padding: 3px;
+    width: 340px;
+    height: 40px;
+    font-size: 24px;
+}
+
+.right input, .right textarea {
+    border: thin 1px #ccc;
+
+}
+
+#editInterests {
+    padding: 3px;
+    width: 340px;
+    font-size: 16px;
+    height: 108px;
+    font-family: Helvetica;
+}
+
+.clear {
+    height: 0;
+    clear: both;
+}
+
+#submit_edits {
+    background-color: #fff;
+    text-align: center;
+    /*margin-top: 50px;*/
+}
+
+.linkValue {
+    width: 35%;
+    text-align: center;
+}
+
+.linkField {
+    width: 35%;
+    text-align: center;
+}
+
+.linkField input, .linkValue input {
+    width: 100%;
+}
+
+.fieldLabel {
+    text-align: right;
+    background-color: #FFFFEE
+}
+
+.removeLink {
+    width: 15%;
+}
+
+body {
+    width: 95%;
+    padding: 0px;
+    margin: 0px;
+}
+
+.center {
+    text-align: center;
+    
+}
+
+h2 {
+    font-size: 36px;
 }
