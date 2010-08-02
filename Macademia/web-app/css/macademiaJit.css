@@ -679,6 +679,18 @@ h3#pf_dept_no_img {
     margin: 5px 5px 5px 5px;
 }
 
+.personSearchResult {
+    margin: 10px;
+}
+.personSearchInst {
+    color: #000;
+    margin-left: 25px;
+}
+.personSearchDept {
+    color: #555;
+    margin-left: 25px;
+}
+
 /* college filter related stuff*/
 
 #editColleges {

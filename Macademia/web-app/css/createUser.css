@@ -230,9 +230,14 @@ h2 {
     position: absolute;
     left: 10px;
     top: 10px;
-    z-index: 10;
+    z-index: -1;
+    background:#A2AB8E; 
 }
 
 #registerTitle {
-    min-width: 950px;
+    margin-left:auto;
+    margin-right:auto;
+    width: 950px;
+    background: #FFFFEE;
+    z-index: -30;
 }
