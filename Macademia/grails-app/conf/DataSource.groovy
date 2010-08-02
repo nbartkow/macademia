@@ -5,6 +5,7 @@ dataSource {
 	username = "sa"
 	password = ""
     mongoDbUrl = "poliwiki.macalester.edu"
+//    wpMongoDbName = "wikipediaReadOnly"
     wpMongoDbName = "fromWikipedia"
 }
 
