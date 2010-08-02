@@ -747,6 +747,7 @@ h3#pf_dept_no_img {
 
 #collegeFilterButton {
     margin-top: 10px;
+    margin-bottom: 10px;
     color: #333;
 }
 
@@ -850,6 +851,9 @@ h2 {
 
 h3 {
     font-weight: normal;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 1.25em;
 }
 
 .registerLeft label {
