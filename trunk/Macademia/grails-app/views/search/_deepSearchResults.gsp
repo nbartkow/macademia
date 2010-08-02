@@ -23,10 +23,10 @@
     <g:if test= "${type == 'person'}">
       <ul id="personResults" class="styledList">
         <g:each in="${results}" var="p">
-          <li>
+          <li class="personSearchResult">
             <g:link url = "#/?nodeId=p_${p.id}&navFunction=person&personId=${p.id}">${p.fullName}</g:link>
-             <div>${p.institution}</div>
-             <div>${p.department}</div>
+             <div class="personSearchInst" >${p.institution}</div>
+             <div class="personSearchDept">${p.department}</div>
           </li>
         </g:each>
       </ul>
