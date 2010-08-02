@@ -4,31 +4,8 @@
   <link type="text/css" rel="stylesheet" href="${createLinkTo(dir: "css", file: "createUser.css")}">
 </head>
 <body>
-<h2 class="center">Create New Account</h2>
+<h2 class="center" id="registerTitle">Create New Account</h2>
 <div id="center_wrapper" class="topBorder">
-  <div id="sidebar">
-    <div class="profileImage">
-      <h4>Profile image:</h4>
-      <g:render template="../templates/macademia/imageUploader"/>
-    </div>
-    <div class="clear"></div>
-    <div class="personLinks">
-      <h4>Links:</h4>
-      <div class="customLink customLinkTemplate clear">
-        <div class="linkField left"><input type="text" class="clearDefault" prompt="link name"></div>
-        <div class="linkValue left"><input type="text" class="clearDefault" prompt="link url"></div>
-        <div class="removeLink left"><a href="#" class="removeLink">(x)</a></div>
-      </div>
-
-      <div class="customLink clear example">
-        <div class="clear linkField left">Homepage, Facebook, etc.</div>
-        <div class="linkValue left">http://www.whitehouse.gov</div>
-      </div>
-
-      <div class=""></div>
-      <div class="center" id="addLinkDiv"><button class="addLink">add other link</button></div>
-    </div>
-  </div>
   <div id="edit_profile_container">
     <form id="edit_profile" name="edit_pf" method="post">
       <div id="formBox">
@@ -61,9 +38,43 @@
       </div>
     </form>
   </div>
+  <div id="sidebar">
+    <div class="profileImage">
+      <h4>Profile image:</h4>
+      <g:render template="../templates/macademia/imageUploader"/>
+    </div>
+    <div class="clear"></div>
+    <div class="personLinks">
+      <h4>Links:</h4>
+      <div class="customLink customLinkTemplate clear">
+        <div class="linkField left"><input type="text" class="clearDefault" prompt="link name"></div>
+        <div class="linkValue left"><input type="text" class="clearDefault" prompt="link url"></div>
+        <div class="removeLink left"><a href="#" class="removeLink">(x)</a></div>
+      </div>
+
+      <div class="customLink clear example">
+        <div class="clear linkField left">Homepage, Facebook, etc.</div>
+        <div class="linkValue left">http://www.whitehouse.gov</div>
+      </div>
+
+      <div class=""></div>
+      <div class="center" id="addLinkDiv"><button class="addLink">add other link</button></div>
+    </div>
+  </div>
   <div class="clear"></div>
   <div id="submit_edits"><input type="submit" value="Update"> or <a href="#">Cancel</a></div>
 </div>
+<div id="tagContainer">
+    <div id="taglineLinks">
+      <a href="#">about</a> &middot;
+      <a href="mailto:ssen@macalester.edu">feedback</a> &middot;
+      <a href="#">privacy</a> &middot;
+      <a href="http://code.google.com/p/macademia">code</a><br>
+    </div>
+    <div id="tagline">
+Macademia is developed by students at Macalester College under the direction of <a href="http://www.shilad.com">Shilad Sen</a>, and <br>funded by <a href="http://www.macalester.edu">Macalester College</a>, the <a href="http://www.nsf.gov">National Science Foundation</a>, and <a href="http://www.acm.edu">The Associated Colleges of the Midwest</a>.</div>
+  </div>
+<a href="/Macademia/"><img id="logoImage" src="${createLinkTo(dir: 'images', file: 'macademia-logo.png')}"/></a>
 </body>
 </html>
 
