@@ -20,14 +20,23 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 	vertical-align: baseline;
 }
 
+body {
+    background: #A2AB8E;
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+
 #center_wrapper {
     width: 950px;
     margin: 0px auto;
+    background: #ffe;
+    z-index: 30;
 }
 
 #sidebar {
     width: 400px;
-    float: left;
+    float: right;
     margin-top: 0px;
 }
 
@@ -77,7 +86,7 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 
 #edit_profile_container {
     width: 550px;
-    float: right;
+    float: left;
 }
 
 #formBox {
@@ -146,7 +155,7 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 }
 
 #submit_edits {
-    background-color: #fff;
+    background-color: #D7D7D7;
     text-align: center;
     /*margin-top: 50px;*/
 }
@@ -174,12 +183,6 @@ table, caption, tbody, tfoot, thead, tr, th, td {
     width: 15%;
 }
 
-body {
-    width: 95%;
-    padding: 0px;
-    margin: 0px;
-}
-
 .center {
     text-align: center;
     
@@ -187,4 +190,49 @@ body {
 
 h2 {
     font-size: 36px;
+}
+
+#tagContainer {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
+    min-width:950px;
+    text-align: center;
+    color: #d0d3b3;
+    z-index: -10;
+}
+
+#tagContainer a {
+    color: #ffe;
+    /*text-decoration:underline;*/
+}
+
+#tagline {
+    position: relative;
+    margin: auto;
+    text-align: center;
+    font-family: serif;
+    font-size: 1.0em;
+    width: auto;
+}
+
+#taglineLinks {
+    color: #ffe;
+    font-size: 1.0em;
+}
+#taglineLinks a {
+    padding : 10px;
+}
+
+#logoImage {
+    padding-bottom: 10px;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    z-index: 10;
+}
+
+#registerTitle {
+    min-width: 950px;
 }
