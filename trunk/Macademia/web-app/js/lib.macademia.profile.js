@@ -14,55 +14,54 @@ macademia.initializeRegister = function() {
        $("#registerDialog").jqmHide(); 
     })
 
-    $('#editProfileWindow form').submit(function() {
-      $(this).serialize();
-      macademia.links.serialize();
+    $('#edit_profile').submit(function() {
+      try {
+          $(".warning").hide();
+          $(this).serialize();
+          macademia.links.serialize();
 
-      var name = $(this).find('[name=fullName]').val();
-      var pass = $(this).find('[name=pass]').val();
-      var confirm = $(this).find('[name=passConfirm]').val();
-      var email = $(this).find('[name=email]').val();
-      var department = $(this).find('[name=department]').val();
-      var formCheck = true;
+          var name = $(this).find('[name=fullName]').val();
+          var pass = $(this).find('[name=pass]').val();
+          var confirm = $(this).find('[name=passConfirm]').val();
+          var email = $(this).find('[name=email]').val();
+          var department = $(this).find('[name=department]').val();
+          var formCheck = true;
 
-      if (name.length < 5) {
-          $('#nameErrors').html("<b>Name must be provided</b>");
-          $('#nameErrors').show();
-          formCheck=false;
-      }
-
-      // If we are in edit profile skip password and email
-      if (macademia.isNewUser()) {
-          if (pass!=confirm) {
-              $("#passConfirmErrors").html("<b>Passwords do not match</b>");
-              $("#passConfirmErrors").show();
+          if (name.length < 5) {
+              $('#nameErrors').html("<b>Name must be provided</b>");
+              $('#nameErrors').show();
               formCheck=false;
           }
-          if (pass.length<6) {
-              $("#passErrors").html("<b>Password must be at least six characters</b>");
-              $("#passErrors").show();
-              formCheck=false;
 
+          // If we are in edit profile skip password and email
+          if (macademia.isNewUser()) {
+              if (pass!=confirm) {
+                  $("#passConfirmErrors").html("<b>Passwords do not match</b>");
+                  $("#passConfirmErrors").show();
+                  formCheck=false;
+              }
+              if (pass.length<6) {
+                  $("#passErrors").html("<b>Password must be at least six characters</b>");
+                  $("#passErrors").show();
+                  formCheck=false;
+
+              }
+              if (email.length<5) {
+                  $('#emailErrors').html("<b>Valid email must be provided</b>");
+                  $('#emailErrors').show();
+                  formCheck=false;
+              }
           }
-          if (email.length<5) {
-              $('#emailErrors').html("<b>Valid email must be provided</b>");
-              $('#emailErrors').show();
-              formCheck=false;
+
+          if (formCheck) {
+              $("#submit_edits").hide();
+              var interests = $('#editInterests').val().split(',');
+              macademia.analyzeInterests(interests, 0, $("#editProfileWindow .progressBar"), macademia.saveUserProfile);
+          } else {
+              $('html, body').animate({scrollTop:0}, 'slow');
           }
-      }
-
-      if (department.length<3) {
-          $('#deptErrors').html("<b>Department must be provided</b>");
-          $('#deptErrors').show();
-          formCheck=false;
-      }
-
-      if (formCheck) {
-          $("#submit_edits").hide();
-          var interests = $('#editInterests').val().split(',');
-          macademia.analyzeInterests(interests, 0, $("#editProfileWindow .progressBar"), macademia.saveUserProfile);
-      } else {
-          $('#registerDialog').animate({scrollTop:0}, 'slow');  
+      } catch(err) {
+          alert('profile submission failed: ' + err);
       }
       return false;
   });
@@ -72,7 +71,7 @@ macademia.initializeRegister = function() {
  * Returns true if we are showing the create user dialog, false otherwise.
  */
 macademia.isNewUser = function() {
-    return $('#edit_profile_container form').find('[name=pass').is(':visibile');
+    return $('#edit_profile').find('[name=pass]').is(':visible');
 };
 
 macademia.saveUserProfile = function() {
@@ -80,7 +79,7 @@ macademia.saveUserProfile = function() {
    jQuery.ajax({
           url: url,
           type: "POST",
-          data: $('#edit_profile_container form').serialize(),
+          data: $('#edit_profile').serialize(),
           dataType: "text",
           success: function(data) {
               if (data == 'okay') {
