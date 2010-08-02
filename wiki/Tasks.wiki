@@ -14,7 +14,6 @@
  * Profile images
  * Update collaborator request
  * Interest autocomplete
- * autocomplete line wraps
  * Have Henry commit changes to AccountController (modalcreateuser  => modalCreateUser)
  * Fix null pointer exceptions in logs
  * Fix edit / create profile dialog
