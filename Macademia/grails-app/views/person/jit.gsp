@@ -10,12 +10,14 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
+
+  <link type="text/css" rel="stylesheet" href="${createLinkTo(dir: "css", file: "macademiaJit.css")}">
   <g:include view="/layouts/headers.gsp"/>
+
   <link rel="stylesheet" href="${resource(dir: 'css', file: 'jqModal.css')}"/>
   <g:javascript>
     $().ready(function() {
-      macademia.pageLoad();
-
+        macademia.pageLoad();
     });
   </g:javascript>
 
@@ -27,7 +29,6 @@
 
   <div id="infovis">
     &nbsp;
-
   </div>
   <g:render template="../templates/Macademia/tagline"/>
 </div>

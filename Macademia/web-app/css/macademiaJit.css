@@ -600,6 +600,7 @@ h3#pf_dept_no_img {
 }
 
 #addLinkDiv {
+    margin-top : 0;
     clear: both;
 }
 
