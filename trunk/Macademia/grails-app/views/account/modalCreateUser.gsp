@@ -1,7 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
+
   <link type="text/css" rel="stylesheet" href="${createLinkTo(dir: "css", file: "createUser.css")}">
+  <g:include view="/layouts/headers.gsp"/>
+  <g:javascript src="uploadify/swfobject.js"></g:javascript>
+  <g:javascript src="uploadify/jquery.uploadify.v2.1.0.min.js"></g:javascript>
+  <g:javascript src="lib.macademia.upload.js"></g:javascript>
+  <link type="text/css" rel="stylesheet" href="${createLinkTo(dir: "js", file: "/uploadify/uploadify.css")}">
+  <g:javascript>
+    $().ready(macademia.initializeRegister);
+  </g:javascript>
+  
 </head>
 <body>
 <h2 class="center" id="registerTitle">Create New Account</h2>
@@ -16,19 +26,23 @@
         <div id="nameErrors" class="warning"></div>
 
         <div class="left fieldLabel topBorder"><label>Password<span>You can change your password here</span></label></div>
-        <div class="right topBorder"><input type="password" name="pass" id=""/></div>
+        <div class="right topBorder"><input type="password" name="pass" class="clearDefault"/></div>
         <div class="clear"></div>
 
         <div class="left fieldLabel topBorder"><label>Password<span>Confirm password by retyping</span></label></div>
-        <div class="right topBorder"><input type="password" name="passConfirm" id=""/></div>
+        <div class="right topBorder"><input type="password" name="passConfirm" class="clearDefault"/></div>
         <div class="clear"></div>
 
         <div class="left fieldLabel topBorder"><label>Email<span>College email address</span></label></div>
-        <div class="right topBorder"><input type="text" name="email" id=""/></div>
+        <div class="right topBorder"><input type="text" name="email" class="clearDefault"/></div>
+        <div class="clear"></div>
+
+        <div class="left fieldLabel topBorder"><label>Title<span>Job title</span></label></div>
+        <div class="right topBorder"><input type="text" name="department" id="" class="clearDefault"/></div>
         <div class="clear"></div>
 
         <div class="left fieldLabel topBorder"><label>Department<span>Department of college</span></label></div>
-        <div class="right topBorder"><input type="text" name="department" id=""/></div>
+        <div class="right topBorder"><input type="text" name="department" id="" class="clearDefault"/></div>
         <div class="clear"></div>
 
         <div class="left fieldLabel topBorder"><label>Interests<span>List your research interests, separated by commas.</span></label></div>
@@ -47,14 +61,14 @@
     <div class="personLinks">
       <h4>Links:</h4>
       <div class="customLink customLinkTemplate clear">
-        <div class="linkField left"><input type="text" class="clearDefault" prompt="link name"></div>
-        <div class="linkValue left"><input type="text" class="clearDefault" prompt="link url"></div>
-        <div class="removeLink left"><a href="#" class="removeLink">(x)</a></div>
+        <div class="linkField"><input type="text" class="clearDefault" prompt="link name"></div>
+        <div class="linkValue"><input type="text" class="clearDefault" prompt="link url"></div>
+        <div class="removeLink"><a href="#" class="removeLink">(x)</a></div>
       </div>
 
       <div class="customLink clear example">
-        <div class="clear linkField left">Homepage, Facebook, etc.</div>
-        <div class="linkValue left">http://www.whitehouse.gov</div>
+        <div class="linkField">Homepage, Facebook, etc.</div>
+        <div class="linkValue">http://www.whitehouse.gov</div>
       </div>
 
       <div class=""></div>
@@ -62,6 +76,7 @@
     </div>
   </div>
   <div class="clear"></div>
+  <div class="progressBar"><span></span></div>
   <div id="submit_edits"><input type="submit" value="Update"> or <a href="#">Cancel</a></div>
 </div>
 <g:render template="../templates/Macademia/tagline"/>

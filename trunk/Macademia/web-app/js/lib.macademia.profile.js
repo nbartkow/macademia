@@ -5,29 +5,10 @@
 var macademia = macademia || {};
 
 
-macademia.initializeModalRegister = function() {
+macademia.initializeRegister = function() {
   macademia.upload.init();
   macademia.links.init();
   macademia.initAnalyzeInterests();
-  $("#passwordpolicy").hide();
-  $("#passwordpolicybtn").bt({
-      contentSelector: $("#passwordpolicy"),
-      width: '350px',
-      closeWhenOthersOpen: true,
-      shrinkToFit: 'true',
-      positions: ['right', 'top', 'left'],
-      margin: 0,
-      padding: 6,
-      fill: '#fff',
-      strokeWidth: 1,
-      strokeStyle: '#c2c2c2',
-      spikeGirth: 12,
-      spikeLength:9,
-      hoverIntentOpts: {interval: 100,
-                        timeout: 1000}
-  })
-      
-          ;
 
     $("#cancelAccountCreation").click(function() {
        $("#registerDialog").jqmHide(); 
@@ -214,11 +195,11 @@ macademia.links.serialize = function() {
             linkStr += macademia.htmlEncode(name) + "</a>\n";
         }
     });
-    $("#edit_profile_container input[name='links']").val(linkStr);
+    $(".personLinks input[name='links']").val(linkStr);
 };
 macademia.links.deserialize = function() {
     try {
-    var linksStr =$("#edit_profile_container input[name='links']").val();
+    var linksStr =$(".personLinks input[name='links']").val();
     $(linksStr).find('a').each(
         function() {
             macademia.links.addNewLink($(this).text(), decodeURI($(this).attr('href')));

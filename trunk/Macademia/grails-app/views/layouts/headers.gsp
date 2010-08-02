@@ -1,5 +1,4 @@
 
-<link type="text/css" rel="stylesheet" href="${createLinkTo(dir: "css", file: "macademiaJit.css")}">
 <g:javascript library="jquery"/>
 
 <!-- Jquery-UI for autocomplete, etc. -->
