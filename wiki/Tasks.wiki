@@ -7,9 +7,6 @@
     * Fix spacing
     * Use jquery-ui button for register?
  * Add "edit profile" links to person view on right nav when relevant
- * Remove extra vertical space after right nav headers: "related interests," "people with this interest", etc.
- * Remove extra vertical space before first college in dialog
- * Lengthen college filter dialog.
  * Add page number when paging through search results in right nav.
  * Rethink account options nav (future)
 
