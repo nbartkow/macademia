@@ -15,13 +15,14 @@
 </head>
 <body>
 <h2 class="center" id="registerTitle">Create New Account</h2>
-<div id="center_wrapper" class="topBorder">
+<div id="center_wrapper">
   <form action="#" id="edit_profile" name="edit_profile" method="post">
     <div id="edit_profile_container">
-      <div id="formBox">
+        <div class="halfHeader">Required Information</div>
+
         <div id="nameErrors" class="warning">&nbsp;</div>
-        <div class="left fieldLabel"><label for="name">Name<span>Full Name</span></label></div>
-        <div class="right"><input type="text" name="fullName"/></div>
+        <div class="left fieldLabel topBorder"><label for="name">Name<span>Full Name</span></label></div>
+        <div class="right topBorder"><input type="text" name="fullName"/></div>
         <div class="clear"></div>
 
         <div id="passErrors" class="warning">&nbsp;</div>
@@ -39,6 +40,15 @@
         <div class="right topBorder"><input type="text" name="email" class="clearDefault"/></div>
         <div class="clear"></div>
 
+        <div id="interestErrors" class="warning">&nbsp;</div>
+        <div class="left fieldLabel topBorder"><label>Interests<span>List your research interests, separated by commas.</span></label></div>
+        <div class="right topBorder"><textarea id="editInterests" cols="20" rows="3"></textarea></div>
+        <div class="clear"></div>
+    </div>
+    <div id="sidebar">
+
+        <div class="halfHeader">Optional Information</div>
+
         <div id="titleErrors" class="warning">&nbsp;</div>
         <div class="left fieldLabel topBorder"><label>Title<span>Job title</span></label></div>
         <div class="right topBorder"><input type="text" name="title" class="clearDefault"/></div>
@@ -49,21 +59,15 @@
         <div class="right topBorder"><input type="text" name="department" class="clearDefault"/></div>
         <div class="clear"></div>
 
-        <div id="interestErrors" class="warning">&nbsp;</div>
-        <div class="left fieldLabel topBorder"><label>Interests<span>List your research interests, separated by commas.</span></label></div>
-        <div class="right topBorder"><textarea id="editInterests" cols="20" rows="3"></textarea></div>
-        <div class="clear"></div>
 
-      </div>
-    </div>
-    <div id="sidebar">
-      <div class="profileImage">
-        <h4>Profile image:</h4>
-        <g:render template="../templates/macademia/imageUploader"/>
-      </div>
+        <div class="left fieldLabel topBorder"><label>Profile image</label></div>
+        <div class="right topBorder">
+            <g:render template="../templates/macademia/imageUploader"/>
+        </div>
       <div class="clear"></div>
-      <div class="personLinks">
-        <h4>Links:</h4>
+      <div class="personLinks topBorder">
+        <div class="left fieldLabel"><label>Links</label></div>
+        <div class="clear"></div>
         <div class="customLink customLinkTemplate clear">
           <div class="linkField"><input type="text" class="clearDefault" prompt="link name"></div>
           <div class="linkValue"><input type="text" class="clearDefault" prompt="link url"></div>
@@ -79,12 +83,12 @@
         <div class="center" id="addLinkDiv"><button class="addLink">add other link</button></div>
       </div>
     </div>
-    <div class="clear"></div>
+    <div class="clear topBorder"></div>
     <div class="progressBar"><span></span></div>
     <div id="submit_edits"><input type="submit" value="Update"> or <a href="/Macademia">Cancel</a></div>
   </form>
 </div>
-<g:render template="../templates/Macademia/tagline"/>
+<g:render template="../templates/macademia/tagline"/>
 <a href="/Macademia/"><img id="logoImage" src="${createLinkTo(dir: 'images', file: 'macademia-logo.png')}"/></a>
 </body>
 </html>
