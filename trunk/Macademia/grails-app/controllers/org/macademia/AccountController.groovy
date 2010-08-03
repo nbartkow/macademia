@@ -29,7 +29,7 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
         String institutionDomain = params.email.split("@")[1]
         Institution institution = Institution.findByEmailDomain(institutionDomain)
         if (institution == null){
-            institution= new Institution(name:institutionDomain, emailDomain:user.profile.email.split("@.")[1])
+            institution= new Institution(name:institutionDomain, emailDomain:institutionDomain)
             Utils.safeSave(institution)
         }
         user.profile.institution = institution

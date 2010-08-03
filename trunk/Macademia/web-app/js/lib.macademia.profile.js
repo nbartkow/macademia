@@ -56,7 +56,7 @@ macademia.initializeRegister = function() {
           if (formCheck) {
               $("#submit_edits").hide();
               var interests = $('#editInterests').val().split(',');
-              macademia.analyzeInterests(interests, 0, $("#editProfileWindow .progressBar"), macademia.saveUserProfile);
+              macademia.analyzeInterests(interests, 0, $(".progressBar"), macademia.saveUserProfile);
           } else {
               $('html, body').animate({scrollTop:0}, 'slow');
           }
@@ -82,8 +82,10 @@ macademia.saveUserProfile = function() {
           data: $('#edit_profile').serialize(),
           dataType: "text",
           success: function(data) {
-              if (data == 'okay') {
-                    window.location.href = 'http://localhost:8080/Macademia/person/jit/#/institutions=all&nodeId=p_'                   
+              if (data && data.substring(0, 4) == 'okay ') {
+                    var id = data.substring(5);
+                    window.location.href = 'http://localhost:8080/Macademia/person/jit/#/institutions=all&nodeId=p_' + id;
+                    return;
               }
               macademia.initAnalyzeInterests();
               if (data.indexOf('Email') == 0) {
