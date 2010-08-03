@@ -79,7 +79,8 @@ class  PersonController{
     }
 
  def jit = {
-        [:]
+
+        [ authenticatedUser : authenticatedUser ]
         //[person: personService.get((params.id as long))]
 
     }
@@ -102,6 +103,7 @@ class  PersonController{
     def show = {
         def person = Person.get(params.id)
         def auth = false
+
         if (authenticatedUser){
             auth = userService.isAdmin(authenticatedUser,User.get(params.id))
         }

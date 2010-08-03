@@ -36,7 +36,7 @@ nimble {
             uppercase = false
             numbers = false
             symbols = false
-            numbersOrSymbols = true
+            numbersOrSymbols = false
         }
         minlength = 5
     }
@@ -75,6 +75,9 @@ nimble {
         }
         registration {
             enabled = true
+        }
+        provision {
+            active = true
         }
     }
 

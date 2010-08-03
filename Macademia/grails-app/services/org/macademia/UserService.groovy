@@ -179,7 +179,7 @@ class UserService extends grails.plugins.nimble.core.UserService{
 
             user.addToRoles(defaultRole)
 
-            def savedUser = user.save()
+            def savedUser = user.save(flush : true)
             if (savedUser) {
                 defaultRole.addToUsers(savedUser)
                 defaultRole.save()

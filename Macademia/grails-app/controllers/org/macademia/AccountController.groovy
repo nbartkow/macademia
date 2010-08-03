@@ -2,6 +2,8 @@ package org.macademia
 
 import grails.plugins.nimble.InstanceGenerator
 import org.apache.commons.validator.EmailValidator
+import org.apache.shiro.authc.UsernamePasswordToken
+import org.apache.shiro.SecurityUtils
 
 class AccountController extends grails.plugins.nimble.core.AccountController{
     def personService
@@ -9,12 +11,6 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
   
 
     def saveuser = {
-        if (!grailsApplication.config.nimble.localusers.registration.enabled) {
-            log.warn("Account registration is not enabled for local users, skipping request")
-            response.sendError(404)
-            return
-        }
-
         def user = InstanceGenerator.user()
         user.profile = InstanceGenerator.profile()
         def userFields = grailsApplication.config.nimble.fields.enduser.user
@@ -61,31 +57,19 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
           render("Email already in use")
           return
         }
-
-        if (!userService.passCheck(user)) {
-            render("You need numbers in your password");
-            return
-        } else {
-          log.info("?!?!?!")
-        }
-
         if (user.hasErrors()) {
             render("Submitted values for new user are invalid")
             return
             user.errors.each {
                 log.debug it
             }
-
             resetNewUser(user)
-            //render(view: 'modalcreateuser', model: [user: user])     // make this call javascript function to stop redirection
-            //return
         }
 
         def savedUser
         def human = recaptchaService.verifyAnswer(session, request.getRemoteAddr(), params)
 
         if (human) {
-
             savedUser = userService.createUser(user)
             log.info("saved user ID is $savedUser.id")
             if (savedUser.hasErrors()) {
@@ -94,7 +78,6 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
                 //render(view: 'createuser', model: [user: user])
                 //return
             } else {
-
                 personService.save(user.profile, Utils.getIpAddress(request))
             }
         }
@@ -105,6 +88,7 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
             //render(view: 'createuser', model: [user: user])      // similiarly
             //return
         }
+        savedUser.save(flush : true)    // flush to get the id and foo
 
 		if(userService.events['afterregister']) {
 			userService.events['afterregister'](user)
@@ -112,18 +96,24 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
 
         log.info("Sending account registration confirmation email to $user.profile.email with subject $grailsApplication.config.nimble.messaging.registration.subject")
         if(grailsApplication.config.nimble.messaging.enabled) {
-			sendMail {
-	            to user.profile.email
-				from grailsApplication.config.nimble.messaging.mail.from
-	            subject grailsApplication.config.nimble.messaging.registration.subject
-	            html g.render(template: "/templates/nimble/mail/accountregistration_email", model: [user: savedUser]).toString()
-	        }
-		}
-		else {
+//			sendMail {
+//	            to user.profile.email
+//				from grailsApplication.config.nimble.messaging.mail.from
+//	            subject grailsApplication.config.nimble.messaging.registration.subject
+//	            html g.render(template: "/templates/nimble/mail/accountregistration_email", model: [user: savedUser]).toString()
+//	        }
+		} else {
 			log.debug "Messaging disabled would have sent: \n${user.profile.email} \n Message: \n ${g.render(template: "/templates/nimble/mail/accountregistration_email", model: [user: user]).toString()}"
 		}
 
         log.info("Created new account identified as $user.username with internal id $savedUser.id")
+
+        // Login user
+        def authToken = new UsernamePasswordToken(user.username, params.pass)
+        authToken.rememberMe = true
+        log.info("Attempting to authenticate user, ${user.username}.")
+        SecurityUtils.subject.login(authToken)
+        this.userService.createLoginRecord(request)
 
         render('okay ' + savedUser.id)
     }
