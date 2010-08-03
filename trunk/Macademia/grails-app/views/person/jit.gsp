@@ -30,7 +30,7 @@
   <div id="infovis">
     &nbsp;
   </div>
-  <g:render template="../templates/Macademia/tagline"/>
+  <g:render template="../templates/macademia/tagline"/>
 </div>
 <a href="/Macademia/"><img id="logoImage" src="${createLinkTo(dir: 'images', file: 'macademia-logo.png')}"/></a>
 
