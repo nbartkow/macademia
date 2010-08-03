@@ -27,6 +27,11 @@ body {
     margin: 0px;
 }
 
+.instructions {
+    padding-bottom : 15px;
+    font-size: 1.2em;
+    text-align: center;
+}
 #center_wrapper {
     width: 950px;
     margin: 0px auto;
