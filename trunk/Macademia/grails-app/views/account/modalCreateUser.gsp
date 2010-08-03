@@ -43,7 +43,7 @@
 
         <div id="interestErrors" class="warning">&nbsp;</div>
         <div class="left fieldLabel topBorder"><label>Interests<span>List your research interests, separated by commas.</span></label></div>
-        <div class="right topBorder"><textarea id="editInterests" cols="20" rows="3"></textarea></div>
+        <div class="right topBorder"><textarea id="editInterests" cols="20" rows="3" name="interests"></textarea></div>
         <div class="clear"></div>
     </div>
     <div id="sidebar">

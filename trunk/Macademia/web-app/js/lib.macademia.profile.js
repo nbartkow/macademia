@@ -82,21 +82,40 @@ macademia.saveUserProfile = function() {
           data: $('#edit_profile').serialize(),
           dataType: "text",
           success: function(data) {
-              if (data && data.substring(0, 4) == 'okay ') {
-                    var id = data.substring(5);
-                    window.location.href = 'http://localhost:8080/Macademia/person/jit/#/institutions=all&nodeId=p_' + id;
-                    return;
-              }
-              macademia.initAnalyzeInterests();
-              if (data.indexOf('Email') == 0) {
-                  $('#emailErrors').html("<b>" + data + "</b>");
-                  $('#emailErrors').show();
+              try {
+                  if (data && data.substring(0, 5) == 'okay ') {
+                       var id = data.substring(5);
+                       var params = {
+                           institutions : 'all',
+                           nodeId : 'p_' + id,
+                           personId : '' + id,
+                           navFunction : 'person',
+                           navVisibility : 'true'
+                       };
+                       window.location.href = 'http://localhost:8080/Macademia/person/jit/#/?' + $.param(params);
+                       return;
+                  }
+                  macademia.initAnalyzeInterests();
+                  var showedErrors = false;
+                  if (data.indexOf('Email') == 0) {
+                      showedErrors = true;
+                      $('#emailErrors').html("<b>" + data + "</b>");
+                      $('#emailErrors').show();
+                  }
+                  if (data.indexOf('You') == 0) {
+                      showedErrors = true;
+                      $('#passErrors').html("<b>" + data + "</b>");
+                      $('#passErrors').show();
+                  }
+                  if (!showedErrors) {
+                      $('#nameErrors').html("<b>" + macademia.htmlEncode(data) +"</b>");
+                      $('#nameErrors').show();
+                  }
                   $('#registerDialog').animate({scrollTop:0}, 'slow');
-              }
-              if (data.indexOf('You') == 0) {
-                  $('#passErrors').html("<b>" + data + "</b>");
-                  $('#passErrors').show();
-                  $('#registerDialog').animate({scrollTop:0}, 'slow');
+              } catch (err) {
+                  alert('error occurred after saving user: ' + err);
+                  macademia.initAnalyzeInterests();
+                  return;
               }
           }, 
           error: function(request, status, errorThrown) {

@@ -14,7 +14,9 @@
       <div id="account" class="btxt">
         <n:hasRole name="${UserService.USER_ROLE}">
           <div id="account" class="btxt">
-            <g:link controller="auth" action="logout" class="icon_cross">Logout</g:link> | <a href="#" id="toggleControls">More</a>
+            ${authenticatedUser.profile.fullName.encodeAsHTML()} |
+            <g:link controller="auth" action="logout" class="icon_cross">Logout</g:link> |
+            <a href="#" id="toggleControls">More</a>
           </div>
         </n:hasRole>
         <ul id="accountControlList" class="left topBorder bottomBorder styledList">
