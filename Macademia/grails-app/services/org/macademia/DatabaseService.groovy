@@ -23,6 +23,10 @@ class DatabaseService {
         wrapper.changeDB(dbName)
     }
 
+    public DB getDb() {
+        return wrapper.getDb()
+    }
+
     public void copyDB(String toCopy, String dbName) {
         wrapper.copyDB(toCopy, dbName)
     }
