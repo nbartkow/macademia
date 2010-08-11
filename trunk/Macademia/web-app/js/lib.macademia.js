@@ -32,12 +32,17 @@ macademia.pageLoad = function() {
     macademia.loginShowHide();
     macademia.initiateGraph();
     macademia.nav();
-    
     macademia.autocomplete.initSearch();
     macademia.toggleAccountControls();
-//    macademia.setupModal("#registerDialog", "#registerButton", "account/modalcreateuser/", 'nimble-login-register', "macademia.initializeModalRegister()");
-//    macademia.setupModal("#registerDialog", "#accountControlList .editProfile", "account/modaledituser", 'nimble-login-register', "macademia.initializeModalRegister()");
     macademia.setupRequestCreation();
+
+    // log the navigation
+    var params = {};
+    for (var key in $.address.parameterNames()) {
+        var value = $.address.parameter(key);
+        params[key] = value;
+    }
+    macademia.serverLog('nav', 'fragment', params);
 };
 
 //sets macademia.queryString values and initial page settings
@@ -393,6 +398,25 @@ macademia.setupModal = function(modalDialog, trigger, url, depModule, fnString) 
         $(modalDialog).jqmShow();
     });
 };
+
+macademia.serverLog = function(category, event, params) {
+    var url = '/Macademia/logging/doLog';
+    params = params || {};
+    params.category = category;
+    params.event = event;
+    $.ajax({
+            url : url,
+            data : params,
+            dataType : 'text',
+            cache : false,
+            success : function(data) {
+            },
+            error : function(req, textStatus, error) {
+                alert('logging failed: ' + textStatus + ', ' + error);
+            }
+        });
+};
+
 
 macademia.trim = function(stringToTrim) {
 	return stringToTrim.replace(/^\s+|\s+$/g,"");

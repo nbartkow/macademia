@@ -1,4 +1,5 @@
 import org.apache.commons.io.FileUtils
+import org.apache.log4j.RollingFileAppender
 
 // locations to search for config files that get merged into the main config
 // config files can either be Java properties files or ConfigSlurper scripts
@@ -37,7 +38,7 @@ grails.enable.native2ascii = true
 // set per-environment serverURL stem for creating absolute links
 environments {
     production {
-        grails.serverURL = "http://www.changeme.com"
+        grails.serverURL = "http://macademia.macalester.edu"
     }
     development {
         grails.serverURL = "http://localhost:8080/${appName}"
@@ -48,14 +49,35 @@ environments {
 
 }
 
+def LOG_FORMAT = '%d{ISO8601}\t%m\n'
+def LOG_SIZE = 50*1024*1024  // 50MB (but should compress to zilch)
+
 // log4j configuration
 log4j = {
-    // Example of changing the log pattern for the default console
-    // appender:
-    //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
+
+    // Machine-readable logs for experimental purposes
+    appenders {
+        appender new RollingFileAppender(
+                            name:"access",
+                            maxFileSize:LOG_SIZE,
+                            fileName:"logs/access.log",
+                            layout:pattern(conversionPattern: LOG_FORMAT))
+        appender new RollingFileAppender(
+                            name:"user",
+                            maxFileSize:LOG_SIZE,
+                            fileName:"logs/user.log",
+                            layout:pattern(conversionPattern: LOG_FORMAT))
+        appender new RollingFileAppender(
+                            name:"tag",
+                            maxFileSize:LOG_SIZE,
+                            fileName:"logs/tag.log",
+                            layout:pattern(conversionPattern: LOG_FORMAT))
+    }
+
+    debug   access : 'org.poliwiki.access', additivity : false
+    debug   tag : 'org.poliwiki.tag', additivity : false
+    debug   user : 'org.poliwiki.user', additivity : false
+
   // debug 'org.codehaus.groovy.grails.plugins.searchable'
 
     error  'org.codehaus.groovy.grails.web.servlet',  //  controllers

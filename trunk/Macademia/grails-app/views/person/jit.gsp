@@ -37,5 +37,12 @@
 <div id="extendedInfo">
   <g:render template="../layouts/rightNav"/>
 </div>
+
+  <g:javascript>
+    $().ready(function() {
+        macademia.serverLog('nav', 'initial', {'url' : location.href });  
+    });
+  </g:javascript>
+
 </body>
 </html>
