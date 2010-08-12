@@ -25,6 +25,7 @@
 <body>
 
 <g:render template="../layouts/components"/>
+
 <div id="mainContent">
 
   <div id="infovis">

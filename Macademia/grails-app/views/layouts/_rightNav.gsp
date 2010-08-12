@@ -11,6 +11,7 @@
           <g:link controller="account" action="createuser2" href="#" class="right">Register</g:link>
         </div>
       </n:notUser>
+      %{--<n:user>--}%
       <div id="account" class="btxt">
         <n:hasRole name="${UserService.USER_ROLE}">
           <div id="account" class="btxt">
@@ -41,14 +42,13 @@
             </div>
         </ul>
       </div>
+      %{--</n:user>--}%
       <div id="login" style="display: block;">
-        <div class="flash">
-          <n:flashembed/>
-        </div>
+        <div class="flash">&nbsp;</div>
 
         <div id="local" class="localonlymethod">
-          <g:form id="login_form" controller="auth" action="signin" name="signin">
-            <div id="login" style="display: block;">
+          <form id="signin" name="signin" action="#">
+            <div id="login_info_div" style="display: block;">
               <input type="hidden" name="targetUri" value="${targetUri}"/>
               <label for="username">Email:</label>
               <input type="text" tabindex="1" name="username" class="login_input" id="username"/>
@@ -57,7 +57,7 @@
               <input type="password" tabindex="2" name="password" class="login_input" id="password">
               <input type="submit" tabindex="3" value="Login" class="login_submit"><g:link controller="account" action="forgottenpassword" class="forgot_password">forgot password?</g:link>
             </div>
-          </g:form>
+          </form>
 
           <div class="accountoptions">
             <g:link controller="account" action="forgottenpassword" class="textlink icon icon_flag_purple"><g:message code="nimble.link.forgottenpassword"/></g:link>
@@ -110,7 +110,7 @@
         </div>
       </div>
       <div id="makeRequestDialog" class="jqmWindow">
-        
+
       </div>
       <div class="jqmWindow padded2 medium btxt" id="filterDialog">&nbsp;</div>
 
