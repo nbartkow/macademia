@@ -276,6 +276,7 @@ macademia.jit.init = function(rootType,id){
                         type:'fade',
                         duration:500,
                         onComplete: function() {
+                            $(".qtip").hide();
                             // second morph to remove bugs...
                             macademia.rgraph.op.morph(data, {type: 'replot', duration : 10, hideLabels: true});
                         },
