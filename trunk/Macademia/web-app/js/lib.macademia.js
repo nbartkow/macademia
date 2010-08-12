@@ -37,7 +37,7 @@ macademia.pageLoad = function() {
 
     macademia.initialSettings();
     macademia.showHide();
-    macademia.loginShowHide();
+    macademia.initializeLogin();
     macademia.initiateGraph();
     macademia.nav();
     macademia.autocomplete.initSearch();
@@ -197,13 +197,6 @@ macademia.nav = function() {
 
     $(".clearDefault").clearDefault();
 };
-macademia.modalLogin = function() {
-    $('#loginDialog').jqm({modal: false, ajax:"/Macademia/account/login"});
-    $('#loginButton').click(function(){
-        $('#loginDialog').jqmShow()
-    });
-};
-
 
 // controls the show and hide options
 macademia.showHide = function() {
@@ -435,19 +428,63 @@ macademia.trim = function(stringToTrim) {
 
 macademia.htmlEncode = function(value){
   return $('<div/>').text(value).html();
-}
+};
 
 macademia.htmlDecode = function(value){ 
   return $('<div/>').html(value).text();
-}
+};
 
 macademia.toggleAccountControls = function() {
   $('#accountControlList').hide();
   $('#toggleControls').click(function() {
       $('#accountControlList').slideToggle();
   })
-}
+};
 
 macademia.setupRequestCreation = function() {
     $("#makeRequestDialog").jqm({ajax: '/Macademia/request/create/', trigger:'#makeRequestButton',  modal: false});
+};
+
+macademia.initializeLogin = function() {
+    $("#login").hide();
+    $("#login_link").click(function(event) {
+        $("#login").slideToggle();
+    });
+    $("#signin").submit(function() {
+        $("#login .flash").hide();
+        var data = $(this).serialize();
+        var result = "";
+
+        jQuery.ajax({
+            url : macademia.makeActionUrl('account', 'signin'),
+            type: "POST",
+            data : data,
+            success:function(html){result = html;},
+            error:  function(req, textStatus, error) {
+                alert('login failed: ' + textStatus + ', ' + error);
+            },
+            async:false
+        });
+
+        if (result.substr(0, 4) == 'okay') {
+            macademia.reloadToPerson(result.substring(5));
+        } else {
+            $("#login .flash").html(result).show();
+        }
+        return false;
+    });
+
+};
+
+macademia.reloadToPerson = function(pid) {
+    var params = {
+       institutions : 'all',
+       nodeId : 'p_' + pid,
+       personId : '' + pid,
+       navFunction : 'person',
+       navVisibility : 'true'
+    };
+    var rand = Math.random();
+
+    window.location.href = 'http://localhost:8080/Macademia/person/jit/?' + rand + '#/?' + $.param(params);
 }

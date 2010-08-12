@@ -84,15 +84,7 @@ macademia.saveUserProfile = function() {
           success: function(data) {
               try {
                   if (data && data.substring(0, 5) == 'okay ') {
-                       var id = data.substring(5);
-                       var params = {
-                           institutions : 'all',
-                           nodeId : 'p_' + id,
-                           personId : '' + id,
-                           navFunction : 'person',
-                           navVisibility : 'true'
-                       };
-                       window.location.href = 'http://localhost:8080/Macademia/person/jit/#/?' + $.param(params);
+                       macademia.reloadToPerson(data.substring(5));
                        return;
                   }
                   macademia.initAnalyzeInterests();
@@ -156,13 +148,6 @@ macademia.analyzeInterests = function(interests, index, progressBar, callback) {
               return;
           }
       });
-};
-
-macademia.loginShowHide = function() {
-		$("#login").hide();
-		$("#login_link").click(function(event) {
-			$("#login").slideToggle();
-		});
 };
 
 // Code for managing the links on the edit page.

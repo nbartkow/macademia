@@ -1010,3 +1010,9 @@ h3 {
 #taglineLinks a {
     padding : 10px;
 }
+
+.flash {
+    font-weight : bold;
+    color : #f00;
+    display : none;
+}

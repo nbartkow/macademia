@@ -4,11 +4,43 @@ import grails.plugins.nimble.InstanceGenerator
 import org.apache.commons.validator.EmailValidator
 import org.apache.shiro.authc.UsernamePasswordToken
 import org.apache.shiro.SecurityUtils
+import grails.plugins.nimble.core.AuthController
+import org.apache.shiro.authc.IncorrectCredentialsException
+import org.apache.shiro.authc.DisabledAccountException
+import org.apache.shiro.authc.AuthenticationException
 
 class AccountController extends grails.plugins.nimble.core.AccountController{
     def personService
     def interestService
-  
+
+    def signin = {
+        def authToken = new UsernamePasswordToken((String)params.username, (String)params.password)
+        if (params.rememberme)
+            authToken.rememberMe = true
+
+        log.info("Attempting to authenticate user, $params.username. RememberMe is $authToken.rememberMe")
+
+        try {
+            SecurityUtils.subject.login(authToken)
+            this.userService.createLoginRecord(request)
+
+            log.info("Authenticated user, $params.username.")
+            if (userService.events["login"]) {
+                log.info("Executing login callback")
+                userService.events["login"](authenticatedUser, targetUri, request)
+            }
+            render('okay ' + authenticatedUser.profile.id)
+        }
+        catch (IncorrectCredentialsException e) {
+            render('invalid email or password')
+        }
+        catch (DisabledAccountException e) {
+            render('your account has been disabled')
+        }
+        catch (AuthenticationException e) {
+            render('invalid email or password')
+        }
+    }
 
     def saveuser = {
         def user = InstanceGenerator.user()
@@ -115,7 +147,7 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
         SecurityUtils.subject.login(authToken)
         this.userService.createLoginRecord(request)
 
-        render('okay ' + savedUser.id)
+        render('okay ' + savedUser.profile.id)
     }
 
     def createuser2 = {
