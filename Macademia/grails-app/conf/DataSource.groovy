@@ -4,7 +4,8 @@ dataSource {
 //    driverClassName = "com.p6spy.engine.spy.P6SpyDriver" // use this driver to enable p6spy logging
 	username = "sa"
 	password = ""
-    mongoDbUrl = "poliwiki.macalester.edu"
+//    mongoDbUrl = "poliwiki.macalester.edu"
+    mongoDbUrl = '127.0.0.1'
 //    wpMongoDbName = "wikipediaReadOnly"
     wpMongoDbName = "fromWikipedia"
 }
@@ -22,17 +23,17 @@ environments {
 		dataSource {
 			dbCreate = "update" // one of 'create', 'create-drop','update'
 //			url = "jdbc:hsqldb:file:db/test/db;shutdown=true"   //test
-			url = "jdbc:hsqldb:file:db/dev/full/devDb;shutdown=true"  //dev
+//			url = "jdbc:hsqldb:file:db/dev/full/devDb;shutdown=true"  //dev
 //            url = "jdbc:hsqldb:file:db/benchmark/db;shutdown=true"//benchmark
-            mongoDbName = "dev_${System.getProperty('user.name')}"
+            mongoDbName = "macademia_prod"
             
             // For postgresql:
-//            pooled = false
-//            url = "jdbc:postgresql://poliwiki.macalester.edu:5432/macademia_dev?charSet=UNICODE"
-//            driverClassName = "org.postgresql.Driver"
-//            username = "grails"
-//            password = "grails"
-//            dialect = net.sf.hibernate.dialect.PostgreSQLDialect // the difference is.
+            pooled = false
+            url = "jdbc:postgresql://localhost:5432/macademia_prod?charSet=UNICODE"
+            driverClassName = "org.postgresql.Driver"
+            username = "grails"
+            password = "grails"
+            dialect = net.sf.hibernate.dialect.PostgreSQLDialect // the difference is.
          /*
             pooled = false
             url = "jdbc:postgresql://poliwiki.macalester.edu:5432/macademia_bench"

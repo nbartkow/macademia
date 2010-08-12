@@ -17,8 +17,8 @@
         <input id= "addCollege" type="submit" value="Add"/>
       </div>
       <div id="addClear" class="padded2">
-        <input id="add" type="submit" value="Add all"/>
-        <input id="clear" type="submit" value="Clear list"/>
+        <input id="addAllColleges" type="submit" value="Add all"/>
+        <input id="clearAllColleges" type="submit" value="Clear list"/>
       </div>
       <div id="selectedColleges" class="medium">
           %{--<div id = "clearMessage" class = "center" style = "display:none"> Visualization cannot display a filter of 0 colleges </div>--}%
@@ -29,7 +29,7 @@
           </ul>
       </div>
       <div id="submitColleges">
-          <input id ="select" type="submit" value = "Submit"/>
+          <input id ="selectColleges" type="submit" value = "Submit"/>
       </div>
     </div>
 
