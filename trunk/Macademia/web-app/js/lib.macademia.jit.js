@@ -100,7 +100,7 @@ macademia.jit.init = function(rootType,id){
             'width': 680,
            'height': 660,
             'duration' : 1000,
-            'fps' : 30,
+            'fps' : 40,
             withLabels : true,
             levelDistance: macademia.jit.distance,
             background: {
@@ -270,14 +270,20 @@ macademia.jit.init = function(rootType,id){
                     macademia.jit.rootId = macademia.nextNode.data.unmodifiedId;
                     var rootType = macademia.nextNode.data.type;
                     macademia.checkBrowser();
+
+                    macademia.rgraph.labels.clearLabels(true);
                     macademia.rgraph.op.morph(data, {
-                        type:'replot',
-                        duration:100,
-                        hideLabels:false
+                        type:'fade',
+                        duration:500,
+                        onComplete: function() {
+                            // second morph to remove bugs...
+                            macademia.rgraph.op.morph(data, {type: 'replot', duration : 10, hideLabels: true});
+                        },
+                        hideLabels:true
                     });
                     macademia.nextNode = null;
                     macademia.jit.refreshNeeded = true;
-                });
+                }, 10);
                 $(".qtip").hide();
             }
         }

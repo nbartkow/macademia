@@ -8,12 +8,14 @@ macademia.initCollegeFilter = function() {
     $("#editColleges .clearDefault").clearDefault();
     $("#closeCollegeFilter a").click(function(){
         $('#filterDialog').jqmHide();
+        return false;
     });
     $(".college a").click(function() {
         $(this).parents("li").hide();
         if($(".college :visible").size() == 0){
             $("#clearMessage").show();
         }
+        return false;
     });
     $("#addCollege").click(function() {
         var college = $("#collegeSearchAuto").val();
@@ -25,20 +27,23 @@ macademia.initCollegeFilter = function() {
                 }
             }
         });
-
+        return false;
     });
-    $("#clear").click(function() {
+    $("#clearAllColleges").click(function() {
         $(".college").hide();
         $("#clearMessage").show();
+        return false;
     });
-    $("#add").click(function() {
+    $("#addAllColleges").click(function() {
         $(".college").show();
         if ($("#clearMessage").is(":visible")){
             $("#clearMessage").hide();
         }
+        return false;
     });
-    $("#select").click(function() {
+    $("#selectColleges").click(function() {
         macademia.collegeSelection();
+        return false;
     });
     macademia.autocomplete.initCollegeSearch();
 };
@@ -97,7 +102,6 @@ macademia.createInstitutionString = function(collegeArray) {
 };
 
 macademia.initiateCollegeString = function(ids){
-    debug.log(1);
     $.getJSON('/Macademia/institution/idstonames', {ids: ids.replace(/\+/g, " ")}, function(institutionList){
     macademia.changeCollegeString(institutionList);
     });

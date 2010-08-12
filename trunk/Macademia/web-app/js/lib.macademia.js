@@ -25,8 +25,16 @@ macademia.queryString = {
 
 //sets the sidebar's visibility according to original status.  Initializes jit visualization
 macademia.pageLoad = function() {
+    $(window).resize(function() {
+        if (macademia.rgraph) {
+            macademia.resizeCanvas($("#infovis").width());
+        }
+    });
+
     // address only updates manually when a link/node is clicked
     $.address.autoUpdate(false);
+    $.address.change(macademia.onAddressChange);
+
     macademia.initialSettings();
     macademia.showHide();
     macademia.loginShowHide();
@@ -36,13 +44,6 @@ macademia.pageLoad = function() {
     macademia.toggleAccountControls();
     macademia.setupRequestCreation();
 
-    // log the navigation
-    var params = {};
-    for (var key in $.address.parameterNames()) {
-        var value = $.address.parameter(key);
-        params[key] = value;
-    }
-    macademia.serverLog('nav', 'fragment', params);
 };
 
 //sets macademia.queryString values and initial page settings
@@ -139,23 +140,32 @@ macademia.navInfovis = function(node) {
 };
 
 
-// click navigation for the rightDiv
-macademia.nav = function() {
-//    macademia.modalLogin();
-//    macademia.modalRegister();
-//    macademia.setupModal("#loginDialog", "#loginButton", "account", "login", {}, 'nimble-login-register', "macademia.initializeModalLogin()");
-    macademia.wireupCollegeFilter();
-    $.address.change(function() {
+macademia.logCurrentFragment = function() {
+    // log the navigation
+    var params = {};
+    var keys = $.address.parameterNames();
+    for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];
+        params[key] = $.address.parameter(key);
+    }
+    macademia.serverLog('nav', 'fragment', params);
+};
+
+macademia.onAddressChange = function() {
+    try {
         macademia.showHide();
         macademia.updateNav();
         macademia.changeGraph();
         macademia.changeDisplayedColleges();
-    });
-    $(window).resize(function() {
-        if (macademia.rgraph) {
-            macademia.resizeCanvas($("#infovis").width());
-        }
-    });
+        macademia.logCurrentFragment();
+    } catch (err) {
+        alert('error occured during state change: ' + err);
+    }
+};
+
+// click navigation for the rightDiv
+macademia.nav = function() {
+    macademia.wireupCollegeFilter();
     $("a").address(function() {
         if(macademia.jit.refreshNeeded){
             var url = $(this).attr('href');
@@ -163,7 +173,7 @@ macademia.nav = function() {
                 if (url.indexOf("#") == 0) {
                     macademia.changeQueryString(url);
                 } else {
-                    $.address.value(url);
+                    return true;    // it's a normal href
                 }
                 macademia.sortParameters($.address.parameter('navFunction'));
                 $.address.update();
