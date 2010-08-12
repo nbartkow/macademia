@@ -486,5 +486,5 @@ macademia.reloadToPerson = function(pid) {
     };
     var rand = Math.random();
 
-    window.location.href = 'http://localhost:8080/Macademia/person/jit/?' + rand + '#/?' + $.param(params);
+    window.location.href = macademia.makeActionUrl('person', 'jit') + '?rand=' + rand + '#/?' + $.param(params);
 }
