@@ -21,9 +21,6 @@ macademia.initializeRegister = function() {
           macademia.links.serialize();
 
           var name = $(this).find('[name=fullName]').val();
-          var pass = $(this).find('[name=pass]').val();
-          var confirm = $(this).find('[name=passConfirm]').val();
-          var email = $(this).find('[name=email]').val();
           var department = $(this).find('[name=department]').val();
           var formCheck = true;
 
@@ -35,6 +32,9 @@ macademia.initializeRegister = function() {
 
           // If we are in edit profile skip password and email
           if (macademia.isNewUser()) {
+              var pass = $(this).find('[name=pass]').val();
+              var confirm = $(this).find('[name=passConfirm]').val();
+              var email = $(this).find('[name=email]').val();
               if (pass!=confirm) {
                   $("#passConfirmErrors").html("<b>Passwords do not match</b>");
                   $("#passConfirmErrors").show();
@@ -71,7 +71,7 @@ macademia.initializeRegister = function() {
  * Returns true if we are showing the create user dialog, false otherwise.
  */
 macademia.isNewUser = function() {
-    return $('#edit_profile').find('[name=pass]').is(':visible');
+    return ($('#edit_profile').find('[name=pass]').length > 0);
 };
 
 macademia.saveUserProfile = function() {

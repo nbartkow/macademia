@@ -438,8 +438,8 @@ ul#instruct_list li:before, ul.styledList li:before{
     line-height: 1.25em;
 }
 
-#profile div ul li {
-    margin-bottom: 4px;
+#profile div ul {
+    padding: 0 0 10px 10px;
 }
 
 #pf_name_no_img {

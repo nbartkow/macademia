@@ -16,7 +16,7 @@
 
       <div class="registerLeft"><label for="description">Description<span>Description of request</span></label></div>
       <div class="registerRight value ${hasErrors(bean: collaboratorRequest, field: 'description', 'errors')}">
-        <g:textArea id="requestDescriptionBox" name="description" value="${collaboratorRequest?.description}"/>
+        <g:textArea id="requestDescriptionBox" name="description" rows="10" cols="80" value="${collaboratorRequest?.description}"/>
       </div>
       <div class="clear"></div>
 
