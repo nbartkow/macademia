@@ -35,7 +35,7 @@
   <g:if test="${collaboratorRequests}">
   <div id="pf_requests">
     <h4>Collaborator Requests:</h4>
-    <ul class="atxt">
+    <ul class="styledList atxt">
       <g:each in="${collaboratorRequests}" var="collaboratorRequest">
         
           <li><g:link url = "#/?nodeId=r_${collaboratorRequest.id}&navFunction=request&requestId=${collaboratorRequest.id}">${collaboratorRequest.title}</g:link></li>
@@ -47,14 +47,15 @@
   <g:if test="${person.links}">
     <div id="pf_links">
         <h4>Links</h4>
-        <ul class="atxt">
+        <ul class="styledList atxt">
           ${person.links}
         </ul>
     </div>
   </g:if>
-</div>
 
 <g:if test= "${authenticatedUser}">
+  <div>
+  <h4>Account:</h4>
   <g:if test="${person.id == authenticatedUser.id}">
     <li>
       <g:link url="[controller:'request',action:'manage' ]"><g:message code="Manage collaborator requests" /></g:link>
@@ -65,15 +66,17 @@
   </g:if>
   <g:else>
     <g:if test="${auth}">
-      <ul>
+      <ul class="styledList atxt">
       <li>
       <g:link url="[controller:'request',action:'manage', id:person.owner.id ]" ><g:message code="Manage collaborator requests" /></g:link>
       </li>
       <li>
-      <g:link url="[controller:'account',action:'editprofile', id:person.owner.id ]">Edit Profile</g:link>
+      <g:link url="[controller:'account',action:'modaledituser', id:person.owner.id ]">Edit Profile</g:link>
       </li>
       </ul>
     </g:if>
   </g:else>
 </g:if>
+  </div>
+</div>
 

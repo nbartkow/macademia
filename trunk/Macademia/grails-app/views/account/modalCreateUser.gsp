@@ -2,6 +2,11 @@
 <html>
 <head>
 
+  <title>
+    <g:if test="${user.id}">Edit Macademia Profile</g:if>
+    <g:else>Create a New Macademia Profile</g:else>
+  </title>
+
   <link type="text/css" rel="stylesheet" href="${createLinkTo(dir: "css", file: "createUser.css")}">
   <g:include view="/layouts/headers.gsp"/>
   <g:javascript src="uploadify/swfobject.js"></g:javascript>
@@ -14,20 +19,25 @@
   
 </head>
 <body>
-<h2 class="center" id="registerTitle">Create New Account</h2>
+<h2 class="center" id="registerTitle">
+  <g:if test="${user.id}">Edit Macademia Profile</g:if>
+  <g:else>Create a New Macademia Profile</g:else>
+</h2>
 <div id="center_wrapper">
-<div class="instructions"><b>Thanks for joining Macademia!</b>  Macademia will display all the information you enter below, except for your password.</div>
+<div class="instructions"><b>Thanks for joining Macademia!</b>  Macademia <span class="alert">publicly displays all the information you enter below,</span> except for your password.</div>
   <form action="#" id="edit_profile" name="edit_profile" method="post">
     <div id="edit_profile_container">
-        <div class="halfHeader">Required Information</div>
+        <div class="halfHeader"><span class="alert">Required Information</span></div>
 
         <div id="nameErrors" class="warning">&nbsp;</div>
         <div class="left fieldLabel topBorder"><label for="name">Name<span>Full Name</span></label></div>
-        <div class="right topBorder"><input type="text" name="fullName"/></div>
+        <div class="right topBorder"><input type="text" name="fullName" value="${user.profile?.fullName.encodeAsHTML()}"/></div>
         <div class="clear"></div>
 
+        <g:if test="${!user.id}">
+
         <div id="passErrors" class="warning">&nbsp;</div>
-        <div class="left fieldLabel topBorder"><label>Password<span>You can change your password here</span></label></div>
+        <div class="left fieldLabel topBorder"><label>Password<span>must be 6 or more letters</span></label></div>
         <div class="right topBorder"><input type="password" name="pass" class="clearDefault"/></div>
         <div class="clear"></div>
 
@@ -41,9 +51,11 @@
         <div class="right topBorder"><input type="text" name="email" class="clearDefault"/></div>
         <div class="clear"></div>
 
+        </g:if>
+
         <div id="interestErrors" class="warning">&nbsp;</div>
         <div class="left fieldLabel topBorder"><label>Interests<span>List your research interests, separated by commas.</span></label></div>
-        <div class="right topBorder"><textarea id="editInterests" cols="20" rows="3" name="interests"></textarea></div>
+        <div class="right topBorder"><textarea id="editInterests" cols="20" rows="3" name="interests">${interests}</textarea></div>
         <div class="clear"></div>
     </div>
     <div id="sidebar">
@@ -52,12 +64,12 @@
 
         <div id="titleErrors" class="warning">&nbsp;</div>
         <div class="left fieldLabel topBorder"><label>Title<span>Job title</span></label></div>
-        <div class="right topBorder"><input type="text" name="title" class="clearDefault"/></div>
+        <div class="right topBorder"><input type="text" name="title" class="clearDefault"  value="${user.profile?.title?.encodeAsHTML()}"/></div>
         <div class="clear"></div>
 
         <div id="departmentErrors" class="warning">&nbsp;</div>
         <div class="left fieldLabel topBorder"><label>Department<span>Department of college</span></label></div>
-        <div class="right topBorder"><input type="text" name="department" class="clearDefault"/></div>
+        <div class="right topBorder"><input type="text" name="department" class="clearDefault" value="${user.profile?.department?.encodeAsHTML()}"/></div>
         <div class="clear"></div>
 
 
@@ -81,12 +93,15 @@
         </div>
 
         <div class=""></div>
+        <input type="hidden" name="links" value="${user.profile?.links?.encodeAsHTML()}"/>
         <div class="center" id="addLinkDiv"><button class="addLink">add other link</button></div>
       </div>
     </div>
     <div class="clear topBorder"></div>
     <div class="progressBar"><span></span></div>
-    <div id="submit_edits"><input type="submit" value="Update"> or <a href="/Macademia">Cancel</a></div>
+    <div id="submit_edits">
+      <g:if test="${user.id}"><input type="hidden" name="id" value="${user.id}"/></g:if> 
+      <input type="submit" value="Update"> or <a href="/Macademia">Cancel</a></div>
   </form>
 </div>
 <g:render template="../templates/macademia/tagline"/>

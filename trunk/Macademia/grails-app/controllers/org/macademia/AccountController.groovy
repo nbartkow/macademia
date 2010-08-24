@@ -13,6 +13,15 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
     def personService
     def interestService
 
+    def forgottenpasswordcomplete = {
+            redirect(uri: '/')
+    }
+
+
+    def changedpasswd = {
+            redirect(uri: '/')
+    }
+    
     def signin = {
         def authToken = new UsernamePasswordToken((String)params.username, (String)params.password)
         if (params.rememberme)
@@ -99,26 +108,15 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
         }
 
         def savedUser
-        def human = recaptchaService.verifyAnswer(session, request.getRemoteAddr(), params)
-
-        if (human) {
-            savedUser = userService.createUser(user)
-            log.info("saved user ID is $savedUser.id")
-            if (savedUser.hasErrors()) {
-                log.debug("UserService returned invalid account details when attempting account creation")
-                resetNewUser(user)
-                //render(view: 'createuser', model: [user: user])
-                //return
-            } else {
-                personService.save(user.profile, Utils.getIpAddress(request))
-            }
-        }
-        else {
-            log.debug("Captcha entry was invalid for user account creation")
+        savedUser = userService.createUser(user)
+        log.info("saved user ID is $savedUser.id")
+        if (savedUser.hasErrors()) {
+            log.debug("UserService returned invalid account details when attempting account creation")
             resetNewUser(user)
-            user.errors.reject('nimble.invalid.captcha')
-            //render(view: 'createuser', model: [user: user])      // similiarly
+            //render(view: 'createuser', model: [user: user])
             //return
+        } else {
+            personService.save(user.profile, Utils.getIpAddress(request))
         }
         savedUser.save(flush : true)    // flush to get the id and foo
 
@@ -194,9 +192,9 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
         } else {
             user = User.get(params.id)
             //admin check
-            if (user.id != authenticatedUser.id && !userService.isAdmin(authenticatedUser, user)){
+            if (user.id != authenticatedUser.id && !userService.isAdmin(authenticatedUser, user)) {
                 redirect(controller: 'auth', action:'unauthorized')
-    }
+            }
         }
         if (!user) {
             log.warn("User identified by id '$authenticatedUser.id' was not located")
@@ -226,27 +224,20 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
             user = User.get(authenticatedUser.id)
         }
         if (!user) {
-            log.warn("User identified by id '$params.id' was not located")
-            flash.type = "error"
-            flash.message = message(code: 'nimble.user.nonexistant', args: [params.id])
-            redirect action: editprofile, id: params.id
+            render("User identified by id '$params.id' was not located")
         } else {
             def fields = grailsApplication.config.nimble.fields.enduserEdit.user
-            println('fields are ' + fields);
-            println('params are ' + params)
             user.profile.properties[fields] = params
-            println('email is ' + user.profile.email)
             //password check
             if (!user.validate()) {
-                log.debug("Updated details for user [$user.id]$user.username are invalid")
-                render view: 'edit', model: [user: user]
+                render("Updated details for user [$user.id]$user.username are invalid")
             } else {
                 if (params.interests){
                     interestParse(user)
                 }
 	            personService.save(user.profile, Utils.getIpAddress(request))
 	            log.info("Successfully updated details for user [$user.id]$user.username")
-                render('okay')
+                render('okay ' + user.profile.id)
             }
 	    }
 

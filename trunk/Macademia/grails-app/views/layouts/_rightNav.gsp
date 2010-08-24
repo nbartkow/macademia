@@ -25,7 +25,7 @@
           <div id="moreDropdown">
           <n:hasRole name="${UserService.USER_ROLE}">
             <li>
-              <a href="#" class="editProfile">Edit profile</a>
+              <g:link controller="account" action="modaledituser" class="editProfile">Edit profile</g:link>
             </li>
             <li>
               <g:link controller="account" action="changepassword">Change password</g:link>

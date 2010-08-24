@@ -14,5 +14,5 @@
           <a href="#" class="change">change picture</a> <span class="separator">|</span><a href="#" class="delete">delete</a>
           <div id="imgUploader">&nbsp;</div>
       </div>
-      <input type="hidden" name="imageSubpath" value=""/>
+      <input type="hidden" name="imageSubpath" value="${user.profile?.imageSubpath}"/>
     </div>
