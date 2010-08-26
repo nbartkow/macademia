@@ -274,12 +274,15 @@ public class MongoWrapper {
             System.out.println("Invalid article title no ID found");
             return (long) -1;
         }
-        System.out.println(res);
-        if (res.get("wpId") instanceof Integer) {
-            Long foo = ((Integer)res.get("wpId")).longValue();
-            return foo;
+        Object wpId = res.get("wpId");
+        if (wpId instanceof Integer) {
+            return ((Integer)wpId).longValue();
+        } else if (wpId instanceof String) {
+            return Long.valueOf((String)wpId);
+        } else if (wpId instanceof Long) {
+            return (Long) wpId;
         } else {
-            return (Long) res.get("wpId");
+            throw new IllegalStateException("invalid article id: '" + wpId + "'");
         }
     }
 
