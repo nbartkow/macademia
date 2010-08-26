@@ -9,6 +9,8 @@ package org.macademia
 
 public class MacademiaConstants {
     public static final File PATH_SIM_ADJUSTEMENTS = new File("db/prod/sim_adjustments.txt")
+    public static final String COOKIE_NAME = "MacademiaToken"
+
     public static final int MAX_DEPTH = 1
     public static final COLORS = [
             "#99F",
@@ -25,4 +27,5 @@ public class MacademiaConstants {
     ]
 
 
+    static int MAX_COOKIE_AGE =  60 * 60 * 24 * 30 * 3 // three months
 }

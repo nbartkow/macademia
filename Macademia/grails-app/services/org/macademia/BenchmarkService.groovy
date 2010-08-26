@@ -97,22 +97,7 @@ class BenchmarkService {
             }
             Person person = Person.findByEmail(email)
             if (person == null) {
-                // Create example User account
-                def user = new User()
-                user.username = email
-                user.pass = 'useR123!'
-                user.passConfirm = 'useR123!'
-                user.enabled = true
-
                 person = new Person(fullName: name, department: dept, email: email, institution: institution)
-                person.owner = user
-                user.profile = person
-                //Utils.safeSave(user)
-
-                // NOTE: THIS IS AN OLD METHOD THAT USES PERSON.SAVE
-                // HENCE, BOTH personService.save() and userService.save() don't work.
-                // (we have to rearrange the test)
-                //personService.save(person)
             }
             Interest interest = interestService.findByText(interestStr)
             if (interest == null) {
@@ -120,7 +105,11 @@ class BenchmarkService {
                 //Utils.safeSave(interest)
             }
             person.addToInterests(interest)
-            personService.save(person)
+            if (person.id) {
+                personService.save(person)
+            } else {
+                personService.create(person, 'useR123!', null)
+            }
             
             i++
             if (i % 50 == 0) {

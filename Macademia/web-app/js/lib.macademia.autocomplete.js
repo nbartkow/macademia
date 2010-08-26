@@ -129,11 +129,11 @@ macademia.autocomplete.split = function(val) {
 };
 
 macademia.autocomplete.extractLast = function(term) {
-    return split(term).pop();
+    return macademia.autocomplete.split(term).pop();
 };
 
 macademia.autocomplete.initEditProfile = function() {
-    $("#interests").editAutocomplete(
+    $("#editInterests").editAutocomplete(
         {
           multiple : true,
           search: function() {
@@ -162,7 +162,7 @@ macademia.autocomplete.initEditProfile = function() {
     };
 
 macademia.autocomplete.initEditRequest = function() {
-    $("#keywords").editAutocomplete(
+    $("#requestKeywordsBox").editAutocomplete(
         {
           multiple : true,
           search: function() {

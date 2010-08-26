@@ -58,9 +58,10 @@ class DatabaseServiceIntegrationTests extends GrailsUnitTestCase {
     void testAddToInterests() {
         int sizeOne = databaseService.getSimilarInterests(interestService.findByText("web2.0")).size()
         databaseService.addToInterests(interestService.findByText("web2.0"),interestService.findByText("social networking"),0.01812)
-        assertEquals(databaseService.getSimilarInterests(interestService.findByText("web2.0")).size(),sizeOne + 1)
+        assertEquals(databaseService.getSimilarInterests(interestService.findByText("web2.0")).size(), sizeOne)
+        databaseService.addToInterests(interestService.findByText("web2.0"),interestService.findByText("ngos"),0.01812)
+        assertEquals(databaseService.getSimilarInterests(interestService.findByText("web2.0")).size(), sizeOne+1)
         databaseService.removeLowestSimilarity(interestService.findByText("web2.0"))
-        //assertEquals(databaseService.getSimilarInterests(interestService.findByText("web2.0")).get(1), 0.1812) //returns null for some reason
     }
 
     void testAddCollaboratorRequests(){
@@ -68,8 +69,6 @@ class DatabaseServiceIntegrationTests extends GrailsUnitTestCase {
         rfc.addToKeywords(interestService.findByText("web2.0"))
         rfc.addToKeywords(interestService.findByText("social networking"))
         collaboratorRequestService.save(rfc)
-        //rfc.addToKeywords(interestService.findByText("web2.0"))
-        //rfc.addToKeywords(interestService.findByText("social networking"))
         long id = CollaboratorRequest.findByCreator(rfc.creator).id
         assertEquals(databaseService.getCollaboratorRequestInstitution(id), rfc.creator.institution.id)
         assertEquals(databaseService.getCollaboratorRequestCreator(id), rfc.creator.id)
@@ -78,22 +77,11 @@ class DatabaseServiceIntegrationTests extends GrailsUnitTestCase {
     }
 
     void testReplaceLowestSimilarity() {
-        //similarityService.buildInterestRelations(interestService.findByText("web2.0"))
-        //similarityService.buildInterestRelations(Interest.get(1))
-        //similarityService.buildInterestRelations(Interest.get(2))
-        databaseService.addToInterests(interestService.findByText("web2.0"),interestService.findByText("online communities"),0.01812)
+        databaseService.addToInterests(interestService.findByText("web2.0"),interestService.findByText("ngos"),0.01812)
         int sizeOne = databaseService.getSimilarInterests(interestService.findByText("web2.0")).size()
-        databaseService.replaceLowestSimilarity(interestService.findByText("web2.0"), interestService.findByText("social networking"), 0.2)
+        databaseService.replaceLowestSimilarity(interestService.findByText("web2.0"), interestService.findByText("nationalism"), 0.2)
         assertEquals(databaseService.getSimilarInterests(interestService.findByText("web2.0")).size(),sizeOne)
-        //There is something quite wrong here...: ID should be 2, map says it is 91, but nothing is returned from get...
-        /*for (Long id : databaseService.getSimilarInterests(interestService.findByText("web2.0")).keySet()) {
-            log.info("ID is $id")
-        }
-        log.info("" + Interest.get(2).hashCode())*/
-        databaseService.removeInterests(interestService.findByText("web2.0"), interestService.findByText("social networking"))
+        databaseService.removeInterests(interestService.findByText("web2.0"), interestService.findByText("nationalism"))
         assertEquals(databaseService.getSimilarInterests(interestService.findByText("web2.0")).size(),sizeOne-1)
-
     }
-
-
 }

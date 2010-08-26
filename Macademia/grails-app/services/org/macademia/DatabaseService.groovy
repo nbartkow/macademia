@@ -183,8 +183,8 @@ class DatabaseService {
         return wrapper.articleToId(title);
     }
 
-    public void buildInterestRelations(long interest, long article, boolean relationsBuilt) {
-        wrapper.buildInterestRelations(interest, article, relationsBuilt)
+    public void buildInterestRelations(String text, long interest, long article, boolean relationsBuilt) {
+        wrapper.buildInterestRelations(text, interest, article, relationsBuilt)
     }
 
 }

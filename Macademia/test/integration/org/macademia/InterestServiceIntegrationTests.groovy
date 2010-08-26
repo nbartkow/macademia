@@ -1,7 +1,6 @@
 package org.macademia
 
 import grails.test.*
-import grails.plugins.nimble.InstanceGenerator
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 /**

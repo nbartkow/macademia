@@ -286,8 +286,7 @@ public class MongoWrapper {
         }
     }
 
-    public void buildInterestRelations (long interest, long article, boolean relationsBuilt) {
-        System.out.println(article);
+    public void buildInterestRelations (String text, long interest, long article, boolean relationsBuilt) {
         SimilarInterestList articles = getArticleSimilarities(article);
         SimilarInterestList list = new SimilarInterestList();
         int i = 0;
@@ -308,6 +307,19 @@ public class MongoWrapper {
             }
             i++;
         }
+
+        // Create a stub record with the text
+        DBObject dbo = safeFindById(INTERESTS, interest, false);
+        if(dbo == null) {
+            dbo =  new BasicDBObject("_id", interest);
+            dbo.put("similar", "");
+        }
+        if (dbo.get("text") == null) {
+            dbo.put("text", text);
+            getDb().getCollection(INTERESTS).save(dbo);
+        }
+
+
         addInterestRelations(interest, list);
         if (relationsBuilt) {
             for (long id : ids.keySet()) {
@@ -433,7 +445,7 @@ public class MongoWrapper {
     }
 
     public SimilarInterestList getArticleSimilarities(long article) {
-        DBObject similarities = safeFindById(ARTICLE_SIMILARITIES, article, true);
+        DBObject similarities = safeFindById(ARTICLE_SIMILARITIES, "" + article, true);
         if (similarities == null) {
             System.out.println(article + " does not have an articleSimilarities entry");
             return new SimilarInterestList();

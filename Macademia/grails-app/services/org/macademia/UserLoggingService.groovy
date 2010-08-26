@@ -3,7 +3,6 @@ package org.macademia
 import javax.servlet.http.HttpServletRequest
 import org.apache.log4j.Logger
 import com.mongodb.*
-import org.apache.shiro.SecurityUtils
 
 class UserLoggingService {
 
@@ -15,7 +14,7 @@ class UserLoggingService {
     public void logEvent(HttpServletRequest request, String category, String eventName, Map<String, String> params) {
 
         String ip = Utils.getIpAddress(request)
-        def userId = SecurityUtils.getSubject()?.getPrincipal()	
+        def userId = request.person?.id	
         String sessionId = request.session.getId()
         Date tstamp = new Date()
 

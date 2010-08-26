@@ -31,7 +31,7 @@
 
         <div id="nameErrors" class="warning">&nbsp;</div>
         <div class="left fieldLabel topBorder"><label for="name">Name<span>Full Name</span></label></div>
-        <div class="right topBorder"><input type="text" name="fullName" value="${user.profile?.fullName.encodeAsHTML()}"/></div>
+        <div class="right topBorder"><input type="text" name="fullName" value="${user.fullName?.encodeAsHTML()}"/></div>
         <div class="clear"></div>
 
         <g:if test="${!user.id}">
@@ -64,12 +64,12 @@
 
         <div id="titleErrors" class="warning">&nbsp;</div>
         <div class="left fieldLabel topBorder"><label>Title<span>Job title</span></label></div>
-        <div class="right topBorder"><input type="text" name="title" class="clearDefault"  value="${user.profile?.title?.encodeAsHTML()}"/></div>
+        <div class="right topBorder"><input type="text" name="title" class="clearDefault"  value="${user.title?.encodeAsHTML()}"/></div>
         <div class="clear"></div>
 
         <div id="departmentErrors" class="warning">&nbsp;</div>
         <div class="left fieldLabel topBorder"><label>Department<span>Department of college</span></label></div>
-        <div class="right topBorder"><input type="text" name="department" class="clearDefault" value="${user.profile?.department?.encodeAsHTML()}"/></div>
+        <div class="right topBorder"><input type="text" name="department" class="clearDefault" value="${user.department?.encodeAsHTML()}"/></div>
         <div class="clear"></div>
 
 
@@ -93,7 +93,7 @@
         </div>
 
         <div class=""></div>
-        <input type="hidden" name="links" value="${user.profile?.links?.encodeAsHTML()}"/>
+        <input type="hidden" name="links" value="${user.links?.encodeAsHTML()}"/>
         <div class="center" id="addLinkDiv"><button class="addLink">add other link</button></div>
       </div>
     </div>

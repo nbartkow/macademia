@@ -1,74 +1,65 @@
 <html>
 
 <head>
-    <meta name="layout" content="${grailsApplication.config.nimble.layout.application}"/>
-    <title><g:message code="nimble.view.account.changepassword.initiate.title" /></title>
-    <nh:pstrength />
+    <title>Change password</title>
+
+  <link type="text/css" rel="stylesheet" href="${createLinkTo(dir: "css", file: "macademiaJit.css")}">
+  <g:include view="/layouts/headers.gsp"/>
+  <link type="text/css" rel="stylesheet" href="${createLinkTo(dir: "css", file: "changePasswd.css")}">
 </head>
 
 <body>
 
-    <div class="accountinformation">
-      <h2><g:message code="nimble.view.account.changepassword.initiate.heading" /></h2>
+    <a href="/Macademia/"><img id="logoImage" src="${createLinkTo(dir: 'images', file: 'macademia-logo.png')}"/></a>
+    <div id="main">
+      <h2>Change your password</h2>
 
       <p>
-        <g:message code="nimble.view.account.changepassword.initiate.descriptive" />
+        Change your password below.  Your new password must be at least six letters long.
       </p>
 
-      <n:errors bean="${user}"/>
+      <g:if test="${error}">
+        <p class="alert">${error.encodeAsHTML()}</p>
+      </g:if>
 
-      <g:form action="updatepassword">
+      <g:form action="changepasswordcomplete">
         <table>
           <tbody>
 
             <tr>
-              <td><label for="currentPassword"><g:message code="nimble.label.currentpassword" /></label></td>
+              <td><label for="currentPassword">Current password:</label></td>
               <td>
                 <input type="password" size="30" id="currentPassword" name="currentPassword" class="easyinput"/>
               </td>
             </tr>
 
             <tr>
-              <td><label for="pass"><g:message code="nimble.label.newpassword" /></label></td>
+              <td><label for="password">New password:</label></td>
               <td>
-                <input type="password" size="30" id="pass" name="pass" class="password easyinput"/><a href="#" id="passwordpolicybtn" rel="passwordpolicy" class="empty icon icon_help"></a>
+                <input type="password" size="30" id="password" name="password" class="password easyinput"/></a>
               </td>
             </tr>
 
             <tr>
-              <td><label for="passConfirm"><g:message code="nimble.label.newpassword.confirmation" /></label></td>
+              <td><label for="passwordConfirm">Confirm new password:</label></td>
               <td>
-                <input type="password" size="30" id="passConfirm" name="passConfirm" class="easyinput"/>
+                <input type="password" size="30" id="passwordConfirm" name="passwordConfirm" class="easyinput"/>
               </td>
             </tr>
-
-            <n:recaptcharequired>
-              <tr>
-                <th><g:message code="nimble.label.captcha" /></th>
-                <td>
-                  <n:recaptcha/>
-                </td>
-              </tr>
-            </n:recaptcharequired>
-
-
-          <tr>
-            <td/>
-            <td>
-              <button class="button icon icon_lock_go" type="submit"><g:message code="nimble.link.changepassword" /></button>
-            </td>
-            <td/>
-          </tr>
-
+            <tr>
+              <td/>
+              <td>
+                <input type="submit" name="submit" value="Change password"/>
+              </td>
+            </tr>
           </tbody>
         </table>
+
+        <div >
+        </div>
       </g:form>
     </div>
-
-<script type="text/javascript">
-nimble.createTip('passwordpolicybtn','<g:message code="nimble.template.passwordpolicy.title" />','<g:message code="nimble.template.passwordpolicy" encodeAs="JavaScript"/>');
-</script>
-
+    <g:render template="/templates/macademia/tagline"/> 
 </body>
 
 </html>

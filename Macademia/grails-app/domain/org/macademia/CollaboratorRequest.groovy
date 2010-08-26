@@ -10,6 +10,7 @@ class CollaboratorRequest {
     Date dateCreated
     Date expiration
     static hasMany = [keywords : Interest]
+    
     static searchable = [only: ['title', 'description']]
     Person creator
     static mapping = {

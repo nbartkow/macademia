@@ -8,7 +8,6 @@ class RequestController {
     def similarityService
     def interestService
     def personService
-    def userService
     def institutionService
     def autocompleteService
 
@@ -26,15 +25,15 @@ class RequestController {
 
     def manage = {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        User user = null;
+        Person user = null;
         if (!params.id){
-            user = User.get(authenticatedUser.id)
+            user = request.person
         }
         else {
-            user = User.get(params.id)
+            user = Person.get(params.id)
             //admin check
-            if (user.id != authenticatedUser.id && !userService.isAdmin(authenticatedUser, user)){
-                redirect(controller: 'auth', action:'unauthorized')
+            if (!request.person.canEdit(user)){
+                throw new IllegalArgumentException("not authorized")
             }
         }
         def CollaboratorRequestList = CollaboratorRequest.findAllByCreator(user.profile)
@@ -43,33 +42,19 @@ class RequestController {
 
     def create = {
         def collaboratorRequest = new CollaboratorRequest()
-//        def fields = grailsApplication.config.nimble.fields.collaboratorRequestEdit.collaboratorRequest
-        //collaboratorRequest.properties[fields] = params
-//        def user = authenticatedUser
         return [collaboratorRequest: collaboratorRequest]
     }
 
-//            String allInterests = params.interests
-//        String[] tokens = allInterests.trim().split(",")
-//        for (i in tokens){
-//            Interest existingInterest = interestService.findByText(i);
-//            if (existingInterest != null){
-//                user.profile.addToInterests(existingInterest)
-//            } else {
-//                Interest newInterest = new Interest(i);
-//                user.profile.addToInterests(newInterest)
-//            }
-//        }
-
-
     def save = {
         def collaboratorRequest = new CollaboratorRequest()
-        def fields = grailsApplication.config.nimble.fields.collaboratorRequestEdit.collaboratorRequest
+        if (params.requestId) {
+            collaboratorRequest = collaboratorRequestService.get(params.requestId as long)
+        }
+        def fields = ['title', 'description', 'expiration']
         collaboratorRequest.properties[fields] = params
-        collaboratorRequest.creator = authenticatedUser.profile
+        collaboratorRequest.creator = request.person
         log.info(params)
         if (params.keywords){
-            log.info ("they are here. make parsing here. but jeremy is sleepy and will do it tomorrow >_<")
             String allkeywords = params.keywords
             String[] tokens = allkeywords.trim().split(",")
             for (i in tokens){
@@ -84,18 +69,9 @@ class RequestController {
         }
         collaboratorRequestService.save(collaboratorRequest, Utils.getIpAddress(request))
         autocompleteService.addRequest(collaboratorRequest)
-        redirect(uri: "/")
-        [collaboratorRequest: collaboratorRequest]
+        collaboratorRequest.save(flush : true)  // flush to get the id
+        render('okay ' + collaboratorRequest.id)
     }
-
-//                def fields = grailsApplication.config.nimble.fields.enduserEdit.user
-//            user.properties[fields] = params
-//            def String allInterests = ""
-//            for (interest in user.profile.interests){
-//                allInterests += interest.text+" ,"
-//            }
-//            log.info(allInterests)
-//	        [user: authenticatedUser, allInterests: allInterests]
 
     def show = {
         def collaboratorRequest = CollaboratorRequest.get(params.id)
@@ -113,14 +89,13 @@ class RequestController {
     }
 
     def edit = {
-        def collaboratorRequestInstance = CollaboratorRequest.get(params.id)
-        if (!collaboratorRequestInstance) {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'collaboratorRequest.label', default: 'CollaboratorRequest'), params.id])}"
-            redirect(action: "list")
-
+        def cr = CollaboratorRequest.get(params.id)
+        if (!cr) {
+            render("no collaborator request with id ${params.id}")
         }
         else {
-            return [collaboratorRequestInstance: collaboratorRequestInstance]
+            String keywords = cr.keywords.collect({it.text}).join(',')
+            render(view : 'create', model : [collaboratorRequest: cr, keywords: keywords])
         }
     }
 
@@ -185,10 +160,7 @@ class RequestController {
     }
 
     def jit = {
-
       [:]
-      //[collaboratorRequest: collaboratorRequestService.get((params.id as long))]
-
     }
 
     def tooltip = {

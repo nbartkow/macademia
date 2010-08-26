@@ -1,66 +1,97 @@
 package org.macademia
 
-import grails.plugins.nimble.InstanceGenerator
-import org.apache.commons.validator.EmailValidator
-import org.apache.shiro.authc.UsernamePasswordToken
-import org.apache.shiro.SecurityUtils
-import grails.plugins.nimble.core.AuthController
-import org.apache.shiro.authc.IncorrectCredentialsException
-import org.apache.shiro.authc.DisabledAccountException
-import org.apache.shiro.authc.AuthenticationException
+import javax.servlet.http.Cookie
 
-class AccountController extends grails.plugins.nimble.core.AccountController{
+class AccountController {
     def personService
     def interestService
 
     def forgottenpasswordcomplete = {
-            redirect(uri: '/')
+        render(view : 'message',
+               model : [
+                   title : "Password recovered.",
+                   message : "We have emailed a new password to you at ${params.email}."
+               ])
     }
 
 
-    def changedpasswd = {
-            redirect(uri: '/')
+    def changepassword = {
+        if (!request.person) {
+            render("not logged in.")
+            return
+        }
+        render(view : 'changepassword', model : [:])
+    }
+    
+    def changepasswordcomplete = {
+        String error = ''
+        if (!params.currentPassword) {
+            error = 'Please enter your current password.'
+        } else if (!params.password) {
+            error = 'Please enter a new password.'
+        } else if (!params.password) {
+            error = 'Please confirm your new password.'
+        } else if (!request.person.checkPasswd(params.currentPassword)) {
+            error = 'Your current password is incorrect.'
+        } else if (params.password.length() < 6) {
+            error = 'Your password must be at least 6 characters.'
+        } else if (params.password != params.passwordConfirm) {
+            error = 'Your new passwords do not match.'
+        }
+        if (error) {
+            render(view : 'changepassword', model : [error : error])
+            return
+        }
+        request.person.updatePasswd(params.password)
+        personService.save(request.person)
+        render(view : 'message',
+               model : [
+                   title : "Password changed.",
+                   message : "Your password has been successfully changed."
+               ])
     }
     
     def signin = {
-        def authToken = new UsernamePasswordToken((String)params.username, (String)params.password)
-        if (params.rememberme)
-            authToken.rememberMe = true
-
-        log.info("Attempting to authenticate user, $params.username. RememberMe is $authToken.rememberMe")
-
-        try {
-            SecurityUtils.subject.login(authToken)
-            this.userService.createLoginRecord(request)
-
-            log.info("Authenticated user, $params.username.")
-            if (userService.events["login"]) {
-                log.info("Executing login callback")
-                userService.events["login"](authenticatedUser, targetUri, request)
-            }
-            render('okay ' + authenticatedUser.profile.id)
-        }
-        catch (IncorrectCredentialsException e) {
-            render('invalid email or password')
-        }
-        catch (DisabledAccountException e) {
+        Person person = personService.findByEmail(params.email)
+        if (person == null) {
+            render('unknown email address')
+            return
+        } else if (!person.checkPasswd(params.password)) {
+            render('invalid passwd')
+            return
+        } else if (!person.enabled) {
             render('your account has been disabled')
+            return
         }
-        catch (AuthenticationException e) {
-            render('invalid email or password')
-        }
+        setAuthCookie(person)
+        render('okay ' + person.id)
     }
 
+    private void setAuthCookie(Person person) {
+        def cookie = new Cookie(MacademiaConstants.COOKIE_NAME, person.token)
+        cookie.path = "/"
+        cookie.setMaxAge(MacademiaConstants.MAX_COOKIE_AGE)
+        response.addCookie(cookie)
+        request.person = person
+    }
+
+    def logout = {
+        session.invalidate()
+        def cookie = new Cookie(MacademiaConstants.COOKIE_NAME, "")
+        cookie.path = "/"
+        response.addCookie(cookie)
+        redirect(url: request.getHeader("referer"))
+    }
+
+    /**
+     * Creates a brand new user.
+     */
     def saveuser = {
-        def user = InstanceGenerator.user()
-        user.profile = InstanceGenerator.profile()
-        def userFields = grailsApplication.config.nimble.fields.enduser.user
-        def profileFields = grailsApplication.config.nimble.fields.enduser.profile
-        user.properties[userFields] = params
-        user.profile.properties[profileFields] = params
+        Person person = new Person()
+        person.properties[grailsApplication.config.macademia.creatableFields] = params
         // Handle interest splitting
         if (params.interests){
-            interestParse(user)
+            interestParse(person)
         }
         // create institution  - replace this eventually
         String institutionDomain = params.email.split("@")[1]
@@ -69,109 +100,49 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
             institution= new Institution(name:institutionDomain, emailDomain:institutionDomain)
             Utils.safeSave(institution)
         }
-        user.profile.institution = institution
+        person.institution = institution
+        person.enabled = true
 
-        user.username = user.profile.email
-        user.profile.owner = user
-        user.enabled = grailsApplication.config.nimble.localusers.provision.active
-        user.external = false
-
-        user.validate()
-
-        log.debug("Attempting to create new user account identified as $user.username")
-
-        log.info("$user.username is $user.id")
+        log.debug("Attempting to create new user account identified as $person.email")
 
         // Enforce email address for account registrations
-        if (user.profile.email == null || user.profile.email.length() == 0)  {
-          user.profile.email = 'invalid'
+        if (person.email == null || person.email.length() == 0)  {
+          person.email = 'invalid'
           render('No email provided')
           return
         }
-		// Allow host application to do some validation, etc.
-		if(userService.events['beforeregister']) {
-			userService.events['beforeregister'](user)
-		}
-
-        def emailCheckVar = User.findAllByUsername(user.username)
-        if (emailCheckVar != null && emailCheckVar.size() > 0) {
+        if (params.pass != params.passConfirm) {
+          render("Passwords do not match")
+          return
+        }
+        if (personService.findByEmail(person.email) != null) {
           render("Email already in use")
           return
         }
-        if (user.hasErrors()) {
-            render("Submitted values for new user are invalid")
+        try {
+            personService.create(person, params.pass, Utils.getIpAddress(request))
+        } catch(Exception e) {
+            log.error("creation of " + person + " failed")
+            log.error(e)
+            render("Internal error: " + e.getMessage())
             return
-            user.errors.each {
-                log.debug it
-            }
-            resetNewUser(user)
         }
 
-        def savedUser
-        savedUser = userService.createUser(user)
-        log.info("saved user ID is $savedUser.id")
-        if (savedUser.hasErrors()) {
-            log.debug("UserService returned invalid account details when attempting account creation")
-            resetNewUser(user)
-            //render(view: 'createuser', model: [user: user])
-            //return
-        } else {
-            personService.save(user.profile, Utils.getIpAddress(request))
-        }
-        savedUser.save(flush : true)    // flush to get the id and foo
+        person.save(flush : true)    // flush to get the id
+        log.info("Created new account identified as $person.email with internal id $person.id")
 
-		if(userService.events['afterregister']) {
-			userService.events['afterregister'](user)
-		}
+        // Set the login cookie.
+        setAuthCookie(person)
 
-        log.info("Sending account registration confirmation email to $user.profile.email with subject $grailsApplication.config.nimble.messaging.registration.subject")
-        if(grailsApplication.config.nimble.messaging.enabled) {
-//			sendMail {
-//	            to user.profile.email
-//				from grailsApplication.config.nimble.messaging.mail.from
-//	            subject grailsApplication.config.nimble.messaging.registration.subject
-//	            html g.render(template: "/templates/nimble/mail/accountregistration_email", model: [user: savedUser]).toString()
-//	        }
-		} else {
-			log.debug "Messaging disabled would have sent: \n${user.profile.email} \n Message: \n ${g.render(template: "/templates/nimble/mail/accountregistration_email", model: [user: user]).toString()}"
-		}
-
-        log.info("Created new account identified as $user.username with internal id $savedUser.id")
-
-        // Login user
-        def authToken = new UsernamePasswordToken(user.username, params.pass)
-        authToken.rememberMe = true
-        log.info("Attempting to authenticate user, ${user.username}.")
-        SecurityUtils.subject.login(authToken)
-        this.userService.createLoginRecord(request)
-
-        render('okay ' + savedUser.profile.id)
+        render('okay ' + person.id)
     }
 
     def createuser2 = {
-      def model = super.createuser()
-      return render(view: 'modalCreateUser', model: model)
+      return render(view: 'modalCreateUser', model: [user : new Person(), interests : ""])
     }
 
     def login = {
       return render(view: 'login')
-    }
-
-    def validemail = {
-        EmailValidator emailValidator = EmailValidator.getInstance()
-        if (params.val == null || !emailValidator.isValid(params.val)) {
-            render message(code: 'nimble.user.email.invalid')
-            response.status = 500
-        }
-		else {
-        	def profile = User.findAllByUsername(params?.val)
-	        if (profile != null && profile.size() > 0) {
-	            render message(code: 'nimble.user.email.invalid')
-	            response.status = 500
-	        }
-			else
-	        	render message(code: 'nimble.user.email.valid')
-		}
     }
 
 
@@ -186,75 +157,72 @@ class AccountController extends grails.plugins.nimble.core.AccountController{
     }
 
     def modaledituser = {
-        User user = null;
-        if (!params.id){
-            user = User.get(authenticatedUser.id)
+        Person person = null;
+        if (!request.person) {
+            throw new IllegalStateException("no user present!")
+        } else if (!params.id){
+            person = request.person
         } else {
-            user = User.get(params.id)
+            person = Person.get(params.id)
             //admin check
-            if (user.id != authenticatedUser.id && !userService.isAdmin(authenticatedUser, user)) {
-                redirect(controller: 'auth', action:'unauthorized')
+            if (!request.person.canEdit(person)) {
+                throw new IllegalArgumentException("not authorized")
             }
         }
-        if (!user) {
-            log.warn("User identified by id '$authenticatedUser.id' was not located")
+        if (!person) {
+            log.warn("User identified by id '$params.id' was not located")
             flash.type = "error"
             flash.message = message(code: 'nimble.user.nonexistant', args: [params.id])
             redirect(uri: '/')
         }
 	    else {
-    	    log.debug("Editing user [$user.id]$user.username")
-            log.info("Editing user [$user.id]$user.username")
-            def fields = grailsApplication.config.nimble.fields.enduserEdit.user
-            user.properties[fields] = params
-            String allInterests = user.profile.interests.collect({it.text}).join(', ')
-            log.info(allInterests)
-            return render(view: 'modalCreateUser', model: [user: user, interests : allInterests])
+            log.info("Editing user [$person.id] $person.email")
+            person.properties[grailsApplication.config.macademia.editableFields] = params
+            String allInterests = person.interests.collect({it.text}).join(', ')
+            return render(view: 'modalCreateUser', model: [user: person, interests : allInterests])
 	    }
     }
 
     def updateuser = {
-        def user
-        if(params.id){
-            user = User.get(params.id)
-            if (user.id != authenticatedUser.id && !userService.isAdmin(authenticatedUser, user)){
-                redirect(controller: 'auth', action:'unauthorized')
+        def person
+        if (params.id){
+            person = Person.get(params.id)
+            if (!request.person.canEdit(person)) {
+                throw new IllegalArgumentException("not authorized")
             }
         } else{
-            user = User.get(authenticatedUser.id)
+            person = request.person
         }
-        if (!user) {
+        if (!person) {
             render("User identified by id '$params.id' was not located")
         } else {
-            def fields = grailsApplication.config.nimble.fields.enduserEdit.user
-            user.profile.properties[fields] = params
+            person.properties[grailsApplication.config.macademia.editableFields] = params
             //password check
-            if (!user.validate()) {
-                render("Updated details for user [$user.id]$user.username are invalid")
+            if (!person.validate()) {
+                render("Updated details for user [$person.id] $person.email are invalid")
             } else {
                 if (params.interests){
-                    interestParse(user)
+                    interestParse(person)
                 }
-	            personService.save(user.profile, Utils.getIpAddress(request))
-	            log.info("Successfully updated details for user [$user.id]$user.username")
-                render('okay ' + user.profile.id)
+	            personService.save(person, Utils.getIpAddress(request))
+	            log.info("Successfully updated details for user [$person.id] $person.email")
+                render('okay ' + person.id)
             }
 	    }
 
     }
 
-    def interestParse = {
-        user->
-        String allInterests = params.interests
+    private void interestParse(Person person) {
+    String allInterests = params.interests
         String[] tokens = allInterests.trim().split(",")
-        user.profile.interests = []
+        person.interests = []
         for (i in tokens){
             Interest existingInterest = interestService.findByText(i);
             if (existingInterest != null){
-                user.profile.addToInterests(existingInterest)
+                person.addToInterests(existingInterest)
             } else {
                 Interest newInterest = new Interest(i);
-                user.profile.addToInterests(newInterest)
+                person.addToInterests(newInterest)
             }
         }
     }
