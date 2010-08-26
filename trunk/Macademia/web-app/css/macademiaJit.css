@@ -505,7 +505,11 @@ h3#pf_dept_no_img {
 
 /* Styles that affect the account creation view*/
 
-#registerDialog .registerLeft, #makeRequestDialog .registerLeft {
+#editRequestDialog {
+    background-color: #FFFFFF;
+}
+
+#registerDialog .registerLeft, #makeRequestDialog .registerLeft, #editRequestDialog .registerLeft {
     border-top: 1px solid #D7D7D7;
     padding: 15px 10px 20px 10px;
     width: 160px;
@@ -919,10 +923,10 @@ h3 {
 /**
  * Shilad's hacks to get the jqmodal looking better for development.
  */
-#edit_pf .registerLeft, #makeRequestDialog .registerLeft{
+#edit_pf .registerLeft, #makeRequestDialog .registerLeft, #editRequestDialog .registerLeft{
     float: left;
 }
-#edit_pf .right, #makeRequestDialog .registerRight {
+#edit_pf .right, #makeRequestDialog .registerRight, #editRequestDialog .registerRight {
     float: right;
 }
 #edit_pf .clear, #rfcForm .clear{

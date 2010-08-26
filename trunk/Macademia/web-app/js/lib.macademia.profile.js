@@ -9,6 +9,7 @@ macademia.initializeRegister = function() {
   macademia.upload.init();
   macademia.links.init();
   macademia.initAnalyzeInterests();
+  macademia.autocomplete.initEditProfile();
 
     $("#cancelAccountCreation").click(function() {
        $("#registerDialog").jqmHide(); 

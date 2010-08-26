@@ -13,6 +13,24 @@
     <p id="coll_created"><span>Created:<br></span><g:formatDate format="MMMMMMMM d, yyyy" date="${collaboratorRequest?.dateCreated}"/> by <g:link url="#/?nodeId=p_${collaboratorRequest?.creator?.id}&navFunction=person&personId=${collaboratorRequest?.creator?.id}">${collaboratorRequest?.creator?.encodeAsHTML()}</g:link></p>
     <p id="coll_due"><span>Due:<br></span><g:formatDate format="MMMMMMMM d, yyyy" date="${collaboratorRequest?.expiration}"/></p>
     <p id="coll_desc"><span>Description:<br></span>${fieldValue(bean: collaboratorRequest, field: "description")}</p>
+    <g:if test="${request.person && request.person.canEdit(collaboratorRequest.creator)}">
+      <p id="coll_edit"><a href="#" id="editRequestButton">Edit request</a></p>
+    </g:if>
   </div>
+  <g:javascript >
+    $().ready(function() {
+        $("#editRequestDialog").jqm({
+            ajax: '/Macademia/request/edit/${collaboratorRequest.id}',
+            modal: false});
+        $("#editRequestButton").click(
+            function () {
+                try {
+                    $("#editRequestDialog").jqmShow();
+                } catch(err) {
+                    alert('error when triggering edit request:' + err);
+                }
+            });
+      });
+  </g:javascript>
 
 </div>

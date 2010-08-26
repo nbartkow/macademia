@@ -14,7 +14,7 @@ import org.apache.commons.io.FileUtils
     }
 })
 
-grailsEnv = 'populate'
+grailsEnv = 'populateDev'
 
 includeTargets << grailsScript("_GrailsBootstrap")
 

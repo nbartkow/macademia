@@ -29,16 +29,10 @@ class SimilarityServiceIntegrationTests extends GrailsUnitTestCase {
     void testGetSimilarInterests(){
         Interest interest= interestService.findByText("web2.0")
         SimilarInterestList list= similarityService.getSimilarInterests(interest, 2, 0.0)
-        assertEquals(list.size(),1)
+        assertEquals(list.size(),2)
         SimilarInterest ir =list.get(0)
         Interest second= interestService.findByText("data mining")
-        //log.error(ir.interestId.toString())
         assertEquals(Interest.get(ir.interestId), second)
-        /*SimilarInterest ir2=list.get(1)
-        second= interestService.findByText("onlinecommunities")
-        Interest similar2=Interest.get(ir2.interestId)
-        assertEquals(similar2, second)
-        assertTrue(ir.similarity>ir2.similarity)*/
     }
 
     void testCalculateInterestNeighbors() {
@@ -60,8 +54,8 @@ class SimilarityServiceIntegrationTests extends GrailsUnitTestCase {
         collaboratorRequestService.save(cr)
         graph= similarityService.calculateInterestNeighbors(interest,10, 100)
         assertEquals(graph.getRequests().size(),1)
-        assertEquals(graph.getPeople().size(),2) //was 3
-        assertEquals(graph.getInterests().size(),2) //was 6
+        assertEquals(graph.getPeople().size(),3)
+        assertEquals(graph.getInterests().size(),9)
     }
 
     void testCalculatePersonNeighbors () {
@@ -74,14 +68,14 @@ class SimilarityServiceIntegrationTests extends GrailsUnitTestCase {
         assertTrue(graph.getAdjacentEdges(Person.findByEmail("michelfelder@macalester.edu")).contains(e))
         e=new Edge(person:Person.findByEmail("guneratne@macalester.edu"),interest:interestService.findByText("web2.0"), relatedInterest:interestService.findByText("globalization"))
         //assertTrue(graph.getAdjacentEdges(Person.findByEmail("guneratne@macalester.edu")).contains(e))
-        assertEquals(graph.getPeople().size(),3) //was 5
+        assertEquals(graph.getPeople().size(),5)
         assertEquals(graph.getInterests().size(),15)
         CollaboratorRequest cr = new CollaboratorRequest(title:"Test RFC", description:"This is a test request for collaboratorRequest", creator:Person.findByEmail("ssen@macalester.edu"), dateCreated: new Date(), expiration: new Date())
         cr.addToKeywords(interestService.findByText("web2.0"))
         collaboratorRequestService.save(cr)
         graph= similarityService.calculatePersonNeighbors(p,10)
         assertEquals(graph.getRequests().size(),1)
-        assertEquals(graph.getPeople().size(),3) //was 5
+        assertEquals(graph.getPeople().size(),5)
         assertEquals(graph.getInterests().size(),15)
     }
 
@@ -101,15 +95,13 @@ class SimilarityServiceIntegrationTests extends GrailsUnitTestCase {
         assertTrue(graph.getPeople().contains(Person.findByEmail("strauss@macalester.edu")))
         //assertTrue(graph.getPeople().contains(Person.findByEmail("guneratne@macalester.edu")))
         assertTrue(graph.getPeople().contains(Person.findByEmail("michelfelder@macalester.edu")))
-        assertEquals(graph.getPeople().size(),4) // was 3, then 5
+        assertEquals(graph.getPeople().size(),5)
         assertEquals(graph.getInterests().size(),4)
         assertEquals(graph.getRequests().size(),1)
         assertEquals(graph.getAdjacentEdges(cr).size(),4)
-        assertEquals(graph.getAdjacentEdges(Person.findByEmail("michelfelder@macalester.edu")).size(),1) //was 3
-        //assertTrue(graph.getAdjacentEdges(Person.findByEmail("guneratne@macalester.edu")).contains(new Edge(interest: interestService.findByText("web2.0"), person: Person.findByEmail("guneratne@macalester.edu"), relatedInterest: interestService.findByText("globalization"))))
-        //assertEquals(graph.getAdjacentEdges(Person.findByEmail("guneratne@macalester.edu")).size(),1)
-        assertEquals(graph.getAdjacentEdges(interestService.findByText("online communities")).size(),4)
-        assertEquals(graph.getAdjacentEdges(interestService.findByText("data mining")).size(),4)//was 10
+        assertEquals(graph.getAdjacentEdges(Person.findByEmail("michelfelder@macalester.edu")).size(),3) //was 3
+        assertEquals(graph.getAdjacentEdges(interestService.findByText("online communities")).size(),11)
+        assertEquals(graph.getAdjacentEdges(interestService.findByText("data mining")).size(),11)//was 10
         assertEquals(graph.getAdjacentEdges(interestService.findByText("social networking")).size(),2)
         Edge e1 = new Edge(person:Person.findByEmail("ssen@macalester.edu"),interest:interestService.findByText("data mining"),relatedInterest:interestService.findByText("statistics"))
         Edge e2 = new Edge(person:Person.findByEmail("ssen@macalester.edu"),interest:interestService.findByText("web2.0"),relatedInterest:interestService.findByText("data mining"))
@@ -128,7 +120,7 @@ class SimilarityServiceIntegrationTests extends GrailsUnitTestCase {
         i3.save()
         Interest interest= interestService.findByText("web2.0")
         SimilarInterestList list= similarityService.getSimilarInterests(interest, similarityService.maxSimsPerInterest, 0)
-        assertEquals(list.size(),1) // was 10, then 9
+        assertEquals(list.size(),8)
         interestService.buildDocuments(i)
         interestService.buildDocuments(i2)
         interestService.buildDocuments(i3)
@@ -138,9 +130,9 @@ class SimilarityServiceIntegrationTests extends GrailsUnitTestCase {
         //assertTrue(InterestRelation.findByFirst(i)!=null)
         //assertTrue(InterestRelation.findAllByFirst(i, [sort:"similarity", order:"desc"]).get(0).similarity>0.2)
         SimilarInterestList nlist= similarityService.getSimilarInterests(interest, 100,0)
-        assertEquals(nlist.size(),1) // was 13, then 12
+        assertEquals(nlist.size(),9)
         SimilarInterestList nlist2= similarityService.getSimilarInterests(i, 100,0)
-        assertEquals(nlist2.size(),5)
+        assertEquals(nlist2.size(),11)
         assertTrue(nlist2.contains(new SimilarInterest(i2.id, 0)))
         SimilarInterest ir = nlist2.get(0)
         SimilarInterest ir2= new SimilarInterest(i.id, ir.similarity)

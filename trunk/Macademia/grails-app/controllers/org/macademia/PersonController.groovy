@@ -11,18 +11,13 @@ class  PersonController{
     def collaboratorRequestService
     def userService
     def institutionService
-
+    
     def index = {
         Random r = new Random()
         List<Long> ids = new ArrayList<Long>(Person.findAll().collect({it.id}))
         long id = ids[r.nextInt(ids.size())]
         redirect(uri: "/person/jit/#/?nodeId=p_${id}&navVisibility=true&navFunction=search&institutions=all")
-//        if (authenticatedUser){
-//            def user = authenticatedUser
-//            [user:user]
-//        }
     }
-
 
     def tooltip = {
         def target = personService.get((params.id as long))
@@ -75,16 +70,11 @@ class  PersonController{
     }
 
     def asynchJit = {
-
     }
 
- def jit = {
-
-        [ authenticatedUser : authenticatedUser ]
-        //[person: personService.get((params.id as long))]
-
+    def jit = {
+        [ authenticatedUser : request.person ]
     }
-
 
     def json = {
         def root = personService.get((params.id as long))
@@ -102,20 +92,20 @@ class  PersonController{
 
     def show = {
         def person = Person.get(params.id)
-        def auth = false
-
-        if (authenticatedUser){
-            auth = userService.isAdmin(authenticatedUser,User.get(params.id))
+        if (!person) {
+            render("no person with id ${params.id}")
+            return
         }
+        def auth = request.person && request.person.canEdit(person)
         def interests = person.interests
         def collaboratorRequests = collaboratorRequestService.findAllByCreator(person)
-        if (!person) {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'collaboratorRequest.label', default: 'CollaboratorRequest'), params.id])}"
-            redirect(action: "list")
-        }
-        else {
-            [person: person, interests: interests, collaboratorRequests: collaboratorRequests, authenticatedUser:authenticatedUser, auth: auth]
-        }
+        render(view : 'show', model : [
+                person: person,
+                interests: interests,
+                collaboratorRequests: collaboratorRequests,
+                authenticatedUser:request.person,
+                auth: auth
+        ])
     }
 
 }

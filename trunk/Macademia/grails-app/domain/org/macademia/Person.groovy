@@ -1,13 +1,24 @@
 package org.macademia
 
-class Person extends grails.plugins.nimble.core.ProfileBase {
-    // fullName, owner, and email are inherited.
-    
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
+
+class Person {
+    public static final int USER_ROLE = 0
+    public static final int INST_ADMIN_ROLE = 1
+    public static final int ADMIN_ROLE = 2
+
+    String passwdHash
+    String token
+    String fullName
+    String email
     String title
     String department
     Institution institution    
     String imageSubpath
+    boolean enabled = true
     String links  // represented as a series of <li><a href="http://foo.com">foo</a></li> items
+    
+    int role = USER_ROLE
 
     static hasMany = [interests: Interest]
     static searchable = [only: ['fullName', 'email', 'department']]
@@ -15,6 +26,7 @@ class Person extends grails.plugins.nimble.core.ProfileBase {
         imageSubpath(nullable : true, blank:false)
         fullName(nullable: false, blank:false)
         email(nullable:false, blank:false, email: true, unique: true)
+        token(nullable:false, blank:false, unique: true)
         links(nullable:true)
         department(nullable:true)
         title(nullable:true)
@@ -44,4 +56,49 @@ class Person extends grails.plugins.nimble.core.ProfileBase {
         return email.hashCode()
     }
 
+    public String resetPasswd() {
+        String passwd = randomString(10)
+        passwdHash = calculatePasswdHash(passwd)
+        return passwd
+    }
+
+    public boolean checkPasswd(String passwd) {
+        return passwdHash == calculatePasswdHash(passwd)
+    }
+
+    public void updatePasswd(String passwd) {
+        passwdHash = calculatePasswdHash(passwd)
+    }
+
+    public boolean canEdit(Person other) {
+        if (id == other.id) {
+            return true
+        } else if (role == ADMIN_ROLE) {
+            return true
+        } else if (role == INST_ADMIN_ROLE && institution == other.institution) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    public static String calculatePasswdHash(String passwd) {
+        return ("" + (String)ConfigurationHolder.config.macademia.salt + passwd).encodeAsSHA256() 
+    }
+
+
+    public static String randomString(int n) {
+        StringBuffer pw = new StringBuffer()
+        Random r = new Random()
+        for (int i=0; i < n; i++) {
+            char c
+            switch(r.nextInt(3)) {
+            case 0:  c = ('0' as char ) +  (int)(Math.random() * 10); break;
+            case 1:  c = ('a' as char ) +  (int)(Math.random() * 26); break;
+            case 2:  c = ('A' as char ) +  (int)(Math.random() * 26); break;
+            }
+            pw.append(c)
+        }
+        return pw.toString()
+    }
 }

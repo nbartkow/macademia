@@ -117,14 +117,23 @@ def prepDirectories(prefix) {
 }
 
 
+macademia = {
+    salt = 'Foo'
+    creatableFields = ['fullName', 'email', 'department', 'institution', 'imageSubpath', 'links', 'title']
+    editableFields = ['fullName', 'department', 'institution', 'imageSubpath', 'links', 'title']
+    collaboratorRequestFields = ['creator', 'title', 'description', 'expiration']
+}
+
+
 absoluteThreshold = 0.001
 refinedThreshold = 0.08
 roughThreshold = 0.15
 // environment specific settings
 environments {
-    development {
-        // Uncomment to rebuild db
-        //prepDirectories("dev")
+    populateTest{
+        absoluteThreshold = 0.15
+        refinedThreshold = 0.08
+        roughThreshold = 0.15
     }
     test {
         prepDirectories("test")
@@ -134,12 +143,11 @@ environments {
         refinedThreshold = 0.08
         roughThreshold = 0.15
     }
-    populateTest{
-        absoluteThreshold = 0.15
-        refinedThreshold = 0.08
-        roughThreshold = 0.15
+    populateDev {
     }
-    populate {
+    development {
+    }
+    populateProd {
     }
     production {
     }

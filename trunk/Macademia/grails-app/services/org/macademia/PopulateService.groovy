@@ -1,10 +1,5 @@
 package org.macademia
 
-import grails.plugins.nimble.InstanceGenerator
-import grails.util.Environment
-import grails.plugins.nimble.core.AdminsService
-import grails.plugins.nimble.core.Role
-
 class PopulateService {
     def interestService
     def similarityService
@@ -45,7 +40,6 @@ class PopulateService {
     }
 
     def readPeople(File file) {
-        nimbleService.init()
         String[] directory =  file.getAbsolutePath().split("/")
         interestService.initBuildDocuments("db/"+directory[directory.length-2]+"/")
         log.error("reading people from $file...")
@@ -71,37 +65,30 @@ class PopulateService {
 
             Person person = Person.findByEmail(email)
             if (person == null) {
-                // Create example User account
-                def user = new User()
-                user.username = email
-                user.pass = 'useR123!'
-                user.passConfirm = 'useR123!'
-                user.enabled = true
-
-                person = new Person(fullName: name, department: dept, email: email, institution: institution)
-                person.owner = user
-                user.profile = person
-                //Utils.safeSave(user)
-
-                // NOTE: THIS IS AN OLD METHOD THAT USES PERSON.SAVE
-                // HENCE, BOTH personService.save() and userService.save() don't work.
-                // (we have to rearrange the test)
-                //personService.save(person)
+                person = new Person()
+                person.email = email
+                person.enabled = true
+                person.fullName = name
+                person.department = dept
+                person.institution = institution
             }
             Interest interest = interestService.findByText(interestStr)
             if (interest == null) {
                 interest = new Interest(interestStr)
-                //Utils.safeSave(interest)
             }
             person.addToInterests(interest)
-            personService.save(person)
+            if (person.id) {
+                personService.save(person)
+            } else {
+                personService.create(person, "useR123!", null)
+            }
         }
         log.error("Read ${Person.count()} people objects")
         log.error("Read ${Interest.count()} interest objects")
 
-        def admins = Role.findByName(AdminsService.ADMIN_ROLE)
-        adminsService.add(personService.findByEmail("ssen@macalester.edu").owner)
-
+        Person admin = personService.findByEmail("ssen@macalester.edu")
+        admin.role = Person.ADMIN_ROLE
+        personService.save(admin)
     }
 
     /** TODO: move this to some other service */

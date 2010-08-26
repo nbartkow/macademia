@@ -15,7 +15,15 @@
     </div>
     <div id="pf_top_container_no_img">
       <h3 id="pf_name_no_img">${person.fullName}</h3>
-      <h3 id="pf_dept_no_img">${person.department}</h3>
+      <g:if test="${person.department && person.title}">
+        <h3 id="pf_dept_no_img">${person.title.encodeAsHTML()} of ${person.department.encodeAsHTML()}</h3>
+      </g:if>
+      <g:elseif test="${person.department}">
+        <h3 id="pf_dept_no_img">${person.department.encodeAsHTML()}</h3>
+      </g:elseif>
+      <g:elseif test="${person.title}">
+        <h3 id="pf_dept_no_img">${person.title.encodeAsHTML()}</h3>
+      </g:elseif>
       <h3 id="pf_email">
       <g:link url="mailto:${person.email}">${person.email}</g:link>
       </h3>
@@ -53,29 +61,14 @@
     </div>
   </g:if>
 
-<g:if test= "${authenticatedUser}">
+<g:if test= "${request.person && request.person.canEdit(person)}">
   <div>
   <h4>Account:</h4>
-  <g:if test="${person.id == authenticatedUser.id}">
-    <li>
-      <g:link url="[controller:'request',action:'manage' ]"><g:message code="Manage collaborator requests" /></g:link>
-    </li>
-    <li>
-      <g:link url="[controller:'account',action:'editprofile' ]">Edit Profile</g:link>
-    </li>
-  </g:if>
-  <g:else>
-    <g:if test="${auth}">
       <ul class="styledList atxt">
       <li>
-      <g:link url="[controller:'request',action:'manage', id:person.owner.id ]" ><g:message code="Manage collaborator requests" /></g:link>
-      </li>
-      <li>
-      <g:link url="[controller:'account',action:'modaledituser', id:person.owner.id ]">Edit Profile</g:link>
+      <g:link url="[controller:'account',action:'modaledituser', id:person.id ]">Edit Profile</g:link>
       </li>
       </ul>
-    </g:if>
-  </g:else>
 </g:if>
   </div>
 </div>

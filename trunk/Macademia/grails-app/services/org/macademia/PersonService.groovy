@@ -25,6 +25,12 @@ class PersonService {
         return i.people
     }
 
+    public void create(Person person, String passwd, String ipAddr) {
+        person.passwdHash = Person.calculatePasswdHash(passwd)
+        person.token = Person.randomString(20)
+        save(person, ipAddr)
+    }
+
     public void save(Person person){
         this.save(person, null)
     }
@@ -49,13 +55,12 @@ class PersonService {
             person.removeFromInterests(interest)
             person.addToInterests(remove.get(interest))
         }
-        if (!person.id){
-            userService.createUser(person.owner)
-        } else {
-            userService.updateUser(person.owner)
-        }
-        Utils.safeSave(person)
+        Utils.safeSave(person, true)
         databaseService.addUser(person)
         autocompleteService.addPerson(person)
+    }
+
+    public Person findByToken(String token) {
+        return Person.findByToken(token)
     }
 }

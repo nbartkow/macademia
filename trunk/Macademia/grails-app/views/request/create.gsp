@@ -1,6 +1,9 @@
 <div id="createRequestContainer">
   <g:form action="save">
     <div id="rfcForm">
+      <g:if test="${collaboratorRequest.id}">
+        <g:hiddenField name="requestId" value="${collaboratorRequest.id}"/> 
+      </g:if>
 
       <div class="registerLeft"><label for="title">Title<span>Name for collaborator request</span></label></div>
       <div class="registerRight value ${hasErrors(bean: collaboratorRequest, field: 'title', 'errors')}">
@@ -22,7 +25,7 @@
 
       <div class="registerLeft"><label for="keywords">Keywords<span>keywords related to the request</span></label></div>
       <div class="registerRight value ${hasErrors(bean: collaboratorRequest, field: 'keywords', 'errors')}">
-        <g:textArea id="requestKeywordsBox" name="keywords" value="${collaboratorRequest?.keywords}"/>
+        <g:textArea id="requestKeywordsBox" name="keywords" value="${keywords?.encodeAsHTML()}"/>
       </div>
       <div class="clear"></div>
     </div>
@@ -30,4 +33,9 @@
       <g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}"/>
     </div>
   </g:form>
+  <g:javascript >
+    $().ready(function () {
+        macademia.autocomplete.initEditRequest();
+    });
+</g:javascript>
 </div>

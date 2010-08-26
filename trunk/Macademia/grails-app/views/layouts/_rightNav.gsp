@@ -1,29 +1,25 @@
-<%@ page import="org.macademia.UserService; grails.plugins.nimble.core.AdminsService" %>
+<%@ page import="org.macademia.Person" %>
 <div id="show" class="btxt">
   <a href="#/?navVisibility=true"><-show</a>
 </div>
 <div id="sidebar">
   <div id="wrapper">
     <div id="main">
-      <n:notUser>
+      <m:ifNotLoggedIn>
         <div id="account" class="btxt right">
           <a id="login_link" href="#" class="right">Login</a> |
           <g:link controller="account" action="createuser2" href="#" class="right">Register</g:link>
         </div>
-      </n:notUser>
-      %{--<n:user>--}%
+      </m:ifNotLoggedIn>
+      <m:ifLoggedIn>
       <div id="account" class="btxt">
-        <n:hasRole name="${UserService.USER_ROLE}">
-          <div id="account" class="btxt">
-            ${authenticatedUser.profile.fullName.encodeAsHTML()} |
-            <g:link controller="auth" action="logout" class="icon_cross">Logout</g:link> |
-            <a href="#" id="toggleControls">More</a>
-          </div>
-        </n:hasRole>
+        <div id="account" class="btxt">
+          <m:personLink person="${request.person}"/> |
+          <g:link controller="account" action="logout" class="icon_cross">Logout</g:link> |
+          <a href="#" id="toggleControls">More</a>
+        </div>
         <ul id="accountControlList" class="left topBorder bottomBorder styledList">
-
           <div id="moreDropdown">
-          <n:hasRole name="${UserService.USER_ROLE}">
             <li>
               <g:link controller="account" action="modaledituser" class="editProfile">Edit profile</g:link>
             </li>
@@ -33,26 +29,24 @@
             <li>
               <a href="#" id="makeRequestButton">Create request for collaboration</a>
             </li>
-            <n:hasRole name="${AdminsService.ADMIN_ROLE}">
+            <m:ifAdmin >
               <li>
                 <g:link controller="user" action="list" class="icon_user_go">Admin controls</g:link>
               </li>
-            </n:hasRole>
-          </n:hasRole>
-            </div>
+            </m:ifAdmin>
+          </div>
         </ul>
       </div>
-      %{--</n:user>--}%
+      </m:ifLoggedIn>
+      
       <div id="login" style="display: block;">
         <div class="flash">&nbsp;</div>
 
         <div id="local" class="localonlymethod">
           <form id="signin" name="signin" action="#">
             <div id="login_info_div" style="display: block;">
-              <input type="hidden" name="targetUri" value="${targetUri}"/>
-              <label for="username">Email:</label>
-              <input type="text" tabindex="1" name="username" class="login_input" id="username"/>
-
+              <label for="email">Email:</label>
+              <input type="text" tabindex="1" name="email" class="login_input" id="email"/>
               <label for="password">Password:</label>
               <input type="password" tabindex="2" name="password" class="login_input" id="password">
               <input type="submit" tabindex="3" value="Login" class="login_submit"><g:link controller="account" action="forgottenpassword" class="forgot_password">forgot password?</g:link>
@@ -60,10 +54,7 @@
           </form>
 
           <div class="accountoptions">
-            <g:link controller="account" action="forgottenpassword" class="textlink icon icon_flag_purple"><g:message code="nimble.link.forgottenpassword"/></g:link>
-            <g:if test="${registration}">
-              <g:link controller="account" action="createuser" class="textlink icon icon_user_go"><g:message code="nimble.link.newuser"/></g:link>
-            </g:if>
+            <g:link controller="account" action="forgottenpassword" class="textlink icon icon_flag_purple">forgot password?</g:link>
           </div>
         </div>
       </div>
@@ -109,9 +100,8 @@
         <div id="registerScript">
         </div>
       </div>
-      <div id="makeRequestDialog" class="jqmWindow">
-
-      </div>
+      <div id="makeRequestDialog" class="jqmWindow">&nbsp;</div>
+      <div id="editRequestDialog" class="jqmWindow">&nbsp;</div>
       <div class="jqmWindow padded2 medium btxt" id="filterDialog">&nbsp;</div>
 
     </div>

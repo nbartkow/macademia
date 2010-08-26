@@ -33,6 +33,7 @@
   </div>
   <g:render template="../templates/macademia/tagline"/>
 </div>
+
 <a href="/Macademia/"><img id="logoImage" src="${createLinkTo(dir: 'images', file: 'macademia-logo.png')}"/></a>
 
 <div id="extendedInfo">
