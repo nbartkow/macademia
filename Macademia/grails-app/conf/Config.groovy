@@ -122,6 +122,7 @@ macademia = {
     creatableFields = ['fullName', 'email', 'department', 'institution', 'imageSubpath', 'links', 'title']
     editableFields = ['fullName', 'department', 'institution', 'imageSubpath', 'links', 'title']
     collaboratorRequestFields = ['creator', 'title', 'description', 'expiration']
+    maxSimilarInterests = 2000
 }
 
 
@@ -134,6 +135,9 @@ environments {
         absoluteThreshold = 0.15
         refinedThreshold = 0.08
         roughThreshold = 0.15
+
+        // FIXME: Don't cap # similar interests while testing
+        org.macademia.SimilarInterestList.MAX_SIMILAR_INTERESTS = 1000000
     }
     test {
         prepDirectories("test")
@@ -142,6 +146,9 @@ environments {
         absoluteThreshold = 0.01
         refinedThreshold = 0.08
         roughThreshold = 0.15
+
+        // FIXME: Don't cap # similar interests while testing
+        org.macademia.SimilarInterestList.MAX_SIMILAR_INTERESTS = 1000000
     }
     populateDev {
     }

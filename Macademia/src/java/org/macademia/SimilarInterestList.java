@@ -1,5 +1,7 @@
 package org.macademia;
 
+import org.codehaus.groovy.grails.commons.ConfigurationHolder;
+
 import java.util.*;
 import java.util.regex.*;
 
@@ -8,6 +10,9 @@ import java.util.regex.*;
  */
 
 public class SimilarInterestList {
+    // overridden in Config.groovy
+    public static int MAX_SIMILAR_INTERESTS = 2000;
+
     ArrayList<SimilarInterest> list;
 
     public SimilarInterestList(){
@@ -27,7 +32,9 @@ public class SimilarInterestList {
                 if(info.length==2){
                     add(new SimilarInterest(Long.parseLong(info[0]), Double.parseDouble(info[1])));
                 }
-
+                if (list.size() >= MAX_SIMILAR_INTERESTS) {
+                    break;
+                }
             }
         } else {
             list = new ArrayList<SimilarInterest>();
