@@ -61,7 +61,7 @@
     </div>
   </g:if>
 
-<g:if test= "${request.person && request.person.canEdit(person)}">
+<g:if test= "${request.authenticated && request.authenticated.canEdit(person)}">
   <div>
   <h4>Account:</h4>
       <ul class="styledList atxt">

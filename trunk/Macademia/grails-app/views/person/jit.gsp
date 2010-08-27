@@ -34,7 +34,7 @@
   <g:render template="../templates/macademia/tagline"/>
 </div>
 
-<a href="/Macademia/"><img id="logoImage" src="${createLinkTo(dir: 'images', file: 'macademia-logo.png')}"/></a>
+  <g:render template="../templates/macademia/logo"/>
 
 <div id="extendedInfo">
   <g:render template="../layouts/rightNav"/>

@@ -9,9 +9,8 @@
 </head>
 
 <body>
-
-    <a href="/Macademia/"><img id="logoImage" src="${createLinkTo(dir: 'images', file: 'macademia-logo.png')}"/></a>
-    <div id="main">
+  <g:render template="../templates/macademia/logo"/>
+  <div id="main">
       <h2>${title}</h2>
 
       <g:if test="${error}">
@@ -21,7 +20,7 @@
       <p>${message.encodeAsHTML()}</p>
 
       <p>
-        <m:ifLoggedIn ><a href="/Macademia/person/jit/#/?nodeId=p_${request.person.id}&institutions=all">Return to Macademia</a></m:ifLoggedIn>
+        <m:ifLoggedIn ><a href="/Macademia/person/jit/#/?nodeId=p_${request.authenticated.id}&institutions=all">Return to Macademia</a></m:ifLoggedIn>
         <m:ifNotLoggedIn><a href="/Macademia">Return to Macademia</a></m:ifNotLoggedIn>
       </p>
     </div>

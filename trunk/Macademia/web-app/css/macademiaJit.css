@@ -277,11 +277,23 @@ ul#instruct_list li:before, ul.styledList li:before{
     content: "\00BB \0020";
 }
 
-#logoImage {
+#logo {
     padding-bottom: 10px;
     position: absolute;
     left: 10px;
     top: 10px;
+}
+
+#logo .tagline {
+    position : relative;
+    top : -13px;
+    left : 10px;
+    color: #ddc;
+    font-size: 1.0em;
+    font-family: Arial;
+    font-style : italic;
+    line-height: 1.1em;
+    width : 200px;
 }
 
 #hide {

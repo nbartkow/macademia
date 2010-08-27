@@ -73,7 +73,7 @@ class  PersonController{
     }
 
     def jit = {
-        [ authenticatedUser : request.person ]
+        [ authenticatedUser : request.authenticated ]
     }
 
     def json = {
@@ -96,14 +96,14 @@ class  PersonController{
             render("no person with id ${params.id}")
             return
         }
-        def auth = request.person && request.person.canEdit(person)
+        def auth = request.authenticated && request.authenticated.canEdit(person)
         def interests = person.interests
         def collaboratorRequests = collaboratorRequestService.findAllByCreator(person)
         render(view : 'show', model : [
                 person: person,
                 interests: interests,
                 collaboratorRequests: collaboratorRequests,
-                authenticatedUser:request.person,
+                authenticatedUser:request.authenticated,
                 auth: auth
         ])
     }

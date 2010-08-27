@@ -10,7 +10,8 @@
 
 <body>
 
-    <a href="/Macademia/"><img id="logoImage" src="${createLinkTo(dir: 'images', file: 'macademia-logo.png')}"/></a>
+
+    <g:render template="../templates/macademia/logo"/>
     <div id="main">
       <h2>Reset your password.</h2>
 

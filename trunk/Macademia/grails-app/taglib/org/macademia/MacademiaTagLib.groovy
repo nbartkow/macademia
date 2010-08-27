@@ -5,21 +5,21 @@ class MacademiaTagLib {
 
     def ifLoggedIn = {
         attrs, body ->
-        if (request.person) {
+        if (request.authenticated) {
             out << body()
         }
     }
 
     def ifNotLoggedIn = {
         attrs, body ->
-        if (!request.person) {
+        if (!request.authenticated) {
             out << body()
         }
     }
 
     def ifAdmin = {
         attrs, body ->
-        if (request.person && request.person.role == Person.ADMIN_ROLE) {
+        if (request.authenticated && request.authenticated.role == Person.ADMIN_ROLE) {
             out << body()
         }
     }
