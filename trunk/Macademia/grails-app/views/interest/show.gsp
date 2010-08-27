@@ -1,3 +1,4 @@
+<%@ page import="org.macademia.Wikipedia" %>
 <div id="interestPage" class="medium padded2">
   <div id="interest_top_container">
     <div id="interest_info">
@@ -31,6 +32,17 @@
           </g:each>
         </ul>
       </div>
+
+      <g:if test="${interest.articleName}">
+        <div id="wikipedia_links">
+          <h3>Related wikipedia pages:</h3>
+          <ul class="">
+              <li>
+                <a href="${Wikipedia.encodeWikiUrl(interest.articleName)}">${interest.articleName.encodeAsHTML()}</a>
+              </li>
+          </ul>
+        </div>
+      </g:if>
     </div>
   </div>
 </div>

@@ -833,23 +833,23 @@ h2#interest_selected {
 #interest_people {
 }
 
-#interest_related h3, #interest_people h3 {
+#interest_related h3, #interest_people h3, #wikipedia_links h3 {
 }
 
-#interest_related ul, #interest_people ul {
+#interest_related ul, #interest_people ul, #wikipedia_links ul {
     padding-left: 15px;
 }
 
-#interest_related ul li, #interest_people ul li {
+#interest_related ul li, #interest_people ul li, #wikipedia_links ul li {
     list-style-type: none;
     margin: 2px 0 0 8px;
 }
 
-#interest_related ul li:before, #interest_people ul li:before {
+#interest_related ul li:before, #interest_people ul li:before, #wikipedia_links ul li:before {
     content: "\00BB \0020";
 }
 
-#interest_related ul li a, #interest_people ul li a {
+#interest_related ul li a, #interest_people ul li a, #wikipedia_links ul li a  {
     margin-right: 3px;
 }
 
