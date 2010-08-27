@@ -14,7 +14,7 @@
       <m:ifLoggedIn>
       <div id="account" class="btxt">
         <div id="account" class="btxt">
-          <m:personLink person="${request.person}"/> |
+          <m:personLink person="${request.authenticated}"/> |
           <g:link controller="account" action="logout" class="icon_cross">Logout</g:link> |
           <a href="#" id="toggleControls">More</a>
         </div>

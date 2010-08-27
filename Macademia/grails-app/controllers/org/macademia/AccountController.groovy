@@ -48,7 +48,7 @@ The Macademia Team
 
 
     def changepassword = {
-        if (!request.person) {
+        if (!request.authenticated) {
             render("not logged in.")
             return
         }
@@ -63,7 +63,7 @@ The Macademia Team
             error = 'Please enter a new password.'
         } else if (!params.password) {
             error = 'Please confirm your new password.'
-        } else if (!request.person.checkPasswd(params.currentPassword)) {
+        } else if (!request.authenticated.checkPasswd(params.currentPassword)) {
             error = 'Your current password is incorrect.'
         } else if (params.password.length() < 6) {
             error = 'Your password must be at least 6 characters.'
@@ -74,8 +74,8 @@ The Macademia Team
             render(view : 'changepassword', model : [error : error])
             return
         }
-        request.person.updatePasswd(params.password)
-        personService.save(request.person)
+        request.authenticated.updatePasswd(params.password)
+        personService.save(request.authenticated)
         render(view : 'message',
                model : [
                    title : "Password changed.",
@@ -104,7 +104,7 @@ The Macademia Team
         cookie.path = "/"
         cookie.setMaxAge(MacademiaConstants.MAX_COOKIE_AGE)
         response.addCookie(cookie)
-        request.person = person
+        request.authenticated = person
     }
 
     def logout = {
@@ -190,14 +190,14 @@ The Macademia Team
 
     def modaledituser = {
         Person person = null;
-        if (!request.person) {
+        if (!request.authenticated) {
             throw new IllegalStateException("no user present!")
         } else if (!params.id){
-            person = request.person
+            person = request.authenticated
         } else {
             person = Person.get(params.id)
             //admin check
-            if (!request.person.canEdit(person)) {
+            if (!request.authenticated.canEdit(person)) {
                 throw new IllegalArgumentException("not authorized")
             }
         }
@@ -219,11 +219,11 @@ The Macademia Team
         def person
         if (params.id){
             person = Person.get(params.id)
-            if (!request.person.canEdit(person)) {
+            if (!request.authenticated.canEdit(person)) {
                 throw new IllegalArgumentException("not authorized")
             }
         } else{
-            person = request.person
+            person = request.authenticated
         }
         if (!person) {
             render("User identified by id '$params.id' was not located")

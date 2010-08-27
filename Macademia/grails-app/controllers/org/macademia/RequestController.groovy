@@ -27,12 +27,12 @@ class RequestController {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         Person user = null;
         if (!params.id){
-            user = request.person
+            user = request.authenticated
         }
         else {
             user = Person.get(params.id)
             //admin check
-            if (!request.person.canEdit(user)){
+            if (!request.authenticated.canEdit(user)){
                 throw new IllegalArgumentException("not authorized")
             }
         }
@@ -52,7 +52,7 @@ class RequestController {
         }
         def fields = ['title', 'description', 'expiration']
         collaboratorRequest.properties[fields] = params
-        collaboratorRequest.creator = request.person
+        collaboratorRequest.creator = request.authenticated
         log.info(params)
         if (params.keywords){
             String allkeywords = params.keywords

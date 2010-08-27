@@ -12,7 +12,7 @@ class MacademiaFilters {
                if (cookie && cookie.value) {
                    Person person = personService.findByToken(cookie.value)
                    if (person) {
-                       request.person = person
+                       request.authenticated = person
                    }
                }
                return true

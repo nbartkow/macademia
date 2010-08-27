@@ -14,7 +14,7 @@ class UserLoggingService {
     public void logEvent(HttpServletRequest request, String category, String eventName, Map<String, String> params) {
 
         String ip = Utils.getIpAddress(request)
-        def userId = request.person?.id	
+        def userId = request.authenticated?.id
         String sessionId = request.session.getId()
         Date tstamp = new Date()
 
