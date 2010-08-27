@@ -117,13 +117,28 @@ def prepDirectories(prefix) {
 }
 
 
-macademia = {
+macademia {
     salt = 'Foo'
     creatableFields = ['fullName', 'email', 'department', 'institution', 'imageSubpath', 'links', 'title']
     editableFields = ['fullName', 'department', 'institution', 'imageSubpath', 'links', 'title']
     collaboratorRequestFields = ['creator', 'title', 'description', 'expiration']
     maxSimilarInterests = 2000
 }
+
+grails {
+    mail {
+     from = "MacademiaAdmin"
+     host = "smtp.gmail.com"
+     port = 465
+     username = "Macalester.Macademia@gmail.com"
+     password = "admiN123!"
+     props = ["mail.smtp.auth": "false",
+       "mail.smtp.socketFactory.port": "465",
+       "mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
+       "mail.smtp.socketFactory.fallback": "false"]
+    }
+}
+grails.mail.default.from="macalester.macademia@gmail.com"
 
 
 absoluteThreshold = 0.001

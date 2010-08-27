@@ -26,13 +26,34 @@ class MacademiaTagLib {
 
     def personLink = {
         attrs, body ->
-        def id = attrs.person.id
-        attrs.uri = "/person/jit/#/?nodeId=p_${id}&navVisibility=true&navFunction=person&institutions=all&personId=${id}"
+        attrs.uri = Utils.makeUrl('person', attrs.person.id, true)
         String bodyStr = body()
         if (bodyStr) {
             out << g.link(attrs, bodyStr)
         } else {
             out << g.link(attrs, attrs.person.fullName.encodeAsHTML())
+        }
+    }
+
+    def requestLink = {
+        attrs, body ->
+        attrs.uri = Utils.makeUrl('request', attrs.request.id)
+        String bodyStr = body()
+        if (bodyStr) {
+            out << g.link(attrs, bodyStr)
+        } else {
+            out << g.link(attrs, attrs.request.title.encodeAsHTML())
+        }
+    }
+
+    def interestLink = {
+        attrs, body ->
+        attrs.uri = Utils.makeUrl('interest', attrs.interest.id)
+        String bodyStr = body()
+        if (bodyStr) {
+            out << g.link(attrs, bodyStr)
+        } else {
+            out << g.link(attrs, attrs.interest.text.encodeAsHTML())
         }
     }
 

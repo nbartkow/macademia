@@ -12,6 +12,18 @@ import javax.servlet.http.HttpServletRequest
  */
 class Utils {
     private final static Logger log = Logger.getLogger(Utils.class)
+
+
+    public static String makeUrl(String type, long id) {
+        return makeUrl(type, id, false)
+    }
+    public static String makeUrl(String type, long id, boolean addRandom) {
+        if (type != 'person' && type != 'interest' && type != 'request') {
+            throw new IllegalArgumentException("type must be 'person', 'interest', or 'request'")
+        }
+        String randToken = addRandom ? "?random=${new Random().nextInt()}" : "" 
+        return "/person/jit${randToken}/#/?nodeId=${type[0]}_${id}&navVisibility=true&navFunction=${type}&institutions=all&${type}Id=${id}"
+    }
     
     public static void safeSave(Object o) {
         safeSave(o, false)

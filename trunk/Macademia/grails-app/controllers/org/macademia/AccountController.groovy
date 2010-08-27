@@ -1,16 +1,48 @@
 package org.macademia
 
 import javax.servlet.http.Cookie
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 class AccountController {
     def personService
     def interestService
 
+
+    def forgottenpassword = {
+        render(view : 'forgottenpassword', model : [])
+    }
+
     def forgottenpasswordcomplete = {
+        String email = params.email
+        Person person = personService.findByEmail(email)
+        if (!person) {
+            render(view : 'forgottenpassword', model : [error : "No account is associated with email address ${email}"])
+            return
+        }
+        String newPassword = person.resetPasswd()
+        personService.save(person)
+
+        sendMail {
+            to email
+            subject "Your Macademia password has been reset"                        
+            body """Dear ${params.email},
+
+We have reset your Macademia password to \"${newPassword}\".
+
+You can login to Macademia with this new password at ${ConfigurationHolder.config.grails.serverURL as String}.  Please change your password as soon as possible.
+
+Thank you! 
+
+The Macademia Team
+
+(Do not reply to this e-mail.)
+"""
+        }
+
         render(view : 'message',
                model : [
                    title : "Password recovered.",
-                   message : "We have emailed a new password to you at ${params.email}."
+                   message : "We have emailed a new password to you at ${email}."
                ])
     }
 

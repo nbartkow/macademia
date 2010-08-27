@@ -70,7 +70,8 @@ class RequestController {
         collaboratorRequestService.save(collaboratorRequest, Utils.getIpAddress(request))
         autocompleteService.addRequest(collaboratorRequest)
         collaboratorRequest.save(flush : true)  // flush to get the id
-        render('okay ' + collaboratorRequest.id)
+
+        redirect('uri' : Utils.makeUrl('request', collaboratorRequest.id, true))
     }
 
     def show = {
