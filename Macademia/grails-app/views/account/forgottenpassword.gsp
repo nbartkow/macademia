@@ -1,51 +1,52 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 
 <head>
-  <meta name="layout" content="${grailsApplication.config.nimble.layout.application}"/>
-  <title><g:message code="nimble.view.account.forgottenpassword.initiate.title" /></title>
+    <title>Change password</title>
+
+  <link type="text/css" rel="stylesheet" href="${createLinkTo(dir: "css", file: "macademiaJit.css")}">
+  <g:include view="/layouts/headers.gsp"/>
+  <link type="text/css" rel="stylesheet" href="${createLinkTo(dir: "css", file: "changePasswd.css")}">
 </head>
 
 <body>
-	
-  <div class="accountinformation">
-    <h2><g:message code="nimble.view.account.forgottenpassword.initiate.heading" /></h2>
 
-	<p>
-    	<g:message code="nimble.view.account.forgottenpassword.initiate.descriptive" />
-	</p>
-	
-    <n:flashembed/>
+    <a href="/Macademia/"><img id="logoImage" src="${createLinkTo(dir: 'images', file: 'macademia-logo.png')}"/></a>
+    <div id="main">
+      <h2>Reset your password.</h2>
 
-    <g:form action="forgottenpasswordprocess">
+      <p>
+        Enter your email address below to reset your password.  
+      </p>
 
-      <table>
-        <tbody>
-        <tr>
-          <td valign="top" class="name"><label for="email"><g:message code="nimble.label.email" /></label></td>
-          <td valign="top" class="value">
-            <input type="text" size="30" id="email" name="email" class="easyinput"/>
-          </td>
-        </tr>
+      <g:if test="${error}">
+        <p class="alert">${error.encodeAsHTML()}</p>
+      </g:if>
 
-        <n:recaptcharequired>
-          <tr>
-            <th><g:message code="nimble.label.captcha" /></th>
-            <td>
-              <n:recaptcha/>
-            </td>
-          </tr>
-        </n:recaptcharequired>
+      <g:form action="forgottenpasswordcomplete">
+        <table>
+          <tbody>
 
-        </tbody>
-      </table>
+            <tr>
+              <td><label for="email">Email address:</label></td>
+              <td>
+                <input type="input" size="30" id="email" name="email" class="easyinput"/>
+              </td>
+            </tr>
 
-      <div>
-        <button class="button icon icon_user_go" type="submit"><g:message code="nimble.link.resetpassword" /></button>
-      </div>
+            <tr>
+              <td/>
+              <td>
+                <input type="submit" name="submit" value="Reset password"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-    </g:form>
-  </div>
-
+        <div >
+        </div>
+      </g:form>
+    </div>
+    <g:render template="/templates/macademia/tagline"/>
 </body>
+
 </html>
