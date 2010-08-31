@@ -10,7 +10,10 @@ class WikipediaServiceTests extends GrailsUnitTestCase {
     protected void tearDown() {
         super.tearDown()
     }
-//
+
+    public void testFoo() {}
+
+//  Unit tests shouldn't rely on external services :(
 //    void testEncoding() {
 //        Wikipedia w = new Wikipedia()
 //        String encoded = w.encodeWikiUrl("My Favorite Things (album)")
@@ -31,11 +34,11 @@ class WikipediaServiceTests extends GrailsUnitTestCase {
 //        println("cntext is ${d.text}")
 //        assertTrue(d.text.contains("My Favorite Things is a 1961 jazz album by John Coltrane"))
 //    }
-
-    void testWorkLife() {
-        WikipediaService w = new WikipediaService()
-//        Document d = w.getDocumentByUrl(URLDecoder.decode("Work%E2%80%93life_balance"))
-        Document d = w.getDocumentByUrl("http://en.wikipedia.org/wiki/Work%E2%80%93life_balance")
-        println("d is " + d)
-    }
+//
+//    void testWorkLife() {
+//        WikipediaService w = new WikipediaService()
+////        Document d = w.getDocumentByUrl(URLDecoder.decode("Work%E2%80%93life_balance"))
+//        Document d = w.getDocumentByUrl("http://en.wikipedia.org/wiki/Work%E2%80%93life_balance")
+//        println("d is " + d)
+//    }
 }

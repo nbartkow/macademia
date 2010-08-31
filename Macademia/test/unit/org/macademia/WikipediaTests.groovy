@@ -27,6 +27,8 @@ class WikipediaTests extends GrailsUnitTestCase {
         assertEquals(decoded, "My Favorite Things (album)")
     }
 
+    /**
+     * Unit tests shouldn't rely on external services.
     void testRetrieve() {
         Wikipedia w = new Wikipedia()
         Document d = w.getDocumentByName("My Favorite Things (album)")
@@ -41,4 +43,5 @@ class WikipediaTests extends GrailsUnitTestCase {
         Document d = w.getDocumentByUrl("http://en.wikipedia.org/wiki/Work%E2%80%93life_balance")
         println("d is " + d)
     }
+     */
 }
