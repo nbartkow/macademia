@@ -23,6 +23,8 @@ export JAVA_HOME=/Library/Java/Home
 }}}
 You can check to make sure this worked properly by opening a terminal and typing echo $GRAILS_HOME.  You should see the information you entered.
 
+For PCs see: http://www.grails.org/Installation
+
 === Setup Intellij ===
   # Download and install Intellij.  You want the ultimate edition.
   # Start up IntelliJ.  You'll need to answer some configuration questions:
