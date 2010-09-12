@@ -16,6 +16,7 @@ def getInterestName(db, id):
         return record.get('text')
 
 record = db.interests.find_one({'text' : interest})
+print record['similar'][:100]
 scores = []
 for pair in record['similar'].split('|'):
     if not pair:
@@ -29,6 +30,6 @@ for pair in record['similar'].split('|'):
 scores.sort()
 scores.reverse()
 
-print 'articles similar to %s' % `interest`
+print 'articles similar to %s (%s)' % (record['text'], record['_id'])
 for (score, name, id) in scores:
     print '\t%.4f %s (%s)' % (score, name, id)
