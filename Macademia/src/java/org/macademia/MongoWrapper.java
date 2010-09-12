@@ -320,17 +320,17 @@ public class MongoWrapper {
         }
 
 
-        addInterestRelations(interest, list);
+        addInterestRelations(interest, list, false);
         if (relationsBuilt) {
             for (long id : ids.keySet()) {
                 SimilarInterestList sims = new SimilarInterestList();
                 sims.add(new SimilarInterest(id, ids.get(id)));
-                addInterestRelations(id, sims);
+                addInterestRelations(id, sims, true);
             }
         }
     }
 
-    public void addInterestRelations(long interestId, SimilarInterestList sims){
+    public void addInterestRelations(long interestId, SimilarInterestList sims, boolean merge){
         DBCollection interests = getDb().getCollection(INTERESTS);
         DBObject interest= safeFindById(INTERESTS, interestId, false);
         if(interest == null){
@@ -338,15 +338,11 @@ public class MongoWrapper {
             interest.put("similar", "");
             interests.insert(interest);
         }
-        sims.add((String)interest.get("similar"));
+        if (merge) {
+            sims.add((String)interest.get("similar"));
+        }
         interest.put("similar", sims.toString());
         interests.update(safeFindById(INTERESTS, interestId, false), interest);
-    }
-
-    public void addInterestRelations(long interestId, SimilarInterest sim){
-        SimilarInterestList sims = new SimilarInterestList();
-        sims.add(sim);
-        addInterestRelations(interestId, sims);
     }
 
     public SimilarInterestList getSimilarInterests(long interest){
