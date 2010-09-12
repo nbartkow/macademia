@@ -314,7 +314,7 @@ public class MongoWrapper {
             dbo =  new BasicDBObject("_id", interest);
             dbo.put("similar", "");
         }
-        if (dbo.get("text") == null) {
+        if (dbo.get("text") == null || dbo.get("text") != text) {
             dbo.put("text", text);
             getDb().getCollection(INTERESTS).save(dbo);
         }
