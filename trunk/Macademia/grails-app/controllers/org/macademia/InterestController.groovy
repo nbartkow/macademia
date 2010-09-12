@@ -86,4 +86,17 @@ class InterestController {
         }
     }
 
+    def rebuild() {
+        response.contentType = "text/plain"
+
+        def outs = response.outputStream
+        def interests = Interest.findAll()
+        outs << "building relations for ${interests.size()} interests\n"
+        interests.each() {
+            outs << "building relation for ${it.text}\n"
+            outs.flush()
+        }
+        outs.close()
+    }
+
 }
