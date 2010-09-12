@@ -86,14 +86,17 @@ class InterestController {
         }
     }
 
-    def rebuild() {
+    def rebuild = {
         response.contentType = "text/plain"
 
         def outs = response.outputStream
         def interests = Interest.findAll()
         outs << "building relations for ${interests.size()} interests\n"
+        def i = 0
         interests.each() {
-            outs << "building relation for ${it.text}\n"
+            i++
+            outs << "($i of ${interests.size()}): building relation for ${it.text}\n"
+            similarityService.buildInterestRelations(it)
             outs.flush()
         }
         outs.close()
