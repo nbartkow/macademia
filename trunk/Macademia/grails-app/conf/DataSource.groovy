@@ -4,7 +4,6 @@ dataSource {
 	username = "sa"
 	password = ""
     mongoDbUrl = "poliwiki.macalester.edu"
-//    mongoDbUrl = '127.0.0.1'
     wpMongoDbName = "wikipediaReadOnly"
 }
 
@@ -14,6 +13,17 @@ hibernate {
     cache.provider_class='net.sf.ehcache.hibernate.EhCacheProvider'
 }
 
+uniqueDbToken = System.getProperty('user.name')
+
+// Grab a few crucial things from the local config if they are available
+File f = new File(org.macademia.MacademiaConstants.LOCAL_CONFIG)
+if (f.exists()) {
+    def config2 = new ConfigSlurper().parse(f.toURL())
+    if (config2.macademia?.uniqueDbToken) {
+        uniqueDbToken = config2.macademia.uniqueDbToken
+    }
+}
+System.err.println("unique dbtoken is ${uniqueDbToken}")
 
 // environment specific settings
 environments {
@@ -24,7 +34,7 @@ environments {
 		dataSource {
 			dbCreate = "create" // one of 'create', 'create-drop','update'
 			url = "jdbc:hsqldb:file:db/test_backup/db;shutdown=true"
-            mongoDbName = "macademia_test_${System.getProperty('user.name')}"
+            mongoDbName = "macademia_test_${uniqueDbToken}"
             wpMongoDbName = "wikipediaReadOnlyTest"
         }
 	}
@@ -32,7 +42,7 @@ environments {
 		dataSource {
 			dbCreate = "update"
 			url = "jdbc:hsqldb:file:db/test/db;shutdown=true"
-            mongoDbName = "macademia_test_${System.getProperty('user.name')}"
+            mongoDbName = "macademia_test_${uniqueDbToken}"
             wpMongoDbName = "wikipediaReadOnlyTest"
         }
 	}
@@ -42,7 +52,7 @@ environments {
 	populateDev {
 		dataSource {
 			dbCreate = "create" // one of 'create', 'create-drop','update'
-            mongoDbName = "macademia_dev_${System.getProperty('user.name')}"
+            mongoDbName = "macademia_dev_${uniqueDbToken}"
 			url = "jdbc:hsqldb:file:db/dev/full/devDb;shutdown=true"
 		}
 	}
@@ -50,7 +60,7 @@ environments {
 		dataSource {
 			dbCreate = "update" // one of 'create', 'create-drop','update'
 			url = "jdbc:hsqldb:file:db/dev/full/devDb;shutdown=true"  //dev
-            mongoDbName = "macademia_dev_${System.getProperty('user.name')}"
+            mongoDbName = "macademia_dev_${uniqueDbToken}"
 		}
 	}
     /**
