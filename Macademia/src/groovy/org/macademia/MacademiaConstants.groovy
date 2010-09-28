@@ -28,4 +28,6 @@ public class MacademiaConstants {
 
 
     static int MAX_COOKIE_AGE =  60 * 60 * 24 * 30 * 3 // three months
+
+    static final String LOCAL_CONFIG = "grails-app/conf/MacademiaConfig.groovy" 
 }
