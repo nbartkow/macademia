@@ -1,9 +1,12 @@
 /**
- * This file allows you to override Config.groovy and DataSource.groovy.
+ * This is an example of MacademiaConfig.groovy.
+ * You can copy this file to create your own, or you can simply
+ * create a new file with the lines that you need.
+ *
+ * MacademiaConfig.groovy allows you to override Config.groovy and DataSource.groovy.
  *
  * It's better to change this files than Config.groovy or DataSource.groovy.
- * If you change other files, you may get SVN conflicts when others change
- * them.
+ * If you change other files, you may get SVN conflicts when others change them.
  */
 
 
