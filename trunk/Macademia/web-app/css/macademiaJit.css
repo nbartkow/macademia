@@ -289,7 +289,7 @@ ul#instruct_list li:before, ul.styledList li:before{
     padding-bottom: 10px;
     position: absolute;
     left: 5px;
-    top: 5px;
+    top: 2px;
 }
 
 #logo .tagline {
