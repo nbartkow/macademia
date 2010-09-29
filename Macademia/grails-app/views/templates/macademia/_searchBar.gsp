@@ -15,11 +15,11 @@
           update="rightContent">
     <br>--%>
   <form method="POST" action="#" id="searchForm" name="searchForm" update="searchBoxDiv">
-    <input type="text" id="searchBox" name="searchBox" class="clearDefault" prompt="Search people or interests"/>
+    <input type="text" id="searchBox" name="searchBox" class="clearDefault" prompt="Search for people or interests"/>
     <input type="submit" id="searchSubmitButton" value="Search"/>
   </form>
   <%--</g:formRemote>--%>
 </div>
-<div id="collegeFilterButton" class="center">
+<div id="collegeFilterButton">
   Showing <b>all institutions</b>. (<a href="#" id="collegeFilterTrigger">filter by institution</a>)
 </div>

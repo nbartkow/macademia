@@ -78,7 +78,8 @@ a:visited:hover {
 
 #wrapper {
     background: #ffe;
-    min-height: 100%;
+    min-height: 90%;
+    position: relative;
 }
 
 .small {
@@ -153,11 +154,12 @@ html, body {
     margin: 0;
     padding: 0;
     background-color: #A2AB8E;
-    min-width: 1040px;
+    min-width: 1020px;
 }
 
 #mainContent {
-    min-height:680px;
+    min-height:645px;
+    min-width: 700px;
     height:100%;
     position: absolute;
     left: 0px;
@@ -167,19 +169,25 @@ html, body {
 #sidebar {
     background: #ffe;
     height: 100%;
-    min-height: 680px;
+    min-height: 645px;
     width: 320px;
     float: right;
     font-family: helvetica, verdana, arial, sans-serif;
 }
 
+#sidebar .padded2 {
+    margin: 10px 0;
+}
+
 #wrapper {
     min-height: 100%;
+    padding : 0 5px;
+    overflow : hidden;
 }
 
 
 #main {
-    overflow: auto;
+    overflow: hidden;
     padding-bottom: 25px;
 
 }
@@ -191,7 +199,7 @@ html, body {
     background-color: #A2AB8E;
     min-width: 700px;
     height: 100%;
-    min-height: 680px;
+    min-height: 645px;
     position: absolute;
     right: 0px;
     left: 0px;
@@ -230,10 +238,10 @@ html, body {
 /* Styles that affect the sidebar*/
 
 #account {
-    text-align: right;
+    /*text-align: right;*/
     font-size: 1em;
     font-family: helvetica, arial;
-    margin: 5px;
+    margin: 5px 0 5px 0;
 }
 
 h2#about {
@@ -280,8 +288,8 @@ ul#instruct_list li:before, ul.styledList li:before{
 #logo {
     padding-bottom: 10px;
     position: absolute;
-    left: 10px;
-    top: 10px;
+    left: 5px;
+    top: 5px;
 }
 
 #logo .tagline {
@@ -295,14 +303,20 @@ ul#instruct_list li:before, ul.styledList li:before{
     line-height: 1.1em;
     width : 200px;
 }
+#logo .about {
+    font-family: Arial;
+    position : relative;
+    top : -2px;
+    left : 10px;    
+}
+#logo .about a {
+    color : #ddc;
+}
 
 #hide {
-    position: relative;
-    text-align: left;
-    padding: 5px;
-    height: 15px;
-    margin-top: -25px;
-    clear: both;
+    position: absolute;    
+    bottom : 5px;
+    left : 5px;
 }
 
 #hide a {
@@ -313,11 +327,8 @@ ul#instruct_list li:before, ul.styledList li:before{
 
 #show {
     position: absolute;
-    right: 0px;
-    bottom: 0px;
-    text-align: right;
-    height: 15px;
-    padding: 5px;
+    bottom : 5px;
+    right : 5px;
 }
 
 #show a {
@@ -631,8 +642,8 @@ h3#pf_dept_no_img {
 #searchBox {
     -moz-border-radius: 5px 5px 5px 5px;
     -webkit-border-radius: 5px;
-    background: none repeat scroll 0 0 #B2D4EC;
-    border: 0 none;
+    background: none repeat scroll 0 0 #fff;
+    border: 1px solid #ccc;
     color: #474953;
     margin-bottom: 0px;
     margin-top: 0px;
@@ -693,7 +704,7 @@ h3#pf_dept_no_img {
 }
 
 #searchDiv {
-    margin: 5px 5px 5px 5px;
+    margin: 5px 0 5px 0;
 }
 
 .personSearchResult {
@@ -1000,7 +1011,7 @@ h3 {
     bottom: 0px;
     right: 0px;
     left: 0px;
-    min-width:720px;
+    min-width:700px;
     text-align: center;
     color: #d0d3b3;
 }
@@ -1024,11 +1035,141 @@ h3 {
     font-size: 1.0em;
 }
 #taglineLinks a {
-    padding : 10px;
+    padding : 0 10px;
 }
 
 .flash {
     font-weight : bold;
     color : #f00;
     display : none;
+}
+
+
+/* About dialog */
+
+#aboutJqm {
+    padding : 10px;
+    display : none;
+}
+#aboutJqm li, #aboutJqm div{
+    font-size : 16px;
+    color : #444;                                                                                                                      f
+}
+
+#aboutJqm .instructions, #aboutJqm .instructions li {
+    color : #000;
+}
+
+#aboutJqm ul.styledList {
+    padding: 2px 0 0px 1em;
+    line-height : 1.3em;
+}
+
+#aboutJqm {
+    background-color : #ffe;
+}
+#aboutJqm >div {
+    padding : 10px;
+}
+
+#aboutJqm .logo {
+    padding-bottom : 0px;
+}
+#aboutJqm .tagline {
+    position : relative;
+    bottom : 24px;
+    color: #776;
+    font-size: 1.0em;
+    font-family: Arial;
+    font-style : italic;
+    line-height: 1.1em;
+}
+
+#aboutJqm .closeImg {
+    position : absolute;
+    top : 5px;
+    right : 5px;
+}
+
+#acknowledgements .acmLogo, #acknowledgements .mellonLogo, #acknowledgements .macLogo {
+    background-color : #fff;
+    border : 1px solid #ccc;
+    font-family : Georgia !important;
+    font-size : 18px  !important;
+    padding : 7px;
+    color : #666 !important;
+    margin : 5px;
+    width : auto;
+}
+
+
+#acknowledgements .acmLogo img {
+    height : 17px;
+    position : relative;
+    bottom : -3px;
+    margin-right : 5px;
+}
+
+#acknowledgements .macLogo img {
+    height : 17px;
+    position : relative;
+    bottom : -3px;
+    margin-right : 5px;
+}
+
+#team, #team span {
+    font-size : 13px !important;
+}
+
+#team span {
+    font-style : italic; 
+}
+#aboutJqm > div.close {
+    padding : 0px;
+}
+
+#aboutJqm div.close div {
+    width : 300px;
+    font-size : 20px;
+    color: #000;
+    background-color : #fff;
+    border : 1px inset #000;
+    padding : 5px;
+    text-align : center;
+    margin : auto;
+}
+
+
+
+/**
+ * Acknowledgements in the upper right corner of the visualization.
+ */
+
+#acknowledgements2 {
+    position : absolute;
+    top : 5px;
+    right : 10px;
+    z-index : 1;
+    text-align : right;
+}
+
+#acknowledgements2 div:first-child {
+    font-size : 13px;
+    font-family: Arial;
+    font-style : italic;
+    color : #eed;
+}
+
+#acknowledgements2 div {
+    margin-bottom : 4px;
+    font-family : Georgia;
+    font-size : 14px ;
+    color : #eed;
+    width : auto;
+    font-style : normal;
+    padding-left : 3px; 
+}
+
+#acknowledgements2 a {
+    color : #eed;
 }

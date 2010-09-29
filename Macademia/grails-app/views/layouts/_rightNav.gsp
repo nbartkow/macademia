@@ -6,9 +6,9 @@
   <div id="wrapper">
     <div id="main">
       <m:ifNotLoggedIn>
-        <div id="account" class="btxt right">
-          <a id="login_link" href="#" class="right">Login</a> |
-          <g:link controller="account" action="createuser2" href="#" class="right">Register</g:link>
+        <div id="account" class="btxt">
+          <a id="login_link" href="#">Login</a> |
+          <g:link controller="account" action="createuser2" href="#">Register</g:link>
         </div>
       </m:ifNotLoggedIn>
       <m:ifLoggedIn>
@@ -105,8 +105,8 @@
       <div class="jqmWindow padded2 medium btxt" id="filterDialog">&nbsp;</div>
 
     </div>
-  </div>
   <div id="hide" class="btxt">
     <a href="#/?navVisibility=false">hide-></a>
+  </div>
   </div>
 </div>
