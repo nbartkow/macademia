@@ -28,7 +28,18 @@
 
 <div id="mainContent">
 
+  <div id="acknowledgements2">
+    <div>generously funded by:</div>
+    <div class="logo">The Associated Colleges of the Midwest</div>
+    <div class="logo">The Andrew M. Mellon Foundation</div>
+    %{--<div class="logo"><span>The National Science Foundation</span></div>--}%
+    %{--<div class="logo"><span>Macalester College</span></div>--}%
+    %{--<div id="macLogo"><img src="${createLinkTo(dir: 'images', file: 'mac_crest.png')}"/>Macalester College</div>--}%
+  </div>
+
   <div id="infovis">
+
+    
     &nbsp;
   </div>
   <g:render template="../templates/macademia/tagline"/>
@@ -46,5 +57,53 @@
     });
   </g:javascript>
 
+<div id="aboutJqm" class="jqmWindow padded2 medium btxt">
+  <a href="#" class="closeImg"><img src="${createLinkTo(dir: 'images', file: 'close_icon.gif')}"/></a>
+  <div class="logo">
+    <img id="logoImage" src="${createLinkTo(dir: 'images', file: 'macademia-logo-black.png')}"/>
+    <span class="tagline">Connecting colleagues who share research interests.</span>
+  </div>
+  <div class="topBorder instructions">Macademia visualizes faculty research interests.  You can:
+        <ul class="styledList">
+          <li>
+            <b>Click</b> on a name or interest to recenter the visualization.
+          </li>
+          <li>
+            <b>Hover</b> over a name or interest to show more information.
+          </li>
+          <li>
+            <b>Search</b> in the upper right for a person or interest.
+          </li>
+          <li>
+            <b>Filter</b> the search results by school.
+          </li>
+          <li>
+            <b>Add</b> your own profile by signing up in the upper right.
+          </li>
+        </ul>
+    </div>
+  <div id="acknowledgements" class="topBorder">
+    <div>Macademia is generously supported by:</div>
+    <div class="acmLogo">The Associated Colleges of the Midwest &nbsp;<img src="${createLinkTo(dir: 'images', file: 'acm_logo.png')}"/></div>
+    <div class="mellonLogo">The Andrew M. Mellon Foundation</div>
+    %{--<div id="macLogo"><img src="${createLinkTo(dir: 'images', file: 'mac_crest.png')}"/>Macalester College</div>--}%
+  </div>
+  <div id="team" class="topBorder">
+    Macademia is developed by current and past students at Macalester College:&nbsp;
+    <span>Henry Charlton,
+    Jeremy Lim,
+    Brandon Maus,
+    Nathaniel Miller,
+    Meg Naminski,
+    Ernesto Nunes,
+    Alex Schneeman,
+    Isaac Sparling,
+    Anthony Tran,</span>
+    under the direction of Prof. Shilad Sen
+  </div> 
+  <div class="close">
+    <a href="#"><div>Go to Macademia!</div></a>
+  </div>
+</div>
 </body>
 </html>

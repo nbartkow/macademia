@@ -43,7 +43,21 @@ macademia.pageLoad = function() {
     macademia.autocomplete.initSearch();
     macademia.toggleAccountControls();
     macademia.setupRequestCreation();
+    macademia.initializeAbout();
 
+};
+
+macademia.initializeAbout = function() {
+    $("#aboutJqm").jqm({modal : true, overlay : 45});
+    $("#aboutJqm").jqmAddClose($("#aboutJqm .close a"));
+    $("#aboutJqm").jqmAddClose($("#aboutJqm .closeImg"));
+    $("#logo .about a").click(macademia.showAbout);
+    $("#taglineLinks .about").click(macademia.showAbout);
+    window.setTimeout(macademia.showAbout, 500);
+};
+
+macademia.showAbout = function() {
+    $("#aboutJqm").jqmShow();
 };
 
 //sets macademia.queryString values and initial page settings
@@ -269,7 +283,7 @@ macademia.resizeCanvas = function(currentWidth) {
         $("#infovis-canvaswidget").css({"width":newWidth, "height": newHeight});
         macademia.rgraph.canvas.resize(currentWidth, currentHeight);
         macademia.rgraph.canvas.scale(newHeight/originalHeight,newWidth/originalWidth);
-        macademia.rgraph.canvas.translate(0, -25);
+        macademia.rgraph.canvas.translate(0, 5);
     }
 };
 // changes the Query string according link's href
