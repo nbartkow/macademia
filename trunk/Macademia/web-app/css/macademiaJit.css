@@ -1102,6 +1102,11 @@ h3 {
     width : auto;
 }
 
+#acknowledgements .acmLogo a, #acknowledgements .mellonLogo a, #acknowledgements .macLogo a {
+    font-family : Georgia !important;
+    font-size : 18px  !important;
+    color : #666 !important;
+}
 
 #acknowledgements .acmLogo img {
     height : 17px;
