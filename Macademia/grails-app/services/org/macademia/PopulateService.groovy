@@ -21,7 +21,7 @@ class PopulateService {
     }
 
     def readInstitutions(File file) {
-        log.error("reading people from $file...")
+        log.error("reading institutions from $file...")
         file.eachLine {
             String line ->
             String[] tokens = line.trim().split("\t")
@@ -40,8 +40,7 @@ class PopulateService {
     }
 
     def readPeople(File file) {
-        String[] directory =  file.getAbsolutePath().split("/")
-        interestService.initBuildDocuments("db/"+directory[directory.length-2]+"/")
+        interestService.initBuildDocuments((file.getParent()).toString()+File.separator)   
         log.error("reading people from $file...")
         file.eachLine {
             String line ->
