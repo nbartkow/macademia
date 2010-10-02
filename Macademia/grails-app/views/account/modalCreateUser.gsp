@@ -24,62 +24,64 @@
   <g:else>Create a New Macademia Profile</g:else>
 </h2>
 <div id="center_wrapper">
-<div class="instructions"><b>Thanks for joining Macademia!</b>  Macademia <span class="alert">publicly displays all the information you enter below,</span> except for your password.</div>
+<div class="instructions"><p>Macademia <span class="alert">publicly displays all the information you enter below,</span> except for your password.
+<b>Thanks for joining Macademia!</b>
+  <p>Macademia currently supports faculty at Macalester College.  </div>
   <form action="#" id="edit_profile" name="edit_profile" method="post">
     <div id="edit_profile_container">
-        <div class="halfHeader"><span class="alert">Required Information</span></div>
+        <div class="halfHeader1"><span class="alert">Required Information</span></div>
 
         <div id="nameErrors" class="warning">&nbsp;</div>
-        <div class="left fieldLabel topBorder"><label for="name">Name<span>Full Name</span></label></div>
+        <div class="left left1 fieldLabel topBorder"><label for="name">Name<span>Full Name</span></label></div>
         <div class="right topBorder"><input type="text" name="fullName" value="${user.fullName?.encodeAsHTML()}"/></div>
         <div class="clear"></div>
 
         <g:if test="${!user.id}">
 
         <div id="passErrors" class="warning">&nbsp;</div>
-        <div class="left fieldLabel topBorder"><label>Password<span>must be 6 or more letters</span></label></div>
+        <div class="left left1 fieldLabel topBorder"><label>Password<span>must be 6 or more letters</span></label></div>
         <div class="right topBorder"><input type="password" name="pass" class="clearDefault"/></div>
         <div class="clear"></div>
 
         <div id="passConfirmErrors" class="warning">&nbsp;</div>
-        <div class="left fieldLabel topBorder"><label>Password<span>Confirm password by retyping</span></label></div>
+        <div class="left left1 fieldLabel topBorder"><label>Password<span>Confirm password by retyping</span></label></div>
         <div class="right topBorder"><input type="password" name="passConfirm" class="clearDefault"/></div>
         <div class="clear"></div>
 
         <div id="emailErrors" class="warning">&nbsp;</div>
-        <div class="left fieldLabel topBorder"><label>Email<span>College email address</span></label></div>
+        <div class="left left1 fieldLabel topBorder"><label>Email<span>College email address</span></label></div>
         <div class="right topBorder"><input type="text" name="email" class="clearDefault"/></div>
         <div class="clear"></div>
 
         </g:if>
 
         <div id="interestErrors" class="warning">&nbsp;</div>
-        <div class="left fieldLabel topBorder"><label>Interests<span>List your research interests, separated by commas.</span></label></div>
+        <div class="left left1 fieldLabel topBorder"><label>Interests<span>Academic interests, separated by <b>commas</b>.  These could be pedagogical interests, research interests, subjects you teach, etc.</span></label></div>
         <div class="right topBorder"><textarea id="editInterests" cols="20" rows="3" name="interests">${interests}</textarea></div>
         <div class="clear"></div>
     </div>
     <div id="sidebar">
 
-        <div class="halfHeader">Optional Information</div>
+        <div class="halfHeader2">Optional Information</div>
 
         <div id="titleErrors" class="warning">&nbsp;</div>
-        <div class="left fieldLabel topBorder"><label>Title<span>Job title</span></label></div>
+        <div class="left left2 fieldLabel topBorder"><label>Title<span>Job title</span></label></div>
         <div class="right topBorder"><input type="text" name="title" class="clearDefault"  value="${user.title?.encodeAsHTML()}"/></div>
         <div class="clear"></div>
 
         <div id="departmentErrors" class="warning">&nbsp;</div>
-        <div class="left fieldLabel topBorder"><label>Department<span>Department of college</span></label></div>
+        <div class="left left2 fieldLabel topBorder"><label>Department<span>Department of college</span></label></div>
         <div class="right topBorder"><input type="text" name="department" class="clearDefault" value="${user.department?.encodeAsHTML()}"/></div>
         <div class="clear"></div>
 
 
-        <div class="left fieldLabel topBorder"><label>Profile image</label></div>
+        <div class="left left2 fieldLabel topBorder"><label>Profile image</label></div>
         <div class="right topBorder">
             <g:render template="../templates/macademia/imageUploader"/>
         </div>
       <div class="clear"></div>
       <div class="personLinks topBorder">
-        <div class="left fieldLabel"><label>Links</label></div>
+        <div class="left left2 fieldLabel"><label>Links</label></div>
         <div class="clear"></div>
         <div class="customLink customLinkTemplate clear">
           <div class="linkField"><input type="text" class="clearDefault" prompt="link name"></div>

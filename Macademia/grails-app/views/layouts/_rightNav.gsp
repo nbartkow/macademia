@@ -7,27 +7,23 @@
     <div id="main">
       <m:ifNotLoggedIn>
         <div id="account" class="btxt">
-          <a id="login_link" href="#">Login</a> |
+          <a id="login_link" href="#">Login</a> &middot;
           <g:link controller="account" action="createuser2" href="#">Register</g:link>
         </div>
       </m:ifNotLoggedIn>
       <m:ifLoggedIn>
       <div id="account" class="btxt">
-        <div id="account" class="btxt">
-          <m:personLink person="${request.authenticated}"/> |
-          <g:link controller="account" action="logout" class="icon_cross">Logout</g:link> |
-          <a href="#" id="toggleControls">More</a>
+        <div class="btxt">
+          logged in as <m:personLink person="${request.authenticated}"/> 
+          (<g:link controller="account" action="logout" class="icon_cross">logout</g:link>)<br>
+          <g:link controller="account" action="modaledituser">edit profile</g:link> &middot;
+          <a href="#">collaboration request</a> &middot;
+          <a href="#" id="toggleControls">more</a>
         </div>
         <ul id="accountControlList" class="left topBorder bottomBorder styledList">
           <div id="moreDropdown">
             <li>
-              <g:link controller="account" action="modaledituser" class="editProfile">Edit profile</g:link>
-            </li>
-            <li>
               <g:link controller="account" action="changepassword">Change password</g:link>
-            </li>
-            <li>
-              <a href="#" id="makeRequestButton">Create request for collaboration</a>
             </li>
             <m:ifAdmin >
               <li>
@@ -59,7 +55,7 @@
         </div>
       </div>
       <g:render template="../templates/macademia/searchBar"/>
-      <div id="rightContent" class="medium">
+      <div id="rightContent" class="medium topBorder">
         <ul id="instruct_list" class="topBorder bottomBorder styledList">
           <li>
             <b>Click</b> on a name or interest to recenter.

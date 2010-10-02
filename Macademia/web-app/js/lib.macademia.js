@@ -53,7 +53,10 @@ macademia.initializeAbout = function() {
     $("#aboutJqm").jqmAddClose($("#aboutJqm .closeImg"));
     $("#logo .about a").click(macademia.showAbout);
     $("#taglineLinks .about").click(macademia.showAbout);
-    window.setTimeout(macademia.showAbout, 500);
+    if (!macademia.getCookie('about')) {
+        window.setTimeout(macademia.showAbout, 500);
+        macademia.setCookie('about', "seen", 1);
+    }
 };
 
 macademia.showAbout = function() {
@@ -501,4 +504,25 @@ macademia.reloadToPerson = function(pid) {
     var rand = Math.random();
 
     window.location.href = macademia.makeActionUrl('person', 'jit') + '?rand=' + rand + '#/?' + $.param(params);
-}
+};
+
+
+macademia.getCookie = function (c_name) {
+    if (document.cookie.length > 0) {
+        c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start != -1) {
+            c_start = c_start + c_name.length + 1;
+            c_end = document.cookie.indexOf(";", c_start);
+            if (c_end == -1) c_end = document.cookie.length;
+            return unescape(document.cookie.substring(c_start, c_end));
+        }
+    }
+    return "";
+};
+
+macademia.setCookie = function (c_name, value, expiredays) {
+    var exdate = new Date();
+    exdate.setDate(exdate.getDate() + expiredays);
+    document.cookie = c_name + "=" + escape(value) +
+            ((expiredays == null) ? "" : ";expires=" + exdate.toUTCString());
+};

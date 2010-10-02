@@ -4,6 +4,8 @@
 
 var macademia = macademia || {};
 
+macademia.allowedDomains = [ 'macalester.edu' ];
+
 
 macademia.initializeRegister = function() {
   macademia.upload.init();
@@ -23,12 +25,12 @@ macademia.initializeRegister = function() {
 
           var name = $(this).find('[name=fullName]').val();
           var department = $(this).find('[name=department]').val();
-          var formCheck = true;
+          var hasError = false;
 
           if (name.length < 5) {
               $('#nameErrors').html("<b>Name must be provided</b>");
               $('#nameErrors').show();
-              formCheck=false;
+              hasError=true;
           }
 
           // If we are in edit profile skip password and email
@@ -39,28 +41,35 @@ macademia.initializeRegister = function() {
               if (pass!=confirm) {
                   $("#passConfirmErrors").html("<b>Passwords do not match</b>");
                   $("#passConfirmErrors").show();
-                  formCheck=false;
+                  hasError=true;
               }
               if (pass.length<6) {
                   $("#passErrors").html("<b>Password must be at least six characters</b>");
                   $("#passErrors").show();
-                  formCheck=false;
+                  hasError=true;
 
               }
               if (email.length<5) {
                   $('#emailErrors').html("<b>Valid email must be provided</b>");
                   $('#emailErrors').show();
-                  formCheck=false;
+                  hasError=true;
+              } else {
+                  var domain = email.split('@')[1];
+                  if ($.inArray(domain, macademia.allowedDomains) < 0) {
+                      $('#emailErrors').html("<b>Only " + macademia.allowedDomains.join(", ") + " email addresses allowed</b>");
+                      $('#emailErrors').show();
+                      hasError=true;
+                  }
               }
           }
-
-          if (formCheck) {
+          if (hasError) {
+              $('html, body').animate({scrollTop:0}, 'slow');
+          } else {
               $("#submit_edits").hide();
               var interests = $('#editInterests').val().split(',');
               macademia.analyzeInterests(interests, 0, $(".progressBar"), macademia.saveUserProfile);
-          } else {
-              $('html, body').animate({scrollTop:0}, 'slow');
           }
+
       } catch(err) {
           alert('profile submission failed: ' + err);
       }
