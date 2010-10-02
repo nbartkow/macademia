@@ -28,10 +28,13 @@
 
 <div id="mainContent">
 
+  
   <div id="acknowledgements2">
-    <div>generously funded by:</div>
-    <div class="logo"><a href="http://acm.edu">The Associated Colleges of the Midwest</a></div>
-    <div class="logo"><a href="http://mellon.org">The Andrew M. Mellon Foundation</a></div>
+    <div>generously supported by:</div>
+    <div class="logo">
+      <a href="http://acm.edu"><img src="${createLinkTo(dir: 'images', file: 'acm_logo.png')}" alt="The Associated Colleges of the Midwest"/></a>
+      &nbsp;and</div>
+    <div class="logo"><a href="http://mellon.org">The Mellon Foundation</a> </div>
     %{--<div class="logo"><span>The National Science Foundation</span></div>--}%
     %{--<div class="logo"><span>Macalester College</span></div>--}%
     %{--<div id="macLogo"><img src="${createLinkTo(dir: 'images', file: 'mac_crest.png')}"/>Macalester College</div>--}%
@@ -82,15 +85,16 @@
           </li>
         </ul>
     </div>
-  <div id="acknowledgements" class="topBorder">
-    <div>Macademia is generously supported by:</div>
-    <div class="acmLogo"><a href="http://acm.edu">The Associated Colleges of the Midwest &nbsp;<img src="${createLinkTo(dir: 'images', file: 'acm_logo.png')}"/></a></div>
-    <div class="mellonLogo"><a href="http://mellon.org">The Andrew M. Mellon Foundation</a></div>
+  %{--<div id="acknowledgements" class="topBorder">--}%
+    %{--<div>Macademia is generously supported by:</div>--}%
+    %{--<div class="acmLogo"><a href="http://acm.edu">The Associated Colleges of the Midwest &nbsp;<img src="${createLinkTo(dir: 'images', file: 'acm_logo.png')}"/></a></div>--}%
+    %{--<div class="mellonLogo"><a href="http://mellon.org">The Andrew M. Mellon Foundation</a></div>--}%
     %{--<div id="macLogo"><img src="${createLinkTo(dir: 'images', file: 'mac_crest.png')}"/>Macalester College</div>--}%
-  </div>
+  %{--</div>--}%
   <div id="team" class="topBorder">
     Macademia is developed by current and past students at Macalester College:&nbsp;
-    <span>Henry Charlton,
+    Henry Charlton,
+    Ryan Kerwin,
     Jeremy Lim,
     Brandon Maus,
     Nathaniel Miller,
@@ -98,7 +102,7 @@
     Ernesto Nunes,
     Alex Schneeman,
     Isaac Sparling,
-    Anthony Tran,</span>
+    Anthony Tran,
     under the direction of Prof. Shilad Sen
   </div> 
   <div class="close">

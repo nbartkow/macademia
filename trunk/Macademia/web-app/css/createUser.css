@@ -34,6 +34,9 @@ body {
 
 .instructions {
     padding-bottom : 15px;
+    text-align: center;
+}
+.instructions p {
     font-size: 1.2em;
     text-align: center;
 }
@@ -45,7 +48,7 @@ body {
 }
 
 #sidebar {
-    width: 465px;
+    width: 435px;
     float: right;
     margin-top: 0px;
     margin-right: 10px;
@@ -72,13 +75,20 @@ body {
 }
 
 #edit_profile_container {
-    width: 465px;
+    width: 495px;
     margin-right: 10px;
     float: left;
 }
 
-.halfHeader {
-    width: 465;
+.halfHeader1 {
+    width: 495;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.halfHeader2 {
+    width: 435;
     text-align: center;
     font-size: 1.2em;
     font-weight: bold;
@@ -87,7 +97,14 @@ body {
 .left {
     float: left;
     padding: 10px;
-    width: 150px;
+}
+
+.left1 {
+    width: 180px;
+}
+
+.left2 {
+    width: 120px;
 }
 
 .left label {

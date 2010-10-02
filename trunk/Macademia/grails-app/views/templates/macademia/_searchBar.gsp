@@ -20,6 +20,6 @@
   </form>
   <%--</g:formRemote>--%>
 </div>
-<div id="collegeFilterButton">
+<div id="collegeFilterButton" >
   Showing <b>all institutions</b>. (<a href="#" id="collegeFilterTrigger">filter by institution</a>)
 </div>

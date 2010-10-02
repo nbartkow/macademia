@@ -10,7 +10,7 @@
 <div id="logo">
   <a href="/Macademia/">
     <img id="logoImage" src="${createLinkTo(dir: 'images', file: 'macademia-logo.png')}"/>
-  <div class="tagline">Connecting colleagues who share research interests.</div>
+    <div class="tagline">Connecting colleagues who share research interests.</div>
   </a>
-    <div class="about"><a href="#">About...</a></div>
+    <div class="about"><a href="#">About / help...</a></div>
 </div>

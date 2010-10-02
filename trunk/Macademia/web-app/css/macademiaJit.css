@@ -244,6 +244,10 @@ html, body {
     margin: 5px 0 5px 0;
 }
 
+#account div {
+    line-height : 1.4em;
+}
+
 h2#about {
     margin: 10px 0;
     text-align: center;
@@ -288,14 +292,19 @@ ul#instruct_list li:before, ul.styledList li:before{
 #logo {
     padding-bottom: 10px;
     position: absolute;
-    left: 5px;
+    left: 2px;
     top: 2px;
+}
+
+#logoImage {
+    position: relative;
+    left: -4px;
 }
 
 #logo .tagline {
     position : relative;
     top : -13px;
-    left : 10px;
+    left : 3px;
     color: #ddc;
     font-size: 1.0em;
     font-family: Arial;
@@ -303,11 +312,12 @@ ul#instruct_list li:before, ul.styledList li:before{
     line-height: 1.1em;
     width : 200px;
 }
+
 #logo .about {
     font-family: Arial;
     position : relative;
-    top : -2px;
-    left : 10px;    
+    top : 5px;
+    left : 3px;    
 }
 #logo .about a {
     color : #ddc;
@@ -1159,7 +1169,7 @@ h3 {
 }
 
 #acknowledgements2 div:first-child {
-    font-size : 13px;
+    font-size : 14px;
     font-family: Arial;
     font-style : italic;
     color : #eed;
@@ -1167,14 +1177,24 @@ h3 {
 
 #acknowledgements2 div {
     margin-bottom : 4px;
-    font-family : Georgia;
+    font-family: Arial;
     font-size : 14px ;
     color : #eed;
     width : auto;
     font-style : normal;
-    padding-left : 3px; 
+    padding-left : 3px;
+}
+#acknowledgements2 div a {
+    font-family : Georgia;
+    font-size : 16px ;
 }
 
 #acknowledgements2 a {
     color : #eed;
+}
+
+#acknowledgements2 img {
+    height : 36px;
+    position : relative;
+    top : 5px;
 }

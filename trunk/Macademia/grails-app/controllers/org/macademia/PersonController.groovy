@@ -16,7 +16,7 @@ class  PersonController{
         Random r = new Random()
         List<Long> ids = new ArrayList<Long>(Person.findAll().collect({it.id}))
         long id = ids[r.nextInt(ids.size())]
-        redirect(uri: "/person/jit/#/?nodeId=p_${id}&navVisibility=true&navFunction=search&institutions=all")
+        redirect(uri: "/person/jit/#/?nodeId=p_${id}&navVisibility=true&navFunction=person&institutions=all&personId=${id}")
     }
 
     def tooltip = {
