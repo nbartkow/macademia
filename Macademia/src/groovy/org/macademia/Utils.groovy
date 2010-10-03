@@ -6,6 +6,8 @@ import org.apache.log4j.Logger
 import org.hibernate.SessionFactory
 import java.security.MessageDigest
 import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
+import javax.servlet.http.Cookie
 
 /**
  * Utility methods
@@ -64,5 +66,13 @@ class Utils {
             ipAddr = request.getRemoteAddr()
         }
         return ipAddr
+    }
+
+    public static void setAuthCookie(Person person, HttpServletRequest request, HttpServletResponse response) {
+        def cookie = new Cookie(MacademiaConstants.COOKIE_NAME, person.token)
+        cookie.path = "/"
+        cookie.setMaxAge(MacademiaConstants.MAX_COOKIE_AGE)
+        response.addCookie(cookie)
+        request.authenticated = person
     }
 }

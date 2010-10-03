@@ -107,7 +107,7 @@ The Macademia Team
             render('your account has been disabled')
             return
         }
-        setAuthCookie(person)
+        Utils.setAuthCookie(person, request, response)
         render('okay ' + person.id)
     }
 
@@ -176,7 +176,7 @@ The Macademia Team
         log.info("Created new account identified as $person.email with internal id $person.id")
 
         // Set the login cookie.
-        setAuthCookie(person)
+        Utils.setAuthCookie(person, request, response)
 
         render('okay ' + person.id)
     }

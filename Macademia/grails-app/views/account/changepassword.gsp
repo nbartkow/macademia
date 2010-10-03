@@ -15,7 +15,14 @@
       <h2>Change your password</h2>
 
       <p>
-        Change your password below.  Your new password must be at least six letters long.
+        <g:if test="${currentPassword}">
+          Thanks for updating your Macademia profile!  You first need to create
+          a new password for your account.
+        </g:if>
+        <g:else>
+          Change your password below.
+        </g:else>
+        Your new password must be at least six letters long.
       </p>
 
       <g:if test="${error}">
