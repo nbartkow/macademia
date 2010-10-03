@@ -25,13 +25,18 @@
       <g:form action="changepasswordcomplete">
         <table>
           <tbody>
-
+            <g:if test="${currentPassword}">
+              <input type="hidden" name="currentPassword" value="${currentPassword}"/>
+              <input type="hidden" name="fromEmail" value="true"/>
+            </g:if>
+            <g:else>
             <tr>
               <td><label for="currentPassword">Current password:</label></td>
               <td>
                 <input type="password" size="30" id="currentPassword" name="currentPassword" class="easyinput"/>
               </td>
             </tr>
+            </g:else>
 
             <tr>
               <td><label for="password">New password:</label></td>
@@ -55,6 +60,9 @@
           </tbody>
         </table>
 
+        <g:if test="${currentPassword}">
+          <p>After you change your password you will be taken to a page where you can update your profile.</p>
+        </g:if>
         <div >
         </div>
       </g:form>

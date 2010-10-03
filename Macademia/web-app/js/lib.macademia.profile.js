@@ -206,12 +206,16 @@ macademia.links.serialize = function() {
         }
         var value= $(this).find('.linkValue input').val();
         if (value && value != $(this).find('.linkValue input').attr('prompt')) {
+            if (value.substr(0, 7) != 'http://') {
+                value = 'http://' + value;
+            }
             linkStr += "<li><a href=\"" + encodeURI(value) + "\">";
             linkStr += macademia.htmlEncode(name) + "</a>\n";
         }
     });
     $(".personLinks input[name='links']").val(linkStr);
 };
+
 macademia.links.deserialize = function() {
     try {
     var linksStr =$(".personLinks input[name='links']").val();

@@ -52,10 +52,17 @@ The Macademia Team
             render("not logged in.")
             return
         }
-        render(view : 'changepassword', model : [:])
+        // hack if the current password param is not current, assume the user
+        // has already clicked an email link to change their password, and now
+        // wants to visit macademia proper.
+        render(view : 'changepassword', model : [currentPassword : params.currentPassword])
     }
     
-    def changepasswordcomplete = {
+    def changepasswordcomplete = {        
+        if (!request.authenticated) {
+            render("not logged in.")
+            return
+        }
         String error = ''
         if (!params.currentPassword) {
             error = 'Please enter your current password.'
@@ -76,11 +83,16 @@ The Macademia Team
         }
         request.authenticated.updatePasswd(params.password)
         personService.save(request.authenticated)
-        render(view : 'message',
-               model : [
-                   title : "Password changed.",
-                   message : "Your password has been successfully changed."
-               ])
+
+        if (params.fromEmail) {
+            redirect(action : 'modaledituser')
+        } else {
+            render(view : 'message',
+                   model : [
+                       title : "Password changed.",
+                       message : "Your password has been successfully changed."
+                   ])
+        }
     }
     
     def signin = {
