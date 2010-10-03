@@ -1171,7 +1171,7 @@ h3 {
 #acknowledgements2 div:first-child {
     font-size : 14px;
     font-family: Arial;
-    font-style : italic;
+    font-style : normal;
     color : #eed;
 }
 
@@ -1187,6 +1187,7 @@ h3 {
 #acknowledgements2 div a {
     font-family : Georgia;
     font-size : 16px ;
+    color : #ffe;
 }
 
 #acknowledgements2 a {
