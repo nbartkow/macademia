@@ -118,7 +118,7 @@ class  PersonController{
             String password = p.resetPasswd()
             sendMail {
                 to "${email}"
-                subject "Hello John"
+                subject "See your profile on Macademia 2.0!"
                 html g.render(
                         template: '/email/reinvite',
                         model : [person : p, password : password]
