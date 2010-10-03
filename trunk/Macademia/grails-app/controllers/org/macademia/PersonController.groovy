@@ -108,4 +108,27 @@ class  PersonController{
         ])
     }
 
+    /*
+     * TODO: remove me after relaunch (2010/10)
+     */
+    def reinvite = {
+        def email = params.email
+        Person p = personService.findByEmail(params.email)
+        if (p) {
+            String password = p.resetPasswd()
+            sendMail {
+                to "${email}"
+                subject "Hello John"
+                html g.render(
+                        template: '/email/reinvite',
+                        model : [person : p, password : password]
+                )
+            }
+            render('okay')
+        } else {
+            render('unknown person')
+        }
+
+    }
+
 }
