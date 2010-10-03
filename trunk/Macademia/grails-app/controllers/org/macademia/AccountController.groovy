@@ -78,7 +78,11 @@ The Macademia Team
             error = 'Your new passwords do not match.'
         }
         if (error) {
-            render(view : 'changepassword', model : [error : error])
+            def model = [error : error]
+            if (params.fromEmail && params.currentPassword) {
+                model.currentPassword = params.currentPassword
+            }
+            render(view : 'changepassword', model : model)
             return
         }
         request.authenticated.updatePasswd(params.password)
