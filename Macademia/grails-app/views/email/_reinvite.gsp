@@ -59,7 +59,7 @@
   </p>
 
   <p>
-    <em>Macademia has been generously supported by
+    <br/><em>Macademia has been generously supported by
     The Associated Colleges of the Midwest,
     The Andrew W. Mellon Foundation,
     The National Science Foundation,
