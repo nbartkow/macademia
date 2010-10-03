@@ -49,10 +49,12 @@
   <p>
     Please visit the
     <a href="http://macademia.macalester.edu/Macademia/account/changepassword?currentPassword=${password.encodeAsURL()}&authToken=${person.token}">
-    <b>new Macademia website</b></a> and update your profile.  Thank you!
+    <b>new Macademia website</b></a> and update your profile.
   </p>
+  <p><br/>Thank you!</p>
 
-  <p><b>Shilad Sen</b> and the Macademia team:<br/><br/>
+  <p><b>Shilad Sen</b><br/><br/>
+    and the Macademia team:
      Henry Charlton, Ryan Kerwin, Jeremy Lim, Brandon Maus, Nathaniel Miller, Meg Naminski, Alex Schneeman, Anthony Tran.
   </p>
 
