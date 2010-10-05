@@ -2,7 +2,7 @@
   <div id="taglineLinks">
     <a class="about" href="#">about</a> &middot;
     <a href="mailto:ssen@macalester.edu">feedback</a> &middot;
-    <a href="#">privacy</a> &middot;
+    %{--<a href="#">privacy</a> &middot;--}%
     <a href="http://code.google.com/p/macademia">code</a><br>
   </div>
   %{--<div id="tagline">--}%
