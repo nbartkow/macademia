@@ -1,12 +1,15 @@
 package org.macademia
 
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
+import grails.converters.JSON
 
 class Person {
     public static final int USER_ROLE = 0
     public static final int INST_ADMIN_ROLE = 1
     public static final int ADMIN_ROLE = 2
 
+    Date dateCreated
+    Date lastUpdated
     String passwdHash
     String token
     String fullName
@@ -100,5 +103,42 @@ class Person {
             pw.append(c)
         }
         return pw.toString()
+    }
+
+    private static final Set<String> IGNORED_FIELDS =
+        new HashSet<String>([
+                    'passwdHash',
+                    'token',
+                    'metaClass',
+                    'hasMany',
+                    'mapping',
+                    'dirtyPropertyNames',
+                    'version',
+                    'errors',
+                    'dirty',
+                    'class',
+                    'log',
+                    'attached',
+                    'searchable',
+                    'constraints'
+            ])
+
+    public Map<String, String> toMap() {
+        Map properties = this.properties
+        Map<String, String> result = new HashMap<String, String>()
+        for (String key : properties.keySet()) {
+            if (IGNORED_FIELDS.contains(key)) {
+                continue
+            }
+            println('field is ' + key)
+            if (key == 'interests') {
+                result[key] = interests.collect({it.text}).join(", ")
+            } else if (key == 'institution') {
+                result[key] = institution.emailDomain
+            } else {
+                result[key] = '' + properties[key]
+            }
+        }
+        return result
     }
 }
