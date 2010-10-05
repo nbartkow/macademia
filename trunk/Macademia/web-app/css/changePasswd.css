@@ -7,7 +7,19 @@
 }
 
 #main div,span,li,label,p,input {
-    font-size : 16px;
+    font-size : 17px;
+}
+
+#main li,label {
+    color : #003366;
+}
+
+#main input {
+    color : #003366;
+}
+
+#main div,span,p {
+    color : #f5f5ec;
 }
 
 #main p {
@@ -30,9 +42,10 @@
 }
 
 h2 {
-    font-size : 24px;
+    font-size : 28px;
     font-weight : bold;
     margin-bottom : 20px;
+    color : #003366;
 }
 
 .alert {
