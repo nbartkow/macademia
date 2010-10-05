@@ -62,8 +62,8 @@ You can check to make sure this worked properly by opening a terminal and typing
  # now type "grails run-app" in your terminal (make sure you've navigated to your directory) and it should be done
 
 == Intellij Issues and Subversion ==
- When you start up, sometimes intellij will not use subversion as your default form of version control. To enable this, go to "version control" (at the top), and then click "enable version control integration". A pop up window will appear, with a scroll-down bar. Select "subversion" from the scroll down bar. You're set. Now you can right-click and go to subversion > update directory... to update your project.
- Also, if Intellij starts to not use your java SDK (ie, all your classes don't work, even the word "String" is unlined with red"), simply go to File > project structure and change the project SDK (probably select java sdk, then "current sdk" from the drop down folder) 
+ # When you start up, sometimes intellij will not use subversion as your default form of version control. To enable this, go to "version control" (at the top), and then click "enable version control integration". A pop up window will appear, with a scroll-down bar. Select "subversion" from the scroll down bar. You're set. Now you can right-click and go to subversion > update directory... to update your project.
+ # Also, if Intellij starts to not use your java SDK (ie, all your classes don't work, even the word "String" is unlined with red"), simply go to File > project structure and change the project SDK (probably select java sdk, then "current sdk" from the drop down folder) 
 
 = Code Reviews =
 The code review site is available at http://codereview.macalester.edu/.  Information and help available at http://code.google.com/p/rietveld/wiki/CodeReviewHelp
