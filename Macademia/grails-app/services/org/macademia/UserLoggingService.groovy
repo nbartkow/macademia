@@ -50,7 +50,7 @@ class UserLoggingService {
                             .add("tstamp", tstamp)
                             .get()
         DBObject logDbo = BasicDBObjectBuilder.start()
-                            .add("category", eventName)
+                            .add("category", category)
                             .add("event", eventName)
                             .add("params", new BasicDBObject(params))
                             .add("tstamp",tstamp)

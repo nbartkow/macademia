@@ -61,6 +61,7 @@ macademia.initializeAbout = function() {
 
 macademia.showAbout = function() {
     $("#aboutJqm").jqmShow();
+    macademia.serverLog('dialog', 'show', {'name' : 'about'});
 };
 
 //sets macademia.queryString values and initial page settings
