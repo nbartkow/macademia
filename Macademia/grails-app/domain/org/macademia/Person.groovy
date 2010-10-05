@@ -130,7 +130,6 @@ class Person {
             if (IGNORED_FIELDS.contains(key)) {
                 continue
             }
-            println('field is ' + key)
             if (key == 'interests') {
                 result[key] = interests.collect({it.text}).join(", ")
             } else if (key == 'institution') {
