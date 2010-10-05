@@ -44,7 +44,7 @@
     </li>
   </ul>
 
-  <p>Consider adding pedagogical interests, research interests, subjects you teach, etc.</p>
+  <p>Consider adding your pedagogical interests, research interests, subjects you teach, etc.</p>
 
   <p>
     Please visit the
@@ -57,6 +57,8 @@
     and the Macademia team:
      Henry Charlton, Ryan Kerwin, Jeremy Lim, Brandon Maus, Nathaniel Miller, Meg Naminski, Alex Schneeman, Anthony Tran.
   </p>
+
+  <p>The links to Macademia in this message are <b>your private links</b>.  Please do not share them with others.</p>
 
   <p>
     <br/><em>Macademia has been generously supported by
