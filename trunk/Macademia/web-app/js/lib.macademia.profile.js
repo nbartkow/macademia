@@ -4,7 +4,7 @@
 
 var macademia = macademia || {};
 
-macademia.allowedDomains = [ 'macalester.edu' ];
+macademia.allowedDomains = [ 'macalester.edu', 'acm.edu' ];
 
 
 macademia.initializeRegister = function() {
@@ -15,7 +15,7 @@ macademia.initializeRegister = function() {
 
     $("#cancelAccountCreation").click(function() {
        $("#registerDialog").jqmHide(); 
-    })
+    }) ;
 
     $('#edit_profile').submit(function() {
       try {
