@@ -6,6 +6,7 @@ import org.codehaus.groovy.grails.commons.ConfigurationHolder
 class AccountController {
     def personService
     def interestService
+    def userLoggingService
 
 
     def forgottenpassword = {
@@ -182,6 +183,8 @@ The Macademia Team
         // Set the login cookie.
         Utils.setAuthCookie(person, request, response)
 
+        userLoggingService.logEvent(request, 'profile', 'create', person.toMap())
+
         render('okay ' + person.id)
     }
 
@@ -253,7 +256,9 @@ The Macademia Team
                     interestParse(person)
                 }
 	            personService.save(person, Utils.getIpAddress(request))
-	            log.info("Successfully updated details for user [$person.id] $person.email")
+                userLoggingService.logEvent(request, 'profile', 'update', person.toMap())
+                log.info("Successfully updated details for user [$person.id] $person.email")
+
                 render('okay ' + person.id)
             }
 	    }

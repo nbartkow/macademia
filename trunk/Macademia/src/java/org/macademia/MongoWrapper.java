@@ -39,7 +39,7 @@ public class MongoWrapper {
 
     public MongoWrapper(Mongo mongo, String dbName, String wpDbName){
         this.mongo=mongo;
-        this.dbName = dbName;
+            this.dbName = dbName;
         this.wpDbName = wpDbName;
     }
 
@@ -349,7 +349,7 @@ public class MongoWrapper {
         //System.out.println(interest + " was the interest");
         DBObject i = safeFindById(INTERESTS, interest, false);
         if (i == null) {
-            System.out.println("The interest " + i + " is null");
+            System.out.println("The interest " + interest + " is null");
             return new SimilarInterestList();
         }
         //System.out.println(i +" getSimilarInterests get");
