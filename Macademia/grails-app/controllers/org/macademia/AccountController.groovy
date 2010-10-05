@@ -53,7 +53,7 @@ The Macademia Team
             render("not logged in.")
             return
         }
-        if (params.currentPassword && !request.authenticated.checkPassword(params.currentPassword)) {
+        if (params.currentPassword && !request.authenticated.checkPasswd(params.currentPassword)) {
             def id = request.authenticated.id
             redirect(uri: Utils.makeUrl('person', request.authenticated.id, true))
         } else {
