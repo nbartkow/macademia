@@ -53,10 +53,15 @@ The Macademia Team
             render("not logged in.")
             return
         }
-        // hack if the current password param is not current, assume the user
-        // has already clicked an email link to change their password, and now
-        // wants to visit macademia proper.
-        render(view : 'changepassword', model : [currentPassword : params.currentPassword])
+        if (params.currentPassword && !request.authenticated.checkPassword(params.currentPassword)) {
+            def id = request.authenticated.id
+            redirect(uri: Utils.makeUrl('person', request.authenticated.id, true))
+        } else {
+            // hack if the current password param is not current, assume the user
+            // has already clicked an email link to change their password, and now
+            // wants to visit macademia proper.
+            render(view : 'changepassword', model : [currentPassword : params.currentPassword])
+        }
     }
     
     def changepasswordcomplete = {        
