@@ -108,5 +108,15 @@
 </div>
 <g:render template="../templates/macademia/tagline"/>
 <a href="/Macademia/"><img id="logoImage" src="${createLinkTo(dir: 'images', file: 'macademia-logo.png')}"/></a>
+
+  <g:javascript >
+    $().ready(function() {
+        var params = {
+            'page' : 'editProfile',
+            'user' : "${user.id}"
+        };
+        macademia.serverLog('page', 'load', params);
+    });
+  </g:javascript>
 </body>
 </html>

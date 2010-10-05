@@ -4,10 +4,12 @@ macademia.wireupCollegeFilter = function() {
 };
 
 macademia.initCollegeFilter = function() {
+    macademia.serverLog('dialog', 'show', {'name' : 'collegeFilter'});
     macademia.showColleges();
     $("#editColleges .clearDefault").clearDefault();
     $("#closeCollegeFilter a").click(function(){
         $('#filterDialog').jqmHide();
+        macademia.serverLog('dialog', 'cancel', {'name' : 'collegeFilter'});
         return false;
     });
     $(".college a").click(function() {
@@ -81,6 +83,8 @@ macademia.collegeSelection = function() {
     }
 
     $('#filterDialog').jqmHide();
+
+    macademia.serverLog('dialog', 'close', {'name' : 'collegeFilter', count : colleges.length});
 };
 
 // takes an array of college ids and creates a string to stick in the url

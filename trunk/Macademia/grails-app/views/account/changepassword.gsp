@@ -74,7 +74,16 @@
         </div>
       </g:form>
     </div>
-    <g:render template="/templates/macademia/tagline"/> 
+    <g:render template="/templates/macademia/tagline"/>
+    <g:javascript >
+      $().ready(function() {
+          var params = {
+              'page' : 'changepassword',
+              fromEmail : '${currentPassword != null}'
+          };
+          macademia.serverLog('page', 'load', params);
+      });
+    </g:javascript>
 </body>
 
 </html>

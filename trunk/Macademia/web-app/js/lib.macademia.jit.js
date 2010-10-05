@@ -205,6 +205,7 @@ macademia.jit.init = function(rootType,id){
                                 params = {node : node.id, root: rootId};
                             }
                             this.loadContent(url, params, 'post');
+                            macademia.serverLog('tooltip', 'show', params);
                         }
                     },
                     onContentLoad:function() {

@@ -110,4 +110,12 @@
   </div>
 </div>
 </body>
+  <g:javascript >
+      $().ready(function() {
+          var params = {
+              'page' : 'jit'
+          };
+          macademia.serverLog('page', 'load', params);
+      });
+    </g:javascript>
 </html>
