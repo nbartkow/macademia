@@ -8,26 +8,28 @@
 
 <div class="medium padded2" id="profile">
   <div id="pf_top_container">
+    <div>
     <div id="pf_left">
       <g:if test="${person.imageSubpath}">
         <img src="/Macademia/images/db/large/${person.imageSubpath}"/>
       </g:if>
     </div>
-    <div id="pf_top_container_no_img">
-      <h3 id="pf_name_no_img">${person.fullName}</h3>
+    <div id="pf_identity">
+      <h3 id="pf_name">${person.fullName}</h3>
       <g:if test="${person.department && person.title}">
-        <h3 id="pf_dept_no_img">${person.title.encodeAsHTML()} of ${person.department.encodeAsHTML()}</h3>
+        <h3 id="pf_dept">${person.title.encodeAsHTML()} of ${person.department.encodeAsHTML()}</h3>
       </g:if>
       <g:elseif test="${person.department}">
-        <h3 id="pf_dept_no_img">${person.department.encodeAsHTML()}</h3>
+        <h3 id="pf_dept">${person.department.encodeAsHTML()}</h3>
       </g:elseif>
       <g:elseif test="${person.title}">
-        <h3 id="pf_dept_no_img">${person.title.encodeAsHTML()}</h3>
+        <h3 id="pf_dept">${person.title.encodeAsHTML()}</h3>
       </g:elseif>
       <h3 id="pf_email">
       <g:link url="mailto:${person.email}">${person.email}</g:link>
       </h3>
     </div>
+  </div>
   </div>
   <div id="pf_interests">
     <h4>Interests:</h4>
