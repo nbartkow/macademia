@@ -423,12 +423,13 @@ ul#instruct_list li:before, ul.styledList li:before{
     margin-bottom: 10px;
 }
 
-#pf_top_container_no_img {
+#pf_identity {
     border-bottom: 3px #aaa solid;
+    
 }
 
 #pf_left {
-    width: 50%;
+    margin-right : 5px;
     float: left;
 }
 
@@ -440,17 +441,21 @@ ul#instruct_list li:before, ul.styledList li:before{
 }
 
 #pf_name {
-    font-size: 1em;
-    padding-bottom: 0px;
-    margin: 0px;
-    padding-top: 0px;
-    margin-left: 5px;
+    font-size: 1.5em;
+    padding: 0 0;
+    margin-bottom: 7px;
+    margin-top: 0;
 }
 
 #pf_dept {
-    color: #777;
-    padding-right: 2px;
+    margin-top: 0px;
+    margin-bottom : 3px;
 }
+
+#pf_email {
+    margin-top : 0px;
+}
+
 
 #profile div h4 {
     padding-bottom: 3px;
@@ -475,24 +480,6 @@ ul#instruct_list li:before, ul.styledList li:before{
     padding: 0 0 10px 10px;
 }
 
-#pf_name_no_img {
-    font-size: 1.5em;
-    padding: 0px 0;
-    margin-bottom: 5px;
-    margin-top: 5px;
-
-}
-
-h2#pf_name_no_img:after {
-
-}
-
-h3#pf_dept_no_img {
-    margin-top: 0px;
-    margin-bottom: 0px;
-    color: #777;
-    padding-right: 2px;
-}
 
 #pf_email {
     margin-top:0px;
