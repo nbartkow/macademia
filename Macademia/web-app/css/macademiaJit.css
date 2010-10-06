@@ -450,6 +450,7 @@ ul#instruct_list li:before, ul.styledList li:before{
 #pf_dept {
     margin-top: 0px;
     margin-bottom : 3px;
+    color:#777777;
 }
 
 #pf_email {
