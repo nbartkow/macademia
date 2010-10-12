@@ -7681,14 +7681,15 @@ Layouts.Radial = new Class({
      * Performs the main algorithm for computing node positions.
      */
     computePositions : function(property, getLength) {
+        //Computes according to subnodes:
         var propArray = property;
         var graph = this.graph;
         var root = graph.getNode(this.root);
         var parent = this.parent;
         var config = this.config;
         var levelOneNodes = [];   //array of nodes in the inner circle (also will contain people with direct connection to root)
-        var levelOneInfo = {};    //{levelOneNodeId: {subnodes: [arrayOfSubnodes], angularWidths: sumOfSubnodesAngularWidths, angleSpan: angleSpan, angleInit: angleInit}}
-        var levelTwoInfo = {};    // {nodeId, true/false}  keeps track of whether a nodes has been placed
+        var levelOneInfo = {};    //{levelOneNodeId: {subnodes: [arrayOfSubnodes], actualSubnodes: [arrayOfSubnodesUnderNode], angularWidths: sumOfSubnodesAngularWidths, angleSpan: angleSpan, angleInit: angleInit}}
+        var levelTwoInfo = {};    // {nodeId, true/false}  keeps track of whether a node has been placed
 
         // sets position and properties of root node
         for ( var i=0, l=propArray.length; i < l; i++) {
@@ -7775,55 +7776,66 @@ Layouts.Radial = new Class({
         var levelOneAngleSpan = root.angleSpan.end - root.angleSpan.begin;
         var levelOneAngleInit = root.angleSpan.begin;
 
-        // sets polar coordinates for levelOneNodes and nodes directly connected to the root.
-        for(var j=0; j<levelOneNodes.length; j++){
-            var node = levelOneNodes[j];
-            var nodeInfo = levelOneInfo[node.id];
-            // determines angularWidths and angleSpans
-            var nodeAngularWidths = 0;
-            // goes through each subnode to get total angular widths for each node
-            for (var x = 0; x < nodeInfo.actualSubnodes.length; x++){
-                var sib = nodeInfo.actualSubnodes[x];
-                nodeAngularWidths += sib._treeAngularWidth;
-            }
-            var nodeAngleSpan = node.angleSpan.end - node.angleSpan.begin;
-            var nodeAngleInit = node.angleSpan.begin;
-            //set values to be used in placing nodes in second level
-            nodeInfo.angleSpan = nodeAngleSpan;
-            nodeInfo.angleInit = nodeAngleInit;
-            nodeInfo.angularWidths = nodeAngularWidths;
-            var len = config.levelDistance;
-            // if node is person or request, place in outer ring
-            if (node.data.type == 'person' || node.data.type == 'request'){
-                len = config.levelDistance * 2;
-            }
-            // node's proportional section of graph as determined by it's angular widths in proportion to the total angular widths of the graph.
-            var angleProportion = node._treeAngularWidth / totalLevelOneAngularWidths * levelOneAngleSpan;
-            // node position in center of it's angle span
-            var theta = levelOneAngleInit + angleProportion / 2;
-            //sets some properties
-            for ( var i=0, l=propArray.length; i < l; i++) {
-                var pi = propArray[i];
-                // sets the position of the node
-                node.setPos($P(theta, len), pi);
-                // sets some other stuff.
-                node.setData('span', angleProportion, pi);
-            }
-            //sets area of graph belonging to node.
-            node.angleSpan = {
-                begin : levelOneAngleInit,
-                end : levelOneAngleInit + angleProportion
-            };
-            // sets properties of node to be used in placing subnodes
-            nodeInfo.angleSpan = node.angleSpan.end - node.angleSpan.begin;
-            nodeInfo.angleInit = node.angleSpan.begin;
-            // increments the placement on the graph.
-            levelOneAngleInit += angleProportion;
-        }
-        //sorts nodes according to their number of subnodes
         levelOneNodes.sort(function(a, b) {
-            return (levelOneInfo[a.id].subnodes.length - levelOneInfo[b.id].subnodes.length);
+            return (levelOneInfo[a.id].actualSubnodes.length - levelOneInfo[b.id].actualSubnodes.length);
         });
+
+        // function for level one nodes that sets polar coords
+        function levelOnePolarCoord(node){
+                var nodeInfo = levelOneInfo[node.id];
+                // determines angularWidths and angleSpans
+                var nodeAngularWidths = 0;
+                // goes through each subnode to get total angular widths for each node
+                for (var x = 0; x < nodeInfo.actualSubnodes.length; x++){
+                    var sib = nodeInfo.actualSubnodes[x];
+                    nodeAngularWidths += sib._treeAngularWidth;
+                }
+                var nodeAngleSpan = node.angleSpan.end - node.angleSpan.begin;
+                var nodeAngleInit = node.angleSpan.begin;
+                //set values to be used in placing nodes in second level
+                nodeInfo.angleSpan = nodeAngleSpan;
+                nodeInfo.angleInit = nodeAngleInit;
+                nodeInfo.angularWidths = nodeAngularWidths;
+                var len = config.levelDistance;
+                // if node is person or request, place in outer ring
+                if (node.data.type == 'person' || node.data.type == 'request'){
+                    len = config.levelDistance * 2;
+                }
+                // node's proportional section of graph as determined by it's angular widths in proportion to the total angular widths of the graph.
+                var angleProportion = node._treeAngularWidth / totalLevelOneAngularWidths * levelOneAngleSpan;
+                // node position in center of it's angle span
+                var theta = levelOneAngleInit + angleProportion / 2;
+                //sets some properties
+                for ( var i=0, l=propArray.length; i < l; i++) {
+                    var pi = propArray[i];
+                    // sets the position of the node
+                    node.setPos($P(theta, len), pi);
+                    // sets some other stuff.
+                    node.setData('span', angleProportion, pi);
+                }
+                //sets area of graph belonging to node.
+                node.angleSpan = {
+                    begin : levelOneAngleInit,
+                    end : levelOneAngleInit + angleProportion
+                };
+                // sets properties of node to be used in placing subnodes
+                nodeInfo.angleSpan = node.angleSpan.end - node.angleSpan.begin;
+                nodeInfo.angleInit = node.angleSpan.begin;
+                // increments the placement on the graph.
+                levelOneAngleInit += angleProportion;
+        }
+        // loops through level one nodes to set their polar coords
+        for(var j=0; j<levelOneNodes.length/2; j++){
+            var node1 = levelOneNodes[j];
+            levelOnePolarCoord(node1);
+            var g = levelOneNodes.length - j - 1;
+            if (g != j){
+                var node2 = levelOneNodes[g];
+                levelOnePolarCoord(node2);
+            }
+        }
+
+
 
         // sets polar coordinates for level two nodes
         for(var m = 0; m<levelOneNodes.length; m++){
