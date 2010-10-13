@@ -12,6 +12,27 @@ class  PersonController{
     def userService
     def institutionService
     
+    def recent = {
+        StringBuffer buff = new StringBuffer()
+        buff.append('<html>\n')
+        buff.append('<h1>Recent account activity:</h1>\n')
+        buff.append('<table border="1">\n')
+        buff.append('<tr><td>name</td><td>email</td><td>num-interests</td><td>updated</td><td>created</td></tr>\n')
+        for (Person p : Person.list(sort : 'lastUpdated', order : 'desc')) {
+            buff.append("<tr>")
+            buff.append("<td>${p.fullName}</td>")
+            buff.append("<td>${p.email}</td>")
+            buff.append("<td>${p.interests.size()}</td>")
+            buff.append("<td>${p.lastUpdated}</td>")
+            buff.append("<td>${p.dateCreated}</td>")
+            buff.append("</tr>\n")
+        }
+        buff.append('</table>\n')
+        buff.append('</html>\n')
+        render(buff.toString())
+    }
+
+
     def index = {
         Random r = new Random()
         List<Long> ids = new ArrayList<Long>(Person.findAll().collect({it.id}))
@@ -107,28 +128,4 @@ class  PersonController{
                 auth: auth
         ])
     }
-
-    /*
-     * TODO: remove me after relaunch (2010/10)
-     */
-    def reinvite = {
-        def email = params.email
-        Person p = personService.findByEmail(params.email)
-        if (p) {
-            String password = p.resetPasswd()
-            sendMail {
-                to "${email}"
-                subject "Come see your Macademia 2.0 profile!"
-                html g.render(
-                        template: '/email/reinvite',
-                        model : [person : p, password : password]
-                )
-            }
-            render('okay')
-        } else {
-            render('unknown person')
-        }
-
-    }
-
 }
