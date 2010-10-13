@@ -172,8 +172,8 @@ class Graph {
      * @param maxPeople The number of people to add the the graph
      */
     public void finalizeGraph(int maxPeople) {
-        PersonScoreComparator ppc = new PersonScoreComparator(personScores)
-        Map<Long, Double> sortedPersonScores = new TreeMap<Long, Double>(ppc)
+        PersonScoreComparator psc = new PersonScoreComparator(personScores)
+        Map<Long, Double> sortedPersonScores = new TreeMap<Long, Double>(psc)
         sortedPersonScores.putAll(personScores)
         
         if (personMap.keySet().size() != 0) {
@@ -310,7 +310,7 @@ class Graph {
         /**
          * @param base The Map<Long, Double> personScores in need of sorting
          */
-        public PotentialPersonComparator(Map<Long, Double> base) {
+        public PersonScoreComparator(Map<Long, Double> base) {
             this.base = base
         }
 
