@@ -91,20 +91,27 @@ class SimilarityService {
         return calculateInterestNeighbors(interest, maxPeople, maxInterests, null)
     }
 
+    /**
+     * Constructs an interest centric graph.  First adds all people and requests who own the central
+     * interest, then adds similar interests and people who own those similar interests.
+     * @param interest The central interest of the graph
+     * @param maxPeople The maximum number of people to add to the graph
+     * @param maxInterests The maximum number of interests to add to the graph
+     * @param institutionFilter
+     * @return The completed graph
+     */
     public Graph calculateInterestNeighbors(Interest interest, int maxPeople, int maxInterests, Set<Long> institutionFilter){
         Graph graph = new Graph()
         //interestCache = new HashMap<Long, Interest>()
-        //adds the edges to the set between people who have the central interest
-        graph = findPeopleAndRequests(graph, maxPeople, interest.id, null, institutionFilter)
-        //loops over the InterestRelations representing similar interests, then looks for people with similar interests
-        //SimilarInterestList similarInterests = getSimilarInterests(interest, maxSimsPerInterest, absoluteThreshold)
+        graph = findPeopleAndRequests(graph, maxPeople, interest.id, null, 1, institutionFilter)
         for(SimilarInterest ir : getSimilarInterests(interest.id, maxSimsPerInterest, absoluteThreshold, institutionFilter)){
             //log.info("Similar interest ID: "+ir.interestId+" similarity score "+ir.similarity)
             if (graph.getInterests().size() < maxInterests + 1) {
                 graph.addEdge(null, interest.id, ir.interestId, null)
-                graph = findPeopleAndRequests(graph, maxPeople, ir.interestId, null, institutionFilter)
+                graph = findPeopleAndRequests(graph, maxPeople, ir.interestId, null, ir.similarity, institutionFilter)
             }
         }
+        graph.finalizeGraph(maxPeople)
         //interestCache = new HashMap<Long, Interest>()
         return graph
     }
@@ -121,14 +128,25 @@ class SimilarityService {
     }
 
 
+
+     /**
+      * Constructs a person centric graph.  Loops over the central person's interests,
+      * calculating the neighbors of each interest.
+      * @param person The central person of the graph
+      * @param maxPeople The max number of people to be added to the graph
+      * @param institutionFilter
+      * @return The completed graph
+      */
     public Graph calculatePersonNeighbors( Person person, int maxPeople, Set<Long> institutionFilter){
         Graph graph= new Graph()
-        //loops over the central person's interests, adds people who have those interests, then people who have interests
-        //similar to the central person's interests
         long graphStart = Calendar.getInstance().getTimeInMillis()
+        //Bonus points for being the graph center
+        graph.incrementPersonScore(person.id, 800)
         for(long i : databaseService.getUserInterests(person.id)){
+            //For each interest owned by the central person, calculate neighbors
             graph = calculateNeighbors(i, graph, maxPeople, (Set<Long>)person.interests.collect({it.id}), institutionFilter)
         }
+        graph.finalizeGraph(maxPeople)
         long graphEnd =Calendar.getInstance().getTimeInMillis()
         long graphTime=graphEnd-graphStart
         log.info("It took $graphTime to build $person graph")
@@ -149,36 +167,47 @@ class SimilarityService {
         return calculateRequestNeighbors(request, maxPeople, null)
     }
 
+    /**
+     * Constructs a collaborator request centric graph. Loops over the central collaborator
+     * request's interests, calculating the neighbors of each interest
+     * @param request The central collaborator request of the graph
+     * @param maxPeople The maximum number of people to add to the graph
+     * @param institutionFilter
+     * @return The completed graph
+     */
     public Graph calculateRequestNeighbors(CollaboratorRequest request, int maxPeople, Set<Long> institutionFilter) {
         Graph graph = new Graph()
-        //loops over the collaborator request's interests, adds people who have those interests, then people who have interests
-        //similar to the requests's interests
         for (long i : databaseService.getRequestKeywords(request.id)) {
-             graph = calculateNeighbors(i, graph, maxPeople, (Set<Long>)request.keywords.collect({it.id}), institutionFilter)
+            //For each interest owned by the collaborator request, calculate neighbors
+            graph = calculateNeighbors(i, graph, maxPeople, (Set<Long>)request.keywords.collect({it.id}), institutionFilter)
         }
+        graph.finalizeGraph(maxPeople)
         return graph
     }
 
 
    /**
-    * Finds the branches off of an interest node in a graph centered on a request or a person
-    * @param i
-    * @param graph
-    * @param maxPeople
+    * Finds the branches off of an interest node in a graph centered on a request or a person.
+    * @param i Id of the interest to calculate neighbors for
+    * @param graph The graph to add the resultant edges to
+    * @param maxPeople The maximum number of people who should be added to the graph
     * @param inner the interests that should be on the inner ring
-    * @return
+    * @param institutionFilter
+    * @return The graph with all conections to Interest i added
     */
     public Graph calculateNeighbors(Long i, Graph graph, int maxPeople, Set<Long> inner, Set<Long> institutionFilter) {
         if(i == null){
             return graph
         }
         timing.startTime()
-        graph = findPeopleAndRequests(graph, maxPeople, i, null, institutionFilter)
+        //Add all edges linked to Interest i
+        graph = findPeopleAndRequests(graph, maxPeople, i, null, 1, institutionFilter)
         for(SimilarInterest ir : getSimilarInterests(i, maxSimsPerInterest, absoluteThreshold, institutionFilter)){
             //log.info("Similar interest ID: "+ir.interestId+" similarity score "+ir.similarity+"calculate neighbors")
             if(ir.interestId!=null){
                 if(!inner.contains(ir.interestId)) {
-                    graph = findPeopleAndRequests(graph, maxPeople, i, ir.interestId, institutionFilter)
+                    //Add all edges linked to SimilarInterest ir
+                    graph = findPeopleAndRequests(graph, maxPeople, i, ir.interestId, ir.similarity, institutionFilter)
                 }
             }
 
@@ -186,7 +215,18 @@ class SimilarityService {
         return graph
     }
 
-    public Graph findPeopleAndRequests(Graph graph, int maxPeople, Long i, Long ir, Set<Long> institutionFilter) {
+    /**
+     * Adds edges to the parameter graph between an Interest or SimilarInterest and all people who own
+     * that Interest or SimilarInterest.
+     * @param graph The graph to be modified
+     * @param maxPeople The maximum number of people to add to the graph
+     * @param i Id number of an Interest whose connections need to be added to the graph
+     * @param ir Id number of a SimilarInterest whose connections need to added to the graph
+     * @param sim The similarity score between i and ir. If ir is null, sim should be 1
+     * @param institutionFilter
+     * @return The graph with all appropriate edges added.
+     */
+    public Graph findPeopleAndRequests(Graph graph, int maxPeople, Long i, Long ir, Double sim, Set<Long> institutionFilter) {
         timing.startTime()
         Long foo
         if (ir == null) {
@@ -196,31 +236,30 @@ class SimilarityService {
         }
         timing.recordTime("find People And Requests overhead")
         for(long p : databaseService.getInterestUsers(foo)){
-            if(graph.getPeople().size() + graph.getRequests().size() < maxPeople || graph.containsPersonId(p)){
-                timing.startTime()
-                if (institutionFilter == null) {
+            //For each person with the Interest or SimilarInterest
+            timing.startTime()
+            if (institutionFilter == null) {
+                graph.incrementPersonScore(p, sim)
+                graph.addEdge(p, i, ir, null)
+                timing.recordTime("Adding edge without Institution Filter")
+            } else {
+                if (institutionFilter.contains(databaseService.getUserInstitution(p))) {
                     graph.addEdge(p, i, ir, null)
-                    timing.recordTime("Adding edge without Institution Filter")
-                } else {
-                    if (institutionFilter.contains(databaseService.getUserInstitution(p))) {
-                        graph.addEdge(p, i, ir, null)
-                    }
-                    timing.recordTime("Adding edge with Institution Filter overhead")
                 }
+                timing.recordTime("Adding edge with Institution Filter overhead")
             }
         }
         for (long cr : databaseService.getInterestRequests(foo)) {
-            if(graph.getPeople().size() + graph.getRequests().size()  < maxPeople || graph.containsRequestId(cr)){
-                timing.startTime()
-                if (institutionFilter == null) {
+            //For each CollaboratorRequest with the Interest or SimilarInterest
+            timing.startTime()
+            if (institutionFilter == null) {
+                graph.addEdge(null, i, ir, cr)
+                timing.recordTime("Adding edge without Institution Filter")
+            } else {
+                if (institutionFilter.contains(databaseService.getCollaboratorRequestInstitution(cr))) {
                     graph.addEdge(null, i, ir, cr)
-                    timing.recordTime("Adding edge without Institution Filter")
-                } else {
-                    if (institutionFilter.contains(databaseService.getCollaboratorRequestInstitution(cr))) {
-                        graph.addEdge(null, i, ir, cr)
-                    }
-                    timing.recordTime("Adding edge with Institution Filter overhead")
                 }
+                timing.recordTime("Adding edge with Institution Filter overhead")
             }
         }
 

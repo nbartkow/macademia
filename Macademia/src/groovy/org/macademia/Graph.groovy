@@ -15,6 +15,10 @@ class Graph {
     Map<Long, Interest> interestIdMap
     Map<Long, Person> personIdMap
     Map<Long, CollaboratorRequest> requestIdMap
+
+    Map<Long, Double> personScores
+    Map<Person, Set<Edge>> potentialPersonEdges
+
     int edges //needed for some unit tests
 
     /**
@@ -28,6 +32,9 @@ class Graph {
         interestIdMap = new HashMap<Long, Interest>()
         personIdMap = new HashMap<Long, Person>()
         requestIdMap = new HashMap<Long, CollaboratorRequest>()
+
+        personScores = new HashMap<Long, Double>()
+        potentialPersonEdges = new HashMap<Person, Set<Edge>>()
 
         edges = 0
     }
@@ -57,12 +64,12 @@ class Graph {
         // request edges, or interest-interest edges.
         //as of now no other types of edges should exist
         if (e.person != null) {
-            if (personMap.containsKey(e.person)) {
-                personMap.get(e.person).add(e)
+            if (potentialPersonEdges.containsKey(e.person)) {
+                potentialPersonEdges.get(e.person).add(e)
             } else {
                 HashSet<Edge> set = new HashSet()
                 set.add(e)
-                personMap.put(e.person, set)
+                potentialPersonEdges.put(e.person, set)
             }
         } else if (e.request != null){
                     if (requestMap.containsKey(e.request)) {
@@ -144,6 +151,45 @@ class Graph {
             return
         }
         addEdge(new Edge(interest: interest, person: person, request: request, relatedInterest: relatedInterest))
+    }
+
+    /**
+     * Increments the score of a person
+     * @param pid The id of the person whose score should be incremented
+     * @param sim The increment value to add to the score associated with
+     * the person specified by parameter pid
+     */
+    public void incrementPersonScore(Long pid, Double sim) {
+        if (!personScores.containsKey(pid)) {
+            personScores.put(pid, 0)
+        }
+        personScores.put(pid, personScores.get(pid) + sim)
+    }
+
+    /**
+     * Final step to creating the graph. Sorts the people by relevance, and
+     * then adds the most relevant people to the graph.
+     * @param maxPeople The number of people to add the the graph
+     */
+    public void finalizeGraph(int maxPeople) {
+        PersonScoreComparator ppc = new PersonScoreComparator(personScores)
+        Map<Long, Double> sortedPersonScores = new TreeMap<Long, Double>(ppc)
+        sortedPersonScores.putAll(personScores)
+        
+        if (personMap.keySet().size() != 0) {
+            personMap.clear()
+        }
+        int peopleAdded = 0
+        //System.out.println("Size of sortedPersonScores: " + sortedPersonScores.keySet().size())
+        for (Long pid : sortedPersonScores.keySet()) {
+            Person p = personIdMap.get(pid)
+            personMap.put(p, potentialPersonEdges.get(p))
+            //System.out.println(peopleAdded + " person id: " + pid + " sim: " + sortedPersonScores.get(pid))
+            peopleAdded++
+            if (peopleAdded >= (maxPeople + 1)) {
+                return
+            }
+        }
     }
 
     /**
@@ -253,4 +299,30 @@ class Graph {
         }
         return false
     }*/
+
+
+    /**
+     * Comparator for use in sorting the list of personScores
+     */
+    class PersonScoreComparator implements Comparator {
+        Map<Long, Double> base
+
+        /**
+         * @param base The Map<Long, Double> personScores in need of sorting
+         */
+        public PotentialPersonComparator(Map<Long, Double> base) {
+            this.base = base
+        }
+
+        public int compare(object1, object2) {
+            if((Double)base.get(object1) < (Double)base.get(object2)) {
+                return 1;
+            } else if((Double)base.get(object1) == (Double)base.get(object2)) {
+                return 0;
+            } else {
+                return -1;
+            }
+        }
+
+    }
 }
