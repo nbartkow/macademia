@@ -7,11 +7,13 @@
     <g:else>Create a New Macademia Profile</g:else>
   </title>
 
-  <link type="text/css" rel="stylesheet" href="${createLinkTo(dir: "css", file: "createUser.css")}">
+  <p:css name="createUser"/>
   <g:include view="/layouts/headers.gsp"/>
-  <g:javascript src="uploadify/swfobject.js"></g:javascript>
-  <g:javascript src="uploadify/jquery.uploadify.v2.1.0.min.js"></g:javascript>
-  <g:javascript src="lib.macademia.upload.js"></g:javascript>
+  <p:javascript src="uploadify/swfobject"/>
+  <p:javascript src="uploadify/jquery.uploadify.v2.1.0.min"/>
+  <p:javascript src="lib.macademia.upload"/>
+
+  %{--TODO: Convert this link to a p:css link (unfortunately, it is in a js directory)--}%
   <link type="text/css" rel="stylesheet" href="${createLinkTo(dir: "js", file: "/uploadify/uploadify.css")}">
   <g:javascript>
     $().ready(macademia.initializeRegister);
@@ -107,7 +109,8 @@
   </form>
 </div>
 <g:render template="../templates/macademia/tagline"/>
-<a href="/Macademia/"><img id="logoImage" src="${createLinkTo(dir: 'images', file: 'macademia-logo.png')}"/></a>
+<a href="/Macademia/">
+  <p:image id="logoImage" src='macademia-logo-black.png'/></a>
 
   <g:javascript >
     $().ready(function() {

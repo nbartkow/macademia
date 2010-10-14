@@ -1,11 +1,10 @@
 <html>
 
 <head>
-    <title>${title.encodeAsHTML()}</title>
-
-  <link type="text/css" rel="stylesheet" href="${createLinkTo(dir: "css", file: "macademiaJit.css")}">
+  <title>${title.encodeAsHTML()}</title>
+  <p:css name="macademiaJit"/>
   <g:include view="/layouts/headers.gsp"/>
-  <link type="text/css" rel="stylesheet" href="${createLinkTo(dir: "css", file: "message.css")}">
+  <p:css name="message"/>
 </head>
 
 <body>

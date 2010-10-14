@@ -302,10 +302,8 @@ h2 {
 #logoImage {
     padding-bottom: 10px;
     position: absolute;
-    left: 10px;
+    left: 100px;
     top: 10px;
-    z-index: -1;
-    background:#A2AB8E; 
 }
 
 #registerTitle {

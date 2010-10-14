@@ -11,7 +11,7 @@
     <div>
     <div id="pf_left">
       <g:if test="${person.imageSubpath}">
-        <img src="/Macademia/images/db/large/${person.imageSubpath}"/>
+        <img src="/Macademia/image/retrieve?subPath=${person.imageSubpath}"/>
       </g:if>
     </div>
     <div id="pf_identity">

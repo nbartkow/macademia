@@ -3,6 +3,7 @@ package org.macademia
 import javax.media.jai.RenderedOp
 import javax.media.jai.JAI
 import java.awt.RenderingHints
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 class ImageService {
 
@@ -22,13 +23,15 @@ class ImageService {
     public static final String IMAGE_TYPE = "png"
 
     // local file paths
-    public static final String DB_IMAGES_PATH = "web-app/images/db"
+    public static final String DB_IMAGES_PATH =  ConfigurationHolder.config.macademia.profileImagePath
     public static final String LARGE_IMAGES_PATH = DB_IMAGES_PATH + "/large"
     public static final String SMALL_IMAGES_PATH = DB_IMAGES_PATH + "/small"
-    public static final String TEMP_IMAGES_PATH = DB_IMAGES_PATH + "/orig"
+    public static final String TEMP_IMAGES_PATH = DB_IMAGES_PATH + "/tmp"
+    public static final String ORIG_IMAGES_PATH = DB_IMAGES_PATH + "/orig"
     private static final String TEMP_IMAGES_PREFIX = "img"
 
     // web url paths
+    // these aren't used any more.
     public static final String BASE_URL = "/Macademia/images/db"
     public static final String SMALL_URL = BASE_URL + "/small"
     public static final String LARGE_URL = BASE_URL + "/large"
@@ -56,6 +59,7 @@ class ImageService {
         int maxDim = Math.max(image.getWidth(), image.getHeight());
         resize(tempImage, 1.0 * SMALL_SIZE / maxDim, constructPath(SMALL_IMAGES_PATH, id, true))
         resize(tempImage, 1.0 * LARGE_SIZE / maxDim, constructPath(LARGE_IMAGES_PATH, id, true))
+        resize(tempImage, 1.0, constructPath(ORIG_IMAGES_PATH, id, true))
 
         tempImage.delete();
         
