@@ -127,6 +127,7 @@ macademia {
     editableFields = ['fullName', 'department', 'institution', 'imageSubpath', 'links', 'title']
     collaboratorRequestFields = ['creator', 'title', 'description', 'expiration']
     maxSimilarInterests = 2000
+    profileImagePath = "web-app/images/db"
 }
 
 
@@ -145,6 +146,28 @@ grails {
     }
 }
 grails.mail.default.from="macalester.macademia@gmail.com"
+
+uiperformance.bundles = [
+   [type: 'js',
+    name: 'macademia.js.all',
+    files: ['jquery/jquery-1.4.2',
+            'jquery/jquery-ui-1.8.2.custom.min',
+            'jquery/jquery-deps',
+            'jquery/jquery.qtip-1.0.0-rc3',
+            'jquery/jqModal',
+            'jquery/jquery.address-1.2.1',
+            'jquery/jqModal',
+            'ba-debug',
+            'jit/jit',
+            'lib.macademia',
+            'lib.macademia.deps',
+            'lib.macademia.json',
+            'lib.macademia.jit',
+            'lib.macademia.collegefilter',
+            'lib.macademia.autocomplete',
+            'lib.macademia.profile',
+    ]],
+]
 
 
 absoluteThreshold = 0.001
@@ -168,12 +191,15 @@ environments {
         refinedThreshold = 0.08
         roughThreshold = 0.15
 
+        uiperformance.enabled = false
+
         // FIXME: Don't cap # similar interests while testing
         org.macademia.SimilarInterestList.MAX_SIMILAR_INTERESTS = 1000000
     }
     populateDev {
     }
     development {
+      uiperformance.enabled = false
     }
     populateProd {
     }

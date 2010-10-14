@@ -3,9 +3,9 @@
 <head>
     <title>Change password</title>
 
-  <link type="text/css" rel="stylesheet" href="${createLinkTo(dir: "css", file: "macademiaJit.css")}">
+  <p:css name="macademiaJit"/>
   <g:include view="/layouts/headers.gsp"/>
-  <link type="text/css" rel="stylesheet" href="${createLinkTo(dir: "css", file: "changePasswd.css")}">
+  <p:css name="changePasswd"/>
 </head>
 
 <body>

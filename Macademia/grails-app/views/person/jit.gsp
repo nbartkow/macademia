@@ -11,10 +11,10 @@
 <html>
 <head>
 
-  <link type="text/css" rel="stylesheet" href="${createLinkTo(dir: "css", file: "macademiaJit.css")}">
+  <p:css name="macademiaJit"/>
   <g:include view="/layouts/headers.gsp"/>
+  <p:css name="jqModal"/>
 
-  <link rel="stylesheet" href="${resource(dir: 'css', file: 'jqModal.css')}"/>
   <g:javascript>
     $().ready(function() {
         macademia.pageLoad();
@@ -32,7 +32,7 @@
   <div id="acknowledgements2">
     <div>generously supported by:</div>
     <div class="logo">
-      <a href="http://acm.edu"><img src="${createLinkTo(dir: 'images', file: 'acm_logo.png')}" alt="The Associated Colleges of the Midwest"/></a>
+      <a href="http://acm.edu"><p:image src="acm_logo.png" alt="The Associated Colleges of the Midwest"/></a>
       &nbsp;and</div>
     <div class="logo"><a href="http://mellon.org">The Mellon Foundation</a> </div>
     %{--<div class="logo"><span>The National Science Foundation</span></div>--}%
@@ -61,9 +61,9 @@
   </g:javascript>
 
 <div id="aboutJqm" class="jqmWindow padded2 medium btxt">
-  <a href="#" class="closeImg"><img src="${createLinkTo(dir: 'images', file: 'close_icon.gif')}"/></a>
+  <a href="#" class="closeImg"><p:image src="close_icon.gif"/></a>
   <div class="logo">
-    <img id="logoImage" src="${createLinkTo(dir: 'images', file: 'macademia-logo-black.png')}"/>
+    <p:image src="macademia-logo-black.png"/>
     <span class="tagline">Connecting colleagues who share research interests.</span>
   </div>
   <div class="topBorder instructions">Macademia visualizes faculty research interests.  You can:

@@ -7,9 +7,16 @@ class ImageController {
     def imageService
 
     def retrieve = {
-        // should be key-value pairs that checks to see if
-        // images passed as param names exist.
-        render [:] as JSON
+        File path
+        if (params.id) {
+            long id = params.id as long
+            path = imageService.constructPath(imageService.LARGE_IMAGES_PATH, id, false)
+        } else {
+            path = new File(imageService.LARGE_IMAGES_PATH + '/' + params.subPath)
+        }
+        response.contentType = 'image/png'
+        response.outputStream << path.readBytes()
+        response.outputStream.flush()
     }
 
     def upload = {
