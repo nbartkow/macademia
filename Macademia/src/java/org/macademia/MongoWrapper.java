@@ -324,7 +324,7 @@ public class MongoWrapper {
         if (relationsBuilt) {
             for (long id : ids.keySet()) {
                 SimilarInterestList sims = new SimilarInterestList();
-                sims.add(new SimilarInterest(id, ids.get(id)));
+                sims.add(new SimilarInterest(interest, ids.get(id)));
                 addInterestRelations(id, sims, true);
             }
         }
