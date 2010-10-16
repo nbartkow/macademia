@@ -21,6 +21,7 @@ class ImageTests extends GrailsUnitTestCase {
         tmpDir.delete()
         tmpDir.mkdir()
         tmpDir.deleteOnExit()
+        mockConfig("\nmacademia.profileImagePath = 'web-app/images/db'\n")
         is = new ImageService()
         super.setUp()
     }
@@ -61,6 +62,12 @@ class ImageTests extends GrailsUnitTestCase {
         }
         if (smallDest.exists()) {
             smallDest.delete()
+        }
+        if (!smallDest.getParentFile().isDirectory()) {
+            smallDest.getParentFile().mkdirs()
+        }
+        if (!largeDest.getParentFile().isDirectory()) {
+            largeDest.getParentFile().mkdirs()
         }
         MultipartFile file = new MockMultipartFile("foo", TEST_IMG.newInputStream())
         is.createNewImages(file, 32425018)
