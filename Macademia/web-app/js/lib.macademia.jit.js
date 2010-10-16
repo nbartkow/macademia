@@ -98,7 +98,7 @@ macademia.jit.init = function(rootType,id){
         macademia.rgraph = new $jit.RGraph({
             'injectInto': 'infovis',
             'width': 680,
-           'height': 660,
+            'height': 660,
             'duration' : 1000,
             'fps' : 40,
             withLabels : true,
@@ -114,7 +114,7 @@ macademia.jit.init = function(rootType,id){
         Node: {
             'overridable': true,
             'type': 'circle',
-            'color': '#777777', /*'#ccddee'*/
+            'color': '#FFFFFF', /*'#ccddee'*/
             'width' : '4px'
         },
         Edge: {
@@ -129,33 +129,65 @@ macademia.jit.init = function(rootType,id){
         //Set node/edge styles
 
         onPlaceLabel: function(domElement, node) {
-            //alert('here 1');
             $(domElement).attr('alt','/Macademia/'+node.data.type+'/tooltip/'+node.data.unmodifiedId);
+            var nodeTop = parseInt(domElement.style.top) - 10.5;
+            // $(macademia.rgraph.root.id).css not working
+            var boost = (nodeTop -  (macademia.jit.distance * 2 + 20))/ (2*macademia.jit.distance) * 11.5;
             var d = $(domElement);
             var left = parseInt(d.css('left'));
-
             var w = domElement.offsetWidth;
+            if(node.pos.rho == 0){
+                d.css('left', (left - w /2) + 'px');
+                d.css('text-align', 'center');
+                // center node
+            }else if(node.pos.theta >1.4 && node.pos.theta <1.6){
+                d.css('left', (left - w /2) + 'px');
+                d.css('top', nodeTop + boost + 'px');
+                d.css('text-align', 'center');
+                // space below graph
+            }else if(node.pos.theta > 4.6 && node.pos.theta < 4.8){
+                d.css('left', (left - w /2) + 'px');
+                d.css('top', nodeTop + boost + 'px');
+                d.css('text-align', 'center');
+                // space above graph
+            }else if(node.pos.theta <= 4.65 && node.pos.theta >= 1.55){
+                d.css('top', nodeTop + boost + 'px');
+                d.css('left', (left - w - 4.5) + 'px');
+                d.css('text-align', 'right');
+                // space to the left
+            }else if(node.pos.theta >= 4.65 || node.pos.theta <= 1.45){
+                d.css('top', nodeTop + boost + 'px');
+                d.css('left', (left + 4.5) + 'px');
+                d.css('text-align', 'left');
+                // space to the right
+            }
             d.css('width', '');
             d.css('height', '');
-            d.css('left', (left - w /2) + 'px');
-            //alert('here 2');
+            if(node.pos.rho == 300){
+                // prevent people nodes on right from wrapping unnecessarily
+                d.css('min-width', '100px');
+            }
+            var distance = macademia.jit.distance * (0.95 * (parseInt($("#infovis-canvaswidget").css('height'))) / 660);
+            d.css('max-width', (distance) + 'px');
+            d.css('white-space', '');
+
 
         },
-        //Add a controller to make the tree move on click.
-        onCreateLabel: function(domElement, node) {
-            //alert('here 3');
-            var root = macademia.rgraph.graph.getNode(macademia.rgraph.root)
-            var d = $(domElement);
-            d.html(node.name);
-            d.css('z-index', 10);
-            d.css('opacity', 0.8);
-            d.css('white-space', 'nowrap');
-            d.css('margin-top', '3px');
-            d.css('font-size', '14px');
-            d.css('background-color','transparent');
-            if(node.id == root.id){
-                d.css('font-weight', 600);
-            }
+            //Add a controller to make the tree move on click.
+            onCreateLabel: function(domElement, node) {
+                //alert('here 3');
+                var root = macademia.rgraph.graph.getNode(macademia.rgraph.root);
+                var d = $(domElement);
+                d.html(node.name);
+                d.css('z-index', 10);
+                d.css('opacity', 0.8);
+                d.css('white-space', 'nowrap');
+                d.css('margin-top', '3px');
+                d.css('font-size', '14px');
+                d.css('background-color','transparent');
+                if(node.id == root.id){
+                    d.css('font-weight', 600);
+                }
             $(d).mouseover(function() {
                 $(this).css('font-weight', 600);
                 $(this).css('opacity', 0.75);
