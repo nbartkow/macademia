@@ -167,7 +167,7 @@ macademia.jit.init = function(rootType,id){
                 // prevent people nodes on right from wrapping unnecessarily
                 d.css('min-width', '100px');
             }
-            var distance = macademia.jit.distance * (0.95 * (parseInt($("#infovis-canvaswidget").css('height'))) / 660);
+            var distance = macademia.jit.distance * (0.95 * Math.min(parseInt($("#infovis-canvaswidget").css('width')) / 680, parseInt($("#infovis-canvaswidget").css('height')) / 660));
             d.css('max-width', (distance) + 'px');
             d.css('white-space', '');
 
