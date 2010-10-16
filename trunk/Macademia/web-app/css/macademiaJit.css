@@ -207,7 +207,11 @@ html, body {
 
 #infovis-canvaswidget {
     position: absolute !important;
+    right: 0;
+    left: 0;
+    margin: auto;
     top: 0;
+    bottom: 0;
 }
 
 .node {

@@ -275,7 +275,8 @@ macademia.resizeCanvas = function(currentWidth) {
     var originalWidth = 680;
     var originalHeight = 660;
     var originalDistance = 150;
-    var currentHeight = $("#infovis").height();
+    currentWidth = currentWidth - 150;
+    var currentHeight = $("#infovis").height() - 50;
     if (Math.min(currentWidth, currentHeight) == currentWidth) {
         var newWidth = 0.95 * currentWidth;
         var newHeight = originalHeight * newWidth / originalWidth;
