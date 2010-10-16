@@ -461,7 +461,7 @@ macademia.toggleAccountControls = function() {
 };
 
 macademia.setupRequestCreation = function() {
-    $("#makeRequestDialog").jqm({ajax: '/Macademia/request/create/', trigger:'#makeRequestButton',  modal: false});
+    $("#makeRequestDialog").jqm({ajax: '/Macademia/request/create/', trigger:'#makeRequestLink',  modal: false});
 };
 
 macademia.initializeLogin = function() {
