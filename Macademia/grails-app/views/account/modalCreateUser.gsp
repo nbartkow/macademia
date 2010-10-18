@@ -59,7 +59,7 @@
 
         <div id="interestErrors" class="warning">&nbsp;</div>
         <div class="left left1 fieldLabel topBorder"><label>Interests<span>Academic interests, separated by <b>commas</b>.  These could be pedagogical interests, research interests, subjects you teach, etc.</span></label></div>
-        <div class="right topBorder"><textarea id="editInterests" cols="20" rows="3" name="interests">${interests}</textarea></div>
+        <div class="right topBorder"><textarea id="editInterests" cols="20" rows="3" name="interests" class="clearDefault" prompt="academic interests, separated, by, commas">${interests}</textarea></div>
         <div class="clear"></div>
     </div>
     <div id="sidebar">
@@ -119,6 +119,7 @@
             'user' : "${user.id}"
         };
         macademia.serverLog('page', 'load', params);
+        $(".clearDefault").clearDefault();
     });
   </g:javascript>
 </body>
