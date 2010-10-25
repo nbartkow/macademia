@@ -31,3 +31,7 @@ macademia.slider.initSlider = function() {
 			}
 	});
 };
+
+macademia.slider.changeSlider = function(value) {
+    $('#slider .widget').slider('value', value);
+}

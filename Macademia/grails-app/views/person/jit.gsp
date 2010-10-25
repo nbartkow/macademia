@@ -46,11 +46,13 @@
     <div class="mid">
       <div class="widget">&nbsp;</div>
       <div>
-        <div class="tick"><p:image src="slider_tick.png"/></div>
-        <div class="tick"><p:image src="slider_tick.png"/></div>
-        <div class="tick"><p:image src="slider_tick.png"/></div>
-        <div class="tick"><p:image src="slider_tick.png"/></div>
-        <div class="tick"><p:image src="slider_tick.png"/></div>
+        <g:each in="${[1,2,3,4,5]}" var="i">
+        <div class="tick">
+          <a href="#" onclick="macademia.slider.changeSlider(${i})">
+            <p:image src="slider_tick.png"/>
+          </a>
+        </div>
+        </g:each>
       </div>
     </div>
     <div class="more">show more</div>
