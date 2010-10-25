@@ -17,14 +17,22 @@ class InterestController {
     }
 
     def json = {
+        println('hereherherherheherhhhrher' + params)
+        def max
+        if(params.maxPerson){
+            max = params.maxPerson.toInteger()
+        }
+        else{
+            max = 25
+        }
         def root = interestService.get((params.id as long))
         Graph graph
         if(params.institutions.equals("all")){
-            graph = similarityService.calculateInterestNeighbors(root, jsonService.DEFAULT_MAX_NEIGHBORS_INTEREST_CENTRIC, jsonService.DEFAULT_MAX_INTERESTS_INTEREST_CENTRIC)
+            graph = similarityService.calculateInterestNeighbors(root, max, jsonService.DEFAULT_MAX_INTERESTS_INTEREST_CENTRIC)
         }
         else{
             Set<Long> institutionFilter = institutionService.getFilteredIds(params.institutions)
-            graph = similarityService.calculateInterestNeighbors(root, jsonService.DEFAULT_MAX_NEIGHBORS_INTEREST_CENTRIC, jsonService.DEFAULT_MAX_INTERESTS_INTEREST_CENTRIC, institutionFilter)
+            graph = similarityService.calculateInterestNeighbors(root, max, jsonService.DEFAULT_MAX_INTERESTS_INTEREST_CENTRIC, institutionFilter)
         }
         def data = jsonService.buildInterestCentricGraph(root, graph)
         render(data as JSON)

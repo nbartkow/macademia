@@ -4,12 +4,6 @@ import grails.converters.JSON
 
 class JsonService {
 
-      //max number of people (and collaboration requests) per person-centric (and collaboration-centric) graph
-    int DEFAULT_MAX_NEIGHBORS_PERSON_CENTRIC = 25
-
-      //max number of people (and collaboration requests) per interest-centric graph
-    int DEFAULT_MAX_NEIGHBORS_INTEREST_CENTRIC = 25
-
       //max number of interests per interest-centric graph
     int DEFAULT_MAX_INTERESTS_INTEREST_CENTRIC = 25
 

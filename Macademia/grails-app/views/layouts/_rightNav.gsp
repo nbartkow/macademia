@@ -16,7 +16,7 @@
         <div class="btxt">
           logged in as <m:personLink person="${request.authenticated}"/> 
           (<g:link controller="account" action="logout" class="icon_cross">logout</g:link>)<br>
-          <g:link controller="account" action="modaledituser">edit profile</g:link> &middot;
+          <g:link controller="account" action="modaledit">edit profile</g:link> &middot;
           <a href="#" id="makeRequestLink">collaboration request</a> &middot;
           <a href="#" id="toggleControls">more</a>
         </div>
@@ -96,10 +96,18 @@
         <div id="registerScript">
         </div>
       </div>
-      <div id="makeRequestDialog" class="jqmWindow">&nbsp;</div>
-      <div id="editRequestDialog" class="jqmWindow">&nbsp;</div>
-      <div class="jqmWindow padded2 medium btxt" id="filterDialog">&nbsp;</div>
 
+      <div id="slider"></div>
+      <p>
+      showing the top
+      <input type="text" id="amount" size = 1 value = "25" style="border:0; color:#48802c; font-weight:bold;" />
+      people
+      </p>
+      <div id="makeRequestDialog" class="jqmWindow">&nbsp;</div>
+
+      <div id="editRequestDialog" class="jqmWindow">&nbsp;</div>
+
+      <div class="jqmWindow padded2 medium btxt" id="filterDialog">&nbsp;</div>
     </div>
   <div id="hide" class="btxt">
     <a href="#/?navVisibility=false">hide-></a>

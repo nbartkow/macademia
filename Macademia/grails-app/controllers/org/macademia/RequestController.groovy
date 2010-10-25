@@ -147,14 +147,21 @@ class RequestController {
     }
 
     def json = {
+        def max
+        if(params.maxPerson){
+            max = params.maxPerson as int
+        }
+        else{
+            max = 25
+        }
         def root = collaboratorRequestService.get((params.id as long))
         Graph graph
         if(params.institutions.equals("all")){
-            graph = similarityService.calculateRequestNeighbors(root, jsonService.DEFAULT_MAX_NEIGHBORS_PERSON_CENTRIC)
+            graph = similarityService.calculateRequestNeighbors(root, max)
         }
         else{
             Set<Long> institutionFilter = institutionService.getFilteredIds(params.institutions)
-            graph = similarityService.calculateRequestNeighbors(root, jsonService.DEFAULT_MAX_NEIGHBORS_PERSON_CENTRIC, institutionFilter)
+            graph = similarityService.calculateRequestNeighbors(root, max, institutionFilter)
         }
         def data = jsonService.buildCollaboratorRequestCentricGraph(root, graph)
         render(data as JSON)
