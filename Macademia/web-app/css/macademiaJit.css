@@ -405,128 +405,43 @@ ul#instruct_list li:before, ul.styledList li:before{
     padding: 2px;
 }
 
-/* Styles that affect the profile view */
 
-#profile {
-    margin-top: 10px;
-    padding-right: 5px;
-}
-
-#profile a {
-    text-decoration: none;
-}
-
-#profile a:hover {
-    text-decoration: underline;
-}
 
 #pf_top_container {
-    clear: both;
-    display: block;
-    overflow: hidden;
-    margin-bottom: 10px;
+    clear:both;
 }
 
-#pf_identity {
-    border-bottom: 3px #aaa solid;
-    
-}
-
-#pf_left {
-    margin-right : 5px;
-    float: left;
-}
-
-#pf_right {
-    width: 50%;
-    float: left;
-    padding-top: 10px;
-    text-align: right;
+#pf_img {
+    vertical-align : bottom;
+    width : 0;
+    padding : 0 10px 3px 0;
 }
 
 #pf_name {
-    font-size: 1.5em;
-    padding: 0 0;
-    margin-bottom: 7px;
-    margin-top: 0;
+    font-size: 1.25em;
+    padding : 0;
+    vertical-align : bottom;
+    width : 100%;
+}
+
+#pf_inst {
+    padding : 5px 0 0 0;
+    color:#777777;
+    font-size: 1.1em;
+    vertical-align : middle;
 }
 
 #pf_dept {
-    margin-top: 0px;
-    margin-bottom : 3px;
+    padding : 0;
     color:#777777;
+    font-size: 1.1em;
+    vertical-aling : bottom;
 }
 
 #pf_email {
-    margin-top : 0px;
+    margin-top : 3px;
 }
 
-
-#profile div h4 {
-    padding-bottom: 3px;
-    margin-bottom: 2px;
-    font-size: 1.125em;
-}
-
-#profile div h4:hover {
-    font-style: italic;
-}
-
-#profile div ul, #profile div p {
-    margin: 5px 4px;
-}
-
-#pf_interests, #pf_projects, #pf_links {
-    margin-bottom: 10px;
-    line-height: 1.25em;
-}
-
-#profile div ul {
-    padding: 0 0 10px 10px;
-}
-
-
-#pf_email {
-    margin-top:0px;
-    line-height:1.25em;
-    margin-bottom: 0px;
-}
-
-#pf_interests {
-}
-
-#pf_interests p {
-}
-
-#pf_projects {
-}
-
-#pf_projects h4 {
-}
-
-#pf_projects ul {
-}
-
-#pf_projects ul li {
-}
-
-#pf_projects ul li a {
-}
-
-#pf_links {
-}
-
-#pf_links h4 {
-}
-
-#pf_links ul {
-}
-
-#pf_links ul li {
-}
-
-#pf_links ul li a {
-}
 
 /* Styles that affect the account creation view*/
 
@@ -1190,4 +1105,41 @@ h3 {
     height : 28px;
     position : relative;
     top : 5px;
+}
+
+
+/**
+ * Slider
+ */
+#slider {
+    position : absolute;
+    top : 5px;
+    left: 50%;
+    margin-left: -140px;
+    z-index : 1000;
+    width : 300px;
+}
+
+#slider .less, #slider .more {
+    padding-top : 5px;
+    float : left;
+    font-size : 1.1em;
+    font-family : Arial;
+}
+#slider .mid {
+    float : left;
+    margin : 5 10px;
+}
+#slider .tick {
+    width : 20%;
+    text-align : center;
+    padding-top : 2px;
+    position : relative;
+    left : 2px;
+    float : left;   
+}
+#slider .widget {
+    width : 100px;
+    margin : 0 10px;
+    border : 1px solid #000;
 }

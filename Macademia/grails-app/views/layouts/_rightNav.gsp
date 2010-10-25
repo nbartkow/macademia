@@ -96,13 +96,7 @@
         <div id="registerScript">
         </div>
       </div>
-
-      <div id="slider"></div>
-      <p>
-      showing the top
-      <input type="text" id="amount" size = 1 value = "25" style="border:0; color:#48802c; font-weight:bold;" />
-      people
-      </p>
+      
       <div id="makeRequestDialog" class="jqmWindow">&nbsp;</div>
 
       <div id="editRequestDialog" class="jqmWindow">&nbsp;</div>

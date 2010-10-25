@@ -20,7 +20,8 @@ macademia.queryString = {
     interestId:null,
     personId:null,
     requestId:null,
-    searchPage:null
+    searchPage:null,
+    density:3
 };
 
 //sets the sidebar's visibility according to original status.  Initializes jit visualization
@@ -95,7 +96,8 @@ macademia.initiateGraph = function() {
     var param = $.address.parameter('nodeId');
     var type = macademia.getType(param);
     var id = parseFloat(param.substr(2));
-    macademia.jit.init(type, id);
+    var density = $.address.parameter('density');
+    macademia.jit.init(type, id, density);
 };
 
 // determines the type according to the node's id (eg p_4)
@@ -266,6 +268,8 @@ macademia.changeGraph = function(nodeId){
               macademia.queryString.nodeId = param;
         }
     }else if($.address.parameter('institutions') != macademia.queryString.institutions){
+        macademia.initiateGraph();
+    } else if ($.address.parameter('density') != macademia.queryString.density) {
         macademia.initiateGraph();
     }
 };

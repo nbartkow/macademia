@@ -8,27 +8,39 @@
 
 <div class="medium padded2" id="profile">
   <div id="pf_top_container">
-    <div>
-    <div id="pf_left">
+    <table cellspacing="0" cellpadding="0">
+    <tr>
       <g:if test="${person.imageSubpath}">
-        <img src="/Macademia/image/retrieve?subPath=${person.imageSubpath}"/>
+        <td id="pf_img" rowspan="2">
+        <img src="/Macademia/image/retrieve?subPath=${person.imageSubpath}">
+        </td>
       </g:if>
-    </div>
-    <div id="pf_identity">
-      <h3 id="pf_name">${person.fullName}</h3>
+      <td id="pf_name">${person.fullName.encodeAsHTML()}</td>
+    </tr>
+    <tr>
+      <td id="pf_inst">${person.institution.name.encodeAsHTML()}</td>
+    </tr>
+    <tr>
+      <td colspan="2" id="pf_dept">
       <g:if test="${person.department && person.title}">
-        <h3 id="pf_dept">${person.title.encodeAsHTML()} of ${person.department.encodeAsHTML()}</h3>
+        ${person.title.encodeAsHTML()} of ${person.department.encodeAsHTML()}
       </g:if>
       <g:elseif test="${person.department}">
-        <h3 id="pf_dept">${person.department.encodeAsHTML()}</h3>
+        ${person.department.encodeAsHTML()}
       </g:elseif>
       <g:elseif test="${person.title}">
-        <h3 id="pf_dept">${person.title.encodeAsHTML()}</h3>
+        ${person.title.encodeAsHTML()}
       </g:elseif>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
       <h3 id="pf_email">
       <g:link url="mailto:${person.email}">${person.email}</g:link>
       </h3>
-    </div>
+      </td>
+    </tr>
+    </table>
   </div>
   </div>
   <div id="pf_interests">
