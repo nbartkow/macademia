@@ -180,22 +180,48 @@ body {
     display : none;
 }
 
-.linkValue {
-    width: 40%;
+.customLink {
+    overflow : hidden;
+    width : 90%;
+    clear : both;
+    background-color : #fff;
+    border : solid 1px #d7d7d7;
+    padding : 5px;
+    margin-bottom : 5px;
+}
+
+
+.customLinkCaption {
+    overflow : hidden;
+    width : 100%;
+    clear : both;
+}
+
+.linkNumber {
     text-align: center;
     float: left;
-    margin: 10px 10px 0 0;
+    margin: 0 6px 0 0;
+    vertical-align : bottom;
+    position :relative;
+    top : 3px;
+}
+.linkValue {
+    width: 40%;
+    font-size: 1em;
+    text-align: center;
+    float: left;
+    margin: 0px 10px 0 0;
 }
 
 .linkField {
     width: 40%;
+    font-size: 1em;
     text-align: center;
     float: left;
-    margin: 10px 20px 0 0;
+    margin: 0px 20px 0 0;
 }
 
-.example .linkField, .example .linkValue {
-    margin-top: 6px;
+.customLinkCaption .linkField, .customLinkCaption .linkValue {
     font-size: 1em;
     font-family: Arial;
     font-style: italic;
@@ -215,7 +241,12 @@ body {
     float: left;
     text-decoration : none;
     position : relative;
-    top : 7px;
+    top : 3px;
+}
+
+.removeLink img {
+    height : 12px;
+    width : 12px;
 }
 
 
