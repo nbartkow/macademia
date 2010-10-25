@@ -152,6 +152,7 @@ uiperformance.bundles = [
     name: 'macademia.js.all',
     files: ['jquery/jquery-1.4.2',
             'jquery/jquery-ui-1.8.2.custom.min',
+            'jquery/jquery-ui-1.8.5.custom.min',
             'jquery/jquery-deps',
             'jquery/jquery.qtip-1.0.0-rc3',
             'jquery/jqModal',
@@ -166,6 +167,7 @@ uiperformance.bundles = [
             'lib.macademia.collegefilter',
             'lib.macademia.autocomplete',
             'lib.macademia.profile',
+            'lib.macademia.slider'
     ]],
 ]
 

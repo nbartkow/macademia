@@ -34,7 +34,6 @@ macademia.pageLoad = function() {
     // address only updates manually when a link/node is clicked
     $.address.autoUpdate(false);
     $.address.change(macademia.onAddressChange);
-
     macademia.initialSettings();
     macademia.showHide();
     macademia.initializeLogin();
@@ -44,7 +43,7 @@ macademia.pageLoad = function() {
     macademia.toggleAccountControls();
     macademia.setupRequestCreation();
     macademia.initializeAbout();
-
+    macademia.slider.initSlider();      // not getting past here
 };
 
 macademia.initializeAbout = function() {
@@ -386,7 +385,7 @@ macademia.submitSearch = function(){
                 {searchBox:search,
                 institutions: institutions,
                 type: type,
-                pageNumber: number}   
+                pageNumber: number}
             );
         }else{
             $('#searchBoxDiv').empty();
@@ -449,7 +448,7 @@ macademia.htmlEncode = function(value){
   return $('<div/>').text(value).html();
 };
 
-macademia.htmlDecode = function(value){ 
+macademia.htmlDecode = function(value){
   return $('<div/>').html(value).text();
 };
 

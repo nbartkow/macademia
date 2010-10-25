@@ -98,14 +98,23 @@ class  PersonController{
     }
 
     def json = {
+        def max
+        if(params.maxPerson){
+            max = params.maxPerson as int
+        }
+        else{
+            max = 25
+        }
         def root = personService.get((params.id as long))
         Graph graph
         if(params.institutions.equals("all")){
-            graph = similarityService.calculatePersonNeighbors(root, jsonService.DEFAULT_MAX_NEIGHBORS_PERSON_CENTRIC)
+            graph = similarityService.calculatePersonNeighbors(root, max)
+          println('max:     '+max)
         }
         else{
             Set<Long> institutionFilter = institutionService.getFilteredIds(params.institutions)
-            graph = similarityService.calculatePersonNeighbors(root, jsonService.DEFAULT_MAX_NEIGHBORS_PERSON_CENTRIC, institutionFilter)
+            graph = similarityService.calculatePersonNeighbors(root, max, institutionFilter)
+
         }
         def data = jsonService.buildUserCentricGraph(root, graph)
         render(data as JSON)
