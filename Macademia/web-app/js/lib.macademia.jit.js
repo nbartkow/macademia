@@ -216,7 +216,6 @@ macademia.jit.init = function(rootType,id){
             });
             $(d).click(function() {
                 if(macademia.jit.refreshNeeded){
-                    alert('here b');
                     if(macademia.jit.rootId != parseFloat(node.id.substr(2))){
                         macademia.jit.refreshNeeded = false;
                         macademia.jit.highlightAdjacenciesOff(node);
