@@ -168,7 +168,9 @@ macademia.links.init = function() {
         );
     macademia.links.deserialize();
     $(".personLinks .clearDefault").clearDefault();
-    macademia.links.addNewLink();
+    while ($(".personLinks .customLink:visible").length < 2) {
+        macademia.links.addNewLink();
+    }
 };
 
 macademia.links.addNewLink = function(linkName, linkUrl) {
@@ -181,7 +183,7 @@ macademia.links.addNewLink = function(linkName, linkUrl) {
         newDiv.find('.linkValue input').val(linkUrl);
     }
 
-    $(".personLinks .example").before(newDiv);
+    $(".customLinkCaption").before(newDiv);
 
     newDiv.find(".removeLink").click(
                 function () {
@@ -191,8 +193,20 @@ macademia.links.addNewLink = function(linkName, linkUrl) {
             );
     newDiv.find('.clearDefault').clearDefault();
     newDiv.show();
+    macademia.renumberLinks();
     return false;
 };
+
+macademia.renumberLinks = function() {
+    var i = 1;
+    $(".personLinks .customLink").each(function () {
+        if ($(this).hasClass('customLinkTemplate')) {
+            return;
+        }
+        $(this).find('.linkNumber').html('' + i + '.');
+        i += 1;
+    });
+}
 
 macademia.links.serialize = function() {
     var linkStr = "";

@@ -269,8 +269,13 @@ macademia.changeGraph = function(nodeId){
         }
     }else if($.address.parameter('institutions') != macademia.queryString.institutions){
         macademia.initiateGraph();
-    } else if ($.address.parameter('density') != macademia.queryString.density) {
-        macademia.initiateGraph();
+    } else if (macademia.rgraph && $.address.parameter('density') != macademia.queryString.density) {        
+//      var param = $.address.parameter('nodeId');
+//        if (param) {
+//            macademia.rgraph.onClick(param);
+//        } else {
+            macademia.initiateGraph();
+//        }
     }
 };
 // resizes canvas according to original dimensions

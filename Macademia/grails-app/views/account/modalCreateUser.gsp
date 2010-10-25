@@ -85,15 +85,17 @@
       <div class="personLinks topBorder">
         <div class="left left2 fieldLabel"><label>Links</label></div>
         <div class="clear"></div>
-        <div class="customLink customLinkTemplate clear">
+        <div class="customLink customLinkTemplate">
+          <div class="linkNumber">1.</div>
           <div class="linkField"><input type="text" class="clearDefault" prompt="link name"></div>
           <div class="linkValue"><input type="text" class="clearDefault" prompt="link url"></div>
-          <div class="removeLink"><a href="#" class="removeLink">(x)</a></div>
+          <div class="removeLink"><a href="#" class="removeLink"><p:image src="close_icon.gif"/></a></div>
         </div>
-  
-        <div class="customLink clear example">
-          <div class="linkField">Homepage, Facebook, etc.</div>
-          <div class="linkValue">http://www.whitehouse.gov</div>
+
+        <div class="customLinkCaption">
+          <div class="linkNumber">&nbsp;</div>
+          <div class="linkField">Home, Facebook, etc.</div>
+          <div class="linkValue">http://www.whitehouse.govm</div>
         </div>
 
         <div class=""></div>
