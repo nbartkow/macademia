@@ -21,7 +21,7 @@ macademia.queryString = {
     personId:null,
     requestId:null,
     searchPage:null,
-    density:3
+    density:null
 };
 
 //sets the sidebar's visibility according to original status.  Initializes jit visualization
