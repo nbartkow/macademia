@@ -102,6 +102,9 @@ class  PersonController{
         if(params.maxPerson){
             max = params.maxPerson as int
         }
+        else if (params.density) {
+            max = (params.density as int) * 8
+        }
         else{
             max = 25
         }

@@ -11,7 +11,12 @@ macademia.jit.refreshNeeded = true;
 macademia.jit.intervalId = -1;
 
 macademia.makeJsonUrl = function(type, id) {
-    return "/Macademia/" + type + "/json/" + id + "?institutions="+$.address.parameter('institutions');
+    // TODO: should this really go here?
+    var density = $.address.parameter('density');
+    if (!density || density == undefined || density == 'undefined') {
+        density = 3; 
+    }
+    return "/Macademia/" + type + "/json/" + id + "?institutions="+$.address.parameter('institutions') + "&density=" + density;
 };
 
 macademia.checkBrowser = function() {

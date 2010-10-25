@@ -86,7 +86,7 @@ class JsonService {
         }
 
         for (Person p: graph.getPeople()){
-            if(p==person){
+            if(p==person || p == null){
                 continue
             }
             def pid = "p_${p.id}"

@@ -17,10 +17,12 @@ class InterestController {
     }
 
     def json = {
-        println('hereherherherheherhhhrher' + params)
         def max
         if(params.maxPerson){
             max = params.maxPerson.toInteger()
+        }
+        else if (params.density) {
+            max = (params.density as int) * 8
         }
         else{
             max = 25

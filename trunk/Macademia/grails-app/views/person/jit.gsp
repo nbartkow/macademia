@@ -40,6 +40,23 @@
     %{--<div id="macLogo"><img src="${createLinkTo(dir: 'images', file: 'mac_crest.png')}"/>Macalester College</div>--}%
   </div>
 
+
+  <div id="slider">
+    <div class="less">show less</div>
+    <div class="mid">
+      <div class="widget">&nbsp;</div>
+      <div>
+        <div class="tick"><p:image src="slider_tick.png"/></div>
+        <div class="tick"><p:image src="slider_tick.png"/></div>
+        <div class="tick"><p:image src="slider_tick.png"/></div>
+        <div class="tick"><p:image src="slider_tick.png"/></div>
+        <div class="tick"><p:image src="slider_tick.png"/></div>
+      </div>
+    </div>
+    <div class="more">show more</div>
+  </div>
+  
+
   <div id="infovis">
 
     
@@ -49,7 +66,6 @@
 </div>
 
   <g:render template="../templates/macademia/logo"/>
-
 <div id="extendedInfo">
   <g:render template="../layouts/rightNav"/>
 </div>
