@@ -27,7 +27,7 @@ macademia.checkBrowser = function() {
 
 // highlights adjacencies during mouseover
 macademia.jit.highlightAdjacenciesOn = function(node){
-    var adjacentNodes = [];
+    var adjacentNodes = [node.id];
     var root = macademia.rgraph.graph.getNode(macademia.rgraph.root);
     root.eachSubnode(function(n){
         n.eachAdjacency(function(adj){
@@ -57,7 +57,7 @@ macademia.jit.highlightAdjacenciesOn = function(node){
 
 // returns graph to original coloring during mouseout
 macademia.jit.highlightAdjacenciesOff = function(node){
-    var adjacentNodes = [];
+    var adjacentNodes = [node.id];
     var root = macademia.rgraph.graph.getNode(macademia.rgraph.root);
     root.eachSubnode(function(n){
         n.eachAdjacency(function(adj) {
