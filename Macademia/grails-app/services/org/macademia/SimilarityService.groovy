@@ -104,7 +104,7 @@ class SimilarityService {
         Graph graph = new Graph()
         //interestCache = new HashMap<Long, Interest>()
         graph = findPeopleAndRequests(graph, maxPeople, interest.id, null, 1, institutionFilter)
-        for(SimilarInterest ir : getSimilarInterests(interest.id, maxSimsPerInterest, absoluteThreshold, institutionFilter)){
+        for(SimilarInterest ir : getSimilarInterests(interest.id, maxInterests, absoluteThreshold, institutionFilter)){
             //log.info("Similar interest ID: "+ir.interestId+" similarity score "+ir.similarity)
             if (graph.getInterests().size() < maxInterests + 1) {
                 graph.addEdge(null, interest.id, ir.interestId, null)
