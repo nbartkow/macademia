@@ -48,10 +48,10 @@ macademia.jit.highlightAdjacenciesOn = function(node){
     });
     for (var i = 0; i < adjacentNodes.length; i++){
         var adjN = "#" + adjacentNodes[i];
-        $(adjN).css('font-weight', 600);
         $(adjN).css('opacity', 0.75);
         $(adjN).css('z-index', 30);
         $(adjN).css('background-color', '#A2AB8E');
+        $(adjN).css('color', '#FFF');
     }
 };
 
@@ -77,12 +77,10 @@ macademia.jit.highlightAdjacenciesOff = function(node){
 
     for (var i = 0; i < adjacentNodes.length; i++){
         var adjN = "#" + adjacentNodes[i];
-        if(root.id != $(adjN).attr('id')){
-            $(adjN).css('font-weight', 'normal');
-        }
         $(adjN).css('opacity', 0.8);
         $(adjN).css('z-index', 10);
         $(adjN).css('background-color','transparent');
+        $(adjN).css('color', '#000');
     }
 };
 
@@ -194,7 +192,6 @@ macademia.jit.init = function(rootType,id){
                     d.css('font-weight', 600);
                 }
             $(d).mouseover(function() {
-                $(this).css('font-weight', 600);
                 $(this).css('opacity', 0.75);
                 $(this).css('z-index', 50);
                 $(this).css('background-color', '#A2AB8E');
@@ -203,9 +200,6 @@ macademia.jit.init = function(rootType,id){
 
             });
             $(d).mouseout(function() {
-                if(node.id != root.id){
-                    $(this).css('font-weight', 'normal');
-                }
                 $(this).css('opacity', 0.8);
                 $(this).css('z-index', 10);
                 $(this).css('background-color','transparent');

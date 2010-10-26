@@ -7741,7 +7741,13 @@ Layouts.Radial = new Class({
 
         //sorts nodes according to their number of subnodes
         levelOneNodes.sort(function(a, b) {
-            return (levelOneInfo[a.id].subnodes.length - levelOneInfo[b.id].subnodes.length);
+            var ia = levelOneInfo[a.id];
+            var ib = levelOneInfo[b.id];
+            if (ia.subnodes.length != ib.subnodes.length) {
+                return ia.subnodes.length - ib.subnodes.length;
+            } else {
+                return a.id.localeCompare(b.id);
+            }
         });
 
         // places all subnodes.
@@ -7777,7 +7783,13 @@ Layouts.Radial = new Class({
         var levelOneAngleInit = root.angleSpan.begin;
 
         levelOneNodes.sort(function(a, b) {
-            return (levelOneInfo[a.id].actualSubnodes.length - levelOneInfo[b.id].actualSubnodes.length);
+            var ia = levelOneInfo[a.id];
+            var ib = levelOneInfo[b.id];
+            if (ia.actualSubnodes.length != ib.actualSubnodes.length) {
+                return ia.actualSubnodes.length - ib.actualSubnodes.length;
+            } else {
+                return a.id.localeCompare(b.id);
+            }
         });
 
         // function for level one nodes that sets polar coords

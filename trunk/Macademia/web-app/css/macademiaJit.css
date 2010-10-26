@@ -222,9 +222,8 @@ html, body {
 
 .node:hover {
     cursor: pointer;
-    color: #222;
+    color: #fff;
     background-color: white;
-    font-weight: bold;
 }
 
 .ttName {
