@@ -1079,10 +1079,11 @@ h3 {
     font-family: Arial;
     font-style : normal;
     color : #eed;
+    margin-bottom : 6px;
 }
 
 #acknowledgements2 div {
-    margin-bottom : 4px;
+    margin-bottom : 10px;
     font-family: Arial;
     font-size : 14px ;
     color : #eed;
@@ -1100,10 +1101,15 @@ h3 {
     color : #eed;
 }
 
-#acknowledgements2 img {
+#acknowledgements2 .acm img{
     height : 28px;
     position : relative;
     top : 5px;
+}
+#acknowledgements2 .nsf img{
+    height : 50px;
+    position : relative;
+    top : -5px;
 }
 
 
