@@ -31,10 +31,13 @@
   
   <div id="acknowledgements2">
     <div>generously supported by:</div>
-    <div class="logo">
+    <div class="logo acm">
       <a href="http://acm.edu"><p:image src="acm_logo.png" alt="The Associated Colleges of the Midwest"/></a>
-      &nbsp;and</div>
-    <div class="logo"><a href="http://mellon.org">The Mellon Foundation</a> </div>
+     </div>
+    <div class="logo"><a href="http://mellon.org">The Andrew W.<br/>Mellon Foundation</a> </div>
+    <div class="logo nsf">
+      <a href="http://nsf.gov"><p:image src="NSF_Logo.png" alt="The National Science Foundation"/></a>
+      </div>
     %{--<div class="logo"><span>The National Science Foundation</span></div>--}%
     %{--<div class="logo"><span>Macalester College</span></div>--}%
     %{--<div id="macLogo"><img src="${createLinkTo(dir: 'images', file: 'mac_crest.png')}"/>Macalester College</div>--}%
