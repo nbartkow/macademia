@@ -44,7 +44,8 @@ macademia.pageLoad = function() {
     macademia.toggleAccountControls();
     macademia.setupRequestCreation();
     macademia.initializeAbout();
-    macademia.slider.initSlider();      // not getting past here
+    macademia.slider.initSlider();
+    macademia.initLogging();
 };
 
 macademia.initializeAbout = function() {
@@ -98,6 +99,41 @@ macademia.initiateGraph = function() {
     var id = parseFloat(param.substr(2));
     var density = $.address.parameter('density');
     macademia.jit.init(type, id, density);
+};
+
+macademia.initLogging = function() {
+    $("a").live("mousedown", function(){
+        if (macademia.isEmailAddress($(this).text())) {
+            macademia.logEmailClick($(this).text());
+        }
+    });
+
+    $("body").live("copy", function(){
+        if (macademia.isEmailAddress($(this).text())) {
+            var words = $(this).text().split(' ');
+            for (var i = 0; i < words.length; i++) {
+                if (macademia.isEmailAddress(words[i])) {
+                    macademia.logEmailClick(words[i]);
+                }
+            }
+        }
+    });
+};
+
+
+macademia.loggedEmails = macademia.loggedEmails || {};
+
+macademia.isEmailAddress = function(word) {
+    return (word.indexOf('@') >= 0);
+};
+
+macademia.logEmailClick = function(email) {
+    email = macademia.trim(email);
+    if (macademia.loggedEmails[email]) {
+        return;
+    }
+    macademia.loggedEmails[email] = true;
+    macademia.serverLog('copy', 'email', { 'email' : email });
 };
 
 // determines the type according to the node's id (eg p_4)
@@ -270,12 +306,7 @@ macademia.changeGraph = function(nodeId){
     }else if($.address.parameter('institutions') != macademia.queryString.institutions){
         macademia.initiateGraph();
     } else if (macademia.rgraph && $.address.parameter('density') != macademia.queryString.density) {        
-//      var param = $.address.parameter('nodeId');
-//        if (param) {
-//            macademia.rgraph.onClick(param);
-//        } else {
             macademia.initiateGraph();
-//        }
     }
 };
 // resizes canvas according to original dimensions
