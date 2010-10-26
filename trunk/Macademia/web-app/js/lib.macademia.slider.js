@@ -30,8 +30,29 @@ macademia.slider.initSlider = function() {
                 // all actions here happen when user stops sliding
 			}
 	});
+    var i = 1;
+    $('#slider .tick a').each(function () {
+        var x = i;
+        $(this).click(function() {
+            macademia.slider.changeValue(x);
+            return false;
+        });
+        i += 1;
+    });
+    $('#slider .less a').click(function () {
+        var val = macademia.slider.getValue();
+        macademia.slider.changeValue(Math.max(1, val - 1));
+    });
+    $('#slider .more a').click(function () {
+        var val = macademia.slider.getValue();
+        macademia.slider.changeValue(Math.min(5, val + 1));
+    });
 };
 
-macademia.slider.changeSlider = function(value) {
+macademia.slider.changeValue = function(value) {
     $('#slider .widget').slider('value', value);
-}
+};
+
+macademia.slider.getValue = function() {
+    return $('#slider .widget').slider('value');
+};

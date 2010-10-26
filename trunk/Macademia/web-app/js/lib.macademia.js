@@ -299,6 +299,7 @@ macademia.resizeCanvas = function(currentWidth) {
         macademia.rgraph.canvas.translate(0, 5);
     }
 };
+
 // changes the Query string according link's href
 macademia.changeQueryString = function(query) {
     var queryString = query.substr(3);

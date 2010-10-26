@@ -45,20 +45,20 @@
 
 
   <div id="slider">
-    <div class="less">show less</div>
+    <div class="less"><a href="#">show less</a></div>
     <div class="mid">
       <div class="widget">&nbsp;</div>
       <div>
         <g:each in="${[1,2,3,4,5]}" var="i">
         <div class="tick">
-          <a href="#" onclick="macademia.slider.changeSlider(${i})">
+          <a href="#">
             <p:image src="slider_tick.png"/>
           </a>
         </div>
         </g:each>
       </div>
     </div>
-    <div class="more">show more</div>
+    <div class="more"><a href="#">show more</a></div>
   </div>
   
 
