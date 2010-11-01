@@ -4,7 +4,7 @@
 
 var macademia = macademia || {};
 
-macademia.allowedDomains = [ 'macalester.edu', 'acm.edu' ];
+macademia.allowedDomains = [ 'macalester.edu', 'acm.edu', 'carleton.edu' ];
 
 
 macademia.initializeRegister = function() {
