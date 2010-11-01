@@ -13,7 +13,7 @@ class InstitutionController {
 
         // TODO: Remove me after launch
         institutions = institutions.findAll({
-            it.emailDomain == 'macalester.edu'
+            it.emailDomain == 'macalester.edu' || it.emailDomain == 'carleton.edu' || it.emailDomain == 'acm.edu'
         })
 
         render(view: "/templates/macademia/_collegeFilterDialog", model: [institutions: institutions])
