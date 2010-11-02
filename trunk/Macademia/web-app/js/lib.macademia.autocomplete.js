@@ -189,20 +189,3 @@ macademia.autocomplete.initEditRequest = function() {
           }
         }, "/Macademia/autocomplete/index?klass=interest");
 };
-
-macademia.autocomplete.initCollegeSearch = function() {
-    $("#collegeSearchAuto").macademiaAutocomplete(
-        {
-            multiple : true,
-            select : function (event, ui) {
-                var name = ui.item.data[1];
-                $('#collegeSearchAuto').val(name);
-                window.setTimeout(function () {
-                        $("#collegeSearch").blur();
-                    }, 100);
-                // simulate a click of the add college button
-                $("#addCollege").click();
-                return false;
-            }
-        }, "/Macademia/autocomplete/index?klass=institution");
-};

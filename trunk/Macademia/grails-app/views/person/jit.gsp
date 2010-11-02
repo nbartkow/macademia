@@ -44,6 +44,9 @@
   </div>
 
 
+  <div id="collegeFilterButton2" class="collegeFilterTrigger" >
+    Showing <span>all schools</span>. (<a href="#" class="change">change</a>)
+  </div>
   <div id="slider">
     <div class="less"><a href="#">show less</a></div>
     <div class="mid">

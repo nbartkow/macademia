@@ -327,7 +327,7 @@ macademia.resizeCanvas = function(currentWidth) {
         $("#infovis-canvaswidget").css({"width":newWidth, "height": newHeight});
         macademia.rgraph.canvas.resize(currentWidth, currentHeight);
         macademia.rgraph.canvas.scale(newHeight/originalHeight,newWidth/originalWidth);
-        macademia.rgraph.canvas.translate(0, 5);
+        macademia.rgraph.canvas.translate(0, 25);
     }
 };
 
