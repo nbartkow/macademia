@@ -147,6 +147,7 @@ class SimilarityService {
             graph = calculateNeighbors(i, graph, maxPeople, (Set<Long>)person.interests.collect({it.id}), institutionFilter)
         }
         graph.finalizeGraph(maxPeople)
+        //println("person map is ${graph.personMap}")
         long graphEnd =Calendar.getInstance().getTimeInMillis()
         long graphTime=graphEnd-graphStart
         log.info("It took $graphTime to build $person graph")
@@ -244,6 +245,7 @@ class SimilarityService {
                 timing.recordTime("Adding edge without Institution Filter")
             } else {
                 if (institutionFilter.contains(databaseService.getUserInstitution(p))) {
+                    graph.incrementPersonScore(p, sim)
                     graph.addEdge(p, i, ir, null)
                 }
                 timing.recordTime("Adding edge with Institution Filter overhead")
