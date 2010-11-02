@@ -38,8 +38,8 @@
 }
 
 #filterDialog.jqmWindow {
-    width:250px;
-    margin-left: -50px;
+    width:400px;
+    margin: auto;
 }
 
 

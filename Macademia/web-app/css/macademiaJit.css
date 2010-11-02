@@ -157,8 +157,9 @@ html, body {
     min-width: 1020px;
 }
 
+
 #mainContent {
-    min-height:645px;
+    min-height:595px;
     min-width: 700px;
     height:100%;
     position: absolute;
@@ -169,7 +170,7 @@ html, body {
 #sidebar {
     background: #ffe;
     height: 100%;
-    min-height: 645px;
+    min-height: 595px;
     width: 320px;
     float: right;
     font-family: helvetica, verdana, arial, sans-serif;
@@ -189,7 +190,6 @@ html, body {
 #main {
     overflow: hidden;
     padding-bottom: 25px;
-
 }
 
 /* Styles affecting the visualization */
@@ -199,7 +199,7 @@ html, body {
     background-color: #A2AB8E;
     min-width: 700px;
     height: 100%;
-    min-height: 645px;
+    min-height: 595px;
     position: absolute;
     right: 0px;
     left: 0px;
@@ -640,18 +640,11 @@ ul#instruct_list li:before, ul.styledList li:before{
 #editColleges {
     /*-moz-border-radius: 5px 5px 5px 5px;*/
     /*-webkit-border-radius: 5px;*/
-    padding-top: 10px;
-    height: 370px;
-
+    /*padding-top: 20px;*/
+    height: 380px;
+    clear : both;
 }
 
-#addAllColleges {
-    float: left;
-}
-
-#clearAllColleges {
-    float: right;
-}
 
 #submitColleges {
     text-align: center;
@@ -662,36 +655,68 @@ ul#instruct_list li:before, ul.styledList li:before{
     /*-moz-border-radius: 5px 5px 5px 5px;*/
     /*-webkit-border-radius: 5px;*/
     background-color: #ffe;
-    height: 250px;
+    height: 300px;
     padding: 5px;
     margin: 5px;
-    margin-top: 40px;
     overflow: auto;
+    clear : both;
+}
+
+#collegeFilterEditButtons {
+    margin : 20px 0 10px 0;
+    width : 100%;
+    overflow : auto;
 }
 
 #close {
 
 }
 
+#filterModal h3 {
+    color : #F5F5E5;
+    padding: 0px;
+    margin: 0px;
+}
+
 #closeCollegeFilter {
     padding: 0px;
     margin: 0px;
-    float: right;
+    position : absolute;
+    top : 8px;
+    right : 8px;
 }
-#closeCollegeFilter a{
-    font-size:1.5em;
-    color: #FFFFEE;
+
+
+#filterModal .college img {
+    width : 10px;
+}
+
+#filterModal input[type='submit'] {
+    font-size : 1.2em;
+}
+
+#addAllColleges {
+    float: left;
+}
+
+#addCollege {
+    float: left;
+    margin-left : 5px;
+}
+#clearAllColleges {
+    float: left;
 }
 
 #collegeSearchAuto {
     -moz-border-radius: 5px 5px 5px 5px;
     -webkit-border-radius: 5px;
-    background: none repeat scroll 0 0 #B2D4EC;
+    background: none repeat scroll 0 0 #FFF;
     border: 0 none;
     height: 25px;
     width: 160px;
     padding: 5px 3px;
-
+    float: left;
+    margin-left : 25px;
 }
 
 #collegeSearchAuto:focus {
@@ -706,6 +731,7 @@ ul#instruct_list li:before, ul.styledList li:before{
     margin-bottom: 10px;
     color: #333;
 }
+
 
 /* styles that affect the request for collaboration view*/
 
@@ -924,12 +950,13 @@ h3 {
 
 #tagContainer {
     position: absolute;
-    bottom: 0px;
-    right: 0px;
-    left: 0px;
+    bottom: 0;
+    right: 0;
+    left: 0;
     min-width:700px;
     text-align: center;
     color: #d0d3b3;
+    overflow : hidden;
 }
 
 #tagContainer a {
@@ -949,6 +976,7 @@ h3 {
 #taglineLinks {
     color: #ffe;
     font-size: 1.0em;
+
 }
 #taglineLinks a {
     padding : 0 10px;
@@ -1116,6 +1144,24 @@ h3 {
 /**
  * Slider
  */
+
+#collegeFilterButton2 {
+    position : absolute;
+    top : 39px;
+    left: 50%;
+    margin-left: -250px;
+    z-index : 1000;
+    width : 500px;
+    color: #333;
+    text-align : center;
+    font-size : 1.1em;
+    font-family : Arial;
+}
+
+#collegeFilterButton2 a {
+    color : #EEEEDD;
+}
+
 #slider {
     position : absolute;
     top : 5px;
