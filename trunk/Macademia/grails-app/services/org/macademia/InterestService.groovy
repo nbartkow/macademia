@@ -55,7 +55,7 @@ class InterestService implements ApplicationContextAware {
     * @param google : google
     */
     public void buildDocuments(Interest interest, String ipAddr) {
-        log.info("doing interest ${interest}")
+//        log.info("doing interest ${interest}")
         double weight = 1.0
         for (String url : googleService.query(interest.text, 1, ipAddr)) {
             weight *= 0.5;
@@ -96,6 +96,11 @@ class InterestService implements ApplicationContextAware {
             autocompleteService.addInterest(interest)
         }
     }
+
+  public void delete(Long interestId){
+      autocompleteService.removeInterest(interestId)
+      Interest.get(interestId).delete()
+  }
 
 
 }

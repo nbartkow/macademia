@@ -5,7 +5,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'collaboratorRequest.label', default: 'CollaboratorRequest')}" />
-        <title><g:message code="default.list.label" args="[user.profile.fullName]" /></title>
+        <title><g:message code="default.list.label" args="[user.fullName]" /></title>
     </head>
     <body id = main>
         <div class="nav">
@@ -13,7 +13,7 @@
             <span class="menuButton"><g:link class="create" action="create"><g:message code="Request for collaborators" args="[entityName]" /></g:link></span>
         </div>
         <div class="body">
-            <h1><g:message code="Viewing collaborator requests of ${user.profile.fullName}" /></h1>
+            <h1><g:message code="Viewing collaborator requests of ${user.fullName}" /></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>

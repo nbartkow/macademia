@@ -36,7 +36,7 @@ class RequestController {
                 throw new IllegalArgumentException("not authorized")
             }
         }
-        def CollaboratorRequestList = CollaboratorRequest.findAllByCreator(user.profile)
+        def CollaboratorRequestList = CollaboratorRequest.findAllByCreator(user)
         [collaboratorRequestList: CollaboratorRequestList, collaboratorRequestInstanceTotal: CollaboratorRequest.count(), user:user ]
     }
 
@@ -128,12 +128,12 @@ class RequestController {
     }
 
     def delete = {
-        def collaboratorRequestInstance = CollaboratorRequest.get(params.id)
-        if (collaboratorRequestInstance) {
+        def collaboratorRequest = CollaboratorRequest.get(params.requestId)
+        if (collaboratorRequest) {
             try {
-                collaboratorRequestInstance.delete(flush: true)
+                collaboratorRequestService.delete(collaboratorRequest)
                 flash.message = "${message(code: 'default.deleted.message', args: [message(code: 'collaboratorRequest.label', default: 'CollaboratorRequest'), params.id])}"
-                redirect(action: "list")
+                redirect(uri: "/")
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) {
                 flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'collaboratorRequest.label', default: 'CollaboratorRequest'), params.id])}"
@@ -142,7 +142,7 @@ class RequestController {
         }
         else {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'collaboratorRequest.label', default: 'CollaboratorRequest'), params.id])}"
-            redirect(action: "list")
+            redirect(uri: "/")
         }
     }
 

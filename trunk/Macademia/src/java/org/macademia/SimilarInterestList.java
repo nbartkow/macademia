@@ -121,7 +121,10 @@ public class SimilarInterestList {
     }
 
     public void remove(SimilarInterest remove) {
-        list.remove(list.lastIndexOf(remove));
+        int index = list.lastIndexOf(remove);
+        if (index > -1) {
+            list.remove(index);
+        }
     }
 
     public SimilarInterest removeLowest() {

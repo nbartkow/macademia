@@ -87,6 +87,22 @@ class AutocompleteService implements PostInsertEventListener {
         overallTree.add("r"+ collaboratorRequest.id, entity)
     }
 
+    public def removePerson = { id ->
+        overallTree.remove("p" + id)
+    }
+    public def removeInstitution = { id ->
+        institutionTree.remove(id)
+    }
+    public def removeInterest = { id ->
+        overallTree.remove("i" + id)
+        interestTree.remove(id)
+    }
+
+    public def removeRequest = { id ->
+        overallTree.remove("r"+ id)
+    }
+
+
     Collection<AutocompleteEntity> getInstitutionAutocomplete(String query, int maxResults) {
         // Returns the top three cities that start with "ch" ordered by score.
         List<AutocompleteEntity> institutions = new ArrayList<AutocompleteEntity>()

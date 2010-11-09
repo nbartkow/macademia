@@ -81,7 +81,7 @@ class DatabaseServiceIntegrationTests extends GrailsUnitTestCase {
         int sizeOne = databaseService.getSimilarInterests(interestService.findByText("web2.0")).size()
         databaseService.replaceLowestSimilarity(interestService.findByText("web2.0"), interestService.findByText("nationalism"), 0.2)
         assertEquals(databaseService.getSimilarInterests(interestService.findByText("web2.0")).size(),sizeOne)
-        databaseService.removeInterests(interestService.findByText("web2.0"), interestService.findByText("nationalism"))
+        databaseService.removeSimilarInterest(interestService.findByText("web2.0"), interestService.findByText("nationalism"))
         assertEquals(databaseService.getSimilarInterests(interestService.findByText("web2.0")).size(),sizeOne-1)
     }
 }
