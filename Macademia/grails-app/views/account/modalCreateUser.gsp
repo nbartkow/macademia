@@ -105,10 +105,25 @@
     </div>
     <div class="clear topBorder"></div>
     <div class="progressBar"><span></span></div>
+
     <div id="submit_edits">
       <g:if test="${user.id}"><input type="hidden" name="id" value="${user.id}"/></g:if> 
-      <input type="submit" value="Update"> or <a href="/Macademia">Cancel</a></div>
+      <input type="submit" value="Update"> or   <a href="/Macademia">Cancel</a> </div>
+
   </form>
+
+  <div id="account_delete">
+    <g:if test="${user.id}">
+      <g:form controller="account" action="delete">
+        <g:if test="${user.id}">
+          <g:hiddenField name="personId" value="${user.id}"/>
+          <g:actionSubmit value="Delete Account" action="delete" onclick="return confirm('Are you sure you want to delete this account?')"/>
+        </g:if>
+      </g:form>
+    </g:if>
+
+    </div>
+
 </div>
 <g:render template="../templates/macademia/tagline"/>
 <a href="/Macademia/">

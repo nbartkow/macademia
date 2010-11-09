@@ -41,7 +41,7 @@ class DatabaseService {
 
     public void switchToCopyDB(String toCopy) {
         wrapper.switchToCopyDB(toCopy)
-        
+
     }
 
     public DBObject findById(String collection, Long id) throws IllegalArgumentException{
@@ -71,6 +71,10 @@ class DatabaseService {
             throw new RuntimeException("users institution has no ID")
         }
         wrapper.addUser(id, interestIds, institutionId)
+    }
+
+    public List<List<Long>> removeUser(Long userId) {
+        return wrapper.removeUser(userId);
     }
 
     public long getUserInstitution(long id){
@@ -112,8 +116,8 @@ class DatabaseService {
         return wrapper.getRequestKeywords(id)
     }
 
-    public void removeCollaboratorRequest(CollaboratorRequest rfc) {
-        wrapper.removeCollaboratorRequest(rfc.id)
+    public List<Long> removeCollaboratorRequest(CollaboratorRequest rfc) {
+        return wrapper.removeCollaboratorRequest(rfc.id)
     }
 
     /**
@@ -132,12 +136,13 @@ class DatabaseService {
     }
 
    /**
-    *
+    * Removes the secondInterest from the firstInterest's list of
+    * similar interests.
     * @param firstInterest the interest to be removed from
     * @param secondInterest the similar interest to be removed
     */
-    public void removeInterests(Interest firstInterest, Interest secondInterest){
-        wrapper.removeInterests((long)firstInterest.id, (long)secondInterest.id)
+    public void removeSimilarInterest(Interest firstInterest, Interest secondInterest){
+        wrapper.removeSimilarInterest((long)firstInterest.id, (long)secondInterest.id)
     }
 
     public SimilarInterestList getSimilarInterests(Interest interest){

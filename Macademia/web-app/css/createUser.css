@@ -172,6 +172,13 @@ body {
     font-size: 1.0em;
 }
 
+#account_delete {
+    margin-top: 10px;
+    background-color: #FFFFEE;
+    text-align: center;
+    font-size: 1.4em;
+}
+
 
 /**
  * Link editing.

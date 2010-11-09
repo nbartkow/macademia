@@ -80,7 +80,7 @@
   <h4>Account:</h4>
       <ul class="styledList atxt">
       <li>
-      <g:link url="[controller:'account',action:'modaledituser', id:person.id ]">Edit Profile</g:link>
+      <g:link url="[controller:'account',action:'edit', id:person.id ]">Edit Profile</g:link>
       </li>
       </ul>
 </g:if>

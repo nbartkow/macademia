@@ -43,7 +43,7 @@ class SimilarityService {
 
    public void buildInterestRelations() {
         for (Interest interest : Interest.findAll()) {
-            log.info("interest Id is $interest.id related article is $interest.articleId and relations Built is $relationsBuilt")
+//            log.info("interest Id is $interest.id related article is $interest.articleId and relations Built is $relationsBuilt")
             if(!(interest.articleId==null || interest.articleId<0)){
                 databaseService.buildInterestRelations(interest.normalizedText, interest.id, interest.articleId, relationsBuilt)
             }  else{

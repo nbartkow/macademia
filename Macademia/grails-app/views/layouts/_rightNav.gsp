@@ -16,7 +16,7 @@
         <div class="btxt">
           logged in as <m:personLink person="${request.authenticated}"/> 
           (<g:link controller="account" action="logout" class="icon_cross">logout</g:link>)<br>
-          <g:link controller="account" action="modaledituser">edit profile</g:link> &middot;
+          <g:link controller="account" action="edit">edit profile</g:link> &middot;
           <a href="#" id="makeRequestLink">collaboration request</a> &middot;
           <a href="#" id="toggleControls">more</a>
         </div>

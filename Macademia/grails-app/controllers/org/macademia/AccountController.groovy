@@ -95,7 +95,7 @@ The Macademia Team
         personService.save(request.authenticated)
 
         if (params.fromEmail) {
-            redirect(action : 'modaledituser')
+            redirect(action : 'edit')
         } else {
             render(view : 'message',
                    model : [
@@ -212,7 +212,7 @@ The Macademia Team
         user.passConfirm = ""
     }
 
-    def modaledituser = {
+    def edit = {
         Person person = null;
         if (!request.authenticated) {
             throw new IllegalStateException("no user present!")
@@ -237,6 +237,33 @@ The Macademia Team
             String allInterests = person.interests.collect({it.text}).join(', ')
             return render(view: 'modalCreateUser', model: [user: person, interests : allInterests])
 	    }
+    }
+
+    def delete = {
+        def person
+        def current = request.authenticated
+        if (params.personId){
+            person = Person.get(params.personId)
+            if (!request.authenticated.canEdit(person)) {
+                throw new IllegalArgumentException("not authorized")
+            }
+        } else{
+            person = current
+        }
+        if (!person) {
+            render("User identified by id '$params.id' was not located")
+        } else {
+            personService.delete(person)
+            //userLoggingService.logEvent(something)
+            log.info("Successfully deleted user [$person.id] $person.email")
+            if (current == person){
+               session.invalidate()
+               def cookie = new Cookie(MacademiaConstants.COOKIE_NAME, "")
+               cookie.path = "/"
+               response.addCookie(cookie)
+            }
+            redirect(uri: "/")
+        }
     }
 
     def updateuser = {
@@ -266,21 +293,24 @@ The Macademia Team
 
                 render('okay ' + person.id)
             }
-	    }
+        }
 
     }
 
     private void interestParse(Person person) {
-    String allInterests = params.interests
+        String allInterests = params.interests
         String[] tokens = allInterests.trim().split(",")
         person.interests = []
         for (i in tokens){
-            Interest existingInterest = interestService.findByText(i);
-            if (existingInterest != null){
-                person.addToInterests(existingInterest)
-            } else {
-                Interest newInterest = new Interest(i);
-                person.addToInterests(newInterest)
+            if (i.trim().length() != 0) {
+                Interest existingInterest = interestService.findByText(i);
+                if (existingInterest != null){
+                    println(existingInterest.toString())
+                    person.addToInterests(existingInterest)
+                } else {
+                    Interest newInterest = new Interest(i);
+                    person.addToInterests(newInterest)
+                }
             }
         }
     }

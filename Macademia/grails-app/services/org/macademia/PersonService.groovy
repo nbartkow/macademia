@@ -11,6 +11,7 @@ class PersonService {
     def userService
     def databaseService
     def autocompleteService
+    def collaboratorRequestService
 
 
     def get(long id) {
@@ -63,4 +64,17 @@ class PersonService {
     public Person findByToken(String token) {
         return Person.findByToken(token)
     }
+
+    public void delete(Person person){
+        autocompleteService.removePerson(person.id)
+        List deleteInterestsAndRequests = databaseService.removeUser(person.id)
+        for (interest in deleteInterestsAndRequests[0]){
+          interestService.delete(interest)
+        }
+        for (request in deleteInterestsAndRequests[1]){
+          collaboratorRequestService.delete(CollaboratorRequest.get(request))
+        }
+        person.delete()
+    }
+
 }

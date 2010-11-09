@@ -15,6 +15,12 @@
     <p id="coll_desc"><span>Description:<br></span>${fieldValue(bean: collaboratorRequest, field: "description")}</p>
     <g:if test="${request.authenticated && request.authenticated.canEdit(collaboratorRequest.creator)}">
       <p id="coll_edit"><a href="#" id="editRequestButton">Edit request</a></p>
+      <g:form action="delete">
+        <g:if test="${collaboratorRequest.id}">
+          <g:hiddenField name="requestId" value="${collaboratorRequest.id}"/>
+          <g:actionSubmit value="delete">delete</g:actionSubmit>
+        </g:if>
+      </g:form>
     </g:if>
   </div>
   <g:javascript >

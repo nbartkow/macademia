@@ -4,6 +4,7 @@ class CollaboratorRequestService {
 
     def interestService
     def databaseService
+    def autocompleteService
 
     static transactional = true
 
@@ -41,5 +42,20 @@ class CollaboratorRequestService {
 
     public List<CollaboratorRequest> findAllByCreator(Person creator){
         return CollaboratorRequest.findAllByCreator(creator)
+    }
+
+    public void delete(CollaboratorRequest cr){
+      // still need to delete lone interests
+         autocompleteService.removeRequest(cr.id)
+         cr.delete()
+         List deleteInterests = databaseService.removeCollaboratorRequest(cr)
+         for (interest in deleteInterests){
+          autocompleteService.removeInterest(interest)
+          Interest.get(interest).delete()
+        }
+    }
+
+    public void delete(Long crId){
+      delete(CollaboratorRequest.get(crId))
     }
 }
