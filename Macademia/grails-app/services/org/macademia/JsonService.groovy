@@ -4,6 +4,7 @@ import grails.converters.JSON
 
 class JsonService {
 
+    def collaboratorRequestService
       //max number of interests per interest-centric graph
     int DEFAULT_MAX_INTERESTS_INTEREST_CENTRIC = 25
 
@@ -70,7 +71,7 @@ class JsonService {
         return [personNodes: personNodes, interestNodes: interestNodes, collaboratorRequestNodes: collaboratorRequestNodes]
     }
 
-    def buildUserCentricGraph(Person person, Graph graph) {
+    def buildUserCentricGraph(Person person, Graph graph){
         // Mapping from ids to nodes
         // Begin by adding root and root interests
         // then collaboratorRequests related to root interests
@@ -78,6 +79,7 @@ class JsonService {
         Map<Long, Object> interestNodes = [:]
         Map<Long, Object> collaboratorRequestNodes = [:]
         personNodes["p_" + person.id] = makeJsonForPerson(person)
+
 
         for (Interest i: person.interests) {
             interestNodes["i_" + i.id] = makeJsonForInterest(i)
@@ -105,7 +107,7 @@ class JsonService {
                 interestNodes[iid]['adjacencies'].add(pid)
             }
         }
-        for (CollaboratorRequest r: graph.getRequests()) {
+        for (CollaboratorRequest r:  graph.getRequests()) {
             def rid = "r_${r.id}"
             collaboratorRequestNodes[rid] = makeJsonForCollaboratorRequest(r)
             for (Edge e: graph.getAdjacentEdges(r)){
@@ -122,6 +124,16 @@ class JsonService {
                 collaboratorRequestNodes[rid]['adjacencies'].add(iid)
                 interestNodes[iid]['adjacencies'].add(rid)
             }
+        }
+        for (CollaboratorRequest r: collaboratorRequestService.findAllByCreator(person)){
+            //This makes sure that collaborator requests created by the root person show up regardless of connectedness
+            def rid = "r_${r.id}"
+            if (!collaboratorRequestNodes[rid]){
+                collaboratorRequestNodes[rid] = makeJsonForCollaboratorRequest(r)
+            }
+            collaboratorRequestNodes[rid]['data']['sharedInterest'].add("Created by "+person.fullName)
+            collaboratorRequestNodes[rid]['adjacencies'].add("p_" + person.id)
+            personNodes["p_" + person.id]['adjacencies'].add(rid)
         }
 
         adjacencyMap(personNodes)
@@ -187,6 +199,10 @@ class JsonService {
         Map<Long, Object> interestNodes = [:]
         Map<Long, Object> collaboratorRequestNodes = [:]
         collaboratorRequestNodes["r_" + request.id] = makeJsonForCollaboratorRequest(request)
+        personNodes["p_"+request.creator.id] = makeJsonForPerson(request.creator)
+        personNodes["p_"+request.creator.id]['adjacencies'].add("r_" + request.id)
+        personNodes["p_"+request.creator.id]['data']['sharedInterest'].add("Creator")
+        collaboratorRequestNodes["r_" + request.id]['adjacencies'].add("p_" + request.creator.id)
 
         for (Interest i: request.keywords) {
             interestNodes["i_" + i.id] = makeJsonForInterest(i)
@@ -245,26 +261,25 @@ class JsonService {
         def personAndRequestColors = [:]
 
         for (String pid in personNodes.keySet()) {
-//            int personId = jsIdToId(id).toInteger()
-//            Person p = personService.get(personId)
             String fullName = personNodes[pid]['data']['name']
             int i = fullName.hashCode() % org.macademia.MacademiaConstants.COLORS.size()
             personAndRequestColors[pid] = org.macademia.MacademiaConstants.COLORS[i]
         }
 
         for (String rid in collaboratorRequestNodes.keySet()) {
-//            int requestId = jsIdToId(id).toInteger()
-//            CollaboratorRequest c = collaboratorRequestService.get(requestId)
-            String creator = collaboratorRequestNodes[rid]['data']['creator']
-            int i = creator.hashCode() % org.macademia.MacademiaConstants.COLORS.size()
-            personAndRequestColors[rid] = "#FF0000"//org.macademia.MacademiaConstants.COLORS[i]
+            personAndRequestColors[rid] = "#F00"
         }
 
         for (String pid in personNodes.keySet()) {
             Map<Object, Object> node = personNodes[pid]
             String c = personAndRequestColors[pid]
             for (Object adj in node['adjacencies']) {
-                adj['data'].putAt("\$color", c)
+                if(adj['nodeTo'].contains('r_')){
+                    //makes the edges between root person and own collaborator requests red
+                    adj['data'].putAt("\$color", "#F00")
+                } else {
+                    adj['data'].putAt("\$color", c)
+                }
             }
         }
 
@@ -272,7 +287,12 @@ class JsonService {
             Map<Object, Object> node = collaboratorRequestNodes[cid]
             String c = personAndRequestColors[cid]
             for (Object adj in node['adjacencies']) {
-                adj['data'].putAt("\$color", c)
+                if(adj['nodeTo'].contains('p_')){
+                    //makes the edges between root collaborator request and creator creator's edge color
+                    adj['data'].putAt("\$color", personAndRequestColors[adj['nodeTo']])
+                } else {
+                    adj['data'].putAt("\$color", c)
+                }
             }
         }
 
