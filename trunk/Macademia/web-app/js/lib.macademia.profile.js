@@ -4,8 +4,23 @@
 
 var macademia = macademia || {};
 
-macademia.allowedDomains = [ 'macalester.edu', 'acm.edu', 'carleton.edu' ];
-
+macademia.allowedDomains = [
+            'beloit.edu',
+            'carleton.edu',
+            'coe.edu',
+            'coloradocollege.edu',
+            'cornellcollege.edu',
+            'grinnell.edu',
+            'knox.edu',
+            'lakeforest.edu',
+            'lawrence.edu',
+            'luther.edu',
+            'macalester.edu',
+            'monm.edu',
+            'ripon.edu',
+            'stolaf.edu',
+            'acm.edu'
+        ];
 
 macademia.initializeRegister = function() {
   macademia.upload.init();
