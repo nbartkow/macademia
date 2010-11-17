@@ -9,12 +9,12 @@ class InstitutionController {
 
     def filter = {
 
-        Collection<Institution> institutions = Institution.findAll()
-
-        // TODO: Remove me after launch
-        institutions = institutions.findAll({
-            it.emailDomain == 'macalester.edu' || it.emailDomain == 'carleton.edu' || it.emailDomain == 'acm.edu'
-        })
+        def c = Person.createCriteria()
+        Collection<Institution> institutions = c.list {
+            projections {
+                distinct('institution')
+            }
+        }
 
         render(view: "/templates/macademia/_collegeFilterDialog", model: [institutions: institutions])
     }
