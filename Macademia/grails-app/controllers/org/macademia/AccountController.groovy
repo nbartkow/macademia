@@ -144,6 +144,7 @@ The Macademia Team
         Person person = new Person()
         person.properties[grailsApplication.config.macademia.creatableFields] = params
         // Handle interest splitting
+        person.interests = []
         if (params.interests){
             interestParse(person)
         }
@@ -284,9 +285,12 @@ The Macademia Team
             if (!person.validate()) {
                 render("Updated details for user [$person.id] $person.email are invalid")
             } else {
+                def oldInterests = person.interests
+                person.interests = []
                 if (params.interests){
                     interestParse(person)
                 }
+                interestService.deleteOld(oldInterests, person)
 	            personService.save(person, Utils.getIpAddress(request))
                 userLoggingService.logEvent(request, 'profile', 'update', person.toMap())
                 log.info("Successfully updated details for user [$person.id] $person.email")
@@ -298,20 +302,24 @@ The Macademia Team
     }
 
     private void interestParse(Person person) {
-        String allInterests = params.interests
-        String[] tokens = allInterests.trim().split(",")
-        person.interests = []
+      //TODO: refactor with requests?
+        String[] tokens = tokenizer(params.interests)
         for (i in tokens){
             if (i.trim().length() != 0) {
                 Interest existingInterest = interestService.findByText(i);
                 if (existingInterest != null){
-                    println(existingInterest.toString())
                     person.addToInterests(existingInterest)
                 } else {
-                    Interest newInterest = new Interest(i);
+                    Interest newInterest = new Interest(i)
                     person.addToInterests(newInterest)
+
                 }
             }
         }
+    }
+
+
+    private String[] tokenizer(String allInterests){
+        return allInterests.trim().split(",")
     }
 }

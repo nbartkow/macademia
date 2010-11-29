@@ -73,6 +73,10 @@ class Person {
         passwdHash = calculatePasswdHash(passwd)
     }
 
+    public boolean isAdmin(Person other){
+       return ((role == ADMIN_ROLE) || (role == INST_ADMIN_ROLE && institution == other.institution))
+    }
+
     public boolean canEdit(Person other) {
         if (id == other.id) {
             return true
@@ -83,6 +87,11 @@ class Person {
         } else {
             return false
         }
+    }
+
+    //TODO: remove after reapOrphans. used for debugging purposes.
+    public boolean isShilad(Person other){
+        return (id == 1 && email=="ssen@macalester.edu")
     }
 
     public static String calculatePasswdHash(String passwd) {

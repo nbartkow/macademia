@@ -29,13 +29,8 @@ class DatabaseServiceIntegrationTests extends GrailsUnitTestCase {
         similarityService.buildInterestRelations(interestService.findByText("social networking"))
         databaseService.addUser(Person.findByEmail("ssen@macalester.edu"))
         assertEquals(databaseService.getUserInstitution(1),Institution.findByName("Macalester College").id)
-        ArrayList<Long> interests = databaseService.getUserInterests(1)
-        Set<Long> set =new HashSet<Long>()
-        for(Long id : interests){
-            set.add(id)
-        }
+        Set<Long> interests = databaseService.getUserInterests(1)
         assertEquals(interests.size(),15)
-        interests.sort()
         assertEquals(interestService.findByText("online communities").text,"online communities")
     }
 
@@ -45,7 +40,9 @@ class DatabaseServiceIntegrationTests extends GrailsUnitTestCase {
     }
 
     void testGetUserInterests() {
-        ArrayList<Long> interests = databaseService.getUserInterests(1)
+        Set<Long> interestSet = databaseService.getUserInterests(1)
+        ArrayList<Long> interests = new ArrayList<Long>();
+        interests.addAll(interestSet);
         interests.sort()
         for (int i = 0; i < 15; i++) {
             assertEquals(interests.get(i), i + 1)
