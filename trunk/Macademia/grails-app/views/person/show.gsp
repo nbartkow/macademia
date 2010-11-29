@@ -81,9 +81,16 @@
       <ul class="styledList atxt">
       <li>
       <g:link url="[controller:'account',action:'edit', id:person.id ]">Edit Profile</g:link>
+      <g:if test="${request.authenticated && request.authenticated.isShilad(person)}">
+         <g:form controller="interest" action="reapOrphans">
+              <g:actionSubmit value="Reap Orphans" action="reapOrphans" onclick="return confirm('are you sure you want to reap the orphans?')"/>
+        </g:form>
+      </g:if>
       </li>
       </ul>
 </g:if>
+
+
   </div>
 </div>
 

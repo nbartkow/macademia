@@ -18,7 +18,7 @@
       <g:form action="delete">
         <g:if test="${collaboratorRequest.id}">
           <g:hiddenField name="requestId" value="${collaboratorRequest.id}"/>
-          <g:actionSubmit value="delete">delete</g:actionSubmit>
+          <g:actionSubmit value="delete" onclick="return confirm('Are you sure you want to delete this request?')">delete</g:actionSubmit>
         </g:if>
       </g:form>
     </g:if>

@@ -102,5 +102,40 @@ class InterestService implements ApplicationContextAware {
       Interest.get(interestId).delete()
   }
 
+  public void reapOrphans(){
+      List<Long> theReaped = databaseService.reapOrphans()
+      for (reaped in theReaped){
+          if (Interest.get(reaped) != null){
+              delete(reaped)
+          }
+      }
+
+  }
+
+  public void deleteOld(oldInterests, Person person){
+      for (interest in oldInterests){
+            if (!person.interests.contains(interest)){
+                if (interestRemove(interest, person))
+                    delete(interest.id)
+                }
+        }
+  }
+
+  public void deleteOld(oldKeywords, CollaboratorRequest request){
+      for (interest in oldKeywords){
+            if (!request.keywords.contains(interest)){
+                if (keywordRemove(interest, request))
+                    delete(interest.id)
+                }
+        }
+  }
+
+  public interestRemove(Interest interest, Person person){
+        return databaseService.removeInterestFromUser(interest.id, person.id)
+  }
+
+  public keywordRemove(Interest keyword, CollaboratorRequest request){
+        return databaseService.removeKeywordFromRequest(keyword.id, request.id)
+  }
 
 }

@@ -131,4 +131,9 @@ class InterestController {
         outs.close()
     }
 
+    def reapOrphans = {
+        interestService.reapOrphans()
+        redirect(uri: '/')
+    }
+
 }

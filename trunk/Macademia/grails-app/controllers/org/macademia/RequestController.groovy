@@ -49,24 +49,20 @@ class RequestController {
         def collaboratorRequest = new CollaboratorRequest()
         if (params.requestId) {
             collaboratorRequest = collaboratorRequestService.get(params.requestId as long)
+            autocompleteService.removeRequest(params.requestId)
         }
         def fields = ['title', 'description', 'expiration']
         collaboratorRequest.properties[fields] = params
-        collaboratorRequest.creator = request.authenticated
-        log.info(params)
-        if (params.keywords){
-            String allkeywords = params.keywords
-            String[] tokens = allkeywords.trim().split(",")
-            for (i in tokens){
-                Interest existingInterest = interestService.findByText(i);
-                if (existingInterest != null){
-                    collaboratorRequest.addToKeywords(existingInterest)
-                } else {
-                    Interest newInterest = new Interest(i);
-                    collaboratorRequest.addToKeywords(newInterest)
-                }
-            }
+        if (!params.title){
+             collaboratorRequest.title = "No Title"
         }
+        collaboratorRequest.creator = request.authenticated
+        def oldKeywords = collaboratorRequest.keywords
+        collaboratorRequest.keywords = []
+        if (params.keywords){
+            keywordParse(collaboratorRequest)
+        }
+        interestService.deleteOld(oldKeywords, collaboratorRequest)
         collaboratorRequestService.save(collaboratorRequest, Utils.getIpAddress(request))
         autocompleteService.addRequest(collaboratorRequest)
         collaboratorRequest.save(flush : true)  // flush to get the id
@@ -100,32 +96,6 @@ class RequestController {
         }
     }
 
-    def update = {
-        def collaboratorRequestInstance = CollaboratorRequest.get(params.id)
-        if (collaboratorRequestInstance) {
-            if (params.version) {
-                def version = params.version.toLong()
-                if (collaboratorRequestInstance.version > version) {
-                    
-                    collaboratorRequestInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'collaboratorRequest.label', default: 'CollaboratorRequest')] as Object[], "Another user has updated this CollaboratorRequest while you were editing")
-                    render(view: "edit", model: [collaboratorRequestInstance: collaboratorRequestInstance])
-                    return
-                }
-            }
-            collaboratorRequestInstance.properties = params
-            if (!collaboratorRequestInstance.hasErrors() && collaboratorRequestInstance.save(flush: true)) {
-                flash.message = "${message(code: 'default.updated.message', args: [message(code: 'collaboratorRequest.label', default: 'CollaboratorRequest'), collaboratorRequestInstance.id])}"
-                redirect(action: "show", id: collaboratorRequestInstance.id)
-            }
-            else {
-                render(view: "edit", model: [collaboratorRequestInstance: collaboratorRequestInstance])
-            }
-        }
-        else {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'collaboratorRequest.label', default: 'CollaboratorRequest'), params.id])}"
-            redirect(action: "list")
-        }
-    }
 
     def delete = {
         def collaboratorRequest = CollaboratorRequest.get(params.requestId)
@@ -221,5 +191,30 @@ class RequestController {
 
         [target: target, link: link, close: close, exact: exact, linkName: linkName]
     }
+
+
+    private void keywordParse(CollaboratorRequest request) {
+      // TODO: refactoring interestParse in account controller and this one into the same function.
+        String[] tokens = tokenizer(params.keywords)
+        for (i in tokens){
+            if (i.trim().length() != 0) {
+                Interest existingKeyword = interestService.findByText(i);
+                if (existingKeyword != null){
+                    request.addToKeywords(existingKeyword)
+                } else {
+                    Interest newKeyword = new Interest(i);
+                    request.addToKeywords(newKeyword)
+                    // onPostinsert doesn't work for newKeyword - i need to use interestService.save
+                    // For some reason, this is fine for account controller
+                    interestService.save(newKeyword)
+                }
+            }
+        }
+    }
+
+    private String[] tokenizer(String allInterests){
+        return allInterests.trim().split(",")
+    }
+
 
 }

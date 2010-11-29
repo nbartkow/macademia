@@ -148,6 +148,7 @@ public class MongoWrapper {
      * of deletion.
      */
     public List<List<Long>> removeUser(Long userId) {
+        Set<Long> interests = getUserInterests(userId);
         // Two lists. 1: list of interests to be deleted. 2: list of collaborator
         // requests owned by the person, also in need of deletion.
         List<List<Long>> delInterestCollaborator = new LinkedList<List<Long>>();
@@ -159,66 +160,19 @@ public class MongoWrapper {
         if (user == null) {
             return delInterestCollaborator;
         }
-        List<Long> deletedInterests = new LinkedList<Long>();
-        List<Long> interests = getUserInterests(userId);
-
         for (Long i : interests) {
             Set<Long> iUsers = getInterestUsers(i);
             iUsers.remove(userId);
             interestUsers.put(i, iUsers);
             interestRequests.put(i, getInterestRequests(i));
         }
-        Long userInstitution = getUserInstitution(userId);
-        for (Long i : interestUsers.keySet()) {
-            if (interestUsers.get(i).size() == 0) {
-                if (interestRequests.get(i).size() == 0) {
-                    // interest is owned by no one, delete it
-                    removeInterest(i);
-                    deletedInterests.add(i);
-                }
-            }
-            // weed out interests owned by others in the userInstitution
-            for (Long u : interestUsers.get(i)) {
-                if (userInstitution.equals(getUserInstitution(u))) {
-                    interests.remove(i);
-                    break;
-                }
-            }
-            for (Long c : interestRequests.get(i)) {
-                if (userInstitution.equals(getCollaboratorRequestInstitution(c))) {
-                    interests.remove(i);
-                    break;
-                }
-            }
-        }
-        // interests holds interests to remove from userInstitution
-        DBObject institution = safeFindById(INSTITUTION_INTERESTS, userInstitution, false);
-        DBCollection institutionInterests = getDb().getCollection(INSTITUTION_INTERESTS);
-        Set<Long> updateInterests = interestStringToSet(institution.get("interests")+"");
-        for (Long i : interests) {
-            updateInterests.remove(i);
-        }
-        String res = interestSetToString(updateInterests);
-        institution.put("interests",res);
-        institutionInterests.update(safeFindById(INSTITUTION_INTERESTS, userInstitution, false),institution);
+        List<Long> deletedInterests = handleDisconnects(interests, interestUsers, interestRequests, getUserInstitution(userId));
         // finally, remove the user
         DBCollection users = getDb().getCollection(USERS);
-
         users.remove(user);
         delInterestCollaborator.add(deletedInterests);
         delInterestCollaborator.add(getUserRequests(userId));
         return delInterestCollaborator;
-    }
-
-    /**
-     * Checks whether the interest with the parameter id is
-     * not owned by any user or collaborator request.
-     * @param interestId The long id of the interest to check
-     * @return true if the interest is disconncected, false
-     * otherwise.
-     */
-    public boolean checkInterestDisconnected(long interestId) {
-        return ((getInterestUsers(interestId).size() == 0) && (getInterestRequests(interestId).size() == 0));
     }
 
     public Long getUserInstitution(long id){
@@ -226,9 +180,9 @@ public class MongoWrapper {
         return (Long) user.get("institution");
     }
 
-    public List<Long> getUserInterests(long id){
+    public Set<Long> getUserInterests(long id){
         DBObject user = safeFindById(USERS, id, false);
-        List<Long> interests = new ArrayList<Long>();
+        Set<Long> interests = new HashSet<Long>();
         BasicDBList userInterests=(BasicDBList) user.get(INTERESTS);
         //interests.addAll((ArrayList<Long>)(ArrayList<Object>)userInterests);
         //interests.addAll(Arrays.asList((Long[]) userInterests.toArray()));
@@ -236,6 +190,26 @@ public class MongoWrapper {
             interests.add((Long)l);
         }
         return interests;
+    }
+
+    /**
+     * Constructs and returns a list of the ids of all
+     * collaborator requests owned by the person with
+     * the parameter id.
+     * @param userId The long id of the user whose collaborator
+     * requests are desired.
+     * @return List of long id numbers of all collaborator
+     * requests owned by the specified user.
+     */
+    public List<Long> getUserRequests(long userId) {
+        DBObject query = new BasicDBObject("creator",userId);
+        DBCollection coll = getDb().getCollection(COLLABORATOR_REQUESTS);
+        DBCursor res =coll.find(query);
+        List<Long> userRequests = new ArrayList<Long>();
+        for(DBObject rfc: res){
+            userRequests.add((Long)rfc.get("_id"));
+        }
+        return userRequests;
     }
 
     public Set<Long> getInterestUsers(long id) {
@@ -258,6 +232,26 @@ public class MongoWrapper {
             res.add((Long)request.get("_id"));
         }
         return res;
+    }
+
+    /**
+     * Returns a set long ids corresponding to all institutions
+     * who own the interest with parameter interestId
+     * @param interestId The long id whose institutional presence
+     * is desired.
+     * @return A Set<Long> containing the ids of all institutions
+     * that own the parameter interest.
+     */
+    public Set<Long> getInterestInstitutions(long interestId) {
+        Set<Long> institutions = new HashSet<Long>();
+        DBCollection allInstitutions = getDb().getCollection(INSTITUTION_INTERESTS);
+        for (DBObject dbObject : allInstitutions.find()) {
+            Set<Long> interests = interestStringToSet(dbObject.get("interests")+"");
+            if (interests.contains(interestId)) {
+                institutions.add((Long)dbObject.get("_id"));
+            }
+        }
+        return institutions;
     }
 
     public void addCollaboratorRequest(long rfcId, List<Long> interests, long creatorId, long institutionId){
@@ -296,26 +290,6 @@ public class MongoWrapper {
         return (Long) rfc.get("creator");
     }
 
-    /**
-     * Constructs and returns a list of the ids of all
-     * collaborator requests owned by the person with
-     * the parameter id.
-     * @param userId The long id of the user whose collaborator
-     * requests are desired.
-     * @return List of long id numbers of all collaborator
-     * requests owned by the specified user.
-     */
-    public List<Long> getUserRequests(long userId) {
-        DBObject query = new BasicDBObject("creator",userId);
-        DBCollection coll = getDb().getCollection(COLLABORATOR_REQUESTS);
-        DBCursor res =coll.find(query);
-        List<Long> userRequests = new ArrayList<Long>();
-        for(DBObject rfc: res){
-            userRequests.add((Long)rfc.get("_id"));
-        }
-        return userRequests;
-    }
-
     public Set<Long> getRequestKeywords(long id){
         DBObject rfc = safeFindById(COLLABORATOR_REQUESTS, id, false);
         System.out.println("RFC: " + rfc.toString());
@@ -352,39 +326,7 @@ public class MongoWrapper {
             iRequests.remove(id);
             interestRequests.put(i, iRequests);
         }
-        Long requestInstitution = getCollaboratorRequestInstitution(id);
-        for (Long i : interestUsers.keySet()) {
-            if (interestUsers.get(i).size() == 0) {
-                if (interestRequests.get(i).size() == 0) {
-                    // interest is owned by no one, delete it
-                    removeInterest(i);
-                    deletedInterests.add(i);
-                }
-            }
-            // weed out interests owned by others in the requestInstitution
-            for (Long u : interestUsers.get(i)) {
-                if (requestInstitution.equals(getUserInstitution(u))) {
-                    interests.remove(i);
-                    break;
-                }
-            }
-            for (Long c : interestRequests.get(i)) {
-                if (requestInstitution.equals(getCollaboratorRequestInstitution(c))) {
-                    interests.remove(i);
-                    break;
-                }
-            }
-        }
-        // interests holds interests to remove from userInstitution
-        DBObject institution = safeFindById(INSTITUTION_INTERESTS, requestInstitution, false);
-        DBCollection institutionInterests = getDb().getCollection(INSTITUTION_INTERESTS);
-        Set<Long> updateInterests = interestStringToSet(institution.get("interests")+"");
-        for (Long i : interests) {
-            updateInterests.remove(i);
-        }
-        String res = interestSetToString(updateInterests);
-        institution.put("interests",res);
-        institutionInterests.update(safeFindById(INSTITUTION_INTERESTS, requestInstitution, false),institution);
+        deletedInterests = handleDisconnects(interests, interestUsers, interestRequests, getCollaboratorRequestInstitution(id));
         // finally, remove the collaborator request
         DBCollection collaboratorRequests = getDb().getCollection(COLLABORATOR_REQUESTS);
         collaboratorRequests.remove(request);
@@ -416,10 +358,11 @@ public class MongoWrapper {
 
     /**
      * Removes the interest with the parameter interestId from
-     * the database.
+     * the database. This method assumes that the interest is
+     * owned by no user, collaborator request, or institution.
      * @param interestId The Long id of the interest to remove
      */
-    public void removeInterest(Long interestId) {
+    private void removeInterest(Long interestId) {
         DBObject interest = safeFindById(INTERESTS, interestId, false);
         if (interest == null) {
             return;
@@ -432,6 +375,80 @@ public class MongoWrapper {
         interests.remove(interest);
     }
 
+
+    /**
+     * Removes the specified interest from the user's interests
+     * @param interestId The Long id of the interest to remove
+     * @param userId The Long id of the user to remove the interest from
+     * @return true if the interest was completely removed removed from
+     * the database, false otherwise
+     */
+    public boolean removeInterestFromUser(Long interestId, Long userId) {
+        DBObject user = safeFindById(USERS, userId, false);
+        if (user == null) {
+            return false;
+        }
+        Set<Long> institutions = getInterestInstitutions(interestId);
+        Set<Long> interestUsers = getInterestUsers(interestId);
+        Set<Long> interestRequests = getInterestRequests(interestId);
+        interestUsers.remove(userId);
+        for (Long u : interestUsers) {
+            institutions.remove(getUserInstitution(u));
+        }
+        for (Long request : interestRequests) {
+            institutions.remove(getCollaboratorRequestInstitution(request));
+        }
+        for (Long institution : institutions) {
+            removeInterestFromInstitution(interestId, institution);
+        }
+        List<Object> interests = (List<Object>)user.get("interests");
+        interests.remove(interestId);
+        user.put("interests", interests);
+        DBCollection users = getDb().getCollection(USERS);
+        users.update(safeFindById(USERS, userId, false), user);
+        if (interestIsDisconnected(interestId)) {
+            removeInterest(interestId);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Removes the specified keyword from the request keywords
+     * @param keywordId The Long id of the keyword to remove
+     * @param requestId The Long id of the request to remove the interest from
+     * @return true if the keyword/interest was completely removed from the
+     * database, false otherwise
+     */
+    public boolean removeKeywordFromRequest(Long keywordId, Long requestId) {
+        DBObject request = safeFindById(COLLABORATOR_REQUESTS, requestId, false);
+        if (request == null) {
+            return false;
+        }
+        Set<Long> institutions = getInterestInstitutions(keywordId);
+        Set<Long> interestUsers = getInterestUsers(keywordId);
+        Set<Long> interestRequests = getInterestRequests(keywordId);
+        interestRequests.remove(requestId);
+        for (Long u : interestUsers) {
+            institutions.remove(getUserInstitution(u));
+        }
+        for (Long r : interestRequests) {
+            institutions.remove(getCollaboratorRequestInstitution(r));
+        }
+        for (Long institution : institutions) {
+            removeInterestFromInstitution(keywordId, institution);
+        }
+        List<Object> keywords = (List<Object>)request.get("keywords");
+        keywords.remove(keywordId);
+        request.put("keywords", keywords);
+        DBCollection requests = getDb().getCollection(COLLABORATOR_REQUESTS);
+        requests.update(safeFindById(COLLABORATOR_REQUESTS, requestId, false), request);
+        if (interestIsDisconnected(keywordId)) {
+            removeInterest(keywordId);
+            return true;
+        }
+        return false;
+    }
 
    /**
     * Remove the parameter secondInterest from the firstInterest's
@@ -448,6 +465,47 @@ public class MongoWrapper {
             i.put("similar", similarInterests.toString());
             interests.update(safeFindById(INTERESTS, firstInterest, false),i);
         }
+    }
+
+    /**
+     * Checks if the interest with the parameter id is
+     * not owned by any user or collaborator request.
+     * @param interestId The long id of the interest to check
+     * @return true if the interest is disconncected, false
+     * otherwise.
+     */
+    private boolean interestIsDisconnected(long interestId) {
+        return ((getInterestUsers(interestId).size() == 0) && (getInterestRequests(interestId).size() == 0));
+    }
+
+    /**
+     * Removes all orphaned interests from the database.
+     * @return List<Long> ids of the reaped orphans
+     */
+    public List<Long> reapOrphans() {
+        System.out.println("Witness the reaping");
+        DBCollection interests = getDb().getCollection(INTERESTS);
+        List<Long> theReaped = new ArrayList<Long>();
+        for (DBObject dbObject : interests.find()) {
+            long id = (Long)(dbObject.get("_id"));
+            Set<Long> institutions = getInterestInstitutions(id);
+            for (Long u : getInterestUsers(id)) {
+                institutions.remove(getUserInstitution(u));
+            }
+            for (Long r : getInterestRequests(id)) {
+                institutions.remove(getCollaboratorRequestInstitution(r));
+            }
+            for (Long institution : institutions) {
+                System.out.println("Interest id: " + id + " text: " + dbObject.get("text") + " removed from institution " + institution);
+                removeInterestFromInstitution(id, institution);
+            }
+            if (interestIsDisconnected(id)) {
+                System.out.println("Interest id: " + id + " text: " + dbObject.get("text") + " removed from database");
+                removeInterest(id);
+                theReaped.add(id);
+            }
+        }
+        return theReaped;
     }
 
     public long articleToId(String title){
@@ -595,6 +653,26 @@ public class MongoWrapper {
         institutionInterests.update(safeFindById(INSTITUTION_INTERESTS, institutionId, false),institution);
     }
 
+    /**
+     * Removes an interest from the specified institution
+     * @param interest The id of the interest to remove
+     * @param institutionId The id of the institution to remove the
+     * interest from
+     */
+    private void removeInterestFromInstitution(Long interest, Long institutionId) {
+        DBObject institution = safeFindById(INSTITUTION_INTERESTS, institutionId, false);
+        if (institution == null) {
+            return;
+        }
+        DBCollection institutionInterests = getDb().getCollection(INSTITUTION_INTERESTS);
+        Set<Long> updateInterests = interestStringToSet(institution.get("interests")+"");
+        updateInterests.remove(interest);
+
+        String res = interestSetToString(updateInterests);
+        institution.put("interests",res);
+        institutionInterests.update(safeFindById(INSTITUTION_INTERESTS, institutionId, false),institution);
+    }
+
     public Set<Long> getInstitutionInterests(long id) {
         DBObject institution = safeFindById(INSTITUTION_INTERESTS, id, false);
         if(institution == null) {
@@ -647,6 +725,60 @@ public class MongoWrapper {
         articleInterests.put("interests", interestSetToString(interests));
         articlesToInterests.update(safeFindById(ARTICLES_TO_INTERESTS, article, false), articleInterests);
 
+    }
+
+  
+    /**
+     * For use when removing a user or collaborator request. Handles any
+     * disconnects.  Should no other user or request from the specified
+     * institution own an interest, removes the interest from that
+     * institution's list of owned interests. Should no other user or
+     * request own an interest, removes the interest from the database.
+     *
+     * @param interests Set of interest ids to check for disconnects.
+     * @param interestUsers Map of all ids in the interests set to
+     * the users with that interest. Should the deletion be caused by
+     * the removal of a user, then the user being removed should not be
+     * present in this Map.
+     * @param interestRequests Map of all ids in the interests set to
+     * the requests with that interest. Should the deletion be caused by
+     * the removal of a request, then the request being removed should
+     * not be present in this Map.
+     * @param institution Long id of the institution to check and
+     * update should the removal of an interest require the institution
+     * to update its list of owned interests.
+     * @return A List<Long> of the interests that were completely removed
+     * from the database as a result of this remove.
+     */
+    private List<Long> handleDisconnects(Set<Long> interests, Map<Long,Set<Long>> interestUsers, Map<Long,Set<Long>> interestRequests, Long institution) {
+        List<Long> deletedInterests = new LinkedList<Long>();
+        for (Long i : interestUsers.keySet()) {
+            if (interestUsers.get(i).size() == 0) {
+                if (interestRequests.get(i).size() == 0) {
+                    // interest is owned by no one, delete it
+                    removeInterest(i);
+                    deletedInterests.add(i);
+                }
+            }
+            // weed out interests owned by others in the institution
+            for (Long u : interestUsers.get(i)) {
+                if (institution.equals(getUserInstitution(u))) {
+                    interests.remove(i);
+                    break;
+                }
+            }
+            for (Long c : interestRequests.get(i)) {
+                if (institution.equals(getCollaboratorRequestInstitution(c))) {
+                    interests.remove(i);
+                    break;
+                }
+            }
+        }
+        // interests holds interests to remove from institution
+        for (Long i : interests) {
+            removeInterestFromInstitution(i, institution);
+        }
+        return deletedInterests;
     }
 
 }

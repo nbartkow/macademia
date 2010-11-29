@@ -81,7 +81,7 @@ class DatabaseService {
         return wrapper.getUserInstitution(id)
     }
 
-    public List<Long> getUserInterests(long id){
+    public Set<Long> getUserInterests(long id){
         return wrapper.getUserInterests(id)
     }
 
@@ -135,6 +135,28 @@ class DatabaseService {
         wrapper.addToInterests(firstId, secondId, sim)
     }
 
+    /**
+     * Removes an interest from the user
+     * @param interestId The interest to remove
+     * @param userId The user to remove the interest from
+     * @return true if the removal caused the interest to be
+     * removed completely from the database, false otherwise
+     */
+    public boolean removeInterestFromUser(Long interestId, Long userId) {
+        return wrapper.removeInterestFromUser(interestId, userId);
+    }
+
+    /**
+     * Removes a keyword from the request
+     * @param keywordId The keyword to remove
+     * @param requestId The request to remove the keyword from
+     * @return true if the removal caused the keyword/interest to
+     * be removed completely from the database, false otherwise
+     */
+    public boolean removeKeywordFromRequest(Long keywordId, Long requestId) {
+        return wrapper.removeKeywordFromRequest(keywordId, requestId);
+    }
+
    /**
     * Removes the secondInterest from the firstInterest's list of
     * similar interests.
@@ -144,6 +166,16 @@ class DatabaseService {
     public void removeSimilarInterest(Interest firstInterest, Interest secondInterest){
         wrapper.removeSimilarInterest((long)firstInterest.id, (long)secondInterest.id)
     }
+
+    /**
+     * Removes orphaned interests. Should calling this method
+     * be necessary more than once, we are doing something wrong.
+     * @return List<Long> ids of the reaped orphans
+     */
+    public List<Long> reapOrphans() {
+        return wrapper.reapOrphans();
+    }
+
 
     public SimilarInterestList getSimilarInterests(Interest interest){
         return wrapper.getSimilarInterests((long)interest.id)
