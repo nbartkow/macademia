@@ -98,11 +98,6 @@ class JsonService {
                 if(!interestNodes[iid]){
                     interestNodes[iid] = makeJsonForInterest(e.interest)
                 }
-                if(e.hasRelatedInterest()){
-                   personNodes[pid]['data']['sharedInterest'].add(e.relatedInterest.text)
-                } else if (e.hasSharedInterest()){
-                   personNodes[pid]['data']['sharedInterest'].add(e.interest.text)
-                }
                 personNodes[pid]['adjacencies'].add(iid)
                 interestNodes[iid]['adjacencies'].add(pid)
             }
@@ -116,11 +111,6 @@ class JsonService {
                 if(!interestNodes[iid]){
                     interestNodes[iid] = makeJsonForInterest(e.interest)
                 }
-                if(e.hasRelatedInterest()){
-                   collaboratorRequestNodes[rid]['data']['sharedInterest'].add(e.relatedInterest.text)
-                } else if (e.hasSharedInterest()){
-                   collaboratorRequestNodes[rid]['data']['sharedInterest'].add(e.interest.text)
-                }
                 collaboratorRequestNodes[rid]['adjacencies'].add(iid)
                 interestNodes[iid]['adjacencies'].add(rid)
             }
@@ -131,7 +121,6 @@ class JsonService {
             if (!collaboratorRequestNodes[rid]){
                 collaboratorRequestNodes[rid] = makeJsonForCollaboratorRequest(r)
             }
-            collaboratorRequestNodes[rid]['data']['sharedInterest'].add("Created by "+person.fullName)
             collaboratorRequestNodes[rid]['adjacencies'].add("p_" + person.id)
             personNodes["p_" + person.id]['adjacencies'].add(rid)
         }
@@ -201,7 +190,6 @@ class JsonService {
         collaboratorRequestNodes["r_" + request.id] = makeJsonForCollaboratorRequest(request)
         personNodes["p_"+request.creator.id] = makeJsonForPerson(request.creator)
         personNodes["p_"+request.creator.id]['adjacencies'].add("r_" + request.id)
-        personNodes["p_"+request.creator.id]['data']['sharedInterest'].add("Creator")
         collaboratorRequestNodes["r_" + request.id]['adjacencies'].add("p_" + request.creator.id)
 
         for (Interest i: request.keywords) {
@@ -221,11 +209,6 @@ class JsonService {
                 if(!interestNodes[iid]){
                     interestNodes[iid] = makeJsonForInterest(e.interest)
                 }
-                if(e.hasRelatedInterest()){
-                   collaboratorRequestNodes[rid]['data']['sharedInterest'].add(e.relatedInterest.text)
-                } else if (e.hasSharedInterest()){
-                   collaboratorRequestNodes[rid]['data']['sharedInterest'].add(e.interest.text)
-                }
                 collaboratorRequestNodes[rid]['adjacencies'].add(iid)
                 interestNodes[iid]['adjacencies'].add(rid)
             }
@@ -237,11 +220,6 @@ class JsonService {
                 def iid = "i_${e.interest.id}"
                 if(!interestNodes[iid]){
                     interestNodes[iid] = makeJsonForInterest(e.interest)
-                }
-                if(e.hasRelatedInterest()){
-                   personNodes[pid]['data']['sharedInterest'].add(e.relatedInterest.text)
-                } else if (e.hasSharedInterest()){
-                   personNodes[pid]['data']['sharedInterest'].add(e.interest.text)
                 }
                 personNodes[pid]['adjacencies'].add(iid)
                 interestNodes[iid]['adjacencies'].add(pid)
@@ -261,7 +239,7 @@ class JsonService {
         def personAndRequestColors = [:]
 
         for (String pid in personNodes.keySet()) {
-            String fullName = personNodes[pid]['data']['name']
+            String fullName = personNodes[pid]['name']
             int i = fullName.hashCode() % org.macademia.MacademiaConstants.COLORS.size()
             personAndRequestColors[pid] = org.macademia.MacademiaConstants.COLORS[i]
         }
@@ -319,10 +297,6 @@ class JsonService {
                 name: p.fullName,
                 data: [
                         unmodifiedId: p.id,
-                        name: p.fullName,
-                        email: p.email,
-                        department: p.department,
-                        sharedInterest: [],
                         type: 'person'
                 ],
                 adjacencies: []
@@ -347,9 +321,6 @@ class JsonService {
                 name: r.title,
                 data: [
                         unmodifiedId: r.id,
-                        name: r.title,
-                        creator: r.creator.fullName,
-                        sharedInterest: [],
                         type: 'request'
                 ],
                 adjacencies: []
