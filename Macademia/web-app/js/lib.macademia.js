@@ -501,7 +501,8 @@ macademia.toggleAccountControls = function() {
 };
 
 macademia.setupRequestCreation = function() {
-    $("#makeRequestDialog").jqm({ajax: '/Macademia/request/create/', trigger:'#makeRequestLink',  modal: false});
+    $("#makeRequestDialog").jqm({ajax: '/Macademia/request/create/', trigger: '.makeRequestLink2',  modal: false});
+    $("#listRequestDialog").jqm({ajax: '/Macademia/request/list/', trigger: '.listRequestLink', modal: false});
 };
 
 macademia.initializeLogin = function() {
@@ -533,6 +534,19 @@ macademia.initializeLogin = function() {
         return false;
     });
 
+};
+
+macademia.reloadToRequest = function(rid) {
+    var params = {
+       institutions : 'all',
+       nodeId : 'r_' + rid,
+       requestId : '' + rid,
+       navFunction : 'request',
+       navVisibility : 'true'
+    };
+    var rand = Math.random();
+
+    window.location.href = macademia.makeActionUrl('person', 'jit') + '?rand=' + rand + '#/?' + $.param(params);
 };
 
 macademia.reloadToPerson = function(pid) {

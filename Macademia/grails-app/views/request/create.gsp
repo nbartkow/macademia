@@ -36,6 +36,7 @@
   <g:javascript >
     $().ready(function () {
         macademia.autocomplete.initEditRequest();
+        $("#listRequestDialog").jqmHide();
     });
 </g:javascript>
 </div>

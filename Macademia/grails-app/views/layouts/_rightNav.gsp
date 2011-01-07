@@ -8,7 +8,8 @@
       <m:ifNotLoggedIn>
         <div id="account" class="btxt">
           <a id="login_link" href="#">Login</a> &middot;
-          <g:link controller="account" action="createuser2" href="#">Register</g:link>
+          <g:link controller="account" action="createuser2" href="#">Register</g:link>  &middot;
+          <a class="listRequestLink" id="listRequestLink" href="#">Collaboration requests</a>
         </div>
       </m:ifNotLoggedIn>
       <m:ifLoggedIn>
@@ -17,7 +18,7 @@
           logged in as <m:personLink person="${request.authenticated}"/> 
           (<g:link controller="account" action="logout" class="icon_cross">logout</g:link>)<br>
           <g:link controller="account" action="edit">edit profile</g:link> &middot;
-          <a href="#" id="makeRequestLink">collaboration request</a> &middot;
+          <a href="#" class="listRequestLink" id="makeRequestLink">collaboration requests</a> &middot;
           <a href="#" id="toggleControls">more</a>
         </div>
         <ul id="accountControlList" class="left topBorder bottomBorder styledList">
@@ -96,8 +97,10 @@
         <div id="registerScript">
         </div>
       </div>
-      
+
       <div id="makeRequestDialog" class="jqmWindow">&nbsp;</div>
+
+      <div id="listRequestDialog" class="jqmWindow">&nbsp;</div>
 
       <div id="editRequestDialog" class="jqmWindow">&nbsp;</div>
 
