@@ -1197,3 +1197,58 @@ h3 {
     margin : 0 10px;
     border : 1px solid #000;
 }
+
+
+
+/* Collaborator request list */
+
+#listRequestContainer th {
+    font-weight: bold;
+}
+
+#closeListRequests {
+    padding: 0px;
+    margin: 0px;
+    position : absolute;
+    top : 8px;
+    right : 8px;
+}
+
+
+#listRequestContainer p {
+    margin-bottom: 10px;
+}
+
+#listRequestContainer a {
+    color : #eed;
+}
+
+#listRequestContainer td.title {
+    color : #eed;
+    width : 25%;
+}
+#listRequestContainer td.expires {
+    width : 15%;
+}
+#listRequestContainer td.creator {
+    width : 20%;
+}
+ #listRequestContainer td.description {
+    width : 40%;
+}
+
+#listRequestContainer td {
+    padding : 3px;
+}
+#listRequestContainer tr:hover {
+    background-color : #859070;
+    cursor : hand;
+}
+#listRequestContainer tr.even {
+}
+
+#listRequestContainer h1 {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}

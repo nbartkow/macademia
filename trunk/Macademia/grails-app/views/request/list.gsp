@@ -1,65 +1,56 @@
+<div id="listRequestContainer">
+  <h1>Collaboration Requests:</h1>
+  <p>
+    <g:if test= "${request.authenticated}">
 
-<%@ page import="org.macademia.CollaboratorRequest" %>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta name="layout" content="main" />
-        <g:set var="entityName" value="${message(code: 'collaboratorRequest.label', default: 'CollaboratorRequest')}" />
-        <title><g:message code="All Collaborator Requests" /></title>
-    </head>
-    <body id = main>
-        <div class="nav">
-            <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="Return to Macademia"/></a></span>
-            <span class="menuButton"><g:link class="create" action="create"><g:message code="Request for collaborators" args="[entityName]" /></g:link></span>
-        </div>
-        <div class="body">
-            <h1><g:message code="Viewing all collaborator requests" /></h1>
-            <g:if test="${flash.message}">
-            <div class="message">${flash.message}</div>
-            </g:if>
-            <div class="list">
-                <table>
-                    <thead>
-                        <tr>
+    Click a request to view more information or
+      <a id="makeRequestLink" class="makeRequestLink" href="#">create a new request.</a>
+    </g:if>
+    <g:else>
+      Click a request to view more information.
+      Please login to create a new request.
+    </g:else>
+  </p>
+  <table>
 
-                            <g:sortableColumn property="id" title="${message(code: 'collaboratorRequest.id.label', default: 'Id')}" />
-
-                            <g:sortableColumn property="title" title="${message(code: 'collaboratorRequest.title.label', default: 'Title')}" />
-
-                            <g:sortableColumn property="expiration" title="${message(code: 'collaboratorRequest.expiration.label', default: 'Expiration')}" />
-
-                            <g:sortableColumn property="description" title="${message(code: 'collaboratorRequest.description.label', default: 'Description')}" />
-
-                            <g:sortableColumn property="dateCreated" title="${message(code: 'collaboratorRequest.dateCreated.label', default: 'Date Created')}" />
-
-                            <th><g:message code="collaboratorRequest.creator.label" default="Creator" /></th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <g:each in="${collaboratorRequestList}" status="i" var="collaboratorRequestInstance">
-                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-
-                            <td><g:link action="show" id="${collaboratorRequestInstance.id}">${fieldValue(bean: collaboratorRequestInstance, field: "id")}</g:link></td>
-
-                            <td>${fieldValue(bean: collaboratorRequestInstance, field: "title")}</td>
-
-                            <td><g:formatDate date="${collaboratorRequestInstance.expiration}" /></td>
-
-                            <td>${fieldValue(bean: collaboratorRequestInstance, field: "description")}</td>
-
-                            <td><g:formatDate date="${collaboratorRequestInstance.dateCreated}" /></td>
-
-                            <td>${fieldValue(bean: collaboratorRequestInstance, field: "creator")}</td>
-
-                        </tr>
-                    </g:each>
-                    </tbody>
-                </table>
-            </div>
-            <div class="paginateButtons">
-                <g:paginate total="${collaboratorRequestInstanceTotal}" />
-            </div>
-        </div>
-    </body>
-</html>
+    <thead>
+    <tr>
+      <th class="title">Title</th>
+      <th class="expires">Expires</th>
+      <th class="creator">Creator</th>
+      <th class="description">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <g:each in="${collaboratorRequestList}" status="i" var="c">
+      <tr class="${(i % 2) == 0 ? 'odd' : 'even'}" requestId="${c.id}">
+        <td class="title">
+          ${c.title.encodeAsHTML()}&nbsp;&nbsp;
+        </td>
+        <td class="expires"><g:formatDate date="${c.expiration}" format="yyyy-MM-dd"/>&nbsp;&nbsp;</td>
+        <td class="creator">${c.creator.fullName.encodeAsHTML()}&nbsp;&nbsp;</td>
+        <td class="description">
+          <g:if test="${c.description && c.description.length() > 80}">${c.description.substring(0, 80).encodeAsHTML()}...</g:if>
+          <g:else>${c.description.encodeAsHTML()}</g:else>
+        </td>
+      </tr>
+    </g:each>
+    </tbody>
+  </table>
+  <div id="closeListRequests">
+    <a href ="#"><p:image src="close_icon.gif"/></a>
+  </div>
+  <script>
+  $().ready(function () {
+    $("#makeRequestDialog").jqmAddTrigger($('.makeRequestLink'));
+    $("#closeListRequests a").click(function(){
+        $('#listRequestDialog').jqmHide();
+        return false;
+    });
+    $("#listRequestContainer tr").click(function() {
+        macademia.reloadToRequest($(this).attr('requestId'));
+      return false;
+    });
+  });
+  </script>
+</div>

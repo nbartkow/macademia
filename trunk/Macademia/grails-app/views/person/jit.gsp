@@ -107,6 +107,9 @@
           <li>
             <b>Add</b> your own profile by signing up in the upper right.
           </li>
+          <li>
+            <b>Collaborate</b> by creating or viewing a collaboration request.
+          </li>
         </ul>
     </div>
   %{--<div id="acknowledgements" class="topBorder">--}%
