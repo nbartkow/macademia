@@ -20,8 +20,8 @@
   <div class="ttRel medium">
     <b>related to ${linkName} by:</b>
     <g:if test="${exact}">
-      <g:each in="${exact.keySet()}" var="i">
-        <li><i>${i.text}</i></li>
+      <g:each in="${exact}" var="i">
+         <li><i>${i}</i></li>
       </g:each>
     </g:if>
     <g:if test="${close}">

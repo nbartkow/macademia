@@ -162,6 +162,9 @@ class RequestController {
         if (link != null && target != link) {
             def allInterests = []
             if(params.root.contains("p")){
+              if (target.creator==link) {
+                exact.add('Created By')
+              }
                 allInterests = link.interests
                 linkName = link.fullName
             } else if (params.root.contains("r")){
@@ -170,7 +173,7 @@ class RequestController {
             }
             for(Interest i: allInterests) {
                 if(target.keywords.contains(i)){
-                    exact[i] = i
+                    exact.add(i.text)
                 }
                 for(SimilarInterest sim: similarityService.getSimilarInterests(i).list){
                     //println("first: $ir.first second: $ir.second")

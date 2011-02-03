@@ -52,7 +52,7 @@ class  PersonController{
 
         }
 
-        def exact = [:]
+        def exact = []
         def close = [:]
         def linkName = ''
 
@@ -63,12 +63,15 @@ class  PersonController{
                 allInterests = link.interests
                 linkName = link.fullName
             } else if (params.root.contains("r")){
+                if (link.creator==target){
+                  exact.add('Creator')
+                }
                 allInterests = link.keywords
                 linkName = link.title
             }
             for(Interest i: allInterests) {
                 if(target.interests.contains(i)){
-                    exact[i] = i
+                    exact.add(i.text)
                 }
                 for(SimilarInterest sim: similarityService.getSimilarInterests(i).list){
                     //println("first: $ir.first second: $ir.second")
