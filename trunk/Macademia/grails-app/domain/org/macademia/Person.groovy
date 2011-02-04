@@ -91,7 +91,7 @@ class Person {
 
     //TODO: remove after reapOrphans. used for debugging purposes.
     public boolean isShilad(Person other){
-        return (id == 1 && email=="ssen@macalester.edu")
+        return (email=="ssen@macalester.edu")
     }
 
     public static String calculatePasswdHash(String passwd) {
