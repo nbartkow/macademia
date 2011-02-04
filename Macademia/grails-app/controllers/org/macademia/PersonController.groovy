@@ -133,7 +133,8 @@ class  PersonController{
             return
         }
         def auth = request.authenticated && request.authenticated.canEdit(person)
-        def interests = person.interests
+        def interests = person.interests.sort({it.normalizedText})
+
         def collaboratorRequests = collaboratorRequestService.findAllByCreator(person)
         render(view : 'show', model : [
                 person: person,

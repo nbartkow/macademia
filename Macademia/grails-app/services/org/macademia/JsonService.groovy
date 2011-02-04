@@ -82,9 +82,11 @@ class JsonService {
 
 
         for (Interest i: person.interests) {
-            interestNodes["i_" + i.id] = makeJsonForInterest(i)
-            interestNodes["i_" + i.id]['adjacencies'].add("p_" + person.id)
-            personNodes["p_" + person.id]['adjacencies'].add("i_" + i.id)
+            if (graph.getAdjacentEdges(i).size() > 1) {
+                interestNodes["i_" + i.id] = makeJsonForInterest(i)
+                interestNodes["i_" + i.id]['adjacencies'].add("p_" + person.id)
+                personNodes["p_" + person.id]['adjacencies'].add("i_" + i.id)
+            }
         }
 
         for (Person p: graph.getPeople()){
