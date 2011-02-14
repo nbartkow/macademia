@@ -15,7 +15,7 @@ class UrlMappings {
 
       "/$group" {
           controller = 'person'
-          group = group
+//          group = params.group
           action = 'index'
       }
 	  "500"(view:'/error')
