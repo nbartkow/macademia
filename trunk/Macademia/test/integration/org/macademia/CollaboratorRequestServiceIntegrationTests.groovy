@@ -24,8 +24,9 @@ class CollaboratorRequestServiceIntegrationTests extends GrailsUnitTestCase {
     }
 
     void testSave(){
-        Institution mac = new Institution(name: "Macalester", emailDomain: "@macalester.edu")
-        Utils.safeSave(mac)
+
+        Institution mac = Institution.findByEmailDomain("macalester.edu")
+        assertNotNull(mac)
         Person creator = new Person(fullName: "joe", email: "joe@macalester.edu", institution: mac, department: "Math/CS")
         personService.create(creator, 'useR123!', null)
         CollaboratorRequest cr = new CollaboratorRequest(title: "Macademia", creator: creator, description: "kld", dateCreated: new Date(), expiration: new Date())

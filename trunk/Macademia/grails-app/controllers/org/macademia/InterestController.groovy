@@ -9,6 +9,7 @@ class InterestController {
     def similarityService
     def personService
     def jsonService
+    def institutionGroupService
 
     def index = { }
 
@@ -31,14 +32,8 @@ class InterestController {
             maxInterests = 15
         }
         def root = interestService.get((params.id as long))
-        Graph graph
-        if(params.institutions.equals("all")){
-            graph = similarityService.calculateInterestNeighbors(root, maxPeople, maxInterests)
-        }
-        else{
-            Set<Long> institutionFilter = institutionService.getFilteredIds(params.institutions)
-            graph = similarityService.calculateInterestNeighbors(root, maxPeople, maxInterests, institutionFilter)
-        }
+        Set<Long> institutions =  institutionGroupService.getInstitutionIdsFromParams(params)
+        Graph graph = similarityService.calculateInterestNeighbors(root, maxPeople, maxInterests, institutions)
         def data = jsonService.buildInterestCentricGraph(root, graph)
         render(data as JSON)
     }
@@ -72,8 +67,13 @@ class InterestController {
 
     def show = {
         def interest = Interest.get(params.id)
+        Set<Long> institutions =  institutionGroupService.getInstitutionIdsFromParams(params)
         def peopleWithInterest = interest.people
-        def relatedInterests = similarityService.getSimilarInterests(interest).list.collect({Interest.findById(it.interestId)})
+        if (institutions) {
+            peopleWithInterest = peopleWithInterest.findAll({institutions.contains(it.institution.id)})
+        }
+//        println("institutions are " + institutions)
+        def relatedInterests = similarityService.getSimilarInterests(interest, institutions).list.collect({Interest.findById(it.interestId)})
         if(relatedInterests.contains(interest)){
             relatedInterests.remove(interest)
         }

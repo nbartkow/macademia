@@ -8,6 +8,9 @@ class Institution {
   static constraints = {
     emailDomain(unique: true)
   }
+  static hasMany = [ institutionGroups : InstitutionGroup ]
+  static belongsTo = InstitutionGroup
+
   public String toString() {
     return "$name"
   }

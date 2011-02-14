@@ -7,6 +7,7 @@ class AccountController {
     def personService
     def interestService
     def userLoggingService
+    def institutionGroupService
 
 
     def forgottenpassword = {
@@ -55,7 +56,7 @@ The Macademia Team
         }
         if (params.currentPassword && !request.authenticated.checkPasswd(params.currentPassword)) {
             def id = request.authenticated.id
-            redirect(uri: Utils.makeUrl('person', request.authenticated.id, true))
+            redirect(uri: Utils.makeUrl(params.group, 'person', request.authenticated.id, true))
         } else {
             // hack if the current password param is not current, assume the user
             // has already clicked an email link to change their password, and now
@@ -148,14 +149,6 @@ The Macademia Team
         if (params.interests){
             interestParse(person)
         }
-        // create institution  - replace this eventually
-        String institutionDomain = params.email.split("@")[1]
-        Institution institution = Institution.findByEmailDomain(institutionDomain)
-        if (institution == null){
-            institution= new Institution(name:institutionDomain, emailDomain:institutionDomain)
-            Utils.safeSave(institution)
-        }
-        person.institution = institution
         person.enabled = true
 
         log.debug("Attempting to create new user account identified as $person.email")
@@ -174,6 +167,23 @@ The Macademia Team
           render("Email already in use")
           return
         }
+
+        // create institution  - replace this eventually
+        String institutionDomain = params.email.split("@")[1]
+        Institution institution = Institution.findByEmailDomain(institutionDomain)
+        if (institution == null){
+            if (!params.institution) {
+              render("No school provided")
+              return
+            }
+            institution= new Institution(name:params.institution, emailDomain:institutionDomain)
+            def allGroup = institutionGroupService.getAllGroup()
+            allGroup.addToInstitutions(institution)
+            Utils.safeSave(allGroup)
+        }
+        println("institution is ${institution} ${institution.getClass()}")
+        person.institution = institution
+
         try {
             personService.create(person, params.pass, Utils.getIpAddress(request))
         } catch(Exception e) {
@@ -194,8 +204,8 @@ The Macademia Team
         render('okay ' + person.id)
     }
 
-    def createuser2 = {
-      return render(view: 'modalCreateUser', model: [user : new Person(), interests : ""])
+    def createuser = {
+      return render(view: 'createUser', model: [user : new Person(), interests : ""])
     }
 
     def login = {
@@ -236,7 +246,7 @@ The Macademia Team
             log.info("Editing user [$person.id] $person.email")
             person.properties[grailsApplication.config.macademia.editableFields] = params
             String allInterests = person.interests.collect({it.text}).join(', ')
-            return render(view: 'modalCreateUser', model: [user: person, interests : allInterests])
+            return render(view: 'createUser', model: [user: person, interests : allInterests])
 	    }
     }
 

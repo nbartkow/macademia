@@ -8,7 +8,7 @@
       <m:ifNotLoggedIn>
         <div id="account" class="btxt">
           <a id="login_link" href="#">Login</a> &middot;
-          <g:link controller="account" action="createuser2" href="#">Register</g:link>  &middot;
+          <g:link params="[group : params.group]" controller="account" action="createuser" href="#">Register</g:link>  &middot;
           <a class="listRequestLink" id="listRequestLink" href="#">Collaboration requests</a>
         </div>
       </m:ifNotLoggedIn>
@@ -16,19 +16,19 @@
       <div id="account" class="btxt">
         <div class="btxt">
           logged in as <m:personLink person="${request.authenticated}"/> 
-          (<g:link controller="account" action="logout" class="icon_cross">logout</g:link>)<br>
-          <g:link controller="account" action="edit">edit profile</g:link> &middot;
+          (<g:link params="[group : params.group]" controller="account" action="logout" class="icon_cross">logout</g:link>)<br>
+          <g:link params="[group : params.group]" controller="account" action="edit">edit profile</g:link> &middot;
           <a href="#" class="listRequestLink" id="makeRequestLink">collaboration requests</a> &middot;
           <a href="#" id="toggleControls">more</a>
         </div>
         <ul id="accountControlList" class="left topBorder bottomBorder styledList">
           <div id="moreDropdown">
             <li>
-              <g:link controller="account" action="changepassword">Change password</g:link>
+              <g:link params="[group : params.group]" controller="account" action="changepassword">Change password</g:link>
             </li>
             <m:ifAdmin >
               <li>
-                <g:link controller="user" action="list" class="icon_user_go">Admin controls</g:link>
+                <g:link params="[group : params.group]" controller="user" action="list" class="icon_user_go">Admin controls</g:link>
               </li>
             </m:ifAdmin>
           </div>
@@ -46,12 +46,12 @@
               <input type="text" tabindex="1" name="email" class="login_input" id="email"/>
               <label for="password">Password:</label>
               <input type="password" tabindex="2" name="password" class="login_input" id="password">
-              <input type="submit" tabindex="3" value="Login" class="login_submit"><g:link controller="account" action="forgottenpassword" class="forgot_password">forgot password?</g:link>
+              <input type="submit" tabindex="3" value="Login" class="login_submit"><g:link params="[group : params.group]" controller="account" action="forgottenpassword" class="forgot_password">forgot password?</g:link>
             </div>
           </form>
 
           <div class="accountoptions">
-            <g:link controller="account" action="forgottenpassword" class="textlink icon icon_flag_purple">forgot password?</g:link>
+            <g:link params="[group : params.group]" controller="account" action="forgottenpassword" class="textlink icon icon_flag_purple">forgot password?</g:link>
           </div>
         </div>
       </div>

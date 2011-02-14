@@ -4,23 +4,6 @@
 
 var macademia = macademia || {};
 
-macademia.allowedDomains = [
-            'beloit.edu',
-            'carleton.edu',
-            'coe.edu',
-            'coloradocollege.edu',
-            'cornellcollege.edu',
-            'grinnell.edu',
-            'knox.edu',
-            'lakeforest.edu',
-            'lawrence.edu',
-            'luther.edu',
-            'macalester.edu',
-            'monm.edu',
-            'ripon.edu',
-            'stolaf.edu',
-            'acm.edu'
-        ];
 
 macademia.initializeRegister = function() {
   macademia.upload.init();
@@ -53,6 +36,7 @@ macademia.initializeRegister = function() {
               var pass = $(this).find('[name=pass]').val();
               var confirm = $(this).find('[name=passConfirm]').val();
               var email = $(this).find('[name=email]').val();
+              var institution = $(this).find('[name=institution]').val();
               if (pass!=confirm) {
                   $("#passConfirmErrors").html("<b>Passwords do not match</b>");
                   $("#passConfirmErrors").show();
@@ -68,13 +52,11 @@ macademia.initializeRegister = function() {
                   $('#emailErrors').html("<b>Valid email must be provided</b>");
                   $('#emailErrors').show();
                   hasError=true;
-              } else {
-                  var domain = email.split('@')[1];
-                  if ($.inArray(domain, macademia.allowedDomains) < 0) {
-                      $('#emailErrors').html("<b>Only " + macademia.allowedDomains.join(", ") + " email addresses allowed</b>");
-                      $('#emailErrors').show();
-                      hasError=true;
-                  }
+              }
+              if (institution.length<5) {
+                  $('#institutionErrors').html("<b>Valid institution must be provided</b>");
+                  $('#institutionErrors').show();
+                  hasError=true;
               }
           }
           if (hasError) {
@@ -100,7 +82,7 @@ macademia.isNewUser = function() {
 };
 
 macademia.saveUserProfile = function() {
-   var url = '/Macademia/account/' + (macademia.isNewUser() ? 'saveuser' : 'updateuser');
+   var url = macademia.makeActionUrl('account', (macademia.isNewUser() ? 'saveuser' : 'updateuser'));
    jQuery.ajax({
           url: url,
           type: "POST",
@@ -123,6 +105,11 @@ macademia.saveUserProfile = function() {
                       showedErrors = true;
                       $('#passErrors').html("<b>" + data + "</b>");
                       $('#passErrors').show();
+                  }
+                  if (data.indexOf('school') == 0) {
+                      showedErrors = true;
+                      $('#institutionErrors').html("<b>" + data + "</b>");
+                      $('#institutionErrors').show();
                   }
                   if (!showedErrors) {
                       $('#nameErrors').html("<b>" + macademia.htmlEncode(data) +"</b>");
@@ -159,7 +146,7 @@ macademia.analyzeInterests = function(interests, index, progressBar, callback) {
     progressBar.progressbar('value', 100 * (index+1) / interests.length);
     progressBar.find("span").text("learning about '" + i + "'");
     jQuery.ajax({
-          url: '/Macademia/interest/analyze/',
+          url: macademia.makeActionUrl('interest', 'analyze'),
           type: "POST",
           data: {interest : i},
           dataType: "text",

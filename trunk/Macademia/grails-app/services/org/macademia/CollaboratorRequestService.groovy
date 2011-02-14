@@ -46,7 +46,7 @@ class CollaboratorRequestService {
 
     public void delete(CollaboratorRequest cr){
       // still need to delete lone interests
-         autocompleteService.removeRequest(cr.id)
+         autocompleteService.removeRequest(cr)
          cr.delete()
          List deleteInterests = databaseService.removeCollaboratorRequest(cr)
          for (interest in deleteInterests){

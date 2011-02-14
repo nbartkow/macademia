@@ -10,6 +10,7 @@ class InterestServiceIntegrationTests extends GrailsUnitTestCase {
     def interestService
     def similarityService
     def databaseService
+    def personService
     
     protected void setUp() {
         super.setUp()
@@ -27,11 +28,10 @@ class InterestServiceIntegrationTests extends GrailsUnitTestCase {
     void testSave() {
         //There is some problem with normalize text for the space character
         Interest interest = new Interest("web 3.0")
-        interestService.save(interest)
-        assertEquals(Interest.findByText("web 3.0"),interest)
         Person p = Person.findByEmail("guneratne@macalester.edu")
         interest.addToPeople(p)
-        interestService.save(interest)
+        p.addToInterests(interest)
+        personService.save(p)
         assertTrue(Interest.findByText("web 3.0").people.contains(p))
         assertTrue(databaseService.getSimilarInterests(Interest.findByText("web 3.0")) != null)
         //assertEquals(InterestRelation.findAllByFirst(interest).size(),10)

@@ -21,11 +21,16 @@
   
 </head>
 <body>
+<div id="center_wrapper">
+<a href="/Macademia/${group}">
+  <p:image id="logoImage" src='macademia-logo-black.png'/></a>
+
 <h2 class="center" id="registerTitle">
   <g:if test="${user.id}">Edit Macademia Profile</g:if>
   <g:else>Create a New Macademia Profile</g:else>
 </h2>
-<div id="center_wrapper">
+
+
 <div class="instructions"><p>Macademia <span class="alert">publicly displays all the information you enter below,</span> except for your password.
 <b>Thanks for joining Macademia!</b>
   <p>Macademia currently supports faculty at Macalester College.  </div>
@@ -53,6 +58,11 @@
         <div id="emailErrors" class="warning">&nbsp;</div>
         <div class="left left1 fieldLabel topBorder"><label>Email<span>College email address</span></label></div>
         <div class="right topBorder"><input type="text" name="email" class="clearDefault"/></div>
+        <div class="clear"></div>
+
+        <div id="institutionErrors" class="warning">&nbsp;</div>
+        <div class="left left1 fieldLabel topBorder"><label>School<span>Name of College of University</span></label></div>
+        <div class="right topBorder"><input type="text" name="institution" class="clearDefault"/></div>
         <div class="clear"></div>
 
         </g:if>
@@ -126,8 +136,6 @@
 
 </div>
 <g:render template="../templates/macademia/tagline"/>
-<a href="/Macademia/">
-  <p:image id="logoImage" src='macademia-logo-black.png'/></a>
 
   <g:javascript >
     $().ready(function() {

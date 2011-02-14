@@ -24,7 +24,7 @@ body {
     background: #A2AB8E;
     width: 95%;
     padding: 0px;
-    margin: 0px;
+    margin: 0px auto;
 }
 
 .alert {
@@ -45,13 +45,13 @@ body {
     margin: 0px auto;
     background: #ffe;
     z-index: 30;
+    position: relative;
 }
 
 #sidebar {
     width: 435px;
     float: right;
-    margin-top: 0px;
-    margin-right: 10px;
+    margin: 0px auto;
 }
 
 #sidebar li {
@@ -340,7 +340,7 @@ h2 {
 #logoImage {
     padding-bottom: 10px;
     position: absolute;
-    left: 100px;
+    left: 20px;
     top: 10px;
 }
 

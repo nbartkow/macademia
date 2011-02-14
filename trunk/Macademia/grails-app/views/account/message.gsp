@@ -19,8 +19,8 @@
       <p>${message.encodeAsHTML()}</p>
 
       <p>
-        <m:ifLoggedIn ><a href="/Macademia/person/jit/#/?nodeId=p_${request.authenticated.id}&institutions=all">Return to Macademia</a></m:ifLoggedIn>
-        <m:ifNotLoggedIn><a href="/Macademia">Return to Macademia</a></m:ifNotLoggedIn>
+        <m:ifLoggedIn ><a href="/Macademia/${group}/person/jit/#/?nodeId=p_${request.authenticated.id}&institutions=all">Return to Macademia</a></m:ifLoggedIn>
+        <m:ifNotLoggedIn><a href="/Macademia/${group}">Return to Macademia</a></m:ifNotLoggedIn>
       </p>
     </div>
     <g:render template="/templates/macademia/tagline"/> 

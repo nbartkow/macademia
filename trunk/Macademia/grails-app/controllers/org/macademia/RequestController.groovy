@@ -49,7 +49,7 @@ class RequestController {
         def collaboratorRequest = new CollaboratorRequest()
         if (params.requestId) {
             collaboratorRequest = collaboratorRequestService.get(params.requestId as long)
-            autocompleteService.removeRequest(params.requestId)
+            autocompleteService.removeRequest(collaboratorRequest)
         }
         def fields = ['title', 'description', 'expiration']
         collaboratorRequest.properties[fields] = params
@@ -67,7 +67,7 @@ class RequestController {
         autocompleteService.addRequest(collaboratorRequest)
         collaboratorRequest.save(flush : true)  // flush to get the id
 
-        redirect('uri' : Utils.makeUrl('request', collaboratorRequest.id, true))
+        redirect('uri' : Utils.makeUrl(params.group, 'request', collaboratorRequest.id, true))
     }
 
     def show = {

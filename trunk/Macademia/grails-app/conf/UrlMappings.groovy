@@ -1,11 +1,23 @@
+import org.macademia.MacademiaConstants
+
 class UrlMappings {
     static mappings = {
-      "/$controller/$action?/$id?"{
+      "/$group/$controller/$action?/$id?"{
 	      constraints {
 			 // apply constraints here
 		  }
 	  }
-      "/" (controller: 'person', action: 'index')
+      "/" {
+          controller = 'person'
+          group = MacademiaConstants.DEFAULT_GROUP
+          action = 'index'
+      }
+
+      "/$group" {
+          controller = 'person'
+          group = group
+          action = 'index'
+      }
 	  "500"(view:'/error')
 
 //    "/viewprofile/$id?" {

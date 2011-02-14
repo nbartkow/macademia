@@ -1,7 +1,6 @@
 package org.macademia
 
 import grails.converters.*
-import org.codehaus.groovy.grails.web.json.*
 
 class  PersonController{
 
@@ -11,6 +10,7 @@ class  PersonController{
     def collaboratorRequestService
     def userService
     def institutionService
+    def institutionGroupService
     
     def recent = {
         StringBuffer buff = new StringBuffer()
@@ -37,7 +37,7 @@ class  PersonController{
         Random r = new Random()
         List<Long> ids = new ArrayList<Long>(Person.findAll().collect({it.id}))
         long id = ids[r.nextInt(ids.size())]
-        redirect(uri: "/person/jit/#/?nodeId=p_${id}&navVisibility=true&navFunction=person&institutions=all&personId=${id}")
+        redirect(uri: "/${params.group}/person/jit/#/?nodeId=p_${id}&navVisibility=true&navFunction=person&institutions=all&personId=${id}")
     }
 
     def tooltip = {
@@ -112,16 +112,8 @@ class  PersonController{
             max = 25
         }
         def root = personService.get((params.id as long))
-        Graph graph
-        if(params.institutions.equals("all")){
-            graph = similarityService.calculatePersonNeighbors(root, max)
-          println('max:     '+max)
-        }
-        else{
-            Set<Long> institutionFilter = institutionService.getFilteredIds(params.institutions)
-            graph = similarityService.calculatePersonNeighbors(root, max, institutionFilter)
-
-        }
+        Set<Long> institutions =  institutionGroupService.getInstitutionIdsFromParams(params)
+        Graph graph = similarityService.calculatePersonNeighbors(root, max, institutions)
         def data = jsonService.buildUserCentricGraph(root, graph)
         render(data as JSON)
     }

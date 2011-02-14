@@ -121,7 +121,7 @@ macademia.autocomplete.initSearch = function() {
 
                 return false;
             }
-        }, "/Macademia/autocomplete");
+        }, macademia.makeActionUrl('autocomplete'));
 };
 
 macademia.autocomplete.split = function(val) {
@@ -158,7 +158,7 @@ macademia.autocomplete.initEditProfile = function() {
               this.value = terms.join(", ");
               return false;
           }
-        }, "/Macademia/autocomplete/index?klass=interest");
+        },  macademia.makeActionUrl('autocomplete', 'index') + "?klass=interest");
     };
 
 macademia.autocomplete.initEditRequest = function() {
@@ -187,5 +187,5 @@ macademia.autocomplete.initEditRequest = function() {
               this.value = terms.join(", ");
               return false;
           }
-        }, "/Macademia/autocomplete/index?klass=interest");
+        },macademia.makeActionUrl('autocomplete', 'index') + "?klass=interest");
 };

@@ -7,7 +7,7 @@ macademia.upload = {};
 
 macademia.upload.complete = function(event, queueId, fileObj, response, data) {
     var path = response;
-    $(".editPicture img").attr("src", '/Macademia/image/retrieve?subPath=' + path);
+    $(".editPicture img").attr("src", macademia.makeActionUrl('image', 'retrieve') + '?subPath=' + path);
     $(".editPicture input[name='imageSubpath']").val(path);
     macademia.upload.updateCaptions();
     return true;
@@ -24,7 +24,7 @@ macademia.upload.deleteImg = function() {
 macademia.upload.init = function() {
   $('#imgUploader').uploadify({
       uploader : '/Macademia/js/uploadify/uploadify.swf',
-      script : '/Macademia/image/upload',
+      script : macademia.makeActionUrl('image', 'upload'),
       folder : 'foo',
       auto : true,
       hideButton : true,

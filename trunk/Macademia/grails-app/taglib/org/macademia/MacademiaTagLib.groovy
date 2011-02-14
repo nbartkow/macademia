@@ -26,7 +26,8 @@ class MacademiaTagLib {
 
     def personLink = {
         attrs, body ->
-        attrs.uri = Utils.makeUrl('person', attrs.person.id, true)
+        String group = attrs.group ? attrs.group : params.group
+        attrs.uri = Utils.makeUrl(group, 'person', attrs.person.id, true)
         String bodyStr = body()
         if (bodyStr) {
             out << g.link(attrs, bodyStr)
@@ -37,7 +38,8 @@ class MacademiaTagLib {
 
     def requestLink = {
         attrs, body ->
-        attrs.uri = Utils.makeUrl('request', attrs.request.id)
+        String group = attrs.group ? attrs.group : params.group
+        attrs.uri = Utils.makeUrl(group, 'request', attrs.request.id)
         String bodyStr = body()
         if (bodyStr) {
             out << g.link(attrs, bodyStr)
@@ -48,7 +50,8 @@ class MacademiaTagLib {
 
     def interestLink = {
         attrs, body ->
-        attrs.uri = Utils.makeUrl('interest', attrs.interest.id)
+        String group = attrs.group ? attrs.group : params.group
+        attrs.uri = Utils.makeUrl(group, 'interest', attrs.interest.id)
         String bodyStr = body()
         if (bodyStr) {
             out << g.link(attrs, bodyStr)

@@ -66,7 +66,7 @@ class PersonService {
     }
 
     public void delete(Person person){
-        autocompleteService.removePerson(person.id)
+        autocompleteService.removePerson(person)
         List deleteInterestsAndRequests = databaseService.removeUser(person.id)
         for (interest in deleteInterestsAndRequests[0]){
           interestService.delete(interest)

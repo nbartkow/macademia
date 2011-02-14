@@ -36,7 +36,26 @@ class PopulateService {
                 Institution institution = new Institution(name : name, emailDomain : emailDomain)
                 Utils.safeSave(institution)
             }
-        }        
+        }
+
+        def ig1 = new InstitutionGroup(name : 'Associated Colleges of the Midwest', abbrev : 'acm')
+        Institution.list().each({
+            ig1.addToInstitutions(it)
+            it.addToInstitutionGroups(ig1)
+        })
+        Utils.safeSave(ig1)
+        def ig2 = new InstitutionGroup(name : 'All institutions', abbrev : 'all')
+        Institution.list().each({
+            ig2.addToInstitutions(it)
+            it.addToInstitutionGroups(ig2)
+        })
+        Utils.safeSave(ig2)
+        def ig3 = new InstitutionGroup(name : 'Test group', abbrev : 'test')
+        def mac = Institution.findByEmailDomain('macalester.edu')
+        ig3.addToInstitutions(mac)
+        mac.addToInstitutionGroups(ig3)
+        Utils.safeSave(ig3)
+
     }
 
     def readPeople(File file) {

@@ -10,7 +10,7 @@
 
 <body>
 
-    <a href="/Macademia/"><p:image id="logoImage" src='macademia-logo.png'/></a>
+    <a href="/Macademia/${group}"><p:image id="logoImage" src='macademia-logo.png'/></a>
     <div id="main">
       <h2>Change your password</h2>
 

@@ -123,8 +123,8 @@ def prepDirectories(prefix) {
 
 macademia {
     salt = 'Foo'
-    creatableFields = ['fullName', 'email', 'department', 'institution', 'imageSubpath', 'links', 'title']
-    editableFields = ['fullName', 'department', 'institution', 'imageSubpath', 'links', 'title']
+    creatableFields = ['fullName', 'email', 'department', 'imageSubpath', 'links', 'title']
+    editableFields = ['fullName', 'department', 'imageSubpath', 'links', 'title']
     collaboratorRequestFields = ['creator', 'title', 'description', 'expiration']
     maxSimilarInterests = 2000
     profileImagePath = "web-app/images/db"

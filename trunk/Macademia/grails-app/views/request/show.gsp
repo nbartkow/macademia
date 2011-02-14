@@ -26,7 +26,7 @@
   <g:javascript >
     $().ready(function() {
         $("#editRequestDialog").jqm({
-            ajax: '/Macademia/request/edit/${collaboratorRequest.id}',
+            ajax: "/Macademia/${group}/request/edit/${collaboratorRequest.id}",
             modal: false});
         $("#editRequestButton").click(
             function () {
