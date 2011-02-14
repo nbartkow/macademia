@@ -16,7 +16,7 @@ macademia.makeJsonUrl = function(type, id) {
     if (!density || density == undefined || density == 'undefined') {
         density = 3; 
     }
-    return "/Macademia/" + type + "/json/" + id + "?institutions="+$.address.parameter('institutions') + "&density=" + density;
+    return macademia.makeActionUrl(type, 'json') + "/" + id + "?institutions="+$.address.parameter('institutions') + "&density=" + density;
 };
 
 macademia.checkBrowser = function() {
@@ -132,7 +132,7 @@ macademia.jit.init = function(rootType,id){
         //Set node/edge styles
 
         onPlaceLabel: function(domElement, node) {
-            $(domElement).attr('alt','/Macademia/'+node.data.type+'/tooltip/'+node.data.unmodifiedId);
+            $(domElement).attr('alt', macademia.makeActionUrl(node.data.type, 'tooltip') + '/'+node.data.unmodifiedId);
             var nodeTop = parseInt(domElement.style.top) - 10.5;
             // $(macademia.rgraph.root.id).css not working
             var boost = (nodeTop -  (macademia.jit.distance * 2 + 20))/ (2*macademia.jit.distance) * 11.5;

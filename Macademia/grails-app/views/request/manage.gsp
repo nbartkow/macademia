@@ -10,7 +10,7 @@
     <body id = main>
         <div class="nav">
             <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="Return to Macademia"/></a></span>
-            <span class="menuButton"><g:link class="create" action="create"><g:message code="Request for collaborators" args="[entityName]" /></g:link></span>
+            <span class="menuButton"><g:link params="[group : params.group]" class="create" action="create"><g:message code="Request for collaborators" args="[entityName]" /></g:link></span>
         </div>
         <div class="body">
             <h1><g:message code="Viewing collaborator requests of ${user.fullName}" /></h1>
@@ -40,7 +40,7 @@
                     <g:each in="${collaboratorRequestList}" status="i" var="collaboratorRequestInstance">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                         
-                            <td><g:link action="show" id="${collaboratorRequestInstance.id}">${fieldValue(bean: collaboratorRequestInstance, field: "id")}</g:link></td>
+                            <td><g:link params="[group : params.group]" action="show" id="${collaboratorRequestInstance.id}">${fieldValue(bean: collaboratorRequestInstance, field: "id")}</g:link></td>
                         
                             <td>${fieldValue(bean: collaboratorRequestInstance, field: "title")}</td>
                         

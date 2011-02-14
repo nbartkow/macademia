@@ -353,17 +353,18 @@ macademia.updateNav = function(){
          // go to search page
      }else if (navFunction == 'person' && $.address.parameter('personId') != macademia.queryString.personId){
          var rootId = $.address.parameter('nodeId');
-         $('#personIdDiv').load("/Macademia/person/show/" + rootId.slice(2));
+         $('#personIdDiv').load(macademia.makeActionUrl('person', 'show') + '/' + rootId.slice(2));
      }else if (navFunction == 'request'){
          var rootId = $.address.parameter('nodeId');
-         $('#requestIdDiv').load("/Macademia/request/show/" + rootId.slice(2));
+         $('#requestIdDiv').load(macademia.makeActionUrl('request', 'show') + '/' + rootId.slice(2));
          macademia.queryString.requestId = $.address.parameter('requestId');
      }else if (navFunction == 'interest'){
          var rootId = $.address.parameter('nodeId');
-         $('#interestIdDiv').load("/Macademia/interest/show/" + rootId.slice(2));
+         $('#interestIdDiv').load(macademia.makeActionUrl('interest', 'show') + '/' + rootId.slice(2));
      }//else if etc...
      macademia.queryString.navFunction = navFunction;
 };
+
 // removes unused parameters and updates used parameters
 macademia.sortParameters = function(type,value){
     var queries = ['searchBox','interestId','personId','requestId'];
@@ -417,9 +418,9 @@ macademia.submitSearch = function(){
             var page = $.address.parameter('searchPage').split('_');
             var type = page[0];
             var number = page[1];
-            var url = '/Macademia/search/search';
+            var url = macademia.makeActionUrl('search', 'search');
             if(type != 'all'){
-                url = '/Macademia/search/deepsearch';
+                url = macademia.makeActionUrl('search', 'deepsearch');
             }
             $('#searchBoxDiv').load(
                 url,
@@ -435,8 +436,32 @@ macademia.submitSearch = function(){
     }
 };
 
+macademia.retrieveGroup = function() {
+    var marker = '/Macademia/';     // string appearing before group
+    var url = window.location.href;
+    var i = url.indexOf(marker, 0);
+    if (i < 0) {
+        return 'all';    // default group
+    }
+    // find next slash
+    var j = url.indexOf('/', i + marker.length + 1);
+    if (j < 0) {
+        return 'all';
+    }
+    return url.substring(i + marker.length, j);
+};
+
 macademia.makeActionUrl = function(controller, action) {
-    return "/Macademia/" + controller + "/" + action;
+    return macademia.makeActionUrlWithGroup(macademia.retrieveGroup(), controller, action);
+};
+
+
+macademia.makeActionUrlWithGroup = function(group, controller, action) {
+    if (action) {
+        return "/Macademia/" + group + '/' + controller + "/" + action;
+    } else {
+        return "/Macademia/" + group + '/' + controller;
+    }
 };
 
 
@@ -446,7 +471,7 @@ macademia.setupModal = function(modalDialog, trigger, url, depModule, fnString) 
 //    }
     $(trigger).click(function(){
         $(modalDialog).load(
-                "/Macademia/" + url,
+                "/Macademia/" + macademia.retrieveGroup() + '/' + url,
                     function(responseText, textStatus, xmlHttpRequest) {
                         $.deps.load(depModule, function() {
                             try {
@@ -462,7 +487,7 @@ macademia.setupModal = function(modalDialog, trigger, url, depModule, fnString) 
 };
 
 macademia.serverLog = function(category, event, params) {
-    var url = '/Macademia/logging/doLog';
+    var url = macademia.makeActionUrl('logging', 'doLog');
     params = params || {};
     params.category = category;
     params.event = event;
@@ -501,8 +526,8 @@ macademia.toggleAccountControls = function() {
 };
 
 macademia.setupRequestCreation = function() {
-    $("#makeRequestDialog").jqm({ajax: '/Macademia/request/create/', trigger: '.makeRequestLink2',  modal: false});
-    $("#listRequestDialog").jqm({ajax: '/Macademia/request/list/', trigger: '.listRequestLink', modal: false});
+    $("#makeRequestDialog").jqm({ajax: macademia.makeActionUrl('request', 'create'), trigger: '.makeRequestLink2',  modal: false});
+    $("#listRequestDialog").jqm({ajax: macademia.makeActionUrl('request', 'list'), trigger: '.listRequestLink', modal: false});
 };
 
 macademia.initializeLogin = function() {
@@ -558,8 +583,23 @@ macademia.reloadToPerson = function(pid) {
        navVisibility : 'true'
     };
     var rand = Math.random();
+    try {
+        group = $.ajax({
+            url : macademia.makeActionUrl('institution', 'primaryGroup'),
+            type: "POST",
+            data : {},
+            success:function(html){},
+            error:  function(req, textStatus, error) {
+                alert('error occured while loading primary group for person with id ' + id + 'failed: ' + textStatus + ', ' + error);
+            },
+            async:false
+        }).responseText;
 
-    window.location.href = macademia.makeActionUrl('person', 'jit') + '?rand=' + rand + '#/?' + $.param(params);
+        window.location.href = macademia.makeActionUrlWithGroup(group, 'person', 'jit') + '?rand=' + rand + '#/?' + $.param(params);
+    } catch (err) {
+        alert('error occured while loading primary group for person with id ' + id + ': ' + err);
+    }
+
 };
 
 

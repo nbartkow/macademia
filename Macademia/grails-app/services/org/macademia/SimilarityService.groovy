@@ -49,7 +49,6 @@ class SimilarityService {
             }  else{
                 log.info("Interest $interest has no related article")
             }
-
         }
         relationsBuilt = true
     }

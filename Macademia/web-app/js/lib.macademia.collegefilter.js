@@ -103,7 +103,7 @@ macademia.createInstitutionString = function(collegeArray) {
 };
 
 macademia.initiateCollegeString = function(ids){
-    $.getJSON('/Macademia/institution/idstonames', {ids: ids.replace(/\+/g, " ")}, function(institutionList){
+    $.getJSON(macademia.makeActionUrl('institution', 'idstonames'), {ids: ids.replace(/\+/g, " ")}, function(institutionList){
     macademia.changeCollegeString(institutionList);
     });
 };
@@ -166,5 +166,5 @@ macademia.initCollegeSearch = function() {
 
                 return false;
             }
-        }, "/Macademia/autocomplete/index?klass=institution");
+        }, macademia.makeActionUrl('autocomplete', 'index') + '?klass=institution');
 };

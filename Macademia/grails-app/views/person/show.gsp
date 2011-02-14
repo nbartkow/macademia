@@ -12,7 +12,7 @@
     <tr>
       <g:if test="${person.imageSubpath}">
         <td id="pf_img" rowspan="2">
-        <img src="/Macademia/image/retrieve?subPath=${person.imageSubpath}">
+        <img src="/Macademia/${group}/image/retrieve?subPath=${person.imageSubpath}">
         </td>
       </g:if>
       <td id="pf_name">${person.fullName.encodeAsHTML()}</td>
@@ -50,7 +50,7 @@
       <g:each in="${interests}" var="interest" >
 
         <g:set var="counter" value="${counter + 1}"/>
-        <g:link url="#/?nodeId=i_${interest.id}&navFunction=interest&interestId=${interest.id}">${interest.text}<g:if test="${counter!=interests.size()}">,</g:if></g:link>
+        <g:link params="[group : params.group]" url="#/?nodeId=i_${interest.id}&navFunction=interest&interestId=${interest.id}">${interest.text}<g:if test="${counter!=interests.size()}">,</g:if></g:link>
       </g:each>
     </p>
   </div>
@@ -80,7 +80,7 @@
   <h4>Account:</h4>
       <ul class="styledList atxt">
       <li>
-      <g:link url="[controller:'account',action:'edit', id:person.id ]">Edit Profile</g:link>
+      <g:link url="[controller:'account',action:'edit', id:person.id, params: [group : params.group] ]">Edit Profile</g:link>
       <g:if test="${request.authenticated && request.authenticated.isShilad(person)}">
          <g:form controller="interest" action="reapOrphans">
               <g:actionSubmit value="Reap Orphans" action="reapOrphans" onclick="return confirm('are you sure you want to reap the orphans?')"/>

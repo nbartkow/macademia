@@ -8,7 +8,7 @@
 
 
 <div id="logo">
-  <a href="/Macademia/">
+  <a href="/Macademia/${group}">
     <p:image id="logoImage" src='macademia-logo.png'/>
     <div class="tagline">Connecting colleagues who share research interests.</div>
   </a>
