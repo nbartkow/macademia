@@ -37,6 +37,7 @@ class Person {
     
     static mapping = {
         interests fetch: "join", cache: true
+        links type:'text'
     }
 
     public String toString() {
