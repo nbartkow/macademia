@@ -12,7 +12,7 @@
     <tr>
       <g:if test="${person.imageSubpath}">
         <td id="pf_img" rowspan="2">
-        <img src="/Macademia/${group}/image/retrieve?subPath=${person.imageSubpath}">
+        <img src="/Macademia/${params.group}/image/retrieve?subPath=${person.imageSubpath}">
         </td>
       </g:if>
       <td id="pf_name">${person.fullName.encodeAsHTML()}</td>
