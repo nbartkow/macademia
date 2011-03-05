@@ -22,7 +22,7 @@
 </head>
 <body>
 <div id="center_wrapper">
-<a href="/Macademia/${group}">
+<a href="/Macademia/${params.group}">
   <p:image id="logoImage" src='macademia-logo-black.png'/></a>
 
 <h2 class="center" id="registerTitle">

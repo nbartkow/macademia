@@ -1,5 +1,5 @@
 <div id="createRequestContainer">
-  <g:form action="save">
+  <g:form params='[group : params.group]' controller='request' action='save'>
     <div id="rfcForm">
       <g:if test="${collaboratorRequest.id}">
         <g:hiddenField name="requestId" value="${collaboratorRequest.id}"/> 
@@ -30,7 +30,7 @@
       <div class="clear"></div>
     </div>
     <div id="submitRequest" class="center">
-      <g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}"/>
+      <g:submitButton name="create" class="save" value="Create"/>
     </div>
   </g:form>
   <g:javascript >
