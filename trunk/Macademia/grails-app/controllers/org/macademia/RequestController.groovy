@@ -64,8 +64,8 @@ class RequestController {
         }
         interestService.deleteOld(oldKeywords, collaboratorRequest)
         collaboratorRequestService.save(collaboratorRequest, Utils.getIpAddress(request))
-        autocompleteService.addRequest(collaboratorRequest)
         collaboratorRequest.save(flush : true)  // flush to get the id
+        autocompleteService.addRequest(collaboratorRequest)
 
         redirect('uri' : Utils.makeUrl(params.group, 'request', collaboratorRequest.id, true))
     }

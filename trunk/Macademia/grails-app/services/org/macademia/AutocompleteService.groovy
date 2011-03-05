@@ -15,7 +15,7 @@ import org.hibernate.event.PostUpdateEventListener
  */
 class AutocompleteService implements PostInsertEventListener, PostUpdateEventListener {
 
-    private static class GroupTree {
+    public static class GroupTree {
         AutocompleteTree<String, AutocompleteEntity> institutionTree = new AutocompleteTree<String, AutocompleteEntity>()
         AutocompleteTree<Long, AutocompleteEntity> interestTree = new AutocompleteTree<Long, AutocompleteEntity>()
         AutocompleteTree<Long, AutocompleteEntity> overallTree = new AutocompleteTree<Long, AutocompleteEntity>()
@@ -150,7 +150,7 @@ class AutocompleteService implements PostInsertEventListener, PostUpdateEventLis
     public def removeRequest = { request ->
         Collection<InstitutionGroup> igs = institutionGroupService.findAllByInstitution(request.creator.institution)
         for (InstitutionGroup ig : igs) {
-            getTree(ig.abbrev).overallTree.remove("r"+ id)
+            getTree(ig.abbrev).overallTree.remove("r"+ request.id)
         }
     }
 
