@@ -51,13 +51,14 @@ public class MongoWrapper {
         return mongo.getDB(dbName);
     }
 
-    public DB getDb(boolean articleDb) {
-        if (articleDb) {
+    public DB getDb(boolean wpDb) {
+        if (wpDb) {
             return mongo.getDB(wpDbName);
         } else {
             return mongo.getDB(dbName);
         }
     }
+
 
     public void copyDB(String fromDB, String dbName) {
         DB db = mongo.getDB( "admin" );
@@ -781,4 +782,21 @@ public class MongoWrapper {
         return deletedInterests;
     }
 
+    public void extractSmallWpDb(String destinationDb) {
+        Set<Long> articleIds = new HashSet<Long>();
+        DB dbSrc = getDb(true);
+        mongo.dropDatabase(destinationDb);
+        DB dbDest = mongo.getDB(destinationDb);
+
+        DBCollection articlesToIdsSrc = dbSrc.getCollection(ARTICLES_TO_IDS);
+        DBCollection articlesToIdsDest = dbDest.getCollection(ARTICLES_TO_IDS);
+        DBCollection articleSimsDest = dbDest.getCollection(ARTICLE_SIMILARITIES);
+
+        for (DBObject entry : articlesToIdsSrc.find()) {
+            Long article = (Long) entry.get("_id");
+            articlesToIdsDest.insert(entry);
+            DBObject sims = safeFindById(ARTICLE_SIMILARITIES, "" + article, true);
+            articleSimsDest.insert(sims);
+        }
+    }
 }
