@@ -106,13 +106,19 @@ public class MongoWrapper {
         return res;
     }
 
-    public DBObject safeFindById(String collection, Object id, boolean articleDb){
+
+    public DBObject safeFindByField(String collection, String field, Object value, boolean articleDb){
         try{
-            return findById(collection, id, articleDb);
+            return findByField(collection, field, value, articleDb);
         }   catch(IllegalArgumentException e){
             //System.out.println(e.getMessage());
             return null;
         }
+    }
+
+
+    public DBObject safeFindById(String collection, Object id, boolean articleDb){
+        return safeFindByField(collection, "_id", id, articleDb);
     }
 
     public void addUser(Long userId, List<Long> userInterests, Long institutionId) throws RuntimeException {
@@ -797,15 +803,19 @@ public class MongoWrapper {
         int total = 0;
         int found = 0;
         for (DBObject entry : articlesToInterests.find()) {
+            total += 1;
             String article = "" + entry.get("_id");
-            DBObject articleIds = findByField(ARTICLES_TO_IDS, "wpId", article, true);
+            DBObject articleIds = safeFindByField(ARTICLES_TO_IDS, "wpId", article, true);
+            if (articleIds == null) {
+                continue;
+            }
             articlesToIdsDest.insert(articleIds);
             DBObject sims = safeFindById(ARTICLE_SIMILARITIES, article, true);
-            if (sims != null) {
-                articleSimsDest.insert(sims);
-                found++;
+            if (sims == null) {
+                continue;
             }
-            total += 1;
+            articleSimsDest.insert(sims);
+            found++;
         }
 
         articlesToIdsDest.ensureIndex("wpId");
