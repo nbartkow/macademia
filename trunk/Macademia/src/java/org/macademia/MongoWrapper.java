@@ -89,7 +89,11 @@ public class MongoWrapper {
     }
 
     public DBObject findById(String collection, Object id, boolean articleDb) throws IllegalArgumentException{
-        DBObject searchById= new BasicDBObject("_id", id);
+        return findByField(collection, "_id", id, articleDb);
+    }
+
+    public DBObject findByField(String collection, String field, Object value, boolean articleDb) throws IllegalArgumentException{
+        DBObject searchById= new BasicDBObject(field, value);
         DBCollection coll = getDb(articleDb).getCollection(collection);
         //System.out.println("DBCollection: " + coll.toString());
         //for (DBObject o : coll.find()) {
@@ -97,7 +101,7 @@ public class MongoWrapper {
         //}
         DBObject res = coll.findOne(searchById);
         if(res==null){
-            throw new IllegalArgumentException("No record found in "+collection+" with id "+id.toString() );
+            throw new IllegalArgumentException("No record found in "+collection+" with " + field + " "+value.toString());
         }
         return res;
     }
@@ -783,20 +787,21 @@ public class MongoWrapper {
     }
 
     public void extractSmallWpDb(String destinationDb) {
-        Set<Long> articleIds = new HashSet<Long>();
-        DB dbSrc = getDb(true);
         mongo.dropDatabase(destinationDb);
         DB dbDest = mongo.getDB(destinationDb);
 
-        DBCollection articlesToIdsSrc = dbSrc.getCollection(ARTICLES_TO_IDS);
+        DBCollection articlesToInterests = getDb().getCollection(ARTICLES_TO_INTERESTS);
         DBCollection articlesToIdsDest = dbDest.getCollection(ARTICLES_TO_IDS);
         DBCollection articleSimsDest = dbDest.getCollection(ARTICLE_SIMILARITIES);
 
-        for (DBObject entry : articlesToIdsSrc.find()) {
-            String article = (String) entry.get("_id");
-            articlesToIdsDest.insert(entry);
-            DBObject sims = safeFindById(ARTICLE_SIMILARITIES, "" + article, true);
+        for (DBObject entry : articlesToInterests.find()) {
+            String article = "" + entry.get("_id");
+            DBObject articleIds = findByField(ARTICLES_TO_IDS, "wpId", article, true);
+            articlesToIdsDest.insert(articleIds);
+            DBObject sims = safeFindById(ARTICLE_SIMILARITIES, article, true);
             articleSimsDest.insert(sims);
         }
+
+        articlesToIdsDest.ensureIndex("wpId");
     }
 }
