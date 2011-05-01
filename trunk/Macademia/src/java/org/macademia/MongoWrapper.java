@@ -793,7 +793,7 @@ public class MongoWrapper {
         DBCollection articleSimsDest = dbDest.getCollection(ARTICLE_SIMILARITIES);
 
         for (DBObject entry : articlesToIdsSrc.find()) {
-            Long article = (Long) entry.get("_id");
+            String article = (String) entry.get("_id");
             articlesToIdsDest.insert(entry);
             DBObject sims = safeFindById(ARTICLE_SIMILARITIES, "" + article, true);
             articleSimsDest.insert(sims);
