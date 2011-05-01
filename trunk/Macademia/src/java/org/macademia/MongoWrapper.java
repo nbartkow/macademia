@@ -794,14 +794,21 @@ public class MongoWrapper {
         DBCollection articlesToIdsDest = dbDest.getCollection(ARTICLES_TO_IDS);
         DBCollection articleSimsDest = dbDest.getCollection(ARTICLE_SIMILARITIES);
 
+        int total = 0;
+        int found = 0;
         for (DBObject entry : articlesToInterests.find()) {
             String article = "" + entry.get("_id");
             DBObject articleIds = findByField(ARTICLES_TO_IDS, "wpId", article, true);
             articlesToIdsDest.insert(articleIds);
-            DBObject sims = findById(ARTICLE_SIMILARITIES, article, true);
-            articleSimsDest.insert(sims);
+            DBObject sims = safeFindById(ARTICLE_SIMILARITIES, article, true);
+            if (sims != null) {
+                articleSimsDest.insert(sims);
+                found++;
+            }
+            total += 1;
         }
 
         articlesToIdsDest.ensureIndex("wpId");
+        System.err.println("copied " + found + " of " + total);
     }
 }
