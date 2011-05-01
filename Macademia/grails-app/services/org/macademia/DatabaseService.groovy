@@ -224,4 +224,8 @@ class DatabaseService {
         wrapper.buildInterestRelations(text, interest, article, relationsBuilt)
     }
 
+    public void extractSmallWpDb(String destDb) {
+        wrapper.extractSmallWpDb(destDb)
+    }
+
 }
