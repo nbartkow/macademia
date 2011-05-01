@@ -798,7 +798,7 @@ public class MongoWrapper {
             String article = "" + entry.get("_id");
             DBObject articleIds = findByField(ARTICLES_TO_IDS, "wpId", article, true);
             articlesToIdsDest.insert(articleIds);
-            DBObject sims = safeFindById(ARTICLE_SIMILARITIES, article, true);
+            DBObject sims = findById(ARTICLE_SIMILARITIES, article, true);
             articleSimsDest.insert(sims);
         }
 
