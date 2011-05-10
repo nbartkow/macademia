@@ -12,7 +12,7 @@ class DatabaseServiceIntegrationTests extends GrailsUnitTestCase {
     def similarityService
     def interestService
 
-     protected void setUp() {
+    protected void setUp() {
         super.setUp()
         databaseService.switchToCopyDB((String)ConfigurationHolder.config.dataSource.mongoDbName)
     }
@@ -34,6 +34,7 @@ class DatabaseServiceIntegrationTests extends GrailsUnitTestCase {
         assertEquals(interestService.findByText("online communities").text,"online communities")
     }
 
+//    /*
     void testGetUserInstitution() {
         //databaseService.addUser(Person.findByEmail("ssen@macalester.edu"))
         assertEquals(databaseService.getUserInstitution(1),Institution.findByName("Macalester College").id)
