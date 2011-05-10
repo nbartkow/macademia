@@ -1,6 +1,7 @@
 package org.macademia
 
 import grails.test.GrailsUnitTestCase
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 /**
  * Authors: Shilad
@@ -16,15 +17,14 @@ class AutocompleteServiceIntegrationTests extends GrailsUnitTestCase {
 
     protected void setUp() {
         super.setUp()
-        databaseService.switchToCopyDB("test")
-        similarityService.relationsBuilt = true
+        databaseService.switchToCopyDB((String)ConfigurationHolder.config.dataSource.mongoDbName)
         autocompleteService.init()
     }
 
     protected void tearDown() {
         super.tearDown()
         databaseService.dropCurrentDB()
-        databaseService.changeDB("test")
+        databaseService.changeDB((String)ConfigurationHolder.config.dataSource.mongoDbName)
     }
 
     void testSimple() {
@@ -38,10 +38,9 @@ class AutocompleteServiceIntegrationTests extends GrailsUnitTestCase {
         //There is some problem with normalize text for the space character
         Person p = Person.findByEmail("ssen@macalester.edu")
         Interest interest = new Interest("web 3.0")
+        interest.addToPeople(p)
         p.addToInterests(interest)
         personService.save(p)
-        Utils.cleanUpGorm(sessionFactory)
-        
         results = autocompleteService.getInterestAutocomplete('all', 'web', 5)
         assertEquals(2, results.size())
     }

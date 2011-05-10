@@ -17,19 +17,13 @@ class SimilarityService {
     int minSimsPerInterest = 2
 
     // The maximum number of times to use a particular interest as a partner for other interests
-    int maxSimsPerInterest = 10
-
-    // Only similarities in the top fraction are stored in the database.
-    double roughThreshold = ConfigurationHolder.config.roughThreshold
+    int maxSimsPerInterest = 30
 
     // Only similarities in the top fraction are used to fill out interests
     double refinedThreshold = ConfigurationHolder.config.refinedThreshold
 
     // The lowest possible acceptable similarity score
     double absoluteThreshold = ConfigurationHolder.config.absoluteThreshold
-
-    // This is a temporary value designed to allow the new methods to approximate the outputs of the old ones
-    double threshold = refinedThreshold/roughThreshold
 
     //Has buildInterestRelations() been run?
     boolean relationsBuilt = true
@@ -106,7 +100,7 @@ class SimilarityService {
         for(SimilarInterest ir : getSimilarInterests(interest.id, maxInterests, absoluteThreshold, institutionFilter)){
             //log.info("Similar interest ID: "+ir.interestId+" similarity score "+ir.similarity)
             if (graph.getInterests().size() < maxInterests + 1) {
-                graph.addEdge(null, interest.id, ir.interestId, null)
+                graph.addEdge(null, interest.id, ir.interestId, null, ir.similarity)
                 graph = findPeopleAndRequests(graph, maxPeople, ir.interestId, null, ir.similarity, institutionFilter)
             }
         }
@@ -137,19 +131,26 @@ class SimilarityService {
       * @return The completed graph
       */
     public Graph calculatePersonNeighbors( Person person, int maxPeople, Set<Long> institutionFilter){
-        Graph graph= new Graph()
+        timing = new TimingAnalysis()
+        timing.startTime()
+        Graph graph= new Graph(person.id)
         long graphStart = Calendar.getInstance().getTimeInMillis()
         //Bonus points for being the graph center
-        graph.incrementPersonScore(person.id, 800)
         for(long i : databaseService.getUserInterests(person.id)){
             //For each interest owned by the central person, calculate neighbors
             graph = calculateNeighbors(i, graph, maxPeople, (Set<Long>)person.interests.collect({it.id}), institutionFilter)
         }
+        timing.recordTime("foo")
         graph.finalizeGraph(maxPeople)
+        timing.recordTime("finalize")
+
         //println("person map is ${graph.personMap}")
         long graphEnd =Calendar.getInstance().getTimeInMillis()
         long graphTime=graphEnd-graphStart
         log.info("It took $graphTime to build $person graph")
+        timing.analyze()
+
+        println("neighbor sizes are ${graph.personMap.size()} and ${graph.interestMap.size()}")
         return graph
     }
 
@@ -202,10 +203,16 @@ class SimilarityService {
         timing.startTime()
         //Add all edges linked to Interest i
         graph = findPeopleAndRequests(graph, maxPeople, i, null, 1, institutionFilter)
+        if (i == 28) {
+            println("args are " + maxSimsPerInterest + " and " + absoluteThreshold)
+            println("sims for " + i + " is " + getSimilarInterests(i, maxSimsPerInterest, absoluteThreshold, institutionFilter))
+        }
         for(SimilarInterest ir : getSimilarInterests(i, maxSimsPerInterest, absoluteThreshold, institutionFilter)){
             //log.info("Similar interest ID: "+ir.interestId+" similarity score "+ir.similarity+"calculate neighbors")
             if(ir.interestId!=null){
-                if(!inner.contains(ir.interestId)) {
+                if(inner.contains(ir.interestId)) {
+                    graph.addIntraInterestSim(i, ir.interestId, ir.similarity)
+                } else {
                     //Add all edges linked to SimilarInterest ir
                     graph = findPeopleAndRequests(graph, maxPeople, i, ir.interestId, ir.similarity, institutionFilter)
                 }
@@ -235,17 +242,20 @@ class SimilarityService {
             foo = ir
         }
         timing.recordTime("find People And Requests overhead")
-        for(long p : databaseService.getInterestUsers(foo)){
+        def userIds = databaseService.getInterestUsers(foo)
+        timing.recordTime("find People And Requests getInterestUseres")
+        for(long p : userIds){
             //For each person with the Interest or SimilarInterest
             timing.startTime()
             if (institutionFilter == null) {
-                graph.incrementPersonScore(p, sim)
-                graph.addEdge(p, i, ir, null)
+                graph.incrementPersonScore(p, i, foo, sim)
+                timing.recordTime("increment score without Institution Filter")
+                graph.addEdge(p, i, ir, null, sim)
                 timing.recordTime("Adding edge without Institution Filter")
             } else {
                 if (institutionFilter.contains(databaseService.getUserInstitution(p))) {
-                    graph.incrementPersonScore(p, sim)
-                    graph.addEdge(p, i, ir, null)
+                    graph.incrementPersonScore(p, i, foo, sim)
+                    graph.addEdge(p, i, ir, null, sim)
                 }
                 timing.recordTime("Adding edge with Institution Filter overhead")
             }
@@ -254,11 +264,11 @@ class SimilarityService {
             //For each CollaboratorRequest with the Interest or SimilarInterest
             timing.startTime()
             if (institutionFilter == null) {
-                graph.addEdge(null, i, ir, cr)
+                graph.addEdge(null, i, ir, cr, sim)
                 timing.recordTime("Adding edge without Institution Filter")
             } else {
                 if (institutionFilter.contains(databaseService.getCollaboratorRequestInstitution(cr))) {
-                    graph.addEdge(null, i, ir, cr)
+                    graph.addEdge(null, i, ir, cr, sim)
                 }
                 timing.recordTime("Adding edge with Institution Filter overhead")
             }

@@ -100,7 +100,7 @@ class SimilarityServiceIntegrationTests extends GrailsUnitTestCase {
         assertEquals(graph.getRequests().size(),1)
         assertEquals(graph.getAdjacentEdges(cr).size(),4)
         assertEquals(graph.getAdjacentEdges(Person.findByEmail("michelfelder@macalester.edu")).size(),3) //was 3
-        assertEquals(graph.getAdjacentEdges(interestService.findByText("online communities")).size(),11)
+        assertEquals(graph.getAdjacentEdges(interestService.findByText("online communities")).size(),12)
         assertEquals(graph.getAdjacentEdges(interestService.findByText("data mining")).size(),11)//was 10
         assertEquals(graph.getAdjacentEdges(interestService.findByText("social networking")).size(),2)
         Edge e1 = new Edge(person:Person.findByEmail("ssen@macalester.edu"),interest:interestService.findByText("data mining"),relatedInterest:interestService.findByText("statistics"))

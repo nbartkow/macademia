@@ -37,6 +37,9 @@ public class MongoWrapper {
     private String dbName = null;
     private String wpDbName = "fromWikipedia";
 
+    LRUCache<Long, Set<Long>> interestUserCache = new LRUCache<Long, Set<Long>>(1000);
+    LRUCache<Long, Long> userInstitutionCache = new LRUCache<Long, Long>(1000);
+
     public MongoWrapper(Mongo mongo, String dbName, String wpDbName){
         this.mongo=mongo;
             this.dbName = dbName;
@@ -146,6 +149,11 @@ public class MongoWrapper {
         //log.info("User ID: "+id)
         //log.info("Institution ID: "+institutionId)
 
+
+        for (long i : userInterests) {
+            interestUserCache.remove(i);
+        }
+        userInstitutionCache.remove(userId);
     }
 
     /**
@@ -183,12 +191,23 @@ public class MongoWrapper {
         users.remove(user);
         delInterestCollaborator.add(deletedInterests);
         delInterestCollaborator.add(getUserRequests(userId));
+
+        for (Long i : interests) {
+            interestUserCache.remove(i);
+        }
+        userInstitutionCache.remove(userId);
+
         return delInterestCollaborator;
     }
 
-    public Long getUserInstitution(long id){
-        DBObject user = safeFindById(USERS, id, false);
-        return (Long) user.get("institution");
+    public Long getUserInstitution(long userId){
+        Long institutionId = userInstitutionCache.get(userId);
+        if (institutionId == null) {
+            DBObject user = safeFindById(USERS, userId, false);
+            institutionId = (Long) user.get("institution");
+            userInstitutionCache.put(userId, institutionId);
+        }
+        return institutionId;
     }
 
     public Set<Long> getUserInterests(long id){
@@ -213,10 +232,11 @@ public class MongoWrapper {
      * requests owned by the specified user.
      */
     public List<Long> getUserRequests(long userId) {
+        List<Long> userRequests = new ArrayList<Long>();
+
         DBObject query = new BasicDBObject("creator",userId);
         DBCollection coll = getDb().getCollection(COLLABORATOR_REQUESTS);
         DBCursor res =coll.find(query);
-        List<Long> userRequests = new ArrayList<Long>();
         for(DBObject rfc: res){
             userRequests.add((Long)rfc.get("_id"));
         }
@@ -224,13 +244,19 @@ public class MongoWrapper {
     }
 
     public Set<Long> getInterestUsers(long id) {
+        Set<Long> res = interestUserCache.get(id);
+        if (res != null) {
+            return res;
+        }
+        res = new HashSet<Long>();
         DBObject query = new BasicDBObject("interests", id);
+        DBObject keys = new BasicDBObject("_id", 1);
         DBCollection users = getDb(false).getCollection(USERS);
-        DBCursor cursor = users.find(query);
-        Set<Long> res = new HashSet<Long>();
+        DBCursor cursor = users.find(query, keys);
         for (DBObject user : cursor) {
             res.add((Long)user.get("_id"));
         }
+        interestUserCache.put(id, res);
         return res;
     }
 

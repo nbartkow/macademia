@@ -15,14 +15,14 @@ class EdgeTests extends GrailsUnitTestCase {
     }
 
     void testEquals(){
-      Person p1=new Person(fullName:"foo" , email:"bar", department:"goo")
-      Person p2=new Person(fullName:"bar" , email:"foo", department:"goo")
-      Interest i1=new Interest("foo")
-      Interest i2=new Interest("bar")
-      Interest i3=new Interest("goo")
-      Interest i4=new Interest("foo")
-      CollaboratorRequest cr = new CollaboratorRequest(title: "ladf")
-      CollaboratorRequest cr2 = new CollaboratorRequest(title: "kajfd")
+      Person p1=new Person(fullName:"foo" , email:"bar", department:"goo", id : 1)
+      Person p2=new Person(fullName:"bar" , email:"foo", department:"goo", id : 2)
+      Interest i1=new Interest(text : "foo", id : 3)
+      Interest i2=new Interest(text : "bar", id : 4)
+      Interest i3=new Interest(text : "goo", id : 5)
+      Interest i4=new Interest(text : "foo", id : 3)
+      CollaboratorRequest cr = new CollaboratorRequest(title: "ladf", id : 6)
+      CollaboratorRequest cr2 = new CollaboratorRequest(title: "kajfd", id : 7)
       Edge e1=new Edge(person:p1, interest:i1)
       Edge e2=new Edge(person:p1, interest:i2)
       Edge e3=new Edge(person:p1, interest:i4)
@@ -63,12 +63,12 @@ class EdgeTests extends GrailsUnitTestCase {
     }
 
     void testHashCode(){
-      Person p1=new Person(fullName:"foo" , email:"bar", department:"goo")
-      Person p2=new Person(fullName:"bar" , email:"foo", department:"goo")
-      Interest i1=new Interest("foo")
-      Interest i2=new Interest("bar")
-      Interest i3=new Interest("goo")
-      Interest i4=new Interest("foo")
+      Person p1=new Person(fullName:"foo" , email:"bar", department:"goo", id : 1)
+      Person p2=new Person(fullName:"bar" , email:"foo", department:"goo", id : 2)
+      Interest i1=new Interest(text : "foo", id : 3)
+      Interest i2=new Interest(text : "bar", id : 4)
+      Interest i3=new Interest(text : "goo", id : 5)
+      Interest i4=new Interest(text : "foo", id : 3)
       Edge e1=new Edge(person:p1, interest:i1)
       Edge e2=new Edge(person:p1, interest:i2)
       Edge e3=new Edge(person:p1, interest:i4)

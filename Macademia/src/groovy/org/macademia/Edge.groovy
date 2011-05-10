@@ -1,6 +1,5 @@
 package org.macademia
 
-
 /**
  * The Edge class represents an edge on a graph. There are three types of edges:
  * Person to Interest edges, Interest to Related Interest, and Person to Interest
@@ -10,41 +9,86 @@ package org.macademia
  * Authors: Nathaniel Miller and Alex Schneeman
  */
 class Edge {
-  Person person
-  Interest interest
-  CollaboratorRequest request
-  Interest relatedInterest
 
-  public boolean equals(Object other){
-      if(Edge.class.isInstance(other)){
-          return (person==other.person && interest==other.interest && relatedInterest==other.relatedInterest && request == other.request) || ( request == other.request && person==other.person && relatedInterest==other.interest && interest==other.relatedInterest )
-      }
-      return false
-  }
+    Long personId
+    Long interestId
+    Long requestId
+    Long relatedInterestId
 
-  public int hashCode(){
-      if(person !=null){
-          if(relatedInterest != null){
-              return person.hashCode()*interest.hashCode()*relatedInterest.hashCode()
-          }
-          return person.hashCode()*interest.hashCode()
-      } else if (request != null) {
-          if (relatedInterest != null) {
-              return request.hashCode()*relatedInterest.hashCode()*interest.hashCode()
-          }
-          return request.hashCode()*interest.hashCode()
-      }
-      return interest.hashCode()*relatedInterest.hashCode()
-  }
+    Person person
+    Interest interest
+    CollaboratorRequest request
+    Interest relatedInterest
+
+    double sim
+
+    public void reify() {
+        if (personId != null) {
+            this.person = Person.get(personId)
+        }
+        if (interestId != null) {
+            this.interest = Interest.get(interestId)
+        }
+        if (relatedInterestId != null) {
+            this.relatedInterest = Interest.get(relatedInterestId)
+        }
+        if (requestId != null) {
+            this.request = CollaboratorRequest.get(requestId)
+        }
+    }
+
+    public boolean equals(Object other) {
+        if (Edge.class.isInstance(other)) {
+            return ((personId == other.personId && interestId == other.interestId && relatedInterestId == other.relatedInterestId && requestId == other.requestId)
+            ||     (requestId == other.requestId && personId == other.personId && relatedInterestId == other.interestId && interestId == other.relatedInterestId))
+        }
+        return false
+    }
+
+    public int hashCode() {
+        if (personId != null) {
+            if (relatedInterestId != null) {
+                return personId * interestId * relatedInterestId
+            }
+            return personId * interestId
+        } else if (requestId != null) {
+            if (relatedInterestId != null) {
+                return requestId * relatedInterestId * interestId
+            }
+            return requestId * interestId
+        }
+        return interestId * relatedInterestId
+    }
+
     public String toString() {
         return "Edge with person $person, interest $interest, collaborator request $request, and related interest $relatedInterest"
     }
 
-    public boolean hasSharedInterest(){
-        return(!relatedInterest)
+    public boolean hasSharedInterest() {
+        return (relatedInterestId != null)
     }
 
     public boolean hasRelatedInterest() {
-        return(relatedInterest)
+        return (relatedInterestId != null)
+    }
+
+    public void setPerson(Person p) {
+        this.person = p
+        this.personId = p.id
+    }
+
+    public void setRequest(CollaboratorRequest r) {
+        this.request = r
+        this.requestId = r.id
+    }
+
+    public void setRelatedInterest(Interest i) {
+        this.relatedInterest = i
+        this.relatedInterestId = i.id
+    }
+
+    public void setInterest(Interest i) {
+        this.interest = interest
+        this.interestId = i.id
     }
 }

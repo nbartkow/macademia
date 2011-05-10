@@ -73,15 +73,15 @@ class InterestController {
             peopleWithInterest = peopleWithInterest.findAll({institutions.contains(it.institution.id)})
         }
 //        println("institutions are " + institutions)
-        def relatedInterests = similarityService.getSimilarInterests(interest, institutions).list.collect({Interest.findById(it.interestId)})
+        def interests = similarityService.getSimilarInterests(interest.id, 50, similarityService.absoluteThreshold, institutions)
+        def relatedInterests = interests.list.collect({Interest.findById(it.interestId)})
         if(relatedInterests.contains(interest)){
             relatedInterests.remove(interest)
         }
         if (!interest) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'collaboratorRequest.label', default: 'CollaboratorRequest'), params.id])}"
             redirect(action: "list")
-        }
-        else {
+        } else {
             [interest: interest, peopleWithInterest: peopleWithInterest, relatedInterests: relatedInterests]
         }
     }

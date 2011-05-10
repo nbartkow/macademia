@@ -62,5 +62,10 @@ class Interest implements Comparable {
         return "<$text>"
     }
 
+    public void setText(String text) {
+        this.text = text
+        this.normalizedText = normalize(text)
+    }
+
 }
 

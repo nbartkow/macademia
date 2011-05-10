@@ -96,6 +96,7 @@ class JsonService {
             def pid = "p_${p.id}"
             personNodes[pid] = makeJsonForPerson(p)
             for (Edge e: graph.getAdjacentEdges(p)){
+                e.reify()
                 def iid = "i_${e.interest.id}"
                 if(!interestNodes[iid]){
                     interestNodes[iid] = makeJsonForInterest(e.interest)
@@ -108,7 +109,7 @@ class JsonService {
             def rid = "r_${r.id}"
             collaboratorRequestNodes[rid] = makeJsonForCollaboratorRequest(r)
             for (Edge e: graph.getAdjacentEdges(r)){
-
+                e.reify()
                 def iid = "i_${e.interest.id}"
                 if(!interestNodes[iid]){
                     interestNodes[iid] = makeJsonForInterest(e.interest)
@@ -154,6 +155,7 @@ class JsonService {
                 interestNodes[iid]['adjacencies'].add(riid)
             }
             for(Edge e: graph.getAdjacentEdges(i)){
+                e.reify()
                 if(e.person){
                     def pid = "p_${e.person.id}"
                     if(!personNodes[pid]) {
@@ -207,6 +209,7 @@ class JsonService {
             def rid = "r_${r.id}"
             collaboratorRequestNodes[rid] = makeJsonForCollaboratorRequest(r)
             for (Edge e: graph.getAdjacentEdges(r)){
+                e.reify()
                 def iid = "i_${e.interest.id}"
                 if(!interestNodes[iid]){
                     interestNodes[iid] = makeJsonForInterest(e.interest)
@@ -219,6 +222,7 @@ class JsonService {
             def pid = "p_${p.id}"
             personNodes[pid] = makeJsonForPerson(p)
             for (Edge e: graph.getAdjacentEdges(p)){
+                e.reify()
                 def iid = "i_${e.interest.id}"
                 if(!interestNodes[iid]){
                     interestNodes[iid] = makeJsonForInterest(e.interest)
