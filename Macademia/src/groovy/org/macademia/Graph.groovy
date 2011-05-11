@@ -46,7 +46,7 @@ class Graph {
     private static final double CLUSTER_PENALTY = 0.6
 
 
-    TimingAnalysis timer = new TimingAnalysis()
+    static TimingAnalysis timer = new TimingAnalysis("graph")
 
     int edges //needed for some unit tests
 
@@ -73,9 +73,6 @@ class Graph {
      *
      */
     private void addEdge(Edge e) throws IllegalArgumentException {
-
-        timer.startTime()
-
         if (interestMap.containsKey(e.interestId)) {
             if (!interestMap.get(e.interestId).contains(e)) {
               edges++
@@ -87,8 +84,6 @@ class Graph {
             set.add(e)
             interestMap.put(e.interestId, set)
         }
-
-        timer.recordTime("part 1")
 
         //edges may either be interest-person edges, interest-collaborator
         // request edges, or interest-interest edges.
@@ -120,9 +115,6 @@ class Graph {
         } else  {
             throw new IllegalArgumentException("Second Vertex Needed")
         }
-
-        timer.recordTime("part 2")
-
     }
 
     public void addEdge(Long personId, Long interestId, Long relatedInterestId, Long requestId, double sim) {
@@ -169,9 +161,10 @@ class Graph {
      * @param maxPeople The number of people to add the the graph
      */
     public void finalizeGraph(int maxPeople) {
-        timer.startTime()
+//        timer.startTime()
         clusterRootInterests()
 
+//        timer.recordTime("finalize 1")
         // make sure all the interests are assigned a cluster
         List<Double> allSims = []
         int numClusters = ensureAllInterestsAreClustered(allSims)
@@ -181,6 +174,7 @@ class Graph {
         Collections.sort(allSims)
         double maxSim = allSims[(int)((allSims.size() - 1) * 0.95)]
         maxSim = (maxSim == null) ? 1.0 : maxSim
+//        timer.recordTime("finalize 2")
 
         // score people
         List<IdAndScore<Long>> finalPersonSims = []
@@ -191,6 +185,7 @@ class Graph {
             double sim = scorePersonSimilarity(pid, numClusters, maxSim)
             finalPersonSims.add(new IdAndScore<Long>(pid, sim))
         }
+//        timer.recordTime("finalize 3")
         Collections.sort(finalPersonSims)
 
         // prune personMap
@@ -201,9 +196,8 @@ class Graph {
                 break
             }
         }
-
-        timer.recordTime("finalize")
-        timer.analyze()
+//        timer.recordTime("finalize 4")
+//        timer.analyze()
     }
 
     /**
@@ -382,13 +376,13 @@ class Graph {
         }
 
         // create a string representation of clusters
-        def f = {
-            cs ->
-            cs.collect({
-                ids ->
-                "[" + ids.collect({Interest.get(it).normalizedText}).join(", ") + "]"
-            }).join("         ")
-        }
+//        def f = {
+//            cs ->
+//            cs.collect({
+//                ids ->
+//                "[" + ids.collect({Interest.get(it).normalizedText}).join(", ") + "]"
+//            }).join("         ")
+//        }
 
         // find closest pair of clusters and merge
         while (clusters.size() > 1) {
@@ -423,7 +417,7 @@ class Graph {
             }
         }
 
-        println("clusters are ${clusters} with names ${f(clusters)}")
+//        println("clusters are ${clusters} with names ${f(clusters)}")
 
     }
 
