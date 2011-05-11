@@ -37,8 +37,9 @@ public class MongoWrapper {
     private String dbName = null;
     private String wpDbName = "fromWikipedia";
 
-    LRUCache<Long, Set<Long>> interestUserCache = new LRUCache<Long, Set<Long>>(1000);
-    LRUCache<Long, Long> userInstitutionCache = new LRUCache<Long, Long>(1000);
+    LRUCache<Long, Set<Long>> interestUserCache = new LRUCache<Long, Set<Long>>(2000);
+    LRUCache<Long, Set<Long>> interestRequestCache = new LRUCache<Long, Set<Long>>(2000);
+    LRUCache<Long, Long> userInstitutionCache = new LRUCache<Long, Long>(2000);
 
     public MongoWrapper(Mongo mongo, String dbName, String wpDbName){
         this.mongo=mongo;
@@ -261,13 +262,18 @@ public class MongoWrapper {
     }
 
     public Set<Long> getInterestRequests(long id) {
+        Set<Long> res = interestRequestCache.get(id);
+        if (res != null) {
+            return res;
+        }
+        res = new HashSet<Long>();
         DBObject query = new BasicDBObject("keywords", id);
         DBCollection requests = getDb(false).getCollection(COLLABORATOR_REQUESTS);
         DBCursor cursor = requests.find(query);
-        Set<Long> res = new HashSet<Long>();
         for (DBObject request : cursor) {
             res.add((Long)request.get("_id"));
         }
+        interestRequestCache.put(id, res);
         return res;
     }
 
@@ -296,6 +302,7 @@ public class MongoWrapper {
         //log.info(interestIds+"addCollaboratorRequest")
         for (long i : interests) {
             addInterestToInstitution(institutionId, i);
+            interestRequestCache.remove(i);
         }
         newRFC.put("keywords", interests);
         newRFC.put("creator", creatorId);
@@ -362,6 +369,7 @@ public class MongoWrapper {
             Set<Long> iRequests = getInterestRequests(i);
             iRequests.remove(id);
             interestRequests.put(i, iRequests);
+            interestRequestCache.remove(i);
         }
         deletedInterests = handleDisconnects(interests, interestUsers, interestRequests, getCollaboratorRequestInstitution(id));
         // finally, remove the collaborator request

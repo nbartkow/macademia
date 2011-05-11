@@ -30,7 +30,6 @@ class SimilarityService {
 
     boolean transactional = true
 
-    TimingAnalysis timing = new TimingAnalysis()
 
     def databaseService
     def sessionFactory
@@ -130,27 +129,33 @@ class SimilarityService {
       * @param institutionFilter
       * @return The completed graph
       */
+    TimingAnalysis timing = new TimingAnalysis("calc-person-neighbors")
     public Graph calculatePersonNeighbors( Person person, int maxPeople, Set<Long> institutionFilter){
-        timing = new TimingAnalysis()
-        timing.startTime()
+//        timing = new TimingAnalysis()
+        timing.recordTime("calc neighbors 1")
         Graph graph= new Graph(person.id)
         long graphStart = Calendar.getInstance().getTimeInMillis()
         //Bonus points for being the graph center
-        for(long i : databaseService.getUserInterests(person.id)){
+        def interests = databaseService.getUserInterests(person.id)
+        timing.recordTime("calc neighbors 2")
+        for(long i : interests){
             //For each interest owned by the central person, calculate neighbors
             graph = calculateNeighbors(i, graph, maxPeople, (Set<Long>)person.interests.collect({it.id}), institutionFilter)
         }
-        timing.recordTime("foo")
+        timing.recordTime("calc neighbors 3")
         graph.finalizeGraph(maxPeople)
-        timing.recordTime("finalize")
+        timing.recordTime("calc neighbors 4")
 
         //println("person map is ${graph.personMap}")
         long graphEnd =Calendar.getInstance().getTimeInMillis()
         long graphTime=graphEnd-graphStart
         log.info("It took $graphTime to build $person graph")
-        timing.analyze()
+        timing.recordTime("calc neighbors 5")
+//        timing.analyze()
+//        timing2.analyze()
+//        timing3.analyze()
 
-        println("neighbor sizes are ${graph.personMap.size()} and ${graph.interestMap.size()}")
+//        println("neighbor sizes are ${graph.personMap.size()} and ${graph.interestMap.size()}")
         return graph
     }
 
@@ -196,18 +201,18 @@ class SimilarityService {
     * @param institutionFilter
     * @return The graph with all conections to Interest i added
     */
+    TimingAnalysis timing2 = new TimingAnalysis("calc neighbors")
     public Graph calculateNeighbors(Long i, Graph graph, int maxPeople, Set<Long> inner, Set<Long> institutionFilter) {
         if(i == null){
             return graph
         }
-        timing.startTime()
+//        timing2.recordTime("calc neighbors 1")
         //Add all edges linked to Interest i
         graph = findPeopleAndRequests(graph, maxPeople, i, null, 1, institutionFilter)
-        if (i == 28) {
-            println("args are " + maxSimsPerInterest + " and " + absoluteThreshold)
-            println("sims for " + i + " is " + getSimilarInterests(i, maxSimsPerInterest, absoluteThreshold, institutionFilter))
-        }
-        for(SimilarInterest ir : getSimilarInterests(i, maxSimsPerInterest, absoluteThreshold, institutionFilter)){
+//        timing2.recordTime("calc neighbors 2")
+        def simInterests = getSimilarInterests(i, maxSimsPerInterest, absoluteThreshold, institutionFilter)
+//        timing2.recordTime("calc neighbors 3")
+        for(SimilarInterest ir : simInterests){
             //log.info("Similar interest ID: "+ir.interestId+" similarity score "+ir.similarity+"calculate neighbors")
             if(ir.interestId!=null){
                 if(inner.contains(ir.interestId)) {
@@ -219,6 +224,7 @@ class SimilarityService {
             }
 
         }
+//        timing2.recordTime("calc neighbors 4")
         return graph
     }
 
@@ -233,46 +239,45 @@ class SimilarityService {
      * @param institutionFilter
      * @return The graph with all appropriate edges added.
      */
+    public static TimingAnalysis timing3 = new TimingAnalysis("find people and requests")
     public Graph findPeopleAndRequests(Graph graph, int maxPeople, Long i, Long ir, Double sim, Set<Long> institutionFilter) {
-        timing.startTime()
+//        timing3.startTime()
         Long foo
         if (ir == null) {
             foo = i
         } else {
             foo = ir
         }
-        timing.recordTime("find People And Requests overhead")
         def userIds = databaseService.getInterestUsers(foo)
-        timing.recordTime("find People And Requests getInterestUseres")
+//        timing3.recordTime("1")
+//        timing.recordTime("find People And Requests getInterestUseres")
         for(long p : userIds){
             //For each person with the Interest or SimilarInterest
-            timing.startTime()
+//            timing.startTime()
             if (institutionFilter == null) {
                 graph.incrementPersonScore(p, i, foo, sim)
-                timing.recordTime("increment score without Institution Filter")
                 graph.addEdge(p, i, ir, null, sim)
-                timing.recordTime("Adding edge without Institution Filter")
             } else {
                 if (institutionFilter.contains(databaseService.getUserInstitution(p))) {
                     graph.incrementPersonScore(p, i, foo, sim)
                     graph.addEdge(p, i, ir, null, sim)
                 }
-                timing.recordTime("Adding edge with Institution Filter overhead")
             }
         }
-        for (long cr : databaseService.getInterestRequests(foo)) {
+//        timing3.recordTime("2")
+        def requests = databaseService.getInterestRequests(foo)
+//        timing3.recordTime("3")
+        for (long cr : requests) {
             //For each CollaboratorRequest with the Interest or SimilarInterest
-            timing.startTime()
             if (institutionFilter == null) {
                 graph.addEdge(null, i, ir, cr, sim)
-                timing.recordTime("Adding edge without Institution Filter")
             } else {
                 if (institutionFilter.contains(databaseService.getCollaboratorRequestInstitution(cr))) {
                     graph.addEdge(null, i, ir, cr, sim)
                 }
-                timing.recordTime("Adding edge with Institution Filter overhead")
             }
         }
+//        timing3.recordTime("4")
 
         return graph
     }
