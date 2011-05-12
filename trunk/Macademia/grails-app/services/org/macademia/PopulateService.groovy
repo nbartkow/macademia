@@ -63,43 +63,7 @@ class PopulateService {
         log.error("reading people from $file...")
         file.eachLine {
             String line ->
-            String[] tokens = line.trim().split("\t")
-            if (tokens.length != 4) {
-                log.error("illegal line in ${file.absolutePath}: ${line.trim()}")
-                log.error("$tokens.length")
-                return
-            }
-            String name = tokens[0]
-            String dept = tokens[1]
-            String email = tokens[2]
-            String emailDomain = email.split("@")[1]
-            String interestStr = tokens[3]
-
-            Institution institution = institutionService.findByEmailDomain(emailDomain)
-            if (institution == null) {
-                log.error("unknown institution in ${file.absolutePath}: ${line.trim()}")
-                return
-            }
-
-            Person person = Person.findByEmail(email)
-            if (person == null) {
-                person = new Person()
-                person.email = email
-                person.enabled = true
-                person.fullName = name
-                person.department = dept
-                person.institution = institution
-            }
-            Interest interest = interestService.findByText(interestStr)
-            if (interest == null) {
-                interest = new Interest(interestStr)
-            }
-            person.addToInterests(interest)
-            if (person.id) {
-                personService.save(person)
-            } else {
-                personService.create(person, "useR123!", null)
-            }
+            importPersonFromLine(file, line)
         }
         log.error("Read ${Person.count()} people objects")
         log.error("Read ${Interest.count()} interest objects")
@@ -107,6 +71,102 @@ class PopulateService {
         Person admin = personService.findByEmail("ssen@macalester.edu")
         admin.role = Person.ADMIN_ROLE
         personService.save(admin)
+    }
+
+    def importPersonFromLine(File file, String line) {
+        String[] tokens = line.trim().split("\t")
+        if (tokens.length != 4 && tokens.length != 5) {
+            log.error("illegal line in ${file.absolutePath}: ${line.trim()}")
+            log.error("$tokens.length")
+            return
+        }
+        String name = tokens[0]
+        String dept = tokens[1]
+        String email = tokens[2]
+        String emailDomain = email.split("@")[1]
+        String interestStr = tokens[3]
+        String title = (tokens.length == 5) ? tokens[4] : null
+
+        Institution institution = institutionService.findByEmailDomain(emailDomain)
+        if (institution == null) {
+            log.error("unknown institution for ${emailDomain} in ${file.absolutePath}: ${line.trim()}")
+            return
+        }
+
+        Person person = Person.findByEmail(email)
+        if (person == null) {
+            person = new Person()
+            person.email = email
+            person.enabled = true
+            person.fullName = name
+            person.department = dept
+            person.institution = institution
+            person.title = title
+        }
+
+        Interest interest = interestService.findByText(interestStr)
+        if (interest == null) {
+            interest = new Interest(interestStr)
+        }
+        person.addToInterests(interest)
+        if (person.id) {
+            personService.save(person)
+        } else {
+            personService.create(person, "useR123!", null)
+        }
+    }
+
+
+    def importPersonFromLine2(File file, String line) {
+        String[] tokens = line.trim().split("\t")
+        if (tokens.length != 4 && tokens.length != 5) {
+            log.error("illegal line in ${file.absolutePath}: ${line.trim()}")
+            log.error("$tokens.length")
+            return
+        }
+        String name = tokens[0]
+        String dept = tokens[1]
+        String email = tokens[2]
+
+        if (email == null || email == "") {
+            log.error("missing email address for ${name}")
+            return
+        }
+
+        String emailDomain = email.split("@")[1]
+        String interestStr = tokens[3]
+        String title = (tokens.length == 5) ? tokens[4] : null
+
+        Institution institution = institutionService.findByEmailDomain(emailDomain)
+        if (institution == null) {
+            log.error("unknown institution for ${emailDomain} in ${file.absolutePath}: ${line.trim()}")
+            return
+        }
+
+        Person person = Person.findByEmail(email)
+        if (person == null) {
+            person = new Person()
+            person.email = email
+            person.enabled = true
+            person.fullName = name
+            person.department = dept
+            person.institution = institution
+            person.title = title
+        }
+
+        for (String i : interestStr.split(",")) {
+            i = i.trim()
+            Interest interest = interestService.findByText(i)
+            if (interest == null) {
+                interest = new Interest(i)
+            }
+            person.addToInterests(interest)
+        }
+        if (person.id) {
+            personService.save(person)
+        } else {
+            personService.create(person, "useR123!", null)
+        }
     }
 
     /** TODO: move this to some other service */
