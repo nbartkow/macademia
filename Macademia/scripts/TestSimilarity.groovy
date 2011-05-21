@@ -107,6 +107,10 @@ target ('main': "Load the Grails interactive shell") {
 		'ajohns24@macalester.edu'
     ]
 
+    people = [
+        'harrisn@babson.edu'
+    ]
+
     def t1 = System.currentTimeMillis()
     people.each({
         def person = personService.findByEmail(it)

@@ -233,7 +233,8 @@ macademia.jit.init = function(rootType,id){
                             var params = {};
                             if (node.data.type == 'person'|| node.data.type == 'request') {
                                 var rootId =macademia.rgraph.graph.getNode(macademia.rgraph.root).id;
-                                params = {node : node.id, root: rootId};
+                                var institutionStr = $.address.parameter('institutions');
+                                params = {node : node.id, root: rootId, institutions : institutionStr};
                             }
                             this.loadContent(url, params, 'post');
                             macademia.serverLog('tooltip', 'show', params);

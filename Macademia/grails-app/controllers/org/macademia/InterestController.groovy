@@ -48,7 +48,8 @@ class InterestController {
 
     def tooltip = {
         def interest = interestService.get((params.id as long))
-        def simInts = similarityService.getSimilarInterests(interest).collect({Interest.get(it.interestId)})
+        Set<Long> institutions =  institutionGroupService.getInstitutionIdsFromParams(params)
+        def simInts = similarityService.getSimilarInterests(interest, institutions).collect({Interest.get(it.interestId)})
         def related = new ArrayList<String>()
         for(Interest i: simInts){
             if(i!=null){
