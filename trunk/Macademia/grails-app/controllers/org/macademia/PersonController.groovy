@@ -69,11 +69,13 @@ class  PersonController{
                 allInterests = link.keywords
                 linkName = link.title
             }
+
+            Set<Long> institutions =  institutionGroupService.getInstitutionIdsFromParams(params)
             for(Interest i: allInterests) {
                 if(target.interests.contains(i)){
                     exact.add(i.text)
                 }
-                for(SimilarInterest sim: similarityService.getSimilarInterests(i).list){
+                for(SimilarInterest sim: similarityService.getSimilarInterests(i, institutions).list){
                     //println("first: $ir.first second: $ir.second")
                     Interest second = Interest.findById(sim.interestId)
 

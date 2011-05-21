@@ -164,6 +164,27 @@ class Graph {
 //        timer.startTime()
         clusterRootInterests()
 
+        def interestCounts = [:]
+        for (Set<Edge> edges : potentialPersonEdges.values()) {
+            for (Edge e : edges) {
+//                More expensive, and not more accurate computation
+//                for (Long i : [e.relatedInterestId, e.interestId]) {
+//                    if (i != null && !interestCounts.containsKey(i)) {
+//                        interestCounts[i] = Interest.get(i).people.size()
+//                    }
+//                }
+
+                Long i = (e.relatedInterestId != null) ? e.relatedInterestId : e.interestId
+                if (!interestCounts.containsKey(i)) {
+                    interestCounts[i] = 0
+                }
+                interestCounts[i]++
+            }
+        }
+
+//        def j = interestCounts.entrySet().sort{it.value}.reverse().collect{ "${Interest.get(it.key)}:$it.value" }.join('; ')
+//        println("counts are ${j}")
+
 //        timer.recordTime("finalize 1")
         // make sure all the interests are assigned a cluster
         List<Double> allSims = []
@@ -182,7 +203,7 @@ class Graph {
             finalPersonSims.add(new IdAndScore<Long>(rootPersonId, Double.MAX_VALUE))
         }
         for (Long pid : personScores.keySet()) {
-            double sim = scorePersonSimilarity(pid, numClusters, maxSim)
+            double sim = scorePersonSimilarity(pid, numClusters, maxSim, interestCounts)
             finalPersonSims.add(new IdAndScore<Long>(pid, sim))
         }
 //        timer.recordTime("finalize 3")
@@ -207,12 +228,26 @@ class Graph {
      * @param maxSim
      * @return
      */
-    private double scorePersonSimilarity(long pid, int numClusters, double maxSim) {
+    private double scorePersonSimilarity(long pid, int numClusters, double maxSim, Map<Long, Integer>interestCounts) {
         double sim = 0.0
-//            println("calculating sim for ${Person.get(pid)}")
-//            println("\tfinal score is ${sim}")
+//        println("calculating sim for ${Person.get(pid)}")
         Set<Long> used = new HashSet<Long>()
         double[] clusterCoefficient = new double[numClusters];
+        for (IdAndScore<Long> interestAndSim: personScores[pid]) {
+            interestAndSim.score = (interestAndSim.score == 1.0) ? maxSim * 3.0 : Math.min(maxSim, interestAndSim.score)
+            List<Double> dfs = []
+            if (interestAndSim.id != null) {
+                dfs.add(interestCounts[interestAndSim.id])
+            }
+            if (interestAndSim.id2 != null) {
+                dfs.add(interestCounts[interestAndSim.id2])
+            }
+            if (dfs.size() != 0) {
+                interestAndSim.score /= Math.sqrt(dfs.max())
+            }
+//            println("\tinterest ${Interest.get(interestAndSim.id)}  ${Interest.get(interestAndSim.id2)}  ${interestAndSim.score} penalized by ${dfs.sum()}")
+
+        }
         Collections.sort(personScores[pid])
         Arrays.fill(clusterCoefficient, 1.0)
         for (IdAndScore<Long> interestAndSim: personScores[pid]) {
@@ -222,10 +257,10 @@ class Graph {
             }
             int c = interestClusters[interestAndSim.id]
 //              println("interestAndSim is ${interestAndSim} cluster is " + c)
-            double s = (interestAndSim.score == 1.0) ? maxSim * 2.0 : Math.min(maxSim, interestAndSim.score)
+            double s = interestAndSim.score
             s *= clusterCoefficient[c]
             sim += s
-//                println("\tinterest ${Interest.get(interestAndSim.id)}  ${Interest.get(interestAndSim.id2)}  ${interestAndSim.score} contributing ${s}")
+//            println("\tinterest ${Interest.get(interestAndSim.id)}  ${Interest.get(interestAndSim.id2)}  ${interestAndSim.score} contributing ${s}")
             clusterCoefficient[c] *= CLUSTER_PENALTY
 
             used.add(interestAndSim.id)
@@ -233,6 +268,8 @@ class Graph {
                 used.add(interestAndSim.id2)
             }
         }
+//        println("\tfinal score is ${sim}")
+
         return sim
     }
 
@@ -261,7 +298,7 @@ class Graph {
      * @return edges with the input person as one vertex
      */
     public Set<Edge> getAdjacentEdges (Person person) {
-        personMap.get(person.id)
+        personMap.get(person.id, new HashSet())
     }
 
     /**
@@ -270,7 +307,7 @@ class Graph {
      * @return edges with the input interest as one vertex.
      */
     public Set<Edge> getAdjacentEdges (Interest interest) {
-        interestMap.get(interest.id)
+        interestMap.get(interest.id, new HashSet())
     }
 
 
@@ -280,7 +317,7 @@ class Graph {
      * @return edges with the input collaborator request as one vertex.
      */
     public Set<Edge> getAdjacentEdges (CollaboratorRequest request) {
-        requestMap.get(request.id)
+        requestMap.get(request.id, new HashSet())
     }
 
     /**

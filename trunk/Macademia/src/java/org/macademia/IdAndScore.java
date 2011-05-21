@@ -3,7 +3,7 @@ package org.macademia;
 public class IdAndScore<K extends Comparable> implements Comparable<IdAndScore<K>> {
     public final K id;
     public final K id2;
-    public final Double score;
+    public Double score;
 
     public IdAndScore(K id, K id2, Double score) {
         this.id = id;
