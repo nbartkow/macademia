@@ -156,11 +156,13 @@ class PopulateService {
 
         for (String i : interestStr.split(",")) {
             i = i.trim()
-            Interest interest = interestService.findByText(i)
-            if (interest == null) {
-                interest = new Interest(i)
+            if (i != "") {
+                Interest interest = interestService.findByText(i)
+                if (interest == null) {
+                    interest = new Interest(i)
+                }
+                person.addToInterests(interest)
             }
-            person.addToInterests(interest)
         }
         if (person.id) {
             personService.save(person)
