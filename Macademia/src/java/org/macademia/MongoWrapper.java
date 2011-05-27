@@ -615,6 +615,20 @@ public class MongoWrapper {
         }
     }
 
+    public void dedupeInterestRelations() {
+        DBCollection interests = getDb().getCollection(INTERESTS);
+        for (DBObject entry : interests.find()) {
+            String simStr = (String)entry.get("similar");
+            if (simStr != null) {
+                SimilarInterestList sims = new SimilarInterestList(simStr);
+                sims.dedupe();
+                entry.put("similar", sims.toString());
+                DBObject q = new BasicDBObject("_id", entry.get("_id"));
+                interests.update(q, entry);
+            }
+        }
+    }
+
     public void addInterestRelations(long interestId, SimilarInterestList sims, boolean merge){
         DBCollection interests = getDb().getCollection(INTERESTS);
         DBObject interest= safeFindById(INTERESTS, interestId, false);

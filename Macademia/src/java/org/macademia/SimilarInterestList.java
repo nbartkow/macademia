@@ -139,6 +139,18 @@ public class SimilarInterestList {
         return res;
     }
 
+    public void dedupe() {
+        Set<Long> found = new HashSet<Long>();
+        ArrayList<SimilarInterest> newList = new ArrayList<SimilarInterest>();
+        for (SimilarInterest si : list) {
+            if (!found.contains(si.interestId)) {
+                found.add(si.interestId);
+                newList.add(si);
+            }
+        }
+        list = newList;
+    }
+
     public int size(){
         return list.size();
     }

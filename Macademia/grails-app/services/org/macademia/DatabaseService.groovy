@@ -198,6 +198,10 @@ class DatabaseService {
     }
 
 
+    public void dedupeInterestRelations() {
+        wrapper.dedupeInterestRelations()
+    }
+
    /**
     *
     * @param interest the interest to replace lowest similarity in
