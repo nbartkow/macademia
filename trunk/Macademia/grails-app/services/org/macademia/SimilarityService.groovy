@@ -47,6 +47,10 @@ class SimilarityService {
     }
 
 
+    public void dedupeInterestRelations() {
+        databaseService.dedupeInterestRelations()
+    }
+
    /**
     *
     * @param i
