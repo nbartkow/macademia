@@ -198,8 +198,8 @@ class DatabaseService {
     }
 
 
-    public void dedupeInterestRelations() {
-        wrapper.dedupeInterestRelations()
+    public void dedupeInterestRelations(Set<Long> validIds) {
+        wrapper.dedupeInterestRelations(validIds)
     }
 
    /**
