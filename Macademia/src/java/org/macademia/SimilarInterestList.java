@@ -139,11 +139,11 @@ public class SimilarInterestList {
         return res;
     }
 
-    public void dedupe() {
+    public void dedupe(Set<Long> validIds) {
         Set<Long> found = new HashSet<Long>();
         ArrayList<SimilarInterest> newList = new ArrayList<SimilarInterest>();
         for (SimilarInterest si : list) {
-            if (!found.contains(si.interestId)) {
+            if (!found.contains(si.interestId) && validIds.contains(si.interestId)) {
                 found.add(si.interestId);
                 newList.add(si);
             }

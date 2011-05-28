@@ -620,12 +620,12 @@ public class MongoWrapper {
         for (DBObject entry : interests.find()) {
             String simStr = (String)entry.get("similar");
             if (simStr != null) {
-                SimilarInterestList sims = new SimilarInterestList(simStr);
-                sims.dedupe();
-                entry.put("similar", sims.toString());
                 Long id = (Long) entry.get("_id");
                 DBObject q = new BasicDBObject("_id", id);
                 if (validIds.contains(id)) {
+                    SimilarInterestList sims = new SimilarInterestList(simStr);
+                    sims.dedupe(validIds);
+                    entry.put("similar", sims.toString());
                     interests.update(q, entry);
                 } else {
                     interests.remove(q);
