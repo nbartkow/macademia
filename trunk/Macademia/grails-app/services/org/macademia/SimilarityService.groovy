@@ -48,7 +48,8 @@ class SimilarityService {
 
 
     public void dedupeInterestRelations() {
-        databaseService.dedupeInterestRelations()
+        Set<Long> validIds = new HashSet<Long>(Interest.list().collect({it.id}))
+        databaseService.dedupeInterestRelations(validIds)
     }
 
    /**
