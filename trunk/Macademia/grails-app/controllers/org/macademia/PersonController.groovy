@@ -34,8 +34,12 @@ class  PersonController{
 
 
     def index = {
+        List<Long> ids = new ArrayList<Long>()
+        Set<Long> institutions =  institutionGroupService.getInstitutionIdsFromParams(params)
+        for (Institution i : institutions.collect {Institution.get(it)}) {
+            ids.addAll(Person.findAllByInstitution(i).collect({it.id}))
+        }
         Random r = new Random()
-        List<Long> ids = new ArrayList<Long>(Person.findAll().collect({it.id}))
         long id = ids[r.nextInt(ids.size())]
         redirect(uri: "/${params.group}/person/jit/#/?nodeId=p_${id}&navVisibility=true&navFunction=person&institutions=all&personId=${id}")
     }
