@@ -12,6 +12,12 @@ To be a member of the Poliwiki team, your email must be added to:
 = Integrated Build =
 We have set up a continuous integrated build server at http://poliwiki.macalester.edu:8080/hudson/.  The server checks out the codebase from svn, builds the codebase, and runs the unit tests.  If things go wrong, you will receive an email.
 
+= IP Address/MAC Address =
+
+To find your IP Address: Go to system preferences > network > ethernet
+
+To find your MAC Address: From the aforementioned step, click “advanced”, then ethernet. the MAC Address should be “Ethernet ID”
+
 = Software Installation =
 === Install grails ===
 
