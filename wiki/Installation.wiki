@@ -61,6 +61,7 @@ _To Hide again, just change TRUE to FALSE_
   # Configure the project
     # After checking out will ask you if you want to create a grails application for the checked out files, click yes
     # Then click on import grails application from existing source
+    # It will ask for a JDK, click the "+" and select your JAVA_HOME directory: /Library/Java/Home
     # Then it will ask you to choose the Grails SDK, choose the grails folder in Users/yourname/Downloads/grails-1.3.7
     # Click to continue an create the project
   # Initialize the grails project:
