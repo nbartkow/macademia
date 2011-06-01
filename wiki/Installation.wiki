@@ -31,12 +31,12 @@ export PATH=$PATH:$GRAILS_HOME/bin
 export JAVA_HOME=/Library/Java/Home
 }}}
 You can check to make sure this worked properly by opening a terminal and typing echo $GRAILS_HOME.  You should see the information you entered.
- # Note: In order to show your .profile file if it exists and it is hidden, type the following in terminal:
+_Note: In order to show your .profile file if it exists and it is hidden, type the following in terminal:_
 {{{
 defaults write com.apple.finder AppleShowAllFiles TRUE
 killall Finder
 }}}
-To Hide again, just change TRUE to FALSE
+_To Hide again, just change TRUE to FALSE_
 
 === Setup Intellij ===
   # Download and install Intellij.  You want the ultimate edition.
