@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export PGPASSWORD=grails
-export PATH=/Library/PostgreSQL/8.4/bin/:/Users/shilad/Downloads/mongodb-osx-x86_64-1.4.4/bin:$PATH
+export PATH=/Library/PostgreSQL/8.4/bin/:/Users/shilad/Downloads/mongodb-osx-x86_64-1.4.4/bin:/opt/local/lib/postgresql90/bin:$PATH
 
 URL_PREFIX=http://poliwiki.macalester.edu/shilad/data
 MONGO_BACKUP=./db/prod.db.mongo
