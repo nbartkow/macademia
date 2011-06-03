@@ -247,30 +247,30 @@ class SimilarityService {
     public static TimingAnalysis timing3 = new TimingAnalysis("find people and requests")
     public Graph findPeopleAndRequests(Graph graph, int maxPeople, Long i, Long ir, Double sim, Set<Long> institutionFilter) {
 //        timing3.startTime()
-        Long foo
+        Long interestId
         if (ir == null) {
-            foo = i
+            interestId = i
         } else {
-            foo = ir
+            interestId = ir
         }
-        def userIds = databaseService.getInterestUsers(foo)
+        def userIds = databaseService.getInterestUsers(interestId)
 //        timing3.recordTime("1")
 //        timing.recordTime("find People And Requests getInterestUseres")
         for(long p : userIds){
             //For each person with the Interest or SimilarInterest
 //            timing.startTime()
             if (institutionFilter == null) {
-                graph.incrementPersonScore(p, i, foo, sim)
+                graph.incrementPersonScore(p, i, interestId, sim)
                 graph.addEdge(p, i, ir, null, sim)
             } else {
                 if (institutionFilter.contains(databaseService.getUserInstitution(p))) {
-                    graph.incrementPersonScore(p, i, foo, sim)
+                    graph.incrementPersonScore(p, i, interestId, sim)
                     graph.addEdge(p, i, ir, null, sim)
                 }
             }
         }
 //        timing3.recordTime("2")
-        def requests = databaseService.getInterestRequests(foo)
+        def requests = databaseService.getInterestRequests(interestId)
 //        timing3.recordTime("3")
         for (long cr : requests) {
             //For each CollaboratorRequest with the Interest or SimilarInterest

@@ -16,6 +16,7 @@ class JsonServiceIntegrationTests extends GrailsUnitTestCase {
     protected void setUp() {
         super.setUp()
         databaseService.switchToCopyDB((String)ConfigurationHolder.config.dataSource.mongoDbName)
+        databaseService.clearCache()
     }
 
     protected void tearDown() {

@@ -7,9 +7,11 @@ import grails.test.*
  */
 class InstitutionServiceIntegrationTests extends GrailsUnitTestCase {
     def institutionService
+    def databaseService
 
     protected void setUp() {
         super.setUp()
+        databaseService.clearCache()
     }
 
     protected void tearDown() {
