@@ -27,5 +27,5 @@ mongodump --db wikipediaReadOnlyTest -o MONGO_WP_BACKUP_TEST && \
 tar -cpz $PSQL_BACKUP >$WWW_DIR/`basename $PSQL_BACKUP`.tar.z && \
 tar -cpz $MONGO_BACKUP >$WWW_DIR/`basename $MONGO_BACKUP`.tar.z && \
 tar -cpz $MONGO_WP_BACKUP >$WWW_DIR/`basename $MONGO_WP_BACKUP`.tar.z && \
-tar -cpz MONGO_WP_BACKUP_TEST >$WWW_DIR/`basename MONGO_WP_BACKUP_TEST`.tar.z ||
+tar -cpz MONGO_WP_BACKUP_TEST >$WWW_DIR/`basename $MONGO_WP_BACKUP_TEST`.tar.z ||
     { echo "backup failed!">&2; exit 1; }
