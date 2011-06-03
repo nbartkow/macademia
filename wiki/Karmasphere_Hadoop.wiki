@@ -14,7 +14,7 @@ calculate the similarity of our wikipedia pages.
 == Checking out the project ==
   * On Netbeans click on team and choose svn
   * Choose checkout and the URL is "http://poliwiki.macalester.edu/svn/research"
-  * Enter your username and password and checkout
+  * Enter your username and password and checkout the wikiMiner project, under macademia
 
 == Setting up the HDFS service in Netbeans ==
   * On Netbeans click on the services tab
