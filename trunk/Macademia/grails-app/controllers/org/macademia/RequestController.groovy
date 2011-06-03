@@ -128,6 +128,7 @@ class RequestController {
         Graph graph
         if(params.institutions.equals("all")){
             graph = similarityService.calculateRequestNeighbors(root, max)
+            //TODO: Find out why the people in graph are null (for Karl Wirth's case) in this case, but not when institutionFilter != null.
         }
         else{
             Set<Long> institutionFilter = institutionService.getFilteredIds(params.institutions)
@@ -154,7 +155,7 @@ class RequestController {
 
         }
 
-        def exact = [:]
+        def exact = [] as Set
         def close = [:]
         def linkName = ''
 
@@ -163,7 +164,7 @@ class RequestController {
             def allInterests = []
             if(params.root.contains("p")){
               if (target.creator==link) {
-                exact.add('Created By')
+                exact.add("Created By ${target.creator.fullName}")
               }
                 allInterests = link.interests
                 linkName = link.fullName

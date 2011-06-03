@@ -29,7 +29,10 @@ class GraphTests extends GrailsUnitTestCase {
         graph.addEdge(e1)
         graph.addEdge(e2)
         graph.addEdge(e3)
-        graph.incrementPersonScore(p.id, -1, -1, 1)
+        //graph.incrementPersonScore(p.id, -1, -1, 1) i dont think it should
+        // correct me if im wrong, but i dont think it should be -1,-1,1, because that means that the similarity between id -1 and id -1
+        // is 1, but there is no id -1. I could be understanding it wrong though.
+        graph.incrementPersonScore(p.id, 1, 1, 1)
         graph.finalizeGraph(25)
         assertTrue(graph.getAdjacentEdges(p).contains(e1))
         assertTrue(graph.getAdjacentEdges(i).contains(e2))

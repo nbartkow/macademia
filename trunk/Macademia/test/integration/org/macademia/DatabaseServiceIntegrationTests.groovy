@@ -15,6 +15,7 @@ class DatabaseServiceIntegrationTests extends GrailsUnitTestCase {
     protected void setUp() {
         super.setUp()
         databaseService.switchToCopyDB((String)ConfigurationHolder.config.dataSource.mongoDbName)
+        databaseService.clearCache()
     }
 
     protected void tearDown() {
@@ -53,6 +54,10 @@ class DatabaseServiceIntegrationTests extends GrailsUnitTestCase {
         assertEquals(interests.get(12),13)
     }
 
+    /**
+     * Test to see if the "addToInterests()" method works by adding similar interests to "web2.0"
+     * Also tests if removeLowestSimilarity works
+     */
     void testAddToInterests() {
         int sizeOne = databaseService.getSimilarInterests(interestService.findByText("web2.0")).size()
         databaseService.addToInterests(interestService.findByText("web2.0"),interestService.findByText("social networking"),0.01812)
@@ -60,6 +65,7 @@ class DatabaseServiceIntegrationTests extends GrailsUnitTestCase {
         databaseService.addToInterests(interestService.findByText("web2.0"),interestService.findByText("ngos"),0.01812)
         assertEquals(databaseService.getSimilarInterests(interestService.findByText("web2.0")).size(), sizeOne+1)
         databaseService.removeLowestSimilarity(interestService.findByText("web2.0"))
+        assertEquals(databaseService.getSimilarInterests(interestService.findByText("web2.0")).size(), sizeOne)
     }
 
     void testAddCollaboratorRequests(){

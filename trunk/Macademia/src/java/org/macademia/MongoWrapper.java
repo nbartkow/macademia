@@ -277,6 +277,7 @@ public class MongoWrapper {
         return res;
     }
 
+
     /**
      * Returns a set long ids corresponding to all institutions
      * who own the interest with parameter interestId
@@ -873,5 +874,14 @@ public class MongoWrapper {
 
         articlesToIdsDest.ensureIndex("wpId");
         System.err.println("copied " + found + " of " + total);
+    }
+
+    /**
+     * Clears all caches
+     */
+    public void clearCache(){
+        interestUserCache.clear();
+        interestRequestCache.clear();
+        userInstitutionCache.clear();
     }
 }

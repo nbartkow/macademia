@@ -12,7 +12,7 @@ class SimilarityServiceIntegrationTests extends GrailsUnitTestCase {
     protected void setUp() {
         super.setUp()
         databaseService.switchToCopyDB((String)ConfigurationHolder.config.dataSource.mongoDbName)
-
+        databaseService.clearCache()
          // similarityService.refinedThreshold = 0.8
         //similarityService.minSimsPerInterest = 1
         //similarityService.numSimsPerInterest = 2
@@ -130,6 +130,7 @@ class SimilarityServiceIntegrationTests extends GrailsUnitTestCase {
         //assertTrue(InterestRelation.findByFirst(i)!=null)
         //assertTrue(InterestRelation.findAllByFirst(i, [sort:"similarity", order:"desc"]).get(0).similarity>0.2)
         SimilarInterestList nlist= similarityService.getSimilarInterests(interest, 100,0)
+        // I believe this should now be 11, since we have added 3 interests and got similar interests for web2.0 with a threshold for 0
         assertEquals(nlist.size(),11)
         SimilarInterestList nlist2= similarityService.getSimilarInterests(i, 100,0)
         assertEquals(nlist2.size(),10)

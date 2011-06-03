@@ -15,6 +15,7 @@ class SearchIntegrationTests extends GrailsUnitTestCase {
         super.setUp()
         searchableService.reindex()
         databaseService.switchToCopyDB((String)ConfigurationHolder.config.dataSource.mongoDbName)
+        databaseService.clearCache()
     }
 
     protected void tearDown() {

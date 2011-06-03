@@ -18,6 +18,7 @@ class InterestServiceIntegrationTests extends GrailsUnitTestCase {
         databaseService.switchToCopyDB((String)ConfigurationHolder.config.dataSource.mongoDbName)
         autocompleteService.init()
         similarityService.relationsBuilt = true
+        databaseService.clearCache()
     }
 
     protected void tearDown() {

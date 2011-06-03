@@ -232,4 +232,7 @@ class DatabaseService {
         wrapper.extractSmallWpDb(destDb)
     }
 
+    public void clearCache(){
+        wrapper.clearCache()
+    }
 }

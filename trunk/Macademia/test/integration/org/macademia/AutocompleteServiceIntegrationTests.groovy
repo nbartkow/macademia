@@ -19,6 +19,7 @@ class AutocompleteServiceIntegrationTests extends GrailsUnitTestCase {
         super.setUp()
         databaseService.switchToCopyDB((String)ConfigurationHolder.config.dataSource.mongoDbName)
         autocompleteService.init()
+        databaseService.clearCache()
     }
 
     protected void tearDown() {
