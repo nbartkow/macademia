@@ -19,10 +19,14 @@ calculate the similarity of our wikipedia pages.
   * When asked to add source folders, choose the existing folder containing the wikiMiner project
   * Continue to the finish
 
+== Setting up the Amazon Account ==
+  * On Netbeans click on the services tab
+  * Under Hadoop, right click on Amazon Accounts and choose New Amazon Account
+  * Fill out the remaining information as directed by Shilad 
+
 == Setting up the HDFS service in Netbeans ==
   * On Netbeans click on the services tab
-  * Choose Hadoop Filesystems and right click on it
-  * Click new filesystem
+  * Under Hadoop, right click on Remote Clusters and choose New HDFS Filesystem
   * Enter the Filesystem Name "Wikipedia_Hadoop"
   * Click on HDFS and click next
   * Enter the NameNode host "mist.public.stolaf.edu"; port: 9000, your username and group
