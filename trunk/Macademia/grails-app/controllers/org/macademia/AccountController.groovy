@@ -131,11 +131,12 @@ The Macademia Team
     }
 
     def logout = {
+        String target = Utils.makeUrl(params.group, 'person', (request.authenticated.id as long))
         session.invalidate()
         def cookie = new Cookie(MacademiaConstants.COOKIE_NAME, "")
         cookie.path = "/"
         response.addCookie(cookie)
-        redirect(url: request.getHeader("referer"))
+        redirect(url: request.contextPath + target)
     }
 
     /**
@@ -195,6 +196,17 @@ The Macademia Team
 
         person.save(flush : true)    // flush to get the id
         log.info("Created new account identified as $person.email with internal id $person.id")
+
+        // Notify admin about new user
+        sendMail {
+            to "macalester.macademia@gmail.com"
+            subject "New User Created - Macademia"
+            body """
+            Name:           ${person.fullName}
+            Email:          ${person.email}
+            Institution:    ${person.institution.name}
+            """
+        }
 
         // Set the login cookie.
         Utils.setAuthCookie(person, request, response)
