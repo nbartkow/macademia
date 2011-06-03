@@ -86,6 +86,36 @@ _To Hide again, just change TRUE to FALSE_
  # sudo su postgres -c '/opt/local/lib/postgresql90/bin/initdb -D /opt/local/var/db/postgresql90/defaultdb'
  # sudo port load postgresql90-server
 
+=== Configure Postgres ===
+Create user “grails” with password “grails”: sudo -u postgres /opt/local/lib/postgresql90/bin/createuser -P grails -s
+*Create databases:*
+/opt/local/lib/postgresql90/bin/createdb -Ugrails macademia_test_research
+/opt/local/lib/postgresql90/bin/createdb -Ugrails macademia_dev_research
+/opt/local/lib/postgresql90/bin/createdb -Ugrails macademia_prod_research
+
+=== Configure and start  MongoDb ===
+
+ # In a new terminal:
+     - sudo mkdir -p /data/db
+     - sudo chown -R research /data/
+     - mongod
+ # Always keep this running while you develop.
+
+=== Load production data into the system: ===
+(from the directory you checked Macademia out to)
+ # ./scripts/restoreDb.sh
+
+=== Installing Jquery 1.4.2.7 ===
+
+ # Uninstall Jquery using: grails uninstall-plugin jquery
+ # Remove the cache using:
+	rm -rf ~/.grails/
+ # Start up the server again using grails run-app
+ # Stop it
+ # Install jquery 1.4.2.7 by using:
+	grails install-plugin jquery 1.4.2.7
+ # Install jquery for real by using grails installJQuery
+
 === Running Macademia ===
  # Before running macademia, there are some things that must be done.
   # in your terminal, navigate to your project and type: grails install-plugin jquery
