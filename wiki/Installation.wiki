@@ -72,6 +72,8 @@ _To Hide again, just change TRUE to FALSE_
  # Before running macademia, there are some things that must be done.
   # in your terminal, navigate to your project and type: grails install-plugin jquery
   # next, type: svn update
+  # copy MacademiaConfig.example.groovy (in grails-app/test), paste a copy in to the same location and rename it MacademiaConfig.groovy.  
+  # in that file, comment out the dataSource.mongoDbUrl line and create your own uniqueDbToken value.
   # finally, type: grails PopulateDev && grails PopulateTest
  # now type "grails run-app" in your terminal (make sure you've navigated to your directory) and it should be done
 
