@@ -96,9 +96,9 @@ Create user “grails” with password “grails”: sudo -u postgres /opt/local
 === Configure and start  MongoDb ===
 
  # In a new terminal:
-     - sudo mkdir -p /data/db
-     - sudo chown -R research /data/
-     - mongod
+     # sudo mkdir -p /data/db
+     # sudo chown -R research /data/
+     # mongod
  # Always keep this running while you develop.
 
 === Load production data into the system: ===
@@ -108,12 +108,10 @@ Create user “grails” with password “grails”: sudo -u postgres /opt/local
 === Installing Jquery 1.4.2.7 ===
 
  # Uninstall Jquery using: grails uninstall-plugin jquery
- # Remove the cache using:
-	rm -rf ~/.grails/
+ # Remove the cache using: rm -rf ~/.grails/
  # Start up the server again using grails run-app
  # Stop it
- # Install jquery 1.4.2.7 by using:
-	grails install-plugin jquery 1.4.2.7
+ # Install jquery 1.4.2.7 by using: grails install-plugin jquery 1.4.2.7
  # Install jquery for real by using grails installJQuery
 
 === Running Macademia ===
