@@ -88,10 +88,12 @@ _To Hide again, just change TRUE to FALSE_
 
 === Configure Postgres ===
 Create user “grails” with password “grails”: sudo -u postgres /opt/local/lib/postgresql90/bin/createuser -P grails -s
+
 *Create databases:*
-/opt/local/lib/postgresql90/bin/createdb -Ugrails macademia_test_research
-/opt/local/lib/postgresql90/bin/createdb -Ugrails macademia_dev_research
-/opt/local/lib/postgresql90/bin/createdb -Ugrails macademia_prod_research
+
+ # /opt/local/lib/postgresql90/bin/createdb -Ugrails macademia_test_research
+ # /opt/local/lib/postgresql90/bin/createdb -Ugrails macademia_dev_research
+ # /opt/local/lib/postgresql90/bin/createdb -Ugrails macademia_prod_research
 
 === Configure and start  MongoDb ===
 
