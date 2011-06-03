@@ -145,5 +145,12 @@ scripts/code-review.sh ./foo ./bar
  * Shilad will review your change, and you'll receive an email when it's ready.
  * Commit your change *after* the code review is complete.
 
+=== Setting up IDE Talk ===
+IntelliJ's IDE talk feature allows you to chat with other macademia developers and it allows chattees to easily view each other's working source code files.  To use your gmail account:
+ * Select "use an existing account"
+ * Username is your full gmail address.
+ * Password is your full gmail password.
+ * server is talk.google.com
+
 === Other notes ===
 Sometimes code reviews will become confused about your password, or you'll want to change your login information.  You can make upload.py forget about your macalester account by removing the .codereview_upload_cookies file in your home directory.
