@@ -243,11 +243,21 @@ class JsonService {
     //Hash the people to colours
     def addColors(personNodes, interestNodes, collaboratorRequestNodes) {
         def personAndRequestColors = [:]
+        def collegeColors = [:]
 
         for (String pid in personNodes.keySet()) {
             String fullName = personNodes[pid]['name']
-            int i = fullName.hashCode() % org.macademia.MacademiaConstants.COLORS.size()
-            personAndRequestColors[pid] = org.macademia.MacademiaConstants.COLORS[i]
+
+            Institution inst = personNodes[pid]['institution']
+
+            if (collegeColors != null && collegeColors.containsKey(inst.toString())) {
+              personAndRequestColors[pid] = collegeColors.(inst.toString())
+            }
+            else {
+              int i = fullName.hashCode() % org.macademia.MacademiaConstants.COLORS.size()
+              collegeColors[inst.toString()] = org.macademia.MacademiaConstants.COLORS[i]
+              personAndRequestColors[pid] = org.macademia.MacademiaConstants.COLORS[i]
+            }
         }
 
         for (String rid in collaboratorRequestNodes.keySet()) {
@@ -305,7 +315,8 @@ class JsonService {
                         unmodifiedId: p.id,
                         type: 'person'
                 ],
-                adjacencies: []
+                adjacencies: [],
+                institution: p.institution
         ]
     }
 
