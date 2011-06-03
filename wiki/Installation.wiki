@@ -78,6 +78,14 @@ _To Hide again, just change TRUE to FALSE_
 === Install MongoDB: ===
  # sudo port install mongodb
 
+=== Install Postgres: ===
+ # sudo port install postgresql90
+ # sudo port install postgresql90-server
+ # sudo mkdir -p /opt/local/var/db/postgresql90/defaultdb
+ # sudo chown postgres:postgres /opt/local/var/db/postgresql90/defaultdb
+ # sudo su postgres -c '/opt/local/lib/postgresql90/bin/initdb -D /opt/local/var/db/postgresql90/defaultdb'
+ # sudo port load postgresql90-server
+
 === Running Macademia ===
  # Before running macademia, there are some things that must be done.
   # in your terminal, navigate to your project and type: grails install-plugin jquery
