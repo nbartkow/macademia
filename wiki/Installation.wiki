@@ -68,6 +68,16 @@ _To Hide again, just change TRUE to FALSE_
     # run grails upgrade: tools > run grails target, type "upgrade" as the Command line.
     # You will have to click on the scrolling text in the console and type "y" to continue.
 
+===Installing MacPorts (Mac only)===
+ # Download the appropriate dmg from the Macports installation page: http://www.macports.org/install.php
+ # restart your terminal, if it is already open
+ # sudo port -v selfupdate
+ # sudo port upgrade outdated
+ # If you get an error on the previous step, try: "sudo port -f activate python24 @2.4.6_9" and then try "sudo port upgrade outdated" again
+
+=== Install MongoDB: ===
+ # sudo port install mongodb
+
 === Running Macademia ===
  # Before running macademia, there are some things that must be done.
   # in your terminal, navigate to your project and type: grails install-plugin jquery
