@@ -24,6 +24,9 @@ calculate the similarity of our wikipedia pages.
   * Under Hadoop, right click on Amazon Accounts and choose New Amazon Account
   * Fill out the remaining information as directed by Shilad 
 
+== Keypairs ==
+  * Keypairs can be created by using Amazon's Control Panel under EC2/Key Pairs
+
 == Setting up the HDFS service in Netbeans ==
   * On Netbeans click on the services tab
   * Under Hadoop, right click on Remote Clusters and choose New HDFS Filesystem
