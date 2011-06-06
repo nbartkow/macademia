@@ -150,13 +150,13 @@ grails.mail.default.from="macalester.macademia@gmail.com"
 uiperformance.bundles = [
    [type: 'js',
     name: 'macademia.js.all',
-    files: ['jquery/jquery-1.4.2',
+    files: ['jquery/jquery-1.6.1',
             'jquery/jquery-ui-1.8.2.custom.min',
             'jquery/jquery-ui-1.8.5.custom.min',
             'jquery/jquery-deps',
             'jquery/jquery.qtip-1.0.0-rc3',
             'jquery/jqModal',
-            'jquery/jquery.address-1.2.1',
+            'jquery/jquery.address-1.4',
             'jquery/jqModal',
             'ba-debug',
             'jit/jit',
@@ -213,3 +213,5 @@ environments {
         googleService.googleCache = new File("db/benchmark_backup/google.cache.txt")
     }
 }
+
+grails.views.javascript.library="jquery"
