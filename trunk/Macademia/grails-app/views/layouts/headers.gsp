@@ -1,7 +1,7 @@
 
 <!--[if IE]><p:javascript src="jit/Extras/excanvas"/><![endif]-->
 
-<g:javascript library="jquery"/>
+<g:javascript library="jquery" plugin="jquery"/>
 
 %{--<!-- Warning: this must be upgraded manually -->--}%
 %{--<p:javascript src="jquery/jquery-1.4.2"/>--}%
