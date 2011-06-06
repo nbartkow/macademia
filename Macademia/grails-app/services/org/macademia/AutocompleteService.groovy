@@ -100,9 +100,18 @@ class AutocompleteService implements PostInsertEventListener, PostUpdateEventLis
         for (InstitutionGroup ig : igs) {
 //            println("adding person ${person.fullName} to group ${ig.abbrev}")
             GroupTree gt = getTree(ig.abbrev)
+            String nodeName = gt.overallTree.get("p" + person.id)?.getValue()?.name
+            // If Person's fullName has changed, remove them from AutoCompleteTree
+            if( nodeName != person.fullName && nodeName != null ) {
+                gt.overallTree.remove("p" + person.id)
+            }
+            // If tree does not contain Person, add them
             if (!gt.overallTree.contains("p" + person.id)) {
-                def entity1 = new AutocompleteEntity(person.id, person.fullName, Person.class)
+                def entity1 = new AutocompleteEntity(person.id, person.fullName, Person.class, person.institution.name)
                 gt.overallTree.add("p" + person.id, entity1)
+            } // If Person's Institution's name has changed, update it
+            else if(gt.overallTree.get("p" + person.id).getValue().other != person.institution.name) {
+                gt.overallTree[("p" + person.id)].setOther(person.institution.name)
             }
             for (Interest interest : person.interests) {
                 def entity2 = new AutocompleteEntity(interest.id, interest.text, Interest.class)

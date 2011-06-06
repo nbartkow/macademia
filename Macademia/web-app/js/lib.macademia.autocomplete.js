@@ -32,6 +32,12 @@
                                     label : data[i][1],
                                     data : data[i]
                                 })
+                            } else if(data[i][2] == "person"){
+                                result.push({
+
+                                    label : data[i][1] + " (" + data[i][3] + ")",
+                                    data : data[i]
+                                })
                             } else {
                                 result.push({
 
