@@ -1,6 +1,7 @@
 package org.macademia
 
 import java.util.Map.Entry
+import org.macademia.IdAndScore
 
 /**
  * The graph class contains two hashMaps, so that edges can be accessed by looking up either vertex.
@@ -17,7 +18,7 @@ class Graph {
     Map<Long, Set<Edge>> personMap  = [:]
     Map<Long, Set<Edge>> requestMap  = [:]
 
-    Map<Long, List<IdAndScore<Long>>> personScores  = [:]
+    Map<Long, IdAndScore> personScores  = [:]
     Map<Long, Set<Edge>> potentialPersonEdges  = [:]
 
     /**
@@ -147,7 +148,7 @@ class Graph {
      * the person specified by parameter pid
      */
     public void incrementPersonScore(Long pid, Long iid1, Long iid2, Double sim) {
-        IdAndScore<Long> is = new IdAndScore<Long>(iid1, iid2, sim)
+        IdAndScore is = new IdAndScore(iid1, iid2, sim)
         if (personScores.containsKey(pid)) {
             personScores[pid].add(is)
         } else {
@@ -198,20 +199,20 @@ class Graph {
 //        timer.recordTime("finalize 2")
 
         // score people
-        List<IdAndScore<Long>> finalPersonSims = []
+        List<IdAndScore> finalPersonSims = []
         if (rootPersonId != null) {
-            finalPersonSims.add(new IdAndScore<Long>(rootPersonId, Double.MAX_VALUE))
+            finalPersonSims.add(new IdAndScore(rootPersonId, Double.MAX_VALUE))
         }
         for (Long pid : personScores.keySet()) {
             double sim = scorePersonSimilarity(pid, numClusters, maxSim, interestCounts)
-            finalPersonSims.add(new IdAndScore<Long>(pid, sim))
+            finalPersonSims.add(new IdAndScore(pid, sim))
         }
 //        timer.recordTime("finalize 3")
         Collections.sort(finalPersonSims)
 
         // prune personMap
         personMap.clear()
-        for (IdAndScore<Long> personAndSim : finalPersonSims) {
+        for (IdAndScore personAndSim : finalPersonSims) {
             personMap.put(personAndSim.id, potentialPersonEdges.get(personAndSim.id))
             if (personMap.size() > maxPeople) {
                 break
@@ -233,7 +234,7 @@ class Graph {
 //        println("calculating sim for ${Person.get(pid)}")
         Set<Long> used = new HashSet<Long>()
         double[] clusterCoefficient = new double[numClusters];
-        for (IdAndScore<Long> interestAndSim: personScores[pid]) {
+        for (IdAndScore interestAndSim: personScores[pid]) {
             interestAndSim.score = (interestAndSim.score == 1.0) ? maxSim * 3.0 : Math.min(maxSim, interestAndSim.score)
             List<Double> dfs = []
             if (interestAndSim.id != null) {
@@ -250,7 +251,7 @@ class Graph {
         }
         Collections.sort(personScores[pid])
         Arrays.fill(clusterCoefficient, 1.0)
-        for (IdAndScore<Long> interestAndSim: personScores[pid]) {
+        for (IdAndScore interestAndSim: personScores[pid]) {
             if ((used.contains(interestAndSim.id))
                     || (interestAndSim.id2 != null && used.contains(interestAndSim.id2))) {
                 continue
@@ -281,7 +282,7 @@ class Graph {
     private int ensureAllInterestsAreClustered(List<Double> allSims) {
         int numClusters = interestClusters.isEmpty() ? 0 : (interestClusters.values().max() + 1)
         for (Long pid : personScores.keySet()) {
-            for (IdAndScore<Long> interestAndSim : personScores[pid]) {
+            for (IdAndScore interestAndSim : personScores[pid]) {
                 allSims.add(interestAndSim.score)
                 if (!interestClusters.containsKey(interestAndSim.id)) {
                     interestClusters[interestAndSim.id] = numClusters++
