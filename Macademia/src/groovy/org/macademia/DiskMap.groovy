@@ -15,9 +15,10 @@ class DiskMap {
         }
         file = f
         file.eachLine {
-            println it
+            println "parsing $it . . ."
             def pair = JSON.parse(it)
             cache[pair[0]] = pair[1]
+            println "finished parsing $it"
         }
     }
 
