@@ -782,8 +782,8 @@ ul#instruct_list li:before, ul.styledList li:before{
 }
 
 h2#interest_selected {
-    font-size: 1.5em;                                                                 0
-    padding: 5px 0;
+    font-size: 1.5em;
+    padding: 5px 0px;
     margin-bottom: 10px;
     border-bottom: 3px #aaa solid;
 }
@@ -997,7 +997,7 @@ h3 {
 }
 #aboutJqm li, #aboutJqm div{
     font-size : 16px;
-    color : #444;                                                                                                                      f
+    color : #444;
 }
 
 #aboutJqm .instructions, #aboutJqm .instructions li {
@@ -1252,9 +1252,10 @@ h3 {
     font-weight: bold;
     margin-bottom: 10px;
 }
+
 .inst_logo img {
-    position:relative;
+    position:absolute;
     left : 5px;
-    top : 20px;
-    width : 50px;
+    bottom: 5px;
+    width : 80px;
 }
