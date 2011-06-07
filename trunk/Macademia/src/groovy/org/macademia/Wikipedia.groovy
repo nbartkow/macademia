@@ -1,14 +1,11 @@
 package org.macademia
 
 import info.bliki.api.User
-import info.bliki.api.Connector
-import info.bliki.api.Page
-import info.bliki.wiki.model.WikiModel
-import info.bliki.wiki.filter.PlainTextConverter
-import grails.util.Environment
+import org.json.JSONObject
+import org.json.JSONArray
 
 /**
- * @author Shilad
+ * @author Shilad, Brandon
  */
 public class Wikipedia {
 
@@ -30,126 +27,118 @@ public class Wikipedia {
         cache = new DiskMap(file)
     }
 
-    public Document getDocumentByUrl(String url) {
-        String url2 = getCanonicalUrl(url)
-        String name = decodeWikiUrl(url2)
-        if (name) {
-            Document d = getDocumentByName(name)
-            if (d) {
-                d.url = url2
-                return d
-            } else {
-                return null
-            }
-        } else {
-            return null
+    /**
+     * Returns a list of urls matching the specified query.
+     * @param query The textual query.
+     * @param maxResults the maximum number of results to return.
+     * @return List<String> giving at most maxResults urls which
+     * match the given query.
+     */
+    public List<String> query(String query, int maxResults) {
+        if (cache != null && cache.contains(query)) {
+            return cache.get(query) as List<String>
         }
+        def results = this.query(encodeQuery(query), maxResults, 0)
+        if (cache != null) {
+            cache.put(query, results)
+        }
+        return results
     }
 
     /**
-     * Retrieves the Wikipedia page with the given title as a Document object.
+     * Performs the work of the query, using the Wikipedia search
+     * API to find matching urls.
+     * @param query The String query, already URL encoded.
+     * @param maxResults The int maximum number of results to
+     * return.
+     * @param offset The int offset, used in recursion to specify
+     * where to pick up in the search.
+     * @return List<String> giving at most maxResults urls which
+     * match the given query.
      */
-    public Document getDocumentByName(String title) {
-        if (!title) {
-            return null
+    private List<String> query(String query, int maxResults, int offset) {
+        List<String> results = []
+        if (maxResults == 0) {
+            return results
         }
-        if (cache != null && cache.contains(title)) {
-            def info = cache.get(title)
-            return new Document(info)
+        JSONObject response = performQuery(query, maxResults, offset)
+        JSONArray resArray = response.getJSONObject("query").getJSONArray("search")
+        boolean hasSuggestion = response.getJSONObject("query").getJSONObject("searchinfo").has("suggestion")
+        if (resArray.length() == 0 && !hasSuggestion) {
+            return results
         }
-        login()
-        Connector connector = user.getConnector()
-        List<String> titles = new ArrayList<String>([title])
-        List<Page> pages = connector.queryContent(user, titles)
-        if (!pages.isEmpty()) {
-            Page first = pages[0]
-            if (first.title) {
-                WikiModel wikiModel = new WikiModel("", "")
-                String text = wikiModel.render(new PlainTextConverter(), first.currentContent)
-                String url = encodeWikiUrl(first.title)
-                if (cache) {
-                    cache.put(title, [url : url, name : first.title, text : text])
+
+        if (resArray.length() > 0) {
+            // results for query returned, use them
+            for (int i = 0; i < resArray.length(); i++) {
+                if (!resArray.get(i)["snippet"].contains("refer to")) {
+                    // result is not a disambiguation page
+                    def result = resArray.get(i)["title"] as String
+                    results.add(encodeWikiUrl(result))
                 }
-                return new Document(url : url, name : first.title, text : text)
             }
+        } else if (hasSuggestion) {
+            // search for the suggestion instead
+            def result = response.getJSONObject("query").getJSONObject("searchinfo").get("suggestion") as String
+            results.addAll(this.query(encodeQuery(result), maxResults, 0))
         }
-        if (cache) {
-            cache.put(title, null)
-        }
+
+        results.addAll(this.query(query, maxResults-results.size(), offset+maxResults))
+        return results
     }
 
-    public void setUserName(String userName) {
-        user = null
-        this.userName = userName
+    /**
+     * Performs the parameter query and returns the result.
+     * @param query The String encoded query to be performed.
+     * @maxResults The maximum number of results to return.
+     * @offset The offset at which to start pulling results from.
+     * @return A JSONObject of the query's result.
+     */
+    private JSONObject performQuery(String query, int maxResults, int offset) {
+        def type = "?action=query&list=search&format=json&srprop=snippet&what=text"
+        def limitAndOffset = "&srlimit=$maxResults&sroffset=$offset"
+        def search = "&srsearch=$query"
+        URL url = new URL(WIKIPEDIA_API_URL + type + limitAndOffset + search)
+        URLConnection connection = url.openConnection()
+
+        // Get the response
+        String line
+        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))
+        return new JSONObject(reader.getText())
     }
 
-    public void setPassword(String password) {
-        user = null
-        this.password = password
+    /**
+     * Encodes a String into a form safe for use in querying
+     * the Wikipedia search API.
+     * @param query The String to be encoded.
+     * @return The encoded String.
+     */
+    public String encodeQuery(String query) {
+        // Convert spaces to +, etc. to make a valid URL
+        query = URLEncoder.encode(query, "UTF-8");
+        // Wiki interprets '-' as NOT, which is not desired here
+        return query.replaceAll("-", "+")
     }
 
-    public void setApiUrl(String apiUrl) {
-        user = null
-        this.apiUrl = apiUrl
-    }
-
-    public void login() {
-        if (user == null) {
-            user = new User(userName, password, apiUrl)
-            if (!user.login()) {
-              throw new RuntimeException("login failed");
-            }
-        }
-    }
-
+    
     /**
      * Returns the title of a Wikipedia page located at a particular URL. 
      */
-    private static URLDecoder decoder = new URLDecoder();
     public static String decodeWikiUrl(String url) {
         if (url.indexOf("/") < 0) {
             return null
         }
         String ending = url.substring(url.lastIndexOf("/")+1);
-        String decoded = decoder.decode(ending, "UTF-8");
+        String decoded = URLDecoder.decode(ending, "UTF-8");
         return decoded.replace('_', ' ');
     }
-
-
-    private static URLEncoder encoder = new URLEncoder();
 
     /**
      * Returns the url location of a Wikipedia page with a particular title.
      */
     public static String encodeWikiUrl(String name) {
         String encoded = name.replace(' ', '_')
-        return ARTICLE_PREFIX + encoder.encode(encoded, "UTF-8")
+        return ARTICLE_PREFIX + URLEncoder.encode(encoded, "UTF-8")
     }
 
-    /**
-     * Returns the canonical, normalized version of the passed in Wikipedia url
-     */
-    public static String getCanonicalUrl(String url) {
-        String name = decodeWikiUrl(url)
-        if (!name) {
-            return null
-        } else {
-            return encodeWikiUrl(name)
-        }
-    }
-
-    /**
-     * Ensures that a page is in the default namespace (not a talk page, for instance)
-     * @param url
-     * @return
-     */
-    public static boolean isUrlForNormalPage(String url) {
-        if (url.startsWith("http://")) {
-            String suffix = url.substring(7).toLowerCase();
-            if (!suffix.contains("%3a") && !suffix.contains(":")) {
-                return true
-            }
-        }
-        return false
-    }
 }

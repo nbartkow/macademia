@@ -11,7 +11,6 @@ class InterestService implements ApplicationContextAware {
 
     ApplicationContext applicationContext
     def xSimilarityService
-    def googleService
     def wikipediaService
     def databaseService
     def autocompleteService
@@ -39,8 +38,7 @@ class InterestService implements ApplicationContextAware {
         return xSimilarityService.getSimilarInterests(interest)
     }
 
-    public void initBuildDocuments(String fileDirectory){
-        googleService.setCache (new File(fileDirectory+"google_cache.txt"))
+    public void initBuildDocuments(String fileDirectory) {
         wikipediaService.setCache(new File(fileDirectory+"wikipedia_cache.txt"))
     }
 
@@ -57,7 +55,7 @@ class InterestService implements ApplicationContextAware {
     public void buildDocuments(Interest interest, String ipAddr) {
 //        log.info("doing interest ${interest}")
         double weight = 1.0
-        for (String url : googleService.query(interest.text, 1, ipAddr)) {
+        for (String url : wikipediaService.query(interest.text, 1, ipAddr)) {
             weight *= 0.5;
             String articleName = wikipediaService.decodeWikiUrl(url)
             interest.articleId = databaseService.articleToId(articleName)

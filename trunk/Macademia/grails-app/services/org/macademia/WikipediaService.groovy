@@ -6,16 +6,33 @@ class WikipediaService {
     static transactional = false
     ThreadLocal<Wikipedia> holder = new ThreadLocal<Wikipedia>()
 
-    public Document getDocumentByUrl(String url){
-        return getWikipedia().getDocumentByUrl(url)
+    /**
+     * Returns a list of urls matching the specified query.
+     * @param query The textual query.
+     * @param maxResults the maximum number of results to return.
+     * @return List<String> giving at most maxResults urls which
+     * match the given query.
+     */
+    public List<String> query (String query, int maxResults) {
+        return this.query(query, maxResults, null)
     }
 
-    public Document getDocumentByName(String title){
-        return getWikipedia().getDocumentByName(title)
-    }
-
-    public String getCanonicalUrl(String url){
-        return getWikipedia().getCanonicalUrl(url)
+    /**
+     * Returns a list of urls matching the specified query.
+     * @param query The textual query.
+     * @param maxResults the maximum number of results to return.
+     * @param ipAddress the ip address of the user who is making the query.
+     * @return List<String> giving at most maxResults urls which
+     * match the given query.
+     */
+    public List<String> query (String query, int maxResults, String ipAddress) {
+        try {
+            return getWikipedia().query(query, maxResults)
+        } catch (Exception e) {
+            holder.set(null)
+            log.error("wikipedia query for " + query + " failed (${e.getMessage()}... retrying");
+            return getWikipedia().query(query, maxResults)
+        }
     }
 
     public Wikipedia getWikipedia() {
@@ -41,5 +58,6 @@ class WikipediaService {
         Wikipedia wiki = new Wikipedia(cache)
         holder.set(wiki)
     }
+
 }
 

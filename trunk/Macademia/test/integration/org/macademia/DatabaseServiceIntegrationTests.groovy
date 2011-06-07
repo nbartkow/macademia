@@ -61,11 +61,11 @@ class DatabaseServiceIntegrationTests extends GrailsUnitTestCase {
     void testAddToInterests() {
         int sizeOne = databaseService.getSimilarInterests(interestService.findByText("web2.0")).size()
         databaseService.addToInterests(interestService.findByText("web2.0"),interestService.findByText("social networking"),0.01812)
-        assertEquals(databaseService.getSimilarInterests(interestService.findByText("web2.0")).size(), sizeOne)
-        databaseService.addToInterests(interestService.findByText("web2.0"),interestService.findByText("ngos"),0.01812)
         assertEquals(databaseService.getSimilarInterests(interestService.findByText("web2.0")).size(), sizeOne+1)
+        databaseService.addToInterests(interestService.findByText("web2.0"),interestService.findByText("ngos"),0.01812)
+        assertEquals(databaseService.getSimilarInterests(interestService.findByText("web2.0")).size(), sizeOne+2)
         databaseService.removeLowestSimilarity(interestService.findByText("web2.0"))
-        assertEquals(databaseService.getSimilarInterests(interestService.findByText("web2.0")).size(), sizeOne)
+        assertEquals(databaseService.getSimilarInterests(interestService.findByText("web2.0")).size(), sizeOne+1)
     }
 
     void testAddCollaboratorRequests(){

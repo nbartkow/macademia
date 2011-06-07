@@ -27,6 +27,13 @@ class WikipediaTests extends GrailsUnitTestCase {
         assertEquals(decoded, "My Favorite Things (album)")
     }
 
+    void testQuery() {
+        Wikipedia wiki = new Wikipedia()
+        List<String> results = wiki.query("Coltrane", 5)
+        assertEquals(results.size(), 5)
+        assertEquals(results[0], "http://en.wikipedia.org/wiki/John_Coltrane")
+    }
+
     /**
      * Unit tests shouldn't rely on external services.
     void testRetrieve() {
