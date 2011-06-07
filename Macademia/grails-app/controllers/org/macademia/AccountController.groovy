@@ -2,6 +2,7 @@ package org.macademia
 
 import javax.servlet.http.Cookie
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
+import grails.util.Environment
 
 class AccountController {
     def personService
@@ -198,16 +199,17 @@ The Macademia Team
         log.info("Created new account identified as $person.email with internal id $person.id")
 
         // Notify admin about new user
-        sendMail {
-            to "macalester.macademia@gmail.com"
-            subject "New User Created - Macademia"
-            body """
-            Name:           ${person.fullName}
-            Email:          ${person.email}
-            Institution:    ${person.institution.name}
-            """
+        if (Environment.current.toString() == 'PRODUCTION') {
+            sendMail {
+                to "macalester.macademia@gmail.com"
+                subject "New User Created - Macademia"
+                body """
+                Name:           ${person.fullName}
+                Email:          ${person.email}
+                Institution:    ${person.institution.name}
+                """
+            }
         }
-
         // Set the login cookie.
         Utils.setAuthCookie(person, request, response)
 
