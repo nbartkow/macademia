@@ -15,10 +15,8 @@ class DiskMap {
         }
         file = f
         file.eachLine {
-            if (it[0] != '=') {
-                def pair = JSON.parse(it)
-                cache[pair[0]] = pair[1]
-            }
+            def pair = JSON.parse(it)
+            cache[pair[0]] = pair[1]
         }
     }
 
