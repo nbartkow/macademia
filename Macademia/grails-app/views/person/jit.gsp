@@ -1,4 +1,4 @@
-<%--
+ <%--
   Created by IntelliJ IDEA.
   User: isparling
   Date: Aug 21, 2009
@@ -74,6 +74,7 @@
 </div>
 
   <g:render template="../templates/macademia/logo"/>
+  <g:render template="../templates/macademia/glca_logo" />
 <div id="extendedInfo">
   <g:render template="../layouts/rightNav"/>
 </div>
