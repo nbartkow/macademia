@@ -28,9 +28,7 @@ class InstitutionGroupService {
         if (params.institutions == null || params.institutions == 'null') {
             params.institutions = 'all'
         }
-        if (params.institutions == 'all' && params.group == 'all') {
-            return null // everything
-        } else if (params.institutions == 'all') {
+        if (params.institutions == 'all') {
             InstitutionGroup ig = findByAbbrev(params.group)
             return new HashSet<Long>(ig.institutions.collect{it.id})
         } else {
