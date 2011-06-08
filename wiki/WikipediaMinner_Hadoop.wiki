@@ -1,4 +1,9 @@
 <wiki:toc max_depth="3" />
+
+= Stage -1: Splitting Wikipedia Datadump =
+Use feedSplit.sh script to split the Wikipedia dump into many pieces to be uploaded to S3.  feedSplit takes 4 arguments: the dump file, the split file (a wikiMiner script in Python), the prefix for output files, and the number of splits to make.  The number of splits has been 100 in the past.
+
+
 = Stage 0: DocIDGenerator =
 It generates ID and names for the chosen Wikipedia pages.
 == Optimizations ==
@@ -20,6 +25,9 @@ It generates ID and names for the chosen Wikipedia pages.
 ==Notes==
    * Used 10 large machines, with 50 mappers and 20 reducers, on data dump from April 2011. Took < 20 minutes. 
 
+
+= Stage 0.5: Produce rankedpages.txt =
+First, download the output from the previous step and concatenate it. Then use wikiRankWrap.sh to produce list of ranked pages to conduct analysis on. Arguments are date (in format yyyymmdd, the wikiRanker.py file, the concatenated output, and the name of the output file (a text file).
 
 = Stage 1: Wordcounter =
 It takes each Wikipedia page and counts how many times a word appears in the page.
