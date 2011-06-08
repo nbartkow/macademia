@@ -635,8 +635,11 @@
                         $.address.state() !== undefined && $.address.state() != '/' ? 
                                 $(this).attr('href').replace(new RegExp('^(.*' + $.address.state() + '|\\.)'), '') : 
                                 $(this).attr('href').replace(/^(#\!?|\.)/, '');
-                    $.address.value(value);
-                    e.preventDefault();
+                    // SWS: added conditional wrapper
+                    if (value != true) {
+                        $.address.value(value);
+                        e.preventDefault();
+                    }
                 }
             };
             $(this).click(f).live('click', f).live('submit', function(e) {
