@@ -17,6 +17,8 @@ It generates ID and names for the chosen Wikipedia pages.
 == Hadoop job logistics ==
    * Can use the medium Amazon elastic cluster to run it ( 20 mappers and 20 reducers)
    * The input file is "s3://macademia/wiki/input" and the output file is "s3://macademia/step0"
+==Notes==
+   * Used 10 large machines, with 50 mappers and 20 reducers, on data dump from April 2011. Took < 20 minutes. 
 
 
 = Stage 1: Wordcounter =
