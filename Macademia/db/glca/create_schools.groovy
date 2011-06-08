@@ -18,7 +18,7 @@ def institutions = [
     'kzoo.edu' : 'Kalamazoo College',
     'kenyon.edu' : 'Kenyon College',
     'oberlin.edu' : 'Oberlin College',
-    'owu.edu' : 'Ohio Weslyan University',
+    'owu.edu' : 'Ohio Wesleyan University',
     'wabash.edu' : 'Wabash College',
     'wooster.edu' : 'The College of Wooster',
     'glca.org' : 'The Great Lakes College Association'
