@@ -18,12 +18,16 @@ def institutions = [
     'kzoo.edu' : 'Kalamazoo College',
     'kenyon.edu' : 'Kenyon College',
     'oberlin.edu' : 'Oberlin College',
-    'owu.edu' : 'Ohio Weslyyan University',
+    'owu.edu' : 'Ohio Weslyan University',
     'wabash.edu' : 'Wabash College',
     'wooster.edu' : 'The College of Wooster',
     'glca.org' : 'The Great Lakes College Association'
 ]
 
+def igroupAll = InstitutionGroup.findByAbbrev('all')
+if (igroupAll == null ) {
+    println('error: InstGroup \'all\' not found')
+}
 for (String domain : institutions.keySet()) {
     def college = Institution.findByEmailDomain(domain)
     if (college == null) {
@@ -32,8 +36,26 @@ for (String domain : institutions.keySet()) {
         college.addToInstitutionGroups(inst)
         college.save(failOnError : true)
     }
-}
+    if( !igroupAll.institutions.contains(college) ) {
+        igroupAll.addToInstitutions(college)
+        college.addToInstitutionGroups(igroupAll)
+        college.save(failOnError : true)
+        println('Added ' + college.name +' to inst. group \'All\'')
+    }
+    if( !inst.institutions.contains(college) ) {
+        inst.addToInstitutions(college)
+        college.addToInstitutionGroups(inst)
+        college.save(failOnError : true)
+        println('Added ' + college.name +' to inst. group ' + inst.name)
+    }
+    if( college.emailDomain == 'owu.edu' ) {
+        college.name = institutions[college.emailDomain]
+        college.save( failOnError : true )
+        println('Renamed OWU in the database')
+    }
 
+}
+igroupAll.save(failOnError : true)
 inst.save(failOnError : true)
 
 }
