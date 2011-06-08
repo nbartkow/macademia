@@ -36,8 +36,12 @@ class  PersonController{
     def index = {
         List<Long> ids = new ArrayList<Long>()
         Set<Long> institutions =  institutionGroupService.getInstitutionIdsFromParams(params)
-        for (Institution i : institutions.collect {Institution.get(it)}) {
-            ids.addAll(Person.findAllByInstitution(i).collect({it.id}))
+        if (institutions == null) {
+            ids.addAll(Person.collect({it.id}))
+        } else {
+            for (Institution i : institutions.collect {Institution.get(it)}) {
+                ids.addAll(Person.findAllByInstitution(i).collect({it.id}))
+            }
         }
         Random r = new Random()
         long id = ids[r.nextInt(ids.size())]
