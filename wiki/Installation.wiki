@@ -107,15 +107,6 @@ Create user “grails” with password “grails”: sudo -u postgres /opt/local
 (from the directory you checked Macademia out to)
  # ./scripts/restoreDb.sh
 
-=== Installing Jquery 1.4.2.7 ===
-
- # Uninstall Jquery using: grails uninstall-plugin jquery
- # Remove the cache using: rm -rf ~/.grails/
- # Start up the server again using grails run-app
- # Stop it
- # Install jquery 1.4.2.7 by using: grails install-plugin jquery 1.4.2.7
- # Install jquery for real by using grails installJQuery
-
 === Running Macademia ===
  # Before running macademia, there are some things that must be done.
   # in your terminal, navigate to your project and type: grails install-plugin jquery
