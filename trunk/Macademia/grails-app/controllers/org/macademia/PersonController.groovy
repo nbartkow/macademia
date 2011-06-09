@@ -37,7 +37,7 @@ class  PersonController{
         List<Long> ids = new ArrayList<Long>()
         Set<Long> institutions =  institutionGroupService.getInstitutionIdsFromParams(params)
         if (institutions == null) {
-            ids.addAll(Person.collect({it.id}))
+            ids.addAll(Person.findAll().collect({it.id}))
         } else {
             for (Institution i : institutions.collect {Institution.get(it)}) {
                 ids.addAll(Person.findAllByInstitution(i).collect({it.id}))
