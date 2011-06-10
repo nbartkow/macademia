@@ -68,6 +68,8 @@ Prepares the data pieces for the tf-idf calculations
 == Hadoop job logistics ==
    * Can use the medium Amazon elastic cluster to run it ( 20 mappers and 20 reducers)
    * The input file is "s3://macademia/step1" and the output file is "s3://macademia/step2"
+== Notes ==
+   * Using 10 large machines with 50 mappers and 20 reducers took about 11 minutes
 
 = Stage 3:Tfidfvectorpruner =
 This is used to calculate the tf-idf scores
