@@ -100,38 +100,6 @@ class InterestController {
         }
     }
 
-    def rebuild = {
-        response.contentType = "text/plain"
-
-        def outs = response.outputStream
-        def interests = Interest.findAll()
-        outs << "building relations for ${interests.size()} interests\n"
-        def i = 0
-        interests.each() {
-            i++
-            outs << "($i of ${interests.size()}): building interest doc for ${it.text}\n"
-            interestService.buildDocuments(it, null)
-            outs.flush()
-        }
-        outs.close()
-    }
-
-    def reanalyze = {
-        response.contentType = "text/plain"
-
-        def outs = response.outputStream
-        def interests = Interest.findAll()
-        outs << "building relations for ${interests.size()} interests\n"
-        def i = 0
-        interests.each() {
-            i++
-            outs << "($i of ${interests.size()}): building relation for ${it.text}\n"
-            similarityService.buildInterestRelations(it)
-            outs.flush()
-        }
-        outs.close()
-    }
-
     def reapOrphans = {
         interestService.reapOrphans()
         redirect(uri: '/')
