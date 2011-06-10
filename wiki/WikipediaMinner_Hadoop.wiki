@@ -27,7 +27,7 @@ It generates ID and names for the chosen Wikipedia pages.
 
 
 = Stage 0.5: Produce rankedpages.txt =
-First, download the output from the previous step and concatenate it. Then use wikiRankWrap.sh to produce list of ranked pages to conduct analysis on. Arguments are date (in format yyyymmdd, the wikiRanker.py file, the concatenated output, and the name of the output file (a text file).
+First, download the output from the previous step and concatenate it. Then use wikiRankWrap.sh to produce list of ranked pages to conduct analysis on. Arguments are date (in format yyyymmdd, the wikiRanker.py file, the concatenated output, and the name of the output file (a text file). Upload this to Amazon.  Using 20 hours took about 10 minutes.
 
 = Stage 1: Wordcounter =
 It takes each Wikipedia page and counts how many times a word appears in the page.
@@ -46,7 +46,10 @@ It takes each Wikipedia page and counts how many times a word appears in the pag
    * Value: a Wikipedia page, number of times the word appeared in the page, the number of words in the page.             
 == Hadoop job logistics ==
    * Can use the small Amazon elastic cluster to run it ( 20 mappers and 20 reducers)
-   * The input file is "s3://macademia/wiki/input" and the output file is "s3://macademia/step1 s3://macademia/wiki/rankedpages.txt"
+   * Takes three arguments: the first is the input used in stage 0, the second is the output file location, and the third (an optional argument) is the ranking produced in stage 0.5
+   * The arguments might look something like: "s3://macademia/wiki/input s3://macademia/step1 s3://macademia/wiki/rankedpages.txt"
+== Notes ==
+   * Using 10 large machines with 50 mappers and 20 reducers took a little over 30 minutes
 
 = Stage 2:Docfrequency =
 Prepares the data pieces for the tf-idf calculations
