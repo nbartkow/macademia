@@ -93,6 +93,8 @@ This is used to calculate the tf-idf scores
 == Hadoop job logistics ==
    * Can use the large Amazon elastic cluster to run it ( 50 mappers and 50 reducers)
    * The input file is "s3://macademia/step2" and the output file is "s3://macademia/step3" and the number of pages additional input is 1800000.
+== Notes ==
+   * Took about 11 minutes using 10 large machines and default options
 
 
 = Stage 4: Docsimscorer =
