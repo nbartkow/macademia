@@ -26,6 +26,9 @@ class WikipediaService {
      * match the given query.
      */
     public List<String> query (String query, int maxResults, String ipAddress) {
+        if (query == null || query.trim() == "") {
+            return []
+        }
         try {
             return getWikipedia().query(query, maxResults)
         } catch (Exception e) {
