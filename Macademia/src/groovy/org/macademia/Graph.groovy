@@ -2,6 +2,8 @@ package org.macademia
 
 import java.util.Map.Entry
 import org.macademia.IdAndScore
+import org.apache.commons.logging.LogFactory
+import org.apache.commons.logging.Log
 
 /**
  * The graph class contains two hashMaps, so that edges can be accessed by looking up either vertex.
@@ -11,6 +13,9 @@ import org.macademia.IdAndScore
  * Authors: Nathaniel Miller and Alex Schneeman
  */
 class Graph {
+
+
+    static Log LOG = LogFactory.getLog(Graph.class)
 
     Long rootPersonId
 
@@ -328,7 +333,12 @@ class Graph {
     public Set<Person> getPeople() {
         Set<Person> result = new HashSet<Person>()
         for (Long id : personMap.keySet()) {
-            result.add(Person.get(id))
+            Person p = Person.get(id)
+            if (p == null) {
+                LOG.error("getPeople(): no person with id ${id}")
+            } else {
+                result.add(p)
+            }
         }
         return result
     }
@@ -340,7 +350,12 @@ class Graph {
     public Set<Interest> getInterests() {
         Set<Interest> result = new HashSet<Interest>()
         for (Long id : interestMap.keySet()) {
-            result.add(Interest.get(id))
+            Interest i = Interest.get(id)
+            if (i == null) {
+                LOG.error("getInterests(): no interest with id ${id}")
+            } else {
+                result.add(i)
+            }
         }
         return result
     }
@@ -348,7 +363,12 @@ class Graph {
     public Set<CollaboratorRequest> getRequests(){
         Set<CollaboratorRequest> result = new HashSet<CollaboratorRequest>()
         for (Long id : requestMap.keySet()) {
-            result.add(CollaboratorRequest.get(id))
+            CollaboratorRequest r = CollaboratorRequest.get(id)
+            if (r == null) {
+                LOG.error("getRequests(): no collaborator request with id ${id}")
+            } else {
+                result.add(r)
+            }
         }
         return result
     }
