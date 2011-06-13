@@ -46,6 +46,7 @@ macademia.pageLoad = function() {
     macademia.initializeAbout();
     macademia.slider.initSlider();
     macademia.initLogging();
+    macademia.changeDisplayedColleges();
 };
 
 macademia.initializeAbout = function() {

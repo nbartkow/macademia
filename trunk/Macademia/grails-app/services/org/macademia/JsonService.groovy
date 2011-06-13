@@ -344,6 +344,28 @@ class JsonService {
         ]
     }
 
+    def makeJsonForIgMap() {
+        def igMap = [:]
+        for (ig in InstitutionGroup.list()) {
+            igMap[ig.id] = makeJsonForIg(ig)
+        }
+        return igMap
+    }
+
+    def makeJsonForIg(InstitutionGroup ig) {
+        def institutions = []
+        for (Institution institution: ig.institutions) {
+            institutions.add(
+                    [
+                            id : institution.id
+                    ])
+        }
+        return [
+                info: [name: ig.name, abbrev: ig.abbrev],
+                institutions: institutions
+        ]
+    }
+
     //make the adjacency list a map so we can store data about adjacencies
     def adjacencyMap(Map<Long, Object> objectNodes) {
         for (Map<Object, Object> node: objectNodes.values()) {
