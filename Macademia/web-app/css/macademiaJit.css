@@ -691,7 +691,7 @@ ul#instruct_list li:before, ul.styledList li:before{
 }
 
 #filterModal input[type='submit'] {
-    font-size : 16px;
+    font-size : 1.2em;
 }
 
 #addAllColleges {
@@ -736,11 +736,6 @@ ul#instruct_list li:before, ul.styledList li:before{
     color: #333;
 }
 
-#consortiaFilter {
-    margin-bottom: -20px;
-    margin-left: 5px;
-}
-
 #consortiaForm select {
     height: 0px;
     width: 161px;
@@ -748,6 +743,28 @@ ul#instruct_list li:before, ul.styledList li:before{
     position: relative;
     left: 168px;
     bottom: 17px;
+}
+
+#consortiaFilter {
+    margin-bottom: -20px;
+    margin-left: 5px;
+}
+
+@-moz-document url-prefix() {
+    #filterModal input[type='submit'] {
+        display: inline-block;
+        font-size: 12px;
+        line-height: 1.2em;
+        margin: 2px 2px 0px 2px;
+    }
+
+    #collegeSearchAuto {
+        margin: 0px 3px 0px 27px;
+    }
+
+    #consortiaFilter {
+        margin-bottom: -22px;
+    }
 }
 
 /* styles that affect the request for collaboration view*/
