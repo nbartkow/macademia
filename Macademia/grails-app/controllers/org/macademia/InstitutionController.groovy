@@ -1,19 +1,25 @@
 package org.macademia
 
 import grails.converters.JSON
+import org.json.JSONObject
 
 class InstitutionController {
     def institutionService
     def institutionGroupService
+    def jsonService
 
     def index = { }
 
     def filter = {
-        Collection<Institution> institutions = institutionGroupService.findByAbbrev(params.group).institutions
-        render(view: "/templates/macademia/_collegeFilterDialog", model: [institutions: institutions])
+        def institutions = Institution.list()
+        def igList = InstitutionGroup.list()
+        def igMap = jsonService.makeJsonForIgMap()
+        render(view: "/templates/macademia/_collegeFilterDialog", model: [institutions: institutions, igMap: igMap as JSON, igList: igList])
     }
 
-    def idstonames = {
+
+
+    def idsToNames = {
         ArrayList institutionList = new ArrayList()
         if (params.ids) {
             def institutionIds

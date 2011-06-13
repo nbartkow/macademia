@@ -157,7 +157,6 @@ html, body {
     min-width: 1020px;
 }
 
-
 #mainContent {
     min-height:595px;
     min-width: 700px;
@@ -663,9 +662,9 @@ ul#instruct_list li:before, ul.styledList li:before{
 }
 
 #collegeFilterEditButtons {
-    margin : 20px 0 10px 0;
+    margin : 10px 0 10px 0;
     width : 100%;
-    overflow : auto;
+    overflow : hidden;
 }
 
 #close {
@@ -692,7 +691,7 @@ ul#instruct_list li:before, ul.styledList li:before{
 }
 
 #filterModal input[type='submit'] {
-    font-size : 1.2em;
+    font-size : 16px;
 }
 
 #addAllColleges {
@@ -703,8 +702,13 @@ ul#instruct_list li:before, ul.styledList li:before{
     float: left;
     margin-left : 5px;
 }
+
 #clearAllColleges {
     float: left;
+}
+
+#selectedColleges ul li{
+    list-style-type:none;
 }
 
 #collegeSearchAuto {
@@ -732,6 +736,19 @@ ul#instruct_list li:before, ul.styledList li:before{
     color: #333;
 }
 
+#consortiaFilter {
+    margin-bottom: -20px;
+    margin-left: 5px;
+}
+
+#consortiaForm select {
+    height: 0px;
+    width: 161px;
+    overflow: visible;
+    position: relative;
+    left: 168px;
+    bottom: 17px;
+}
 
 /* styles that affect the request for collaboration view*/
 
@@ -1257,5 +1274,5 @@ h3 {
     position:absolute;
     left : 5px;
     bottom: 5px;
-    width : 80px;
+    width : 150px;
 }
