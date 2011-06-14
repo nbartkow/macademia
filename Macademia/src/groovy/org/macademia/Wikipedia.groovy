@@ -18,6 +18,7 @@ public class Wikipedia {
     private String apiUrl = WIKIPEDIA_API_URL
     private User user;
     private DiskMap cache = null
+    private int minNumResults = 5   // Minimum number of results to query for
 
     public Wikipedia() {
 
@@ -57,11 +58,14 @@ public class Wikipedia {
      * match the given query.
      */
     private List<String> query(String query, int maxResults, int offset) {
+        if( maxResults > minNumResults ) {
+            minNumResults = maxResults
+        }
         List<String> results = []
         if (maxResults == 0) {
             return results
         }
-        JSONObject response = performQuery(query, maxResults, offset)
+        JSONObject response = performQuery(query, minNumResults, offset)
         JSONArray resArray = response.getJSONObject("query").getJSONArray("search")
         boolean hasSuggestion = response.getJSONObject("query").getJSONObject("searchinfo").has("suggestion")
         if (resArray.length() == 0 && !hasSuggestion) {
@@ -74,16 +78,27 @@ public class Wikipedia {
                 if (!resArray.get(i)["snippet"].contains("refer to")) {
                     // result is not a disambiguation page
                     def result = resArray.get(i)["title"] as String
-                    results.add(encodeWikiUrl(result))
+                    if( Interest.normalize( encodeQuery(result) ) == Interest.normalize(query) ) {
+                        results.add( 0, encodeWikiUrl(result) )
+                    }
+                    else {
+                        results.add( encodeWikiUrl(result) )
+                    }
                 }
             }
         } else if (hasSuggestion) {
-            // search for the suggestion instead
+            // search for the suggestion if there were no results
             def result = response.getJSONObject("query").getJSONObject("searchinfo").get("suggestion") as String
             results.addAll(this.query(encodeQuery(result), maxResults, 0))
         }
 
-        results.addAll(this.query(query, maxResults-results.size(), offset+maxResults))
+        // Check to see if more results are needed, or if there are too many
+        if (results.size() < maxResults) {
+            results.addAll(this.query(query, maxResults-results.size(), offset+minNumResults))
+        } else if (results.size() > maxResults) {
+            results = results.subList(0, maxResults)
+        }
+        
         return results
     }
 
