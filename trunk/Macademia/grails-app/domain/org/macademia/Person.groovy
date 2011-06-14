@@ -22,9 +22,10 @@ class Person {
     String links  // represented as a series of <li><a href="http://foo.com">foo</a></li> items
     
     int role = USER_ROLE
+    boolean invisible = false
 
     static hasMany = [interests: Interest]
-    static searchable = [only: ['fullName', 'email', 'department']]
+    static searchable = [only: ['fullName', 'email', 'department', 'invisible']]
     static constraints = {
         imageSubpath(nullable : true, blank:false)
         fullName(nullable: false, blank:false)
@@ -33,6 +34,7 @@ class Person {
         links(nullable:true)
         department(nullable:true)
         title(nullable:true)
+        invisible(nullable: false)
     }
     
     static mapping = {

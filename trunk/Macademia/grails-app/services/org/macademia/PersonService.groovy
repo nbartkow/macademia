@@ -13,6 +13,10 @@ class PersonService {
     def autocompleteService
     def collaboratorRequestService
 
+    public void cleanupPeople(){
+        Set<Long> validIds = new HashSet<Long>(Person.list().collect({it.id}))
+        databaseService.cleanupPeople(validIds)
+    }
 
     def get(long id) {
         return Person.get(id)
@@ -58,7 +62,7 @@ class PersonService {
         }
         Utils.safeSave(person, true)
         databaseService.addUser(person)
-        autocompleteService.addPerson(person)
+        autocompleteService.updatePerson(person)
     }
 
     public Person findByToken(String token) {
@@ -66,13 +70,13 @@ class PersonService {
     }
 
     public void delete(Person person){
-        autocompleteService.removePerson(person)
         List deleteInterestsAndRequests = databaseService.removeUser(person.id)
+        autocompleteService.removePerson(person)
         for (interest in deleteInterestsAndRequests[0]){
-          interestService.delete(interest)
+            interestService.delete(interest)
         }
         for (request in deleteInterestsAndRequests[1]){
-          collaboratorRequestService.delete(CollaboratorRequest.get(request))
+            collaboratorRequestService.delete(CollaboratorRequest.get(request))
         }
         person.delete()
     }

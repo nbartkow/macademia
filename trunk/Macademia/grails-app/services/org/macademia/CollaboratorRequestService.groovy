@@ -40,6 +40,11 @@ class CollaboratorRequestService {
         databaseService.addCollaboratorRequest(cr)
     }
 
+    public void cleanupCollaboratorRequests(){
+        Set<Long> validIds = new HashSet<Long>(CollaboratorRequest.list().collect({it.id}))
+        databaseService.cleanupCollaboratorRequests(validIds)
+    }
+
     public List<CollaboratorRequest> findAllByCreator(Person creator){
         return CollaboratorRequest.findAllByCreator(creator)
     }

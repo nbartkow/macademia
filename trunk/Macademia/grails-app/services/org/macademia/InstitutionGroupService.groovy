@@ -9,7 +9,16 @@ class InstitutionGroupService {
     }
 
     Collection<InstitutionGroup> findAllByInstitution(Institution i) {
-        return i.institutionGroups
+        if (i.institutionGroups){
+            return i.institutionGroups
+        } else {
+            def other = InstitutionGroup.findByAbbrev("other")
+            if (!other){
+                other = new InstitutionGroup(name: "other", abbrev: "other")
+                other.save()
+            }
+            return [other] as Set
+        }
     }
 
     InstitutionGroup findByAbbrev(String name) {

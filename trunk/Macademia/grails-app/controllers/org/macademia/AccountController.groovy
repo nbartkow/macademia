@@ -9,6 +9,7 @@ class AccountController {
     def interestService
     def userLoggingService
     def institutionGroupService
+    def autocompleteService
 
 
     def forgottenpassword = {
@@ -150,6 +151,8 @@ The Macademia Team
         person.interests = []
         if (params.interests){
             interestParse(person)
+        } else {
+            person.invisible = true
         }
         person.enabled = true
 
@@ -182,6 +185,7 @@ The Macademia Team
             def allGroup = institutionGroupService.getAllGroup()
             allGroup.addToInstitutions(institution)
             Utils.safeSave(allGroup)
+            autocompleteService.addInstitution(institution)
         }
         println("institution is ${institution} ${institution.getClass()}")
         person.institution = institution
@@ -313,6 +317,9 @@ The Macademia Team
                 person.interests = []
                 if (params.interests){
                     interestParse(person)
+                    person.invisible = false
+                } else {
+                    person.invisible = true
                 }
                 interestService.deleteOld(oldInterests, person)
 	            personService.save(person, Utils.getIpAddress(request))
