@@ -26,11 +26,6 @@
             <li>
               <g:link params="[group : params.group]" controller="account" action="changepassword">Change password</g:link>
             </li>
-            <m:ifAdmin >
-              <li>
-                <g:link params="[group : params.group]" controller="user" action="list" class="icon_user_go">Admin controls</g:link>
-              </li>
-            </m:ifAdmin>
           </div>
         </ul>
       </div>
