@@ -13,12 +13,12 @@ import org.hibernate.event.PostUpdateEventListener
  * User: equeirosnunes, shilad
  * This is a wrapper for the autocomplete plugin
  */
-class AutocompleteService implements PostInsertEventListener, PostUpdateEventListener {
+class AutocompleteService{
 
     public static class GroupTree {
-        AutocompleteTree<String, AutocompleteEntity> institutionTree = new AutocompleteTree<String, AutocompleteEntity>()
-        AutocompleteTree<Long, AutocompleteEntity> interestTree = new AutocompleteTree<Long, AutocompleteEntity>()
-        AutocompleteTree<Long, AutocompleteEntity> overallTree = new AutocompleteTree<Long, AutocompleteEntity>()
+        AutocompleteTree<Long, AutocompleteEntity> institutionTree = new AutocompleteTree<Long, AutocompleteEntity>()
+        AutocompleteTree<String, AutocompleteEntity> interestTree = new AutocompleteTree<String, AutocompleteEntity>()
+        AutocompleteTree<String, AutocompleteEntity> overallTree = new AutocompleteTree<String, AutocompleteEntity>()
     }
 
     //this is the maximum number of autocomplete results
@@ -36,19 +36,13 @@ class AutocompleteService implements PostInsertEventListener, PostUpdateEventLis
             getTree(ig.abbrev).overallTree.clear()
         }
 
-        log.info("processing autocomplete people...")
-        Person.findAll().each { addPerson(it) }
+        log.info("processing autocomplete people and interests...")
+        Person.findAll().each { updatePerson(it) }
         log.info("processing autocomplete institution...")
         Institution.findAll().each { addInstitution(it) }
-        log.info("processing autocomplete interest...")
-        Interest.findAll().each { addInterest(it) }
         log.info("processing autocomplete collaborator requests...")
         CollaboratorRequest.findAll().each { addRequest(it) }
-        
-        sessionFactory.eventListeners.with {
-            postInsertEventListeners = addListener(sessionFactory.eventListeners.postInsertEventListeners)
-            postUpdateEventListeners = addListener(sessionFactory.eventListeners.postUpdateEventListeners)
-        }
+
     }
 
     GroupTree getTree(String abbrev) {
@@ -60,42 +54,12 @@ class AutocompleteService implements PostInsertEventListener, PostUpdateEventLis
         return t
     }
 
-
-    Object[] addListener(final Object[] array) {
-        def size = array?.length ?: 0
-        def expanded = new Object[size + 1]
-        if (array) {
-            System.arraycopy(array, 0, expanded, 0, array.length)
+    def updatePerson(Person person) {
+        if (person.invisible) {
+            // Remove a person if that person is already in autocomplete (or nothing will happen)
+            removePerson(person)
+            return
         }
-        expanded[-1] = this
-        return expanded
-    }
-
-    // creates a tree for person class
-
-    void onPostInsert(PostInsertEvent postInsertEvent) {
-        Object entity = postInsertEvent.getEntity()
-        println("got onPostInsert for " + entity)
-        if (Person.isInstance(entity)) {
-            addPerson(entity)
-        }
-        if (Institution.isInstance(entity)) {
-            addInstitution(entity)
-        }
-        if (CollaboratorRequest.isInstance(entity)){
-            addRequest(entity)
-        }
-    }
-
-    void onPostUpdate(PostUpdateEvent postUpdateEvent) {
-        Object entity = postUpdateEvent.getEntity()
-        println("got onPostUpdate for " + entity)
-        if (Person.isInstance(entity)) {
-            addPerson(entity)
-        }
-    }
-
-    def addPerson = { person ->
         Collection<InstitutionGroup> igs = institutionGroupService.findAllByInstitution(person.institution)
         for (InstitutionGroup ig : igs) {
 //            println("adding person ${person.fullName} to group ${ig.abbrev}")
@@ -111,32 +75,32 @@ class AutocompleteService implements PostInsertEventListener, PostUpdateEventLis
                 gt.overallTree.add("p" + person.id, entity1)
             } // If Person's Institution's name has changed, update it
             else if(gt.overallTree.get("p" + person.id).getValue().other != person.institution.name) {
-                gt.overallTree[("p" + person.id)].setOther(person.institution.name)
+                gt.overallTree.get("p" + person.id).getValue().setOther(person.institution.name)
             }
             for (Interest interest : person.interests) {
-                def entity2 = new AutocompleteEntity(interest.id, interest.text, Interest.class)
-                if (!gt.overallTree.contains("i" + interest.id)) {
-                    gt.overallTree.add("i" + interest.id, entity2)
-                }
-                if (!gt.interestTree.contains(interest.id)) {
-                    gt.interestTree.add(interest.id, entity2)
-                }
+                addInterest(interest, gt)
             }
         }
     }
 
-    def addInterest = { interest ->
-        // This is now handled in addPerson
+    def addInterest(Interest interest, GroupTree gt){
+        def entity = new AutocompleteEntity(interest.id, interest.text, Interest.class)
+        if (!gt.overallTree.contains("i" + interest.id)) {
+            gt.overallTree.add("i" + interest.id, entity)
+        }
+        if (!gt.interestTree.contains("i" + interest.id)) {
+            gt.interestTree.add("i" + interest.id, entity)
+        }
     }
 
-    def addInstitution = { institution ->
+    def addInstitution(Institution institution) {
         def entity = new AutocompleteEntity(institution.id, institution.name, Institution.class)
         Collection<InstitutionGroup> igs = institutionGroupService.findAllByInstitution(institution)
         for (InstitutionGroup ig : igs) {
             getTree(ig.abbrev).institutionTree.add(institution.id, entity)
         }
     }
-    def addRequest = { collaboratorRequest ->
+    def addRequest(CollaboratorRequest collaboratorRequest) {
         def entity = new AutocompleteEntity(collaboratorRequest.id, collaboratorRequest.title, CollaboratorRequest.class)
         Collection<InstitutionGroup> igs = institutionGroupService.findAllByInstitution(collaboratorRequest.creator.institution)
         for (InstitutionGroup ig : igs) {
@@ -144,19 +108,19 @@ class AutocompleteService implements PostInsertEventListener, PostUpdateEventLis
         }
     }
 
-    public def removePerson = { person ->
+    public def removePerson(Person person) {
         Collection<InstitutionGroup> igs = institutionGroupService.findAllByInstitution(person.institution)
         for (InstitutionGroup ig : igs) {
             getTree(ig.abbrev).overallTree.remove("p" + person.id)
         }
     }
-    public def removeInterest = { interest ->
+    public def removeInterest(Interest interest) {
         // FIXME: figure out how to manage groups properly.
 //        overallTree.remove("i" + id)
 //        interestTree.remove(id)
     }
 
-    public def removeRequest = { request ->
+    public def removeRequest(CollaboratorRequest request) {
         Collection<InstitutionGroup> igs = institutionGroupService.findAllByInstitution(request.creator.institution)
         for (InstitutionGroup ig : igs) {
             getTree(ig.abbrev).overallTree.remove("r"+ request.id)
@@ -168,7 +132,7 @@ class AutocompleteService implements PostInsertEventListener, PostUpdateEventLis
         List<AutocompleteEntity> institutions = new ArrayList<AutocompleteEntity>()
         SortedSet<AutocompleteEntry<Long, AutocompleteEntity>> results = getTree(group).institutionTree.autocomplete(query, maxResults)
         for (AutocompleteEntry<Long, AutocompleteEntity> entry: results) {
-            institutions.add((AutocompleteEntity) entry.getValue())
+            institutions.add(entry.getValue() as AutocompleteEntity)
         }
         return institutions
     }
@@ -176,16 +140,16 @@ class AutocompleteService implements PostInsertEventListener, PostUpdateEventLis
     Collection<AutocompleteEntity> getInterestAutocomplete(String group, String query, int maxResults) {
         // Returns the top three cities that start with "ch" ordered by score.
         List<AutocompleteEntity> interests = new ArrayList<AutocompleteEntity>()
-        SortedSet<AutocompleteEntry<Long, AutocompleteEntity>> results = getTree(group).interestTree.autocomplete(query, maxResults)
-        for (AutocompleteEntry<Long, AutocompleteEntity> entry: results) {
-            interests.add((AutocompleteEntity) entry.getValue())
+        SortedSet<AutocompleteEntry<String, AutocompleteEntity>> results = getTree(group).interestTree.autocomplete(query, maxResults)
+        for (AutocompleteEntry<String, AutocompleteEntity> entry: results) {
+            interests.add(entry.getValue() as AutocompleteEntity)
         }
         return interests
     }
     Map<Class, Collection<AutocompleteEntity>> getOverallAutocomplete(String group, String query, int maxResults) {
         Map<Class, Collection<AutocompleteEntity>> result = [:]
-        SortedSet<AutocompleteEntry<Long, AutocompleteEntity>> results = getTree(group).overallTree.autocomplete(query, maxResults)
-        for (AutocompleteEntry<Long, AutocompleteEntity> entry: results) {
+        SortedSet<AutocompleteEntry<String, AutocompleteEntity>> results = getTree(group).overallTree.autocomplete(query, maxResults)
+        for (AutocompleteEntry<String, AutocompleteEntity> entry: results) {
             AutocompleteEntity entity = entry.getValue()
             if (!result.containsKey(entity.getKlass())) {
                 result[entity.getKlass()] = []

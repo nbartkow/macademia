@@ -7,7 +7,7 @@ class SearchService {
   def requestMax = 3
 
   Collection<Person> searchPeople(String query, int offset, int max) {
-    return Person.search(query, [reload: true, offset:offset, max:max]).results
+    return Person.search("+(fullName:${query} OR email:${query} OR department:${query}) +invisible:false", [reload: true, offset:offset, max:max]).results
   }
 
   Collection<Interest> searchInterests(String query, int offset, int max) {

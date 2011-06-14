@@ -47,9 +47,9 @@ class SimilarityService {
     }
 
 
-    public void dedupeInterestRelations() {
+    public void cleanupInterestRelations() {
         Set<Long> validIds = new HashSet<Long>(Interest.list().collect({it.id}))
-        databaseService.dedupeInterestRelations(validIds)
+        databaseService.cleanupInterestRelations(validIds)
     }
 
    /**
@@ -189,6 +189,7 @@ class SimilarityService {
     public Graph calculateRequestNeighbors(CollaboratorRequest request, int maxPeople, Set<Long> institutionFilter) {
         Graph graph = new Graph()
         for (long i : databaseService.getRequestKeywords(request.id)) {
+
             //For each interest owned by the collaborator request, calculate neighbors
             graph = calculateNeighbors(i, graph, maxPeople, (Set<Long>)request.keywords.collect({it.id}), institutionFilter)
         }

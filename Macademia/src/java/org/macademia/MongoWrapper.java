@@ -616,7 +616,7 @@ public class MongoWrapper {
         }
     }
 
-    public void dedupeInterestRelations(Set<Long> validIds) {
+    public void cleanupInterestRelations(Set<Long> validIds) {
         DBCollection interests = getDb().getCollection(INTERESTS);
         for (DBObject entry : interests.find()) {
             String simStr = (String)entry.get("similar");
@@ -634,6 +634,27 @@ public class MongoWrapper {
             }
         }
     }
+
+    public void cleanupPeople(Set<Long> validIds){
+        DBCollection people = getDb().getCollection(USERS);
+        System.out.println(people.find());
+        for (DBObject entry : people.find()){
+            if (!validIds.contains(entry.get("_id"))){
+                people.remove(entry);
+            }
+        }
+    }
+
+    public void cleanupCollaboratorRequests(Set<Long> validIds){
+        DBCollection requests = getDb().getCollection(COLLABORATOR_REQUESTS);
+        System.out.println(requests.find());
+        for (DBObject entry : requests.find()){
+            if (!validIds.contains(entry.get("_id"))){
+                requests.remove(entry);
+            }
+        }
+    }
+
 
     public void addInterestRelations(long interestId, SimilarInterestList sims, boolean merge){
         DBCollection interests = getDb().getCollection(INTERESTS);

@@ -91,7 +91,6 @@ class InterestService implements ApplicationContextAware {
                 xSimilarityService.buildInterestRelations(interest)
             }
             Utils.safeSave(interest)
-            autocompleteService.addInterest(interest)
         }
     }
 

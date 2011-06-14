@@ -198,8 +198,17 @@ class DatabaseService {
     }
 
 
-    public void dedupeInterestRelations(Set<Long> validIds) {
-        wrapper.dedupeInterestRelations(validIds)
+    public void cleanupInterestRelations(Set<Long> validIds) {
+        wrapper.cleanupInterestRelations(validIds)
+    }
+
+    public void cleanupPeople(Set<Long> validIds){
+        wrapper.cleanupPeople(validIds)
+    }
+
+
+    public void cleanupCollaboratorRequests(Set<Long> validIds){
+        wrapper.cleanupCollaboratorRequests(validIds)
     }
 
    /**
