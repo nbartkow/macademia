@@ -118,6 +118,7 @@ Calculates the similarities between two documents
    * The input file is "s3://macademia/step3" and the output file is "s3://macademia/step4" and additional inputs are 1 and 0 for number of splits and split index.
 == Notes ==
    * Attempted with 160 mappers and 160 reducers using 20 extra large machines and failed due to some output file sizes being larger than 5GB, which is the largest size S3 will accept in one put. CPU was the limiting factor, expected running time was around 4 hours.
+   * Took 2 hours, 51 minutes using 20 extra-large high CPU machines with 160 mappers and 320 reducers.  Limiting factor appeared to be the number of reduce jobs allowed, which was 4.  The command line argument "-D mapred.tasktracker.reduce.tasks.maximum=8" should set this value to 8.
 
 =Stage 5: Finaldocsim =
 This adds the similarity scores for the pair of wiki articles being compared
