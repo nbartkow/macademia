@@ -10,6 +10,7 @@ class RequestController {
     def personService
     def institutionService
     def autocompleteService
+    def institutionGroupService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -126,14 +127,8 @@ class RequestController {
         }
         def root = collaboratorRequestService.get((params.id as long))
         Graph graph
-        if(params.institutions.equals("all")){
-            graph = similarityService.calculateRequestNeighbors(root, max)
-            //TODO: Find out why the people in graph are null (for Karl Wirth's case) in this case, but not when institutionFilter != null.
-        }
-        else{
-            Set<Long> institutionFilter = institutionService.getFilteredIds(params.institutions)
-            graph = similarityService.calculateRequestNeighbors(root, max, institutionFilter)
-        }
+        Set<Long> institutions =  institutionGroupService.getInstitutionIdsFromParams(params)
+        graph = similarityService.calculateRequestNeighbors(root, max, institutions)
         def data = jsonService.buildCollaboratorRequestCentricGraph(root, graph)
         render(data as JSON)
     }
