@@ -38,8 +38,9 @@ macademia.pageLoad = function() {
     macademia.initialSettings();
     macademia.showHide();
     macademia.initializeLogin();
-    macademia.initiateGraph();
     macademia.nav();
+    macademia.updateNav();
+    macademia.initiateGraph();
     macademia.autocomplete.initSearch();
     macademia.toggleAccountControls();
     macademia.setupRequestCreation();
@@ -229,7 +230,9 @@ macademia.nav = function() {
                 if (url.indexOf("#") == 0) {
                     macademia.changeQueryString(url);
                 } else {
-                    return true;    // it's a normal href
+//                    return true;    // it's a normal href
+//                    window.location.href = url;
+                    return true;
                 }
                 macademia.sortParameters($.address.parameter('navFunction'));
                 $.address.update();
