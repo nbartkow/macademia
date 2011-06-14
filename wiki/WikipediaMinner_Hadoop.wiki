@@ -101,7 +101,7 @@ This is used to calculate the tf-idf scores
 Calculates the similarities between two documents
 
 == Optimizations ==
-   * Set the  maximum number of documents per terms to 1500 such that we have (1500)^2 article pairs for each word. 2000 will make the output files too big.
+   * Set the maximum number of documents per terms to 1500 such that we have (1500)^2 article pairs for each word. 2000 will make the output files too big.
    * Set the number of splits to 1 and split index to 0, because we can do all the data at once, because Amazon has the resources we need.
 == Initial Input ==
    * Output from step 3
@@ -116,6 +116,8 @@ Calculates the similarities between two documents
 == Hadoop job logistics ==
    * Can use the large Amazon elastic cluster to run it ( 100 mappers and 200 reducers)
    * The input file is "s3://macademia/step3" and the output file is "s3://macademia/step4" and additional inputs are 1 and 0 for number of splits and split index.
+== Notes ==
+   * Attempted with 160 mappers and 160 reducers using 20 extra large machines and failed due to some output file sizes being larger than 5GB, which is the largest size S3 will accept in one put. CPU was the limiting factor, expected running time was around 4 hours.
 
 =Stage 5: Finaldocsim =
 This adds the similarity scores for the pair of wiki articles being compared
