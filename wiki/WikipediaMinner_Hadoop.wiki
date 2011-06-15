@@ -1,8 +1,8 @@
 <wiki:toc max_depth="3" />
 
 = Useful Links =
-    * Put pricing page here
-    * Put maximum tasks/node link here
+    * Pricing: [http://aws.amazon.com/elasticmapreduce/pricing/]
+    * The Amazon Elastic MapReduce Developer Guide (pdf) is a very good resource for most issues, including default options for maximum tasks per node and default options: [http://www.technicalwritingprofessional.com/images/emr-dg.pdf]
 
 = Stage -1: Splitting Wikipedia Datadump =
 Use feedSplit.sh script to split the Wikipedia dump into many pieces to be uploaded to S3.  feedSplit takes 4 arguments: the dump file, the split file (a wikiMiner script in Python), the prefix for output files, and the number of splits to make.  The number of splits has been 100 in the past.
