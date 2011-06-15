@@ -5,11 +5,12 @@ import org.codehaus.groovy.grails.commons.ConfigurationHolder
 import grails.util.Environment
 
 class AccountController {
+    def autocompleteService
     def personService
     def interestService
     def userLoggingService
+    def institutionService
     def institutionGroupService
-    def autocompleteService
 
 
     def forgottenpassword = {
@@ -173,25 +174,30 @@ The Macademia Team
           return
         }
 
-        // create institution  - replace this eventually
-        String institutionDomain = params.email.split("@")[1]
-        Institution institution = Institution.findByEmailDomain(institutionDomain)
-        if (institution == null){
+        String[] afterAt = (params.email).split('@')[1].split('\\.')
+        String eDomain = "${afterAt[afterAt.length-2]}.${afterAt[afterAt.length-1]}"
+        String webUrl = params.institutionUrl
+        if (!webUrl) {
+            webUrl = "www." + eDomain
+        }
+        Institution institution = Institution.findByWebUrl(webUrl)
+        if (!institution) {
             if (!params.institution) {
               render("No school provided")
               return
             }
-            institution= new Institution(name:params.institution, emailDomain:institutionDomain)
+
+            institution= new Institution(name:params.institution, abbrev:params.abbrev, emailDomain:eDomain, webUrl: webUrl)
             def allGroup = institutionGroupService.getAllGroup()
+            institutionService.save(institution)
             allGroup.addToInstitutions(institution)
             Utils.safeSave(allGroup)
             autocompleteService.addInstitution(institution)
         }
         println("institution is ${institution} ${institution.getClass()}")
-        person.institution = institution
 
         try {
-            personService.create(person, params.pass, Utils.getIpAddress(request))
+            personService.create(person, params.pass, [institution])
         } catch(Exception e) {
             log.error("creation of " + person + " failed")
             log.error(e)
@@ -201,7 +207,6 @@ The Macademia Team
 
         person.save(flush : true)    // flush to get the id
         log.info("Created new account identified as $person.email with internal id $person.id")
-
         // Notify admin about new user
         if (Environment.current.toString() == 'PRODUCTION') {
             sendMail {
@@ -210,7 +215,7 @@ The Macademia Team
                 body """
                 Name:           ${person.fullName}
                 Email:          ${person.email}
-                Institution:    ${person.institution.name}
+                Institution:    ${person.institutionsToString()}
                 """
             }
         }
@@ -242,7 +247,7 @@ The Macademia Team
     }
 
     def edit = {
-        Person person = null;
+        Person person = null
         if (!request.authenticated) {
             throw new IllegalStateException("no user present!")
         } else if (!params.id){
@@ -296,13 +301,13 @@ The Macademia Team
     }
 
     def updateuser = {
-        def person
-        if (params.id){
+        Person person
+        if (params.id) {
             person = Person.get(params.id)
             if (!request.authenticated.canEdit(person)) {
                 throw new IllegalArgumentException("not authorized")
             }
-        } else{
+        } else {
             person = request.authenticated
         }
         if (!person) {
@@ -322,7 +327,7 @@ The Macademia Team
                     person.invisible = true
                 }
                 interestService.deleteOld(oldInterests, person)
-	            personService.save(person, Utils.getIpAddress(request))
+	            personService.save(person)
                 userLoggingService.logEvent(request, 'profile', 'update', person.toMap())
                 log.info("Successfully updated details for user [$person.id] $person.email")
 
@@ -337,7 +342,7 @@ The Macademia Team
         String[] tokens = tokenizer(params.interests)
         for (i in tokens){
             if (i.trim().length() != 0) {
-                Interest existingInterest = interestService.findByText(i);
+                Interest existingInterest = interestService.findByText(i)
                 if (existingInterest != null){
                     person.addToInterests(existingInterest)
                 } else {

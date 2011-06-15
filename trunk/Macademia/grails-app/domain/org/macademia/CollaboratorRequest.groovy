@@ -21,20 +21,24 @@ class CollaboratorRequest {
         return "$title ($creator?.fullName)"
     }
 
-    public int compareTo(Object other) {
-        def r = -1
-        if (CollaboratorRequest.class.isInstance(other)){
-            r = title.compareTo(other.title)
-            if (r == 0) {
-                r = dateCreated.compareTo(other.dateCreated)
+    public int compareTo(Object o2) {
+        if (o2 instanceof CollaboratorRequest) {
+            CollaboratorRequest other = o2 as CollaboratorRequest
+            def titleCompare = other.title.compareTo(this.title)
+            if (titleCompare == 0) {
+                return dateCreated.compareTo(other.dateCreated)
+            } else {
+                return titleCompare
             }
         }
-        return r
-
+        throw new RuntimeException("Attempted to compare a CollaboratorRequest to a nonCollaboratorRequest object")
     }
 
     public boolean equals(Object other) {
-        return (compareTo(other) == 0)
+        if (other instanceof CollaboratorRequest) {
+            return (compareTo(other) == 0)
+        }
+        return false
     }
 
     public int hashCode() {

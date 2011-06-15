@@ -14,18 +14,6 @@ class WikipediaService {
      * match the given query.
      */
     public List<String> query (String query, int maxResults) {
-        return this.query(query, maxResults, null)
-    }
-
-    /**
-     * Returns a list of urls matching the specified query.
-     * @param query The textual query.
-     * @param maxResults the maximum number of results to return.
-     * @param ipAddress the ip address of the user who is making the query.
-     * @return List<String> giving at most maxResults urls which
-     * match the given query.
-     */
-    public List<String> query (String query, int maxResults, String ipAddress) {
         if (query == null || query.trim() == "") {
             return []
         }

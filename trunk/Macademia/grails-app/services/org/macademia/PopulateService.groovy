@@ -33,8 +33,8 @@ class PopulateService {
             String name = tokens[0]
             String emailDomain = tokens[1]
             if (institutionService.findByEmailDomain(emailDomain) == null) {
-                Institution institution = new Institution(name : name, emailDomain : emailDomain)
-                Utils.safeSave(institution)
+                Institution institution = new Institution(name : name, emailDomain : emailDomain, webUrl : "www.${emailDomain}")
+                institutionService.save(institution)
             }
         }
 
@@ -100,20 +100,19 @@ class PopulateService {
             person.enabled = true
             person.fullName = name
             person.department = dept
-            person.institution = institution
             person.title = title
         }
-
         Interest interest = interestService.findByText(interestStr)
         if (interest == null) {
             interest = new Interest(interestStr)
         }
         person.addToInterests(interest)
         if (person.id) {
-            personService.save(person)
+            personService.save(person, [institution])
         } else {
-            personService.create(person, "useR123!", null)
+            personService.create(person, "useR123!", [institution])
         }
+
     }
 
 
@@ -150,7 +149,6 @@ class PopulateService {
             person.enabled = true
             person.fullName = name
             person.department = dept
-            person.institution = institution
             person.title = title
         }
 
@@ -165,9 +163,9 @@ class PopulateService {
             }
         }
         if (person.id) {
-            personService.save(person)
+            personService.save(person, [institution])
         } else {
-            personService.create(person, "useR123!", null)
+            personService.create(person, "useR123!", [institution])
         }
     }
 
@@ -188,10 +186,6 @@ class PopulateService {
 
     def buildInterestRelations() {
         similarityService.buildInterestRelations()
-    }
-
-    def displaySimilarities(File blacklistFile) {
-        similarityService.displaySimilarities(new BlacklistRelations(blacklistFile))
     }
 
 }

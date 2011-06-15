@@ -1,33 +1,50 @@
 package org.macademia
 
 class Institution {
-  String name
-  String emailDomain
 
-  static searchable = true
-  static constraints = {
-    emailDomain(unique: true)
-  }
-  static hasMany = [ institutionGroups : InstitutionGroup ]
-  static belongsTo = InstitutionGroup
+    public static final int TYPE_SCHOOL = 0
+    public static final int TYPE_GROUP = 1
 
-  public String toString() {
-    return "$name"
-  }
+    String name
+    String abbrev
+    String emailDomain
+    String webUrl
 
-  public int compareTo(Object p2) {
-    if (Institution.class.isInstance(p2)) {
-      return emailDomain.compareTo(p2.emailDomain)
-    } else {
-      return -1;
+    Integer type = TYPE_SCHOOL
+
+    static hasMany = [ institutionGroups : InstitutionGroup, memberships: Membership ]
+    static belongsTo = InstitutionGroup
+
+    static searchable = true
+
+    static constraints = {
+        abbrev(nullable: true)
+        emailDomain(nullable: true)
+        webUrl(unique: true)
+        memberships(nullable: false)
     }
-  }
 
-  public boolean equals(Object p2) {
-    return (compareTo(p2) == 0)
-  }
+    public String toString() {
+        return "$name"
+    }
 
-  public int hashCode() {
-    return emailDomain.hashCode()
-  }
+    public String toShortString() {
+        return abbrev ? abbrev : name
+    }
+
+    public int compareTo(Object o) {
+        if (Institution.class.isInstance(o)) {
+            return webUrl.compareTo(((Institution)o).webUrl)
+        } else {
+            return -1;
+        }
+    }
+
+    public boolean equals(Object p2) {
+        return (compareTo(p2) == 0)
+    }
+
+    public int hashCode() {
+        return webUrl.hashCode()
+    }
 }

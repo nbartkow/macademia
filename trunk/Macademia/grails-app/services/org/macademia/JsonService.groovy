@@ -173,7 +173,6 @@ class JsonService {
                   collaboratorRequestNodes[rid]['adjacencies'].add(iid)
                 }
             }
-
         }
 
         adjacencyMap(personNodes)
@@ -248,8 +247,7 @@ class JsonService {
         for (String pid in personNodes.keySet()) {
             String fullName = personNodes[pid]['name']
 
-            Institution inst = personNodes[pid]['institution']
-
+            def inst = personNodes[pid]['institutions']
             if (collegeColors != null && collegeColors.containsKey(inst.toString())) {
               personAndRequestColors[pid] = collegeColors.(inst.toString())
             }
@@ -316,7 +314,7 @@ class JsonService {
                         type: 'person'
                 ],
                 adjacencies: [],
-                institution: p.institution
+                institutions: p.memberships.institution.id
         ]
     }
 

@@ -108,3 +108,6 @@
 ["qualitative research methods",["http://en.wikipedia.org/wiki/Qualitative_research"]]
 ["rapid social change",["http://en.wikipedia.org/wiki/Environmental_movement_in_New_Zealand"]]
 ["work-life choices",["http://en.wikipedia.org/wiki/Work%E2%80%93life_balance"]]
+["GIS",["http://en.wikipedia.org/wiki/Geographic_information_system"]]
+["GIS (Geographic Information System)",["http://en.wikipedia.org/wiki/Geographic_information_system"]]
+["e-democracy",["http://en.wikipedia.org/wiki/E-democracy"]]

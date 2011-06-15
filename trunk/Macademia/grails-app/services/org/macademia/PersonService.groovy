@@ -12,6 +12,7 @@ class PersonService {
     def databaseService
     def autocompleteService
     def collaboratorRequestService
+    def membershipService
 
     public void cleanupPeople(){
         Set<Long> validIds = new HashSet<Long>(Person.list().collect({it.id}))
@@ -30,37 +31,51 @@ class PersonService {
         return i.people
     }
 
-    public void create(Person person, String passwd, String ipAddr) {
+    public void create(Person person, String passwd, Collection<Institution> institutions) {
         person.passwdHash = Person.calculatePasswdHash(passwd)
         person.token = Person.randomString(20)
-        save(person, ipAddr)
+        save(person, institutions)
     }
 
-    public void save(Person person){
-        this.save(person, null)
+    public void save(Person person) {
+        this.save(person, person.memberships.institution)
     }
-    public void save(Person person, String ipAddr){
+
+    /**
+     * @param person The Person to be saved.
+     * @param institutions A Collection<Institution> giving all of
+     * the Institutions that the person should be a member of. The
+     * first Institution in the Collection will be set as the Person's
+     * primary Institution.
+     */
+    public void save(Person person, Collection<Institution> institutions) {
         //Maps wrong interest to right interest
-        Map<Interest,Interest> remove = new HashMap<Interest,Interest>()
+        Map<Interest,Interest> replace = new HashMap<Interest,Interest>()
         //log.info("$person.interests[0]")
 
-        for(Interest interest in person.interests){
-            // brand new interest
-            if (interestService.findByText(interest.text) == null) {
-                interestService.save(interest, ipAddr)
-            } // new interest, but .text of interest exists in database
-              else if (interest.id == null) {
-                remove.put(interest,interestService.findByText(interest.text))
-            } // existing interest
-              else if (interest.lastAnalyzed == null) {
-                interestService.save(interest, ipAddr)
+        for (Interest interest in person.interests) {
+            Interest existingInterest = interestService.findByText(interest.text)
+            if (!existingInterest) {
+                // brand new interest
+                interestService.save(interest)
+            } else if (interest.id == null) {
+                // interest with same text exists, schedule it for replacement
+                replace.put(interest, existingInterest)
+            } else if (interest.lastAnalyzed == null) {
+                // existing interest, but not analyzed yet
+                interestService.save(interest)
             }
         }
-        for (Interest interest in remove.keySet()) {
+        for (Interest interest in replace.keySet()) {
             person.removeFromInterests(interest)
-            person.addToInterests(remove.get(interest))
+            person.addToInterests(replace.get(interest))
         }
-        Utils.safeSave(person, true)
+        // switch to set to ensure uniqueness
+        def institutionSet = [] as Set
+        institutionSet.addAll(institutions)
+        setMemberships(person, institutionSet)
+        setPrimaryMembership(person, institutions[0])
+        
         databaseService.addUser(person)
         autocompleteService.updatePerson(person)
     }
@@ -79,6 +94,50 @@ class PersonService {
             collaboratorRequestService.delete(CollaboratorRequest.get(request))
         }
         person.delete()
+    }
+
+    public Set<Person> findAllInInstitution(Institution i) {
+        return i.memberships.person
+    }
+
+    /**
+     * Sets the Person's Memberships to the parameter Institutions.
+     * @param person The Person whose Membership data is being set.
+     * @param institutions The Set<Institution> giving the complete
+     * set of all Institutions the Person is a member of.
+     */
+    def setMemberships(Person person, Set<Institution> institutions) {
+        // memToRemove holds Memberships the Person is no longer a member of
+        if (!person.memberships) {
+            person.memberships = [] as Set
+        }
+        Collection<Membership> memToRemove = []
+        memToRemove.addAll(person.memberships)
+        memToRemove.removeAll({institutions.contains(it.institution)})
+        for (Membership membership : memToRemove) {
+            // loop over Memberships to be removed
+            membershipService.removeMembership(membership)
+        }
+        for (Institution institution : institutions) {
+            if (!person.memberships.institution.contains(institution)) {
+                // person has a new Membership
+                membershipService.createMembership(person, institution)
+            }
+        }
+    }
+
+    /**
+     * Sets the Person's primary membership to the parameter Institution,
+     * creating the Membership if it does not already exist. Also ensures
+     * that a Person can only have one primary Institution at a time.
+     */
+    def setPrimaryMembership(Person person, Institution institution) {
+        if (!person.memberships.institution.contains(institution)) {
+            membershipService.createMembership(person, institution)
+        }
+        person.memberships.each {
+            it.primaryMembership = it.institution.equals(institution)
+        }
     }
 
 }

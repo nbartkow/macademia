@@ -40,7 +40,7 @@ class  PersonController{
             ids.addAll(Person.findAll().collect({it.id}))
         } else {
             for (Institution i : institutions.collect {Institution.get(it)}) {
-                ids.addAll(Person.findAllByInstitution(i).collect({it.id}))
+                ids.addAll(personService.findAllInInstitution(i).collect({it.id}))
             }
         }
         Random r = new Random()

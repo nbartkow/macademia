@@ -71,7 +71,7 @@ class InterestController {
         Set<Long> institutions =  institutionGroupService.getInstitutionIdsFromParams(params)
         def peopleWithInterest = interest.people
         if (institutions) {
-            peopleWithInterest = peopleWithInterest.findAll({institutions.contains(it.institution.id)})
+            peopleWithInterest = peopleWithInterest.findAll({it.memberOfAny(institutions)})
         }
 //        println("institutions are " + institutions)
         def interests = similarityService.getSimilarInterests(interest.id, 50, similarityService.absoluteThreshold, institutions)
@@ -94,7 +94,7 @@ class InterestController {
             Interest interest = interestService.findByText(params.interest)
             if (interest == null) {
                 interest = new Interest(params.interest)
-                interestService.save(interest, Utils.getIpAddress(request))
+                interestService.save(interest)
             }
             render(interest.articleName)
         }

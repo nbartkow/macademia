@@ -17,16 +17,12 @@ class CollaboratorRequestService {
     }
     
     public void save(CollaboratorRequest cr) {
-        this.save(cr, null)
-    }
-
-    public void save(CollaboratorRequest cr, String ipAddr) {
         //Maps wrong interest to right interest
         Map<Interest,Interest> remove = new HashMap<Interest,Interest>()
         for(Interest interest in cr.keywords){
             def res = interestService.findByText(interest.text)
             if (res == null) {
-                interestService.save(interest, ipAddr)
+                interestService.save(interest)
             } else if (res != null && interest.id == null) {
                 remove.put(interest,res)
 

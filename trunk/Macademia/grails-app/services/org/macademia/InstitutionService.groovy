@@ -3,10 +3,16 @@ package org.macademia
 /**
  * Authors: Nathaniel Miller and Alex Schneeman
  */
-
 class InstitutionService {
 
     static transactional = true
+
+    def save(Institution institution) {
+        if (institution.memberships == null) {
+            institution.memberships = [] as Set
+        }
+        Utils.safeSave(institution, true)
+    }
 
     def get(long id) {
         return Institution.get(id)

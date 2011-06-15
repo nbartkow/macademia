@@ -15,7 +15,7 @@ class InstitutionGroupService {
             def other = InstitutionGroup.findByAbbrev("other")
             if (!other){
                 other = new InstitutionGroup(name: "other", abbrev: "other")
-                other.save()
+                Utils.safeSave(other)
             }
             return [other] as Set
         }

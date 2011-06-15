@@ -2,9 +2,7 @@ package org.macademia;
 
 
 import com.mongodb.*;
-import org.bson.BSONObject;
 
-import java.net.UnknownHostException;
 import java.util.*;
 
 /**
@@ -39,11 +37,11 @@ public class MongoWrapper {
 
     LRUCache<Long, Set<Long>> interestUserCache = new LRUCache<Long, Set<Long>>(2000);
     LRUCache<Long, Set<Long>> interestRequestCache = new LRUCache<Long, Set<Long>>(2000);
-    LRUCache<Long, Long> userInstitutionCache = new LRUCache<Long, Long>(2000);
+    LRUCache<Long, Set<Long>> userInstitutionCache = new LRUCache<Long, Set<Long>>(2000);
 
     public MongoWrapper(Mongo mongo, String dbName, String wpDbName){
         this.mongo=mongo;
-            this.dbName = dbName;
+        this.dbName = dbName;
         this.wpDbName = wpDbName;
     }
 
@@ -67,7 +65,7 @@ public class MongoWrapper {
     public void copyDB(String fromDB, String dbName) {
         DB db = mongo.getDB( "admin" );
         //System.out.println("copying from '" + fromDB + "' to '" + dbName + "'");
-        db.command(((String)("use " + fromDB)));
+        db.command("use " + fromDB);
         BasicDBObjectBuilder b = BasicDBObjectBuilder.start();
         b.append("copydb", 1);
         b.append("fromhost", "localhost");
@@ -125,20 +123,27 @@ public class MongoWrapper {
         return safeFindByField(collection, "_id", id, articleDb);
     }
 
-    public void addUser(Long userId, List<Long> userInterests, Long institutionId) throws RuntimeException {
+    public void addUser(Long userId, List<Long> userInterests, List<Long> institutionIds) throws RuntimeException {
         if(userId == null){
             throw new RuntimeException("User needs an ID");
         }
-        if(institutionId == null){
-            throw new RuntimeException("users institution has no ID");
+        if (institutionIds.size() < 1) {
+            throw new RuntimeException("user needs at least one institutionId");
+        } else {
+            for (Long institutionId: institutionIds) {
+                if(institutionId == null) {
+                    throw new RuntimeException("users institution has no ID");
+                }
+            }
         }
+
         for (long i : userInterests) {
-            addInterestToInstitution(institutionId, i);
+            addInterestToInstitutions(i, institutionIds);
         }
         DBObject newUser = new BasicDBObject("_id", userId);
         //log.info(interestIds+"addUser")
         newUser.put("interests", userInterests);
-        newUser.put("institution", institutionId);
+        newUser.put("institutions", institutionIds);
         DBObject searchById = safeFindById(USERS, userId, false);
         DBCollection users = getDb().getCollection(USERS);
         if(searchById != null){
@@ -169,6 +174,7 @@ public class MongoWrapper {
      */
     public List<List<Long>> removeUser(Long userId) {
         Set<Long> interests = getUserInterests(userId);
+        List<Long> deletedInterests = new LinkedList<Long>();
         // Two lists. 1: list of interests to be deleted. 2: list of collaborator
         // requests owned by the person, also in need of deletion.
         List<List<Long>> delInterestCollaborator = new LinkedList<List<Long>>();
@@ -186,7 +192,9 @@ public class MongoWrapper {
             interestUsers.put(i, iUsers);
             interestRequests.put(i, getInterestRequests(i));
         }
-        List<Long> deletedInterests = handleDisconnects(interests, interestUsers, interestRequests, getUserInstitution(userId));
+        for (long instId : getUserInstitutions(userId)) {
+             deletedInterests.addAll(handleDisconnects(interests, interestUsers, interestRequests, instId));
+        }
         // finally, remove the user
         DBCollection users = getDb().getCollection(USERS);
         users.remove(user);
@@ -201,14 +209,24 @@ public class MongoWrapper {
         return delInterestCollaborator;
     }
 
-    public Long getUserInstitution(long userId){
-        Long institutionId = userInstitutionCache.get(userId);
-        if (institutionId == null) {
+    /**
+     * Returns a set of longs giving all of the institution
+     * ids that the user is a part of.
+     * @param userId The long id of the user whose institutions
+     * are to be returned.
+     * @return A Set<Long> of ids for the user's institutions.
+     */
+    public Set<Long> getUserInstitutions(long userId){
+        Set<Long> institutionIds = userInstitutionCache.get(userId);
+        if (institutionIds == null) {
+            institutionIds = new HashSet<Long>();
             DBObject user = safeFindById(USERS, userId, false);
-            institutionId = (Long) user.get("institution");
-            userInstitutionCache.put(userId, institutionId);
+            for (Long id: (List<Long>)user.get("institutions")) {
+                institutionIds.add(id);
+            }
+            userInstitutionCache.put(userId, institutionIds);
         }
-        return institutionId;
+        return institutionIds;
     }
 
     public Set<Long> getUserInterests(long id){
@@ -298,16 +316,16 @@ public class MongoWrapper {
         return institutions;
     }
 
-    public void addCollaboratorRequest(long rfcId, List<Long> interests, long creatorId, long institutionId){
+    public void addCollaboratorRequest(long rfcId, List<Long> interests, long creatorId, List<Long> institutionIds) {
         DBObject newRFC = new BasicDBObject("_id", rfcId);
         //log.info(interestIds+"addCollaboratorRequest")
         for (long i : interests) {
-            addInterestToInstitution(institutionId, i);
+            addInterestToInstitutions(i, institutionIds);
             interestRequestCache.remove(i);
         }
         newRFC.put("keywords", interests);
         newRFC.put("creator", creatorId);
-        newRFC.put("institution", institutionId);
+        newRFC.put("institutions", institutionIds);
         DBCollection collaboratorRequests = getDb().getCollection(COLLABORATOR_REQUESTS);
         DBObject searchById = safeFindById(COLLABORATOR_REQUESTS, rfcId, false);
         if(searchById !=null){
@@ -318,15 +336,22 @@ public class MongoWrapper {
         }
     }
 
-    public Long getCollaboratorRequestInstitution(long id){
+    /**
+     * Returns a set of longs giving all of the institution
+     * ids that the request is a part of.
+     * @param id The long id of the request whose institutions
+     * are to be returned.
+     * @return A Set<Long> of ids for the request's institutions.
+     */
+    public Set<Long> getCollaboratorRequestInstitutions(long id){
         DBObject rfc = safeFindById(COLLABORATOR_REQUESTS, id, false);
-        Long institutionId;
-        if(rfc == null){
-            institutionId=new Long(-1);
-        } else{
-            institutionId=(Long) rfc.get("institution");
+        Set<Long> institutionIds = new HashSet<Long>();
+        if (rfc != null) {
+            for (Long institutionId: (List<Long>) rfc.get("institutions")) {
+                institutionIds.add(institutionId);
+            }
         }
-        return institutionId;
+        return institutionIds;
     }
 
     public Long getCollaboratorRequestCreator(long id){
@@ -355,8 +380,8 @@ public class MongoWrapper {
      * this collaborator request.
      */
     public List<Long> removeCollaboratorRequest(long id) {
-        List<Long> deletedInterests = new LinkedList<Long>();
         Set<Long> interests = getRequestKeywords(id);
+        List<Long> deletedInterests = new LinkedList<Long>();
         // maps interest ids to the ids of all users with that interest
         HashMap<Long, Set<Long>> interestUsers = new HashMap<Long, Set<Long>>();
         // maps interest ids to the ids of all collaborator requests with that interest
@@ -372,7 +397,9 @@ public class MongoWrapper {
             interestRequests.put(i, iRequests);
             interestRequestCache.remove(i);
         }
-        deletedInterests = handleDisconnects(interests, interestUsers, interestRequests, getCollaboratorRequestInstitution(id));
+        for (long instId : getCollaboratorRequestInstitutions(id)) {
+             deletedInterests.addAll(handleDisconnects(interests, interestUsers, interestRequests, instId));
+        }
         // finally, remove the collaborator request
         DBCollection collaboratorRequests = getDb().getCollection(COLLABORATOR_REQUESTS);
         collaboratorRequests.remove(request);
@@ -439,15 +466,15 @@ public class MongoWrapper {
         Set<Long> interestRequests = getInterestRequests(interestId);
         interestUsers.remove(userId);
         for (Long u : interestUsers) {
-            institutions.remove(getUserInstitution(u));
+            institutions.removeAll(getUserInstitutions(u));
         }
         for (Long request : interestRequests) {
-            institutions.remove(getCollaboratorRequestInstitution(request));
+            institutions.removeAll(getCollaboratorRequestInstitutions(request));
         }
         for (Long institution : institutions) {
             removeInterestFromInstitution(interestId, institution);
         }
-        List<Object> interests = (List<Object>)user.get("interests");
+        List<Long> interests = (List<Long>)user.get("interests");
         interests.remove(interestId);
         user.put("interests", interests);
         DBCollection users = getDb().getCollection(USERS);
@@ -476,10 +503,10 @@ public class MongoWrapper {
         Set<Long> interestRequests = getInterestRequests(keywordId);
         interestRequests.remove(requestId);
         for (Long u : interestUsers) {
-            institutions.remove(getUserInstitution(u));
+            institutions.removeAll(getUserInstitutions(u));
         }
         for (Long r : interestRequests) {
-            institutions.remove(getCollaboratorRequestInstitution(r));
+            institutions.removeAll(getCollaboratorRequestInstitutions(r));
         }
         for (Long institution : institutions) {
             removeInterestFromInstitution(keywordId, institution);
@@ -536,10 +563,10 @@ public class MongoWrapper {
             long id = (Long)(dbObject.get("_id"));
             Set<Long> institutions = getInterestInstitutions(id);
             for (Long u : getInterestUsers(id)) {
-                institutions.remove(getUserInstitution(u));
+                institutions.removeAll(getUserInstitutions(u));
             }
             for (Long r : getInterestRequests(id)) {
-                institutions.remove(getCollaboratorRequestInstitution(r));
+                institutions.removeAll(getCollaboratorRequestInstitutions(r));
             }
             for (Long institution : institutions) {
                 System.out.println("Interest id: " + id + " text: " + dbObject.get("text") + " removed from institution " + institution);
@@ -725,11 +752,17 @@ public class MongoWrapper {
         interests.update(safeFindById(INTERESTS, interest, false),i);
     }
 
-    private void addInterestToInstitution(long institutionId ,long interestId){
+    private void addInterestToInstitutions(long interestId, List<Long> institutionIds) {
+        for (long institutionId: institutionIds) {
+            addInterestToInstitution(interestId, institutionId);
+        }
+    }
+
+    private void addInterestToInstitution(long interestId ,long institutionId) {
         DBObject institution = safeFindById(INSTITUTION_INTERESTS, institutionId, false);
-        DBCollection institutionInterests=getDb().getCollection(INSTITUTION_INTERESTS);
-        if(institution==null){
-            institution= new BasicDBObject("_id", institutionId);
+        DBCollection institutionInterests = getDb().getCollection(INSTITUTION_INTERESTS);
+        if(institution==null) {
+            institution = new BasicDBObject("_id", institutionId);
             institution.put("interests","");
             institutionInterests.insert(institution);
         }
@@ -822,7 +855,7 @@ public class MongoWrapper {
      * request own an interest, removes the interest from the database.
      *
      * @param interests Set of interest ids to check for disconnects.
-     * @param interestUsers Map of all ids in the interests set to
+     * @param interestUsers Maps interestIds (same ids as in the interests) to
      * the users with that interest. Should the deletion be caused by
      * the removal of a user, then the user being removed should not be
      * present in this Map.
@@ -830,39 +863,43 @@ public class MongoWrapper {
      * the requests with that interest. Should the deletion be caused by
      * the removal of a request, then the request being removed should
      * not be present in this Map.
-     * @param institution Long id of the institution to check and
+     * @param institutionId Set<Long> ids of the institutions to check and
      * update should the removal of an interest require the institution
      * to update its list of owned interests.
      * @return A List<Long> of the interests that were completely removed
      * from the database as a result of this remove.
      */
-    private List<Long> handleDisconnects(Set<Long> interests, Map<Long,Set<Long>> interestUsers, Map<Long,Set<Long>> interestRequests, Long institution) {
+    private List<Long> handleDisconnects(Set<Long> interests, Map<Long,Set<Long>> interestUsers, Map<Long,Set<Long>> interestRequests, Long institutionId) {
         List<Long> deletedInterests = new LinkedList<Long>();
-        for (Long i : interestUsers.keySet()) {
-            if (interestUsers.get(i).size() == 0) {
-                if (interestRequests.get(i).size() == 0) {
+        for (Long interestId : interestUsers.keySet()) {
+            boolean removed = false;
+            if (interestUsers.get(interestId).size() == 0) {
+                if (interestRequests.get(interestId).size() == 0) {
                     // interest is owned by no one, delete it
-                    removeInterest(i);
-                    deletedInterests.add(i);
+                    removeInterest(interestId);
+                    deletedInterests.add(interestId);
                 }
             }
-            // weed out interests owned by others in the institution
-            for (Long u : interestUsers.get(i)) {
-                if (institution.equals(getUserInstitution(u))) {
-                    interests.remove(i);
+            // weed out interests owned by others in the institutions
+            for (Long u : interestUsers.get(interestId)) {
+                if (getUserInstitutions(u).contains(institutionId)) {
+                    interests.remove(interestId);
+                    removed = true;
                     break;
                 }
             }
-            for (Long c : interestRequests.get(i)) {
-                if (institution.equals(getCollaboratorRequestInstitution(c))) {
-                    interests.remove(i);
-                    break;
+            if (!removed) {
+                for (Long c : interestRequests.get(interestId)) {
+                    if (getCollaboratorRequestInstitutions(c).contains(institutionId)) {
+                        interests.remove(interestId);
+                        break;
+                    }
                 }
             }
         }
         // interests holds interests to remove from institution
         for (Long i : interests) {
-            removeInterestFromInstitution(i, institution);
+            removeInterestFromInstitution(i, institutionId);
         }
         return deletedInterests;
     }
@@ -905,4 +942,7 @@ public class MongoWrapper {
         interestRequestCache.clear();
         userInstitutionCache.clear();
     }
+
+
+
 }
