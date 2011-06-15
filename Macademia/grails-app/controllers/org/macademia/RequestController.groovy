@@ -26,7 +26,7 @@ class RequestController {
 
     def manage = {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        Person user = null;
+        Person user
         if (!params.id){
             user = request.authenticated
         }
@@ -64,7 +64,7 @@ class RequestController {
             keywordParse(collaboratorRequest)
         }
         interestService.deleteOld(oldKeywords, collaboratorRequest)
-        collaboratorRequestService.save(collaboratorRequest, Utils.getIpAddress(request))
+        collaboratorRequestService.save(collaboratorRequest)
         collaboratorRequest.save(flush : true)  // flush to get the id
         autocompleteService.addRequest(collaboratorRequest)
 
@@ -153,7 +153,6 @@ class RequestController {
         def exact = [] as Set
         def close = [:]
         def linkName = ''
-
         // Are we mousing over a user who has a link to the root?
         if (link != null && target != link) {
             def allInterests = []

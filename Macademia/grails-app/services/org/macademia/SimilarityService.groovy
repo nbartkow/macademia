@@ -1,8 +1,5 @@
 package org.macademia
 
-import com.aliasi.tokenizer.IndoEuropeanTokenizerFactory
-import com.aliasi.tokenizer.TokenizerFactory
-import com.aliasi.spell.TfIdfDistance
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 class SimilarityService {
@@ -62,17 +59,6 @@ class SimilarityService {
         } else {
             log.info("Interest $interest has no related article")
         }
-    }
-
-    public TfIdfDistance calculateDocumentDistances() {
-        TokenizerFactory tokenizerFactory = IndoEuropeanTokenizerFactory.INSTANCE;
-        TfIdfDistance tfIdf = new TfIdfDistance(tokenizerFactory);
-        //Are the next four lines necessary?
-        log.info("training on ${Document.count()} documents")
-        for (Document d : Document.findAll()) {
-            tfIdf.handle(d.text.toCharArray(), 0, d.text.length());
-        }
-        return tfIdf
     }
 
     /**
@@ -264,9 +250,12 @@ class SimilarityService {
                 graph.incrementPersonScore(p, i, interestId, sim)
                 graph.addEdge(p, i, ir, null, sim)
             } else {
-                if (institutionFilter.contains(databaseService.getUserInstitution(p))) {
-                    graph.incrementPersonScore(p, i, interestId, sim)
-                    graph.addEdge(p, i, ir, null, sim)
+                for (Long perInst : databaseService.getUserInstitutions(p)) {
+                    if (institutionFilter.contains(perInst)) {
+                        graph.incrementPersonScore(p, i, interestId, sim)
+                        graph.addEdge(p, i, ir, null, sim)
+                        break
+                    }
                 }
             }
         }
@@ -278,8 +267,11 @@ class SimilarityService {
             if (institutionFilter == null) {
                 graph.addEdge(null, i, ir, cr, sim)
             } else {
-                if (institutionFilter.contains(databaseService.getCollaboratorRequestInstitution(cr))) {
-                    graph.addEdge(null, i, ir, cr, sim)
+                for (Long crInst : databaseService.getCollaboratorRequestInstitutions(cr)) {
+                    if (institutionFilter.contains(crInst)) {
+                        graph.addEdge(null, i, ir, cr, sim)
+                        break
+                    }
                 }
             }
         }

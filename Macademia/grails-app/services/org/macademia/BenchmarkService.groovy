@@ -97,7 +97,7 @@ class BenchmarkService {
             }
             Person person = Person.findByEmail(email)
             if (person == null) {
-                person = new Person(fullName: name, department: dept, email: email, institution: institution)
+                person = new Person(fullName: name, department: dept, email: email, institutions: [institution])
             }
             Interest interest = interestService.findByText(interestStr)
             if (interest == null) {

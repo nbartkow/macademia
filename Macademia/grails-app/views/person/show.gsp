@@ -18,7 +18,7 @@
       <td id="pf_name">${person.fullName.encodeAsHTML()}</td>
     </tr>
     <tr>
-      <td id="pf_inst">${person.institution.name.encodeAsHTML()}</td>
+      <td id="pf_inst">${person.institutionsToString().encodeAsHTML()}</td>
     </tr>
     <tr>
       <td colspan="2" id="pf_dept">

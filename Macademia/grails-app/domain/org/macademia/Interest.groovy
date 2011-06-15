@@ -47,15 +47,18 @@ class Interest implements Comparable {
     }
 
     public int compareTo(Object other) {
-        if (Interest.class.isInstance(other)) {
+        if (other instanceof Interest) {
             return normalizedText.compareTo(other.normalizedText)
         } else {
-            return -1
+            throw new RuntimeException("Attempted to compare an Interest to a nonInterest object")
         }
     }
 
     public boolean equals(Object other) {
-        return (compareTo(other) == 0)
+        if (other instanceof Interest) {
+            return (compareTo(other) == 0)
+        }
+        return false
     }
 
     public String toString() {

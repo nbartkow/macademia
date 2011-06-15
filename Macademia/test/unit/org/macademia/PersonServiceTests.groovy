@@ -13,9 +13,8 @@ class PersonServiceTests extends GrailsUnitTestCase {
 
     void testSomething() {
         mockDomain(Person, [])
-        Institution mac = new Institution(name: "Macalester", emailDomain: "@macalester.edu")
-        Person p1 = new Person(fullName : "Shilad", department : "MSCS", email : "ssen@macalester.edu", institution: mac, passwdHash : 'adsfads', token : '2342525')
-        Person p2 = new Person(fullName : "Tm", department : "MSCS", email : "halverson@macalester.edu", institution: mac, passwdHash : 'adsfads', token : '23425231')
+        Person p1 = new Person(fullName : "Shilad", department : "MSCS", email : "ssen@macalester.edu", passwdHash : 'adsfads', token : '2342525')
+        Person p2 = new Person(fullName : "Tm", department : "MSCS", email : "halverson@macalester.edu", passwdHash : 'adsfads', token : '23425231')
         p1.save()
         p2.save()
         def service = new PersonService()

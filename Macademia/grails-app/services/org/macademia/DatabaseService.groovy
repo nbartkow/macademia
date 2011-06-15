@@ -2,14 +2,10 @@ package org.macademia
 
 import com.mongodb.*
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
-//import org.bson.types.ObjectId
 
 /**
  * Authors: Nathaniel Miller and Alex Schneeman
- *
- *
  */
-
 class DatabaseService {
 
     Mongo mongo = new Mongo((String)ConfigurationHolder.config.dataSource.mongoDbUrl)
@@ -66,19 +62,21 @@ class DatabaseService {
             interestIds.add(+interest.id)
             //log.info("Interest ID: "+ interest + "for User ID: " + id)
         }
-        long institutionId = user.institution.id
-        if(institutionId == null){
-            throw new RuntimeException("users institution has no ID")
+        List<Long> institutionIds = user.memberships.institution.id
+        for (Long institutionId: institutionIds) {
+            if(institutionId == null){
+                throw new RuntimeException("user has an institution with no ID")
+            }
         }
-        wrapper.addUser(id, interestIds, institutionId)
+        wrapper.addUser(id, interestIds, institutionIds)
     }
 
     public List<List<Long>> removeUser(Long userId) {
         return wrapper.removeUser(userId);
     }
 
-    public long getUserInstitution(long id){
-        return wrapper.getUserInstitution(id)
+    public Set<Long> getUserInstitutions(long id){
+        return wrapper.getUserInstitutions(id)
     }
 
     public Set<Long> getUserInterests(long id){
@@ -96,16 +94,16 @@ class DatabaseService {
     public void addCollaboratorRequest(CollaboratorRequest rfc){
         List<Long> interestIds = new ArrayList<Long>()
         for(Interest interest : rfc.keywords){
-            if(interest.id ==null){
+            if(interest.id ==null) {
                 throw new RuntimeException("User has an interest with out an ID")
             }
             interestIds.add(interest.id)
         }
-        wrapper.addCollaboratorRequest(rfc.id,interestIds,rfc.creator.id,rfc.creator.institution.id)
+        wrapper.addCollaboratorRequest(rfc.id, interestIds, rfc.creator.id, rfc.creator.memberships.institution.id.toList())
     }
 
-    public long getCollaboratorRequestInstitution(long id){
-        return wrapper.getCollaboratorRequestInstitution(id)
+    public Set<Long> getCollaboratorRequestInstitutions(long id){
+        return wrapper.getCollaboratorRequestInstitutions(id)
     }
 
     public long getCollaboratorRequestCreator(long id){

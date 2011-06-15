@@ -1,7 +1,6 @@
 package org.macademia
 
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
-import grails.converters.JSON
 
 class Person {
     public static final int USER_ROLE = 0
@@ -16,7 +15,6 @@ class Person {
     String email
     String title
     String department
-    Institution institution    
     String imageSubpath
     boolean enabled = true
     String links  // represented as a series of <li><a href="http://foo.com">foo</a></li> items
@@ -24,7 +22,7 @@ class Person {
     int role = USER_ROLE
     boolean invisible = false
 
-    static hasMany = [interests: Interest]
+    static hasMany = [interests: Interest, memberships: Membership]
     static searchable = [only: ['fullName', 'email', 'department', 'invisible']]
     static constraints = {
         imageSubpath(nullable : true, blank:false)
@@ -46,16 +44,19 @@ class Person {
         return "$fullName ($department)"
     }
 
-    public int compareTo(Object p2) {
-        if (Person.class.isInstance(p2)) {
+    public int compareTo(Object p2) throws RuntimeException {
+        if (p2 instanceof Person) {
             return email.compareTo(p2.email)
         } else {
-            return -1;
+            throw new RuntimeException("Attempted to compare a Person to a nonPerson object")
         }
     }
 
     public boolean equals(Object p2) {
-        return (compareTo(p2) == 0)
+        if (p2 instanceof Person) {
+            return (compareTo(p2) == 0)
+        }
+        return false
     }
 
     public int hashCode() {
@@ -77,7 +78,7 @@ class Person {
     }
 
     public boolean isAdmin(Person other){
-       return ((role == ADMIN_ROLE) || (role == INST_ADMIN_ROLE && institution == other.institution))
+       return ((role == ADMIN_ROLE) || (role == INST_ADMIN_ROLE && other.memberOfAny(memberships.institution.id)))
     }
 
     public boolean canEdit(Person other) {
@@ -85,7 +86,7 @@ class Person {
             return true
         } else if (role == ADMIN_ROLE) {
             return true
-        } else if (role == INST_ADMIN_ROLE && institution == other.institution) {
+        } else if (role == INST_ADMIN_ROLE && other.memberOfAny(memberships.institution.id)) {
             return true
         } else {
             return false
@@ -145,11 +146,41 @@ class Person {
             if (key == 'interests') {
                 result[key] = interests.collect({it.text}).join(", ")
             } else if (key == 'institution') {
-                result[key] = institution.emailDomain
+                result[key] = memberships.institution.emailDomain
             } else {
                 result[key] = '' + properties[key]
             }
         }
         return result
     }
+
+    public String institutionsToString() {
+        String result = ""
+        def institutionsList = memberships.institution.toList()
+        if (institutionsList.size() < 3) {
+            result += institutionsList[0].name
+            if (institutionsList.size() == 2) {
+                result += " and " + institutionsList[1]
+            }
+        } else {
+            for (int i=0; i < institutionsList.size()-1; i++) {
+                result += institutionsList[i].name+", "
+            }
+            result += " and " + institutionsList.last().name
+        }
+        return result
+    }
+
+    public Boolean memberOfAny(Collection<Long> institutionIds) {
+        return institutionIds.any({memberships.institution.id.contains(it)})
+    }
+
+    def retrieveInstitutionGroups() {
+        Collection<InstitutionGroup> igs = []
+        for (Institution institution in memberships.institution){
+            igs.addAll(institution.institutionGroups)
+        }
+        return igs
+    }
+
 }

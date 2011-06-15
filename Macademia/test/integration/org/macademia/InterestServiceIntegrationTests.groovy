@@ -36,7 +36,6 @@ class InterestServiceIntegrationTests extends GrailsUnitTestCase {
         personService.save(p)
         assertTrue(Interest.findByText("web 4.0").people.contains(p))
         assertTrue(databaseService.getSimilarInterests(Interest.findByText("web 4.0")) != null)
-        //assertEquals(InterestRelation.findAllByFirst(interest).size(),10)
     }
 
 }

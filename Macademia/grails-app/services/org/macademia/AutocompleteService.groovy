@@ -2,11 +2,7 @@ package org.macademia
 
 import edu.macalester.acs.AutocompleteTree
 import edu.macalester.acs.AutocompleteEntry
-import org.hibernate.event.PostInsertEventListener
-import org.hibernate.event.PostInsertEvent
 import org.hibernate.SessionFactory
-import org.hibernate.event.PostUpdateEvent
-import org.hibernate.event.PostUpdateEventListener
 
 /**
  * Created by IntelliJ IDEA.
@@ -56,26 +52,31 @@ class AutocompleteService{
 
     def updatePerson(Person person) {
         if (person.invisible) {
-            // Remove a person if that person is already in autocomplete (or nothing will happen)
+            // Remove an invisible person if that person is already in autocomplete (or nothing will happen)
             removePerson(person)
             return
         }
-        Collection<InstitutionGroup> igs = institutionGroupService.findAllByInstitution(person.institution)
+        Set<InstitutionGroup> igs = [] as Set
+        for (Institution institution : person.memberships.institution) {
+            igs.addAll(institutionGroupService.findAllByInstitution(institution))
+        }
         for (InstitutionGroup ig : igs) {
 //            println("adding person ${person.fullName} to group ${ig.abbrev}")
             GroupTree gt = getTree(ig.abbrev)
             String nodeName = gt.overallTree.get("p" + person.id)?.getValue()?.name
-            // If Person's fullName has changed, remove them from AutoCompleteTree
             if( nodeName != person.fullName && nodeName != null ) {
+                // If Person's fullName has changed, remove them from AutoCompleteTree
                 gt.overallTree.remove("p" + person.id)
             }
-            // If tree does not contain Person, add them
+            def primaryMembership = person.memberships.toList().find({it.primaryMembership})
+            def institution = primaryMembership.institution.toShortString()
             if (!gt.overallTree.contains("p" + person.id)) {
-                def entity1 = new AutocompleteEntity(person.id, person.fullName, Person.class, person.institution.name)
+                // If tree does not contain Person, add them
+                def entity1 = new AutocompleteEntity(person.id, person.fullName, Person.class, institution)
                 gt.overallTree.add("p" + person.id, entity1)
-            } // If Person's Institution's name has changed, update it
-            else if(gt.overallTree.get("p" + person.id).getValue().other != person.institution.name) {
-                gt.overallTree.get("p" + person.id).getValue().setOther(person.institution.name)
+            } else if(gt.overallTree.get("p" + person.id).getValue().other != institution) {
+                // If Person's Institution's name has changed, update it
+                gt.overallTree.get("p" + person.id).getValue().setOther(institution)
             }
             for (Interest interest : person.interests) {
                 addInterest(interest, gt)
@@ -102,14 +103,14 @@ class AutocompleteService{
     }
     def addRequest(CollaboratorRequest collaboratorRequest) {
         def entity = new AutocompleteEntity(collaboratorRequest.id, collaboratorRequest.title, CollaboratorRequest.class)
-        Collection<InstitutionGroup> igs = institutionGroupService.findAllByInstitution(collaboratorRequest.creator.institution)
+        Collection<InstitutionGroup> igs = collaboratorRequest.creator.retrieveInstitutionGroups()
         for (InstitutionGroup ig : igs) {
             getTree(ig.abbrev).overallTree.add("r"+ collaboratorRequest.id, entity)
         }
     }
 
     public def removePerson(Person person) {
-        Collection<InstitutionGroup> igs = institutionGroupService.findAllByInstitution(person.institution)
+        Collection<InstitutionGroup> igs = person.retrieveInstitutionGroups()
         for (InstitutionGroup ig : igs) {
             getTree(ig.abbrev).overallTree.remove("p" + person.id)
         }
@@ -121,7 +122,7 @@ class AutocompleteService{
     }
 
     public def removeRequest(CollaboratorRequest request) {
-        Collection<InstitutionGroup> igs = institutionGroupService.findAllByInstitution(request.creator.institution)
+        Collection<InstitutionGroup> igs = request.creator.retrieveInstitutionGroups()
         for (InstitutionGroup ig : igs) {
             getTree(ig.abbrev).overallTree.remove("r"+ request.id)
         }

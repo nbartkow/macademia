@@ -43,21 +43,17 @@ class InstitutionController {
             return
         } else if (params.group) {
             InstitutionGroup g = institutionGroupService.findByAbbrev(params.group)
-            if (g.institutions.contains(request.authenticated.institution)) {
+            if (request.authenticated.memberOfAny(g.institutions)) {
                 render (params.group)
                 return
             }
         }
-        InstitutionGroup smallest = null
         InstitutionGroup all = institutionGroupService.getAllGroup()
-        for (InstitutionGroup ig : institutionGroupService.findAllByInstitution(request.authenticated.institution)) {
-            if (smallest == null || (ig != all && ig.institutions.size() < smallest.institutions.size())) {
-                smallest = ig
-            }
-        }
-        if (smallest != null) {
-            println("smallest is ${smallest.name} with abbrev ${smallest.abbrev}")
-            render(smallest.abbrev)
+        log.error(request.authenticated.memberships)
+        if (request.authenticated.memberOfAny(institutionGroupService.findByAbbrev("ACM"))) {
+            render(institutionGroupService.findByAbbrev("ACM").abbrev)
+        } else if (request.authenticated.memberships.size() > 0) {
+            render (request.authenticated.memberships.toList()[0].institution.institutionGroups.toList()[0].abbrev)
         } else {
             render(all.abbrev)
         }
