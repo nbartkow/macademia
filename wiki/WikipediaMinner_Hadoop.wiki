@@ -1,5 +1,9 @@
 <wiki:toc max_depth="3" />
 
+= Useful Links =
+    * Put pricing page here
+    * Put maximum tasks/node link here
+
 = Stage -1: Splitting Wikipedia Datadump =
 Use feedSplit.sh script to split the Wikipedia dump into many pieces to be uploaded to S3.  feedSplit takes 4 arguments: the dump file, the split file (a wikiMiner script in Python), the prefix for output files, and the number of splits to make.  The number of splits has been 100 in the past.
 
@@ -138,6 +142,7 @@ This adds the similarity scores for the pair of wiki articles being compared
    * The input file is "s3://macademia/step4" and the output file is "s3://macademia/step5"
 == Notes ==
    * Test run using two large machines and 320 mappers revealed that a map job took about 90 minutes. Limiting factors were CPU while receiving the file and then disk writes while writing the intermediate file.  We considered compressing the intermediate files, but decided not to explore that option further for the time being.
+   * Attempted to run with 20 large machines, ran out of memory.
 
 
 = Stage 6: JSondocsim =
