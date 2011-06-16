@@ -107,7 +107,7 @@ class  PersonController{
     }
 
     def jit = {
-        [ authenticatedUser : request.authenticated ]
+        [ authenticatedUser : request.authenticated, igMap: jsonService.makeJsonForIgMap() ]
     }
 
     def json = {

@@ -51,9 +51,5 @@
 </div>
 
 <g:javascript>
-    macademia.igMap = ${igMap};
-
-
-
 
 </g:javascript>
