@@ -126,7 +126,6 @@ macademia.collegeSelection = function() {
             window.location.replace(newUrl);
         };
         
-        alert("logging");
         macademia.serverLog('dialog', 'close',
             {'name' : 'collegeFilter', count : colleges.length}, replaceUrl);
         $('#filterDialog').jqmHide();
