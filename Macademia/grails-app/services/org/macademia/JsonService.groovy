@@ -355,7 +355,8 @@ class JsonService {
         for (Institution institution: ig.institutions) {
             institutions.add(
                     [
-                            id : institution.id
+                            id : institution.id,
+                            name: institution.name
                     ])
         }
         return [

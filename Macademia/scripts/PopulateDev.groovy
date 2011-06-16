@@ -36,6 +36,7 @@ target ('main': "Load the Grails interactive shell") {
     if (necessary) {
         def similarityService = appCtx.getBean('similarityService')
         similarityService.relationsBuilt = false
+        databaseService.dropCurrentDB()
     }
 
     def populateService = appCtx.getBean('populateService')

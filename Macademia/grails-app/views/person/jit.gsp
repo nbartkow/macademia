@@ -7,7 +7,7 @@
 --%>
 
 
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="grails.converters.JSON" contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
   "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
@@ -138,7 +138,7 @@
 </div>
 </body>
   <g:javascript >
-
+      macademia.igMap = ${igMap as JSON};
       $().ready(function() {
           var params = {
               'page' : 'jit'

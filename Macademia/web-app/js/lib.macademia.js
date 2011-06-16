@@ -490,7 +490,12 @@ macademia.setupModal = function(modalDialog, trigger, url, depModule, fnString) 
     });
 };
 
-macademia.serverLog = function(category, event, params) {
+macademia.serverLog = function(category, event, params, onSuccess) {
+    if (onSuccess == null) {
+        //Optional funciton called when logging succeeds.
+        //Not passed in every serverLog call
+        onSuccess = function() {};
+    }
     var url = macademia.makeActionUrl('logging', 'doLog');
     params = params || {};
     params.category = category;
@@ -501,6 +506,7 @@ macademia.serverLog = function(category, event, params) {
             dataType : 'text',
             cache : false,
             success : function(data) {
+                onSuccess();
             },
             error : function(req, textStatus, error) {
                 alert('logging failed: ' + textStatus + ', ' + error);
