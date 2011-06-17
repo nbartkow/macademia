@@ -70,11 +70,9 @@ class PersonService {
             person.removeFromInterests(interest)
             person.addToInterests(replace.get(interest))
         }
-        // switch to set to ensure uniqueness
-        def institutionSet = [] as Set
-        institutionSet.addAll(institutions)
-        setMemberships(person, institutionSet)
-        setPrimaryMembership(person, institutions[0])
+
+        setMemberships(person, institutions)
+        setPrimaryMembership(person, institutions.iterator().next())
         
         databaseService.addUser(person)
         autocompleteService.updatePerson(person)
@@ -103,10 +101,10 @@ class PersonService {
     /**
      * Sets the Person's Memberships to the parameter Institutions.
      * @param person The Person whose Membership data is being set.
-     * @param institutions The Set<Institution> giving the complete
+     * @param institutions A Collection<Institution> giving the complete
      * set of all Institutions the Person is a member of.
      */
-    def setMemberships(Person person, Set<Institution> institutions) {
+    def setMemberships(Person person, Collection<Institution> institutions) {
         // memToRemove holds Memberships the Person is no longer a member of
         if (!person.memberships) {
             person.memberships = [] as Set
