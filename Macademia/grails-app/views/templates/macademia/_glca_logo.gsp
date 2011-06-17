@@ -8,6 +8,6 @@
 
 <g:if test="${params.group == 'glca'}">
   <div class="inst_logo">
-    <a href="http://glca.org"><p:image src="GLCA Lighthouse Transparent.png" alt="The Great Lakes Colleges Assocation"/></a>
+    <a href="http://glca.org"><p:image src="glca logo without text.png" alt="The Great Lakes Colleges Assocation"/></a>
   </div>
 </g:if>
