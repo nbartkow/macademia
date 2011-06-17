@@ -162,3 +162,5 @@ returns output that is formatted to be inserted into MongoDB
 == Hadoop job logistics ==
    * Can use the large Amazon elastic cluster to run it ( 100 mappers and 100 reducers)
    * The input file is "s3://macademia/step5" and the output file is "s3://macademia/step6"
+== Notes ==
+   * Tried using 20 large machines and failed due to lack of memory.  There may have been other reasons as well.  
