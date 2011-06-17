@@ -88,10 +88,10 @@ class InterestController {
     }
 
     def analyze = {
-        if (!params.interest) {
+        if (!params.interest || !params.interest.trim()) {
             render('unknown')
         } else {
-            Interest interest = interestService.findByText(params.interest)
+          Interest interest = interestService.findByText(params.interest)
             if (interest == null) {
                 interest = new Interest(params.interest)
                 interestService.save(interest)

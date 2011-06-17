@@ -68,8 +68,7 @@ class AutocompleteService{
                 // If Person's fullName has changed, remove them from AutoCompleteTree
                 gt.overallTree.remove("p" + person.id)
             }
-            def primaryMembership = person.memberships.toList().find({it.primaryMembership})
-            def institution = primaryMembership.institution.toShortString()
+            def institution = person.retrievePrimaryInstitution().toShortString()
             if (!gt.overallTree.contains("p" + person.id)) {
                 // If tree does not contain Person, add them
                 def entity1 = new AutocompleteEntity(person.id, person.fullName, Person.class, institution)
@@ -115,10 +114,11 @@ class AutocompleteService{
             getTree(ig.abbrev).overallTree.remove("p" + person.id)
         }
     }
-    public def removeInterest(Interest interest) {
-        // FIXME: figure out how to manage groups properly.
-//        overallTree.remove("i" + id)
-//        interestTree.remove(id)
+    public def removeInterest(Person owner, Long interestId) {
+        Collection<InstitutionGroup> igs = owner.retrieveInstitutionGroups()
+        for (InstitutionGroup ig : igs) {
+            getTree(ig.abbrev).overallTree.remove("i"+ interestId)
+        }
     }
 
     public def removeRequest(CollaboratorRequest request) {
@@ -129,7 +129,6 @@ class AutocompleteService{
     }
 
     Collection<AutocompleteEntity> getInstitutionAutocomplete(String group, String query, int maxResults) {
-        // Returns the top three cities that start with "ch" ordered by score.
         List<AutocompleteEntity> institutions = new ArrayList<AutocompleteEntity>()
         SortedSet<AutocompleteEntry<Long, AutocompleteEntity>> results = getTree(group).institutionTree.autocomplete(query, maxResults)
         for (AutocompleteEntry<Long, AutocompleteEntity> entry: results) {
@@ -139,7 +138,6 @@ class AutocompleteService{
     }
 
     Collection<AutocompleteEntity> getInterestAutocomplete(String group, String query, int maxResults) {
-        // Returns the top three cities that start with "ch" ordered by score.
         List<AutocompleteEntity> interests = new ArrayList<AutocompleteEntity>()
         SortedSet<AutocompleteEntry<String, AutocompleteEntity>> results = getTree(group).interestTree.autocomplete(query, maxResults)
         for (AutocompleteEntry<String, AutocompleteEntity> entry: results) {

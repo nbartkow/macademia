@@ -1,7 +1,7 @@
 <div>
   <div class="ttName medium">${target.fullName}</div>
   <div class="ttDesc medium aside">
-    <b>affiliation${target.memberships.size() > 1 ? 's' : ''}:</b> ${target.institutionsToString()}<br/>
+    <b>affiliation${target.memberships.size() > 1 ? 's' : ''}:</b> ${target.retrievePrimaryInstitution().name}<br/>
     <b>dept:</b> ${target.department}<br/>
     <b>email:</b> <a href="mailto:${target.email}">${target.email}</a><br/>
     <b>interests:</b>

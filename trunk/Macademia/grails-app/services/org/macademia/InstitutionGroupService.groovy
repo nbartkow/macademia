@@ -2,6 +2,8 @@ package org.macademia
 
 class InstitutionGroupService {
 
+    def institutionService
+
     static transactional = true
 
     Collection<InstitutionGroup> findAll() {
@@ -54,5 +56,10 @@ class InstitutionGroupService {
             }
             return institutions
         }
+    }
+
+    def addToInstitutions(InstitutionGroup group, Institution institution){
+        institutionService.save(institution)
+        group.addToInstitutions(institution)
     }
 }

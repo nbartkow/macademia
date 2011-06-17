@@ -88,7 +88,7 @@ class PersonService {
         List deleteInterestsAndRequests = databaseService.removeUser(person.id)
         autocompleteService.removePerson(person)
         for (interest in deleteInterestsAndRequests[0]){
-            interestService.delete(interest)
+            interestService.delete(person, interest)
         }
         for (request in deleteInterestsAndRequests[1]){
             collaboratorRequestService.delete(CollaboratorRequest.get(request))

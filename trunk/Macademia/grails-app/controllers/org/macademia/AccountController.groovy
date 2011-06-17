@@ -189,8 +189,7 @@ The Macademia Team
 
             institution= new Institution(name:params.institution, abbrev:params.abbrev, emailDomain:eDomain, webUrl: webUrl)
             def allGroup = institutionGroupService.getAllGroup()
-            institutionService.save(institution)
-            allGroup.addToInstitutions(institution)
+            institutionGroupService.addToInstitutions(allGroup, institution)
             Utils.safeSave(allGroup)
             autocompleteService.addInstitution(institution)
         }
