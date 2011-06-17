@@ -70,8 +70,8 @@ class InterestService implements ApplicationContextAware {
         }
     }
 
-  public void delete(Long interestId){
-      autocompleteService.removeInterest(interestId)
+  public void delete(person,  interestId){
+      autocompleteService.removeInterest(person, interestId)
       Interest.get(interestId).delete()
   }
 

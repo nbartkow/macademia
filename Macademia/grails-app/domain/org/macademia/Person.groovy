@@ -183,4 +183,8 @@ class Person {
         return igs
     }
 
+    public Institution retrievePrimaryInstitution() {
+        return memberships.find({it.primaryMembership}).institution
+    }
+
 }
