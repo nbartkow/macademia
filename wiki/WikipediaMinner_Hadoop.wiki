@@ -142,8 +142,9 @@ This adds the similarity scores for the pair of wiki articles being compared
    * The input file is "s3://macademia/step4" and the output file is "s3://macademia/step5"
 == Notes ==
    * Test run using two large machines and 320 mappers revealed that a map job took about 90 minutes. Limiting factors were CPU while receiving the file and then disk writes while writing the intermediate file.  We considered compressing the intermediate files, but decided not to explore that option further for the time being.
-   * Attempted to run with 20 large machines, ran out of memory. Used default map options.  Failed a second time due to output files being too large with 100 reduce tasks.
-
+   * Attempted to run with 20 large machines, ran out of memory. Used default map options.  
+   * Attempted to run with 20 large, high-memory machines and failed a second time due to output files being too large with 100 reduce tasks.
+   * Ran with 20 large, high-memory machines and succeeded in about 13 and a half hours.
 
 = Stage 6: JSondocsim =
 returns output that is formatted to be inserted into MongoDB
