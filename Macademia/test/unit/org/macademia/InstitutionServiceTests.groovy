@@ -11,19 +11,6 @@ class InstitutionServiceTests extends GrailsUnitTestCase {
         super.tearDown()
     }
 
-    void testSomething() {
-        def interestObjects = []
-        mockDomain(Interest, interestObjects)
-        Interest i1 = new Interest("foo Bar!")
-        Interest i2 = new Interest("foo Barz!")
-        i1.save()
-        i2.save()
-
-        def service = new InterestService()
-        assertNull(service.findByText("foobartz"))
-        assertNotNull(service.findByText("F O O BA!R"))
-    }
-
     void testNormalizeWebUrl(){
         def institutionService = new InstitutionService()
         assertEquals("www.macalester.edu",institutionService.normalizeWebUrl("macalester.edu"))
