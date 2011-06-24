@@ -1,4 +1,5 @@
 package org.macademia
+import java.net.URL
 
 /**
  * Authors: Nathaniel Miller and Alex Schneeman
@@ -34,5 +35,33 @@ class InstitutionService {
             collegeIds.add(id)
         }
         return collegeIds
+    }
+
+    public String normalizeWebUrl(String webUrl){
+        def scheme = "http:"
+        def tokens = webUrl.split("\\/\\/", 2)
+        if (tokens.length == 2) {
+            if (["http:", "https:"].contains(tokens[0])) {
+                scheme = tokens[0]
+            }
+            webUrl = tokens[1]
+        }
+        // Normalized form should be subdomain.institutionName.topLevelDomainName
+        def urlComponents = webUrl.split("\\.")
+        if (urlComponents.size() < 2){
+            return "url not valid"
+        } else if (urlComponents.size() == 2){
+            def tld = urlComponents[1]
+            if (tld.size() > 3 && !tld.contains("/")) {
+                return "url not valid"
+            }
+            webUrl = "www." + webUrl
+        }
+        try {
+            URL url= new URL(scheme + "//" + webUrl.trim())
+            return url.getHost().toLowerCase()
+        } catch (MalformedURLException e) {
+            return "url not valid"
+        }
     }
 }
