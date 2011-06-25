@@ -1,5 +1,7 @@
 Useful resources for grails development.  Add to me!
 
+= IntelliJ =
+ * [http://stackoverflow.com/questions/294167/what-are-the-most-useful-intellij-idea-keyboard-shortcuts Crucial keyboard shortcuts]
 = General Grails + Groovy =
  * [http://www.grails.org/Quick+Start Grails quick start]
  * [http://groovy.codehaus.org/Differences+from+Java Differences between groovy and java ] (make sure to check out the "Groovy features not available in Java" at the bottom of the page)
