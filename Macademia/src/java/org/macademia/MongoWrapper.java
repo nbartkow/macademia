@@ -2,13 +2,18 @@ package org.macademia;
 
 
 import com.mongodb.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * Authors: Nathaniel Miller and Alex Schneeman
  */
 public class MongoWrapper {
+    private final static Log LOG = LogFactory.getLog(MongoWrapper.class);
+
     Mongo mongo ;
     
     //name of the users collection
@@ -221,6 +226,9 @@ public class MongoWrapper {
         if (institutionIds == null) {
             institutionIds = new HashSet<Long>();
             DBObject user = safeFindById(USERS, userId, false);
+            if (user == null) {
+                LOG.fatal("no user associated with id '" + userId + "'");
+            }
             for (Long id: (List<Long>)user.get("institutions")) {
                 institutionIds.add(id);
             }
