@@ -94,7 +94,7 @@ class AutocompleteService{
     }
 
     def addInstitution(Institution institution) {
-        def entity = new AutocompleteEntity(institution.id, institution.name, Institution.class)
+        def entity = new AutocompleteEntity(institution.id, institution.name, Institution.class, institution.webUrl)
         Collection<InstitutionGroup> igs = institutionGroupService.findAllByInstitution(institution)
         for (InstitutionGroup ig : igs) {
             getTree(ig.abbrev).institutionTree.add(institution.id, entity)

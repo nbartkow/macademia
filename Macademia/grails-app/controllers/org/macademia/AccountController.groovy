@@ -3,6 +3,7 @@ package org.macademia
 import javax.servlet.http.Cookie
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
 import grails.util.Environment
+import grails.converters.JSON
 
 class AccountController {
     def autocompleteService
@@ -11,6 +12,7 @@ class AccountController {
     def userLoggingService
     def institutionService
     def institutionGroupService
+    def jsonService
 
 
     def forgottenpassword = {
@@ -110,7 +112,7 @@ The Macademia Team
     }
     
     def signin = {
-        Person person = personService.findByEmail(params.email)
+        Person person = personService.findByEmail(params.email.toLowerCase())
         if (person == null) {
             render('unknown email address')
             return
@@ -148,6 +150,8 @@ The Macademia Team
     def saveuser = {
         Person person = new Person()
         person.properties[grailsApplication.config.macademia.creatableFields] = params
+        person.email = params.email.toLowerCase()
+        println "person's email is ${person.email}"
         // Handle interest splitting
         person.interests = []
         if (params.interests){
@@ -173,30 +177,25 @@ The Macademia Team
           render("Email already in use")
           return
         }
-
-        String[] afterAt = (params.email).split('@')[1].split('\\.')
-        String eDomain = "${afterAt[afterAt.length-2]}.${afterAt[afterAt.length-1]}"
-        String webUrl = params.institutionUrl
-        if (!webUrl) {
-            webUrl = "www." + eDomain
+        if (!params.institution == null || params.institution.length() == 0) {
+          render("No primary institution provided")
+          return
         }
-        Institution institution = Institution.findByWebUrl(webUrl)
-        if (!institution) {
-            if (!params.institution) {
-              render("No school provided")
-              return
-            }
-
-            institution= new Institution(name:params.institution, abbrev:params.abbrev, emailDomain:eDomain, webUrl: webUrl)
-            def allGroup = institutionGroupService.getAllGroup()
-            institutionGroupService.addToInstitutions(allGroup, institution)
-            Utils.safeSave(allGroup)
-            autocompleteService.addInstitution(institution)
+        def webUrl = institutionService.normalizeWebUrl(params.institutionURL)
+        if (!webUrl){
+            render("institution url is invalid")
+            return
         }
-        println("institution is ${institution} ${institution.getClass()}")
+        // TODO: special url that automatically sets one of the "other institutions to the biologists
+        List institutionList = institutionParse(
+                                    params.institution,
+                                    webUrl,
+                                    extractEmailDomain(params.email.toLowerCase()),
+                                    params.otherInstitutions[0..params.otherInstitutions.size()-2]
+                                )
 
         try {
-            personService.create(person, params.pass, [institution])
+            personService.create(person, params.pass, institutionList)
         } catch(Exception e) {
             log.error("creation of " + person + " failed")
             log.error(e)
@@ -207,7 +206,7 @@ The Macademia Team
         person.save(flush : true)    // flush to get the id
         log.info("Created new account identified as $person.email with internal id $person.id")
         // Notify admin about new user
-        if (Environment.current.toString() == 'PRODUCTION') {
+        if (Environment.current == Environment.PRODUCTION) {
             sendMail {
                 to "macalester.macademia@gmail.com"
                 subject "New User Created - Macademia"
@@ -226,8 +225,55 @@ The Macademia Team
         render('okay ' + person.id)
     }
 
+    def institutionParse(primaryInstitution, primaryUrl, primaryEDomain, otherInstitutionsString) {
+        // list is inst name, url, email domain
+        def institutionStringsList = []
+        institutionStringsList[0] = [primaryInstitution, primaryUrl, primaryEDomain]
+        for (otherInstitution in otherInstitutionsString.split("&")){
+            if (otherInstitution) {
+                def (name, url) = otherInstitution.split("#") // name, url
+                url = institutionService.normalizeWebUrl(url)
+                if (url) {
+                    institutionStringsList.add([name, url])
+                }
+            }
+        }
+
+        // institutionList must be a list, not a set, since it needs to preserve ordering
+        def institutionList = []
+
+        // TODO: emaildomain are not set for otherinstitutions. Allow abbrev, edomain and url to be editable by institutionAdmins.
+        for (triple in institutionStringsList){
+            def (name, url, emailDomain) = triple
+            def institution = (url) ? Institution.findByWebUrl(url) : Institution.findByName(name)
+            if (!institution) {
+                institution= new Institution(name:name, emailDomain:emailDomain, webUrl: url )
+                def allGroup = institutionGroupService.getAllGroup()
+                institutionGroupService.addToInstitutions(allGroup, institution)
+                Utils.safeSave(allGroup)
+                autocompleteService.addInstitution(institution)
+            }
+            if (!institutionList.contains(institution)) institutionList.add(institution);
+        }
+
+        return institutionList
+    }
+
+    def extractEmailDomain(emailString){
+        String[] afterAt = (emailString).split('@')[1].split('\\.')
+        return "${afterAt[afterAt.length-2]}.${afterAt[afterAt.length-1]}"
+    }
+
     def createuser = {
-      return render(view: 'createUser', model: [user : new Person(), interests : ""])
+        return render(
+              view: 'createUser',
+                model: [
+                      user : new Person(),
+                      interests : "",
+                      allInstitutions : jsonService.makeJsonForInstitutions() as JSON,
+                      otherInstitutions : [:] as JSON
+              ]
+      )
     }
 
     def login = {
@@ -268,7 +314,15 @@ The Macademia Team
             log.info("Editing user [$person.id] $person.email")
             person.properties[grailsApplication.config.macademia.editableFields] = params
             String allInterests = person.interests.collect({it.text}).join(', ')
-            return render(view: 'createUser', model: [user: person, interests : allInterests])
+            return render(
+                    view: 'createUser',
+                    model: [
+                            user: person,
+                            interests : allInterests,
+                            primaryInstitution: person.retrievePrimaryInstitution(),
+                            otherInstitutions: jsonService.makeJsonForNonPrimaryInstitutions(person) as JSON,
+                            allInstitutions : jsonService.makeJsonForInstitutions() as JSON
+                    ])
 	    }
     }
 
@@ -326,7 +380,15 @@ The Macademia Team
                     person.invisible = true
                 }
                 interestService.deleteOld(oldInterests, person)
-	            personService.save(person)
+                def webUrl = institutionService.normalizeWebUrl(params.institutionURL)
+                if (!webUrl){
+                    render("institution url is invalid")
+                    return
+                }
+                def otherInstitutions = params.otherInstitutions
+                println("otherInstiuttions is ${otherInstitutions}")
+                List institutionList = institutionParse(params.institution, webUrl, extractEmailDomain(person.email), otherInstitutions)
+	            personService.save(person, institutionList)
                 userLoggingService.logEvent(request, 'profile', 'update', person.toMap())
                 log.info("Successfully updated details for user [$person.id] $person.email")
 

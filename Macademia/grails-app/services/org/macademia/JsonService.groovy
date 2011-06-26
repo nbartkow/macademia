@@ -345,24 +345,37 @@ class JsonService {
     def makeJsonForIgMap() {
         def igMap = [:]
         for (ig in InstitutionGroup.list()) {
-            igMap[ig.id] = makeJsonForIg(ig)
+            igMap[ig.id] = [
+                    info: [name: ig.name, abbrev: ig.abbrev],
+                    institutions: ig.institutions.collect({makeJsonForInstitution(it)})
+                ]
         }
         return igMap
     }
+    def makeJsonForInstitutions() {
+        return Institution.all.collect({makeJsonForInstitution(it)})
+    }
 
-    def makeJsonForIg(InstitutionGroup ig) {
-        def institutions = []
-        for (Institution institution: ig.institutions) {
-            institutions.add(
-                    [
-                            id : institution.id,
-                            name: institution.name
-                    ])
-        }
-        return [
-                info: [name: ig.name, abbrev: ig.abbrev],
-                institutions: institutions
+    def makeJsonForInstitution(Institution institution) {
+        return  [
+            id : institution.id,
+            name: institution.name,
+            emailDomain : institution.emailDomain,
+            url : institution.webUrl
         ]
+    }
+
+    def makeJsonForNonPrimaryInstitutions(Person person){
+        def nonPrimaries = [] as Set
+        for (institution in person.retrieveNonPrimaryInstitutions()){
+            nonPrimaries.add(
+                    [
+                            institutionName: institution.name,
+                            institutionUrl: institution.webUrl
+                    ]
+            )
+        }
+        return nonPrimaries
     }
 
     //make the adjacency list a map so we can store data about adjacencies

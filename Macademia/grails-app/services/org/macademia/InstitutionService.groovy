@@ -49,11 +49,13 @@ class InstitutionService {
         // Normalized form should be subdomain.institutionName.topLevelDomainName
         def urlComponents = webUrl.split("\\.")
         if (urlComponents.size() < 2){
-            return "url not valid"
+            log.error("too few dots in url ${webUrl}")
+            return null
         } else if (urlComponents.size() == 2){
             def tld = urlComponents[1]
             if (tld.size() > 3 && !tld.contains("/")) {
-                return "url not valid"
+                log.error("invalid tld in url ${webUrl}")
+                return null
             }
             webUrl = "www." + webUrl
         }
@@ -61,7 +63,8 @@ class InstitutionService {
             URL url= new URL(scheme + "//" + webUrl.trim())
             return url.getHost().toLowerCase()
         } catch (MalformedURLException e) {
-            return "url not valid"
+            log.error("invalid url ${webUrl}")
+            return null
         }
     }
 }

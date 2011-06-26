@@ -62,4 +62,8 @@ class InstitutionGroupService {
         institutionService.save(institution)
         group.addToInstitutions(institution)
     }
+
+    def retrieveInstitutions(InstitutionGroup group){
+        return group.institutions
+    }
 }

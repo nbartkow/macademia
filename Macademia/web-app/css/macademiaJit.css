@@ -501,19 +501,24 @@ ul#instruct_list li:before, ul.styledList li:before{
     width: 370px;
 }
 
+.otherInstitutions{
+    float: right;
+    width: 370px;
+}
+
 #other_info {
     width:600px;
 }
 
-.linkField {
+.linkField, .otherInstitutionField {
     float:left;
 }
 
-.linkValue {
+.linkValue, .otherInstitutionURL {
     float:right;
 }
 
-.linkField input {
+.linkField input, .otherInstitutionField input{
     width:150px;
 }
 
@@ -541,10 +546,10 @@ ul#instruct_list li:before, ul.styledList li:before{
     float: right;
 }
 
-#addLinkDiv {
-    margin-top : 0;
-    clear: both;
-}
+/*#addLinkDiv {*/
+    /*margin-top : 0;*/
+    /*clear: both;*/
+/*}*/
 
 
 /* properties that affect the search bar and search view*/
@@ -935,27 +940,20 @@ h3 {
 /**
  * Shilad's link widget.
  */
-.personLinks {float : left; }
-.linkField { width : 150px; }
-.linkValue { width : 150px; }
+
+.linkField, .otherInstitutionField { width : 150px; }
+.linkValue, .otherInstitutionURL { width : 150px; }
 .customLinkTemplate {
     display : none;
 }
-.personLinks {
-}
-.personLinks .example {
-    font-size : 1em;
-    font-style: italic;
-    padding-bottom : 20px;
-}
 
-.linkField {
+.linkField, .otherInstitutionField {
     width: 160px;
     padding-left: 5px;
     float: left;
 }
 
-.linkValue {
+.linkValue, .otherInstitutionURL {
     width: 160px;
     padding-left: 5px;
     float: left;

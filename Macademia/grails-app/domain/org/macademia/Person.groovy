@@ -155,18 +155,15 @@ class Person {
     }
 
     public String institutionsToString() {
-        String result = ""
-        def institutionsList = memberships.institution.toList()
-        if (institutionsList.size() < 3) {
-            result += institutionsList[0].name
-            if (institutionsList.size() == 2) {
-                result += " and " + institutionsList[1]
+        def result = retrievePrimaryInstitution().name
+        def otherInstitutions = retrieveNonPrimaryInstitutions().toList()
+        if (otherInstitutions.size() == 1){
+            result += " and ${otherInstitutions[0].name}"
+        } else if (otherInstitutions.size() >1) {
+            for (int i =0; i < otherInstitutions.size()-1; i++){
+                result += ", " + otherInstitutions[i].name
             }
-        } else {
-            for (int i=0; i < institutionsList.size()-1; i++) {
-                result += institutionsList[i].name+", "
-            }
-            result += " and " + institutionsList.last().name
+            result += " and "+ otherInstitutions.last().name
         }
         return result
     }
@@ -183,8 +180,20 @@ class Person {
         return igs
     }
 
+    /**
+     *
+     * @return the primary institution of the person
+     */
     public Institution retrievePrimaryInstitution() {
         return memberships.find({it.primaryMembership}).institution
+    }
+
+    /**
+     *
+     * @return a set of nonprimary institutions the person is in
+     */
+    public Set<Institution> retrieveNonPrimaryInstitutions(){
+        return memberships.findAll({!it.primaryMembership}).institution
     }
 
 }
