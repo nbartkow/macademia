@@ -204,7 +204,7 @@ body {
     clear : both;
 }
 
-.linkNumber {
+.linkNumber, .institutionNumber{
     text-align: center;
     float: left;
     margin: 0 6px 0 0;
@@ -212,7 +212,8 @@ body {
     position :relative;
     top : 3px;
 }
-.linkValue {
+
+.linkValue, .otherinstitutionURL {
     width: 40%;
     font-size: 1em;
     text-align: center;
@@ -220,7 +221,7 @@ body {
     margin: 0px 10px 0 0;
 }
 
-.linkField {
+.linkField, .otherInstitutionField {
     width: 40%;
     font-size: 1em;
     text-align: center;
@@ -228,14 +229,14 @@ body {
     margin: 0px 20px 0 0;
 }
 
-.customLinkCaption .linkField, .customLinkCaption .linkValue {
+.customLinkCaption .linkField, .customLinkCaption .linkValue, .customLinkCaption .otherInstitutionField, .customLinkCaption .otherInstitutionURL {
     font-size: 1em;
     font-family: Arial;
     font-style: italic;
     color:#4F6F6E;
 }
 
-.linkField input, .linkValue input {
+.linkField input, .linkValue input , .otherInstitutionField input, .otherInstitutionURL input{
     width: 100%;
 }
 
@@ -257,10 +258,12 @@ body {
 }
 
 
-#addLinkDiv {
+.addItemDiv {
     padding-top : 8px;
     clear: both;
 }
+
+
 
 /**
  * Image uploading.

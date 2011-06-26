@@ -3,10 +3,10 @@
      <div class="editPicture left">
       <div>
         <g:if test="${user?.imageSubpath}">
-          <img src="/Macademia/${params.group}/image/retrieve?subPath=${user.imageSubpath}" alt="" defaultImage="/Macademia/images/scholar_cat.gif"/>
+          <img src="/Macademia/${params.group}/image/retrieve?subPath=${user.imageSubpath}" alt="" defaultImage="/Macademia/images/no_avatar.jpg"/>
         </g:if>
         <g:else>
-          <img src="/Macademia/${params.group}/images/scholar_cat.gif" width="50"  alt="" defaultImage="/Macademia/images/scholar_cat.gif"/>
+          <img src="/Macademia/images/no_avatar.jpg" width="50"  alt="" defaultImage="/Macademia/images/no_avatar.jpg"/>
         </g:else>
       </div>
       <div class="links">

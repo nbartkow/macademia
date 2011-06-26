@@ -29,8 +29,8 @@ class AutocompleteController {
         def responseStr = ''
         def z = { s -> s.replaceAll('\n', '') }
         def jsonResults = results.collect {
-            String simpleName = it.klass.getSimpleName().toLowerCase()
-            ['' + it.id, z(it.name), '' + simpleName, '' + it.other ]
+            String simpleClassName = it.klass.getSimpleName().toLowerCase()
+            ['' + it.id, z(it.name), '' + simpleClassName, '' + it.other ]
         }   // Displays Institution name beside results for 'Person' objects, rather than class name
         render(jsonResults as JSON)
     }

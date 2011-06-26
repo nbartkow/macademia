@@ -99,7 +99,7 @@
 
 
 }
-#fullNameField, #passField, #passConfirmField, #emailField, #institutionField, #departmentField, #projects, #links{
+#fullNameField, #passField, #passConfirmField, #emailField, #institutionField, #institutionAddressField, #titleField, #departmentField, #projects, #links{
 	clear:both;
 	padding-bottom:20px;
 	padding-top:20px;

@@ -5,7 +5,6 @@
 
     $.fn.macademiaAutocomplete = function(settings, url) {
         var cache = {};
-        
         var config = {
             source : function(request, response) {
                 if (request.term in cache) {
@@ -28,7 +27,6 @@
                             }
                             if (data[i][2] == "institution"){
                                 result.push({
-
                                     label : data[i][1],
                                     data : data[i]
                                 })
@@ -138,7 +136,7 @@ macademia.autocomplete.extractLast = function(term) {
     return macademia.autocomplete.split(term).pop();
 };
 
-macademia.autocomplete.initEditProfile = function() {
+macademia.autocomplete.initEditProfileInterests = function() {
     $("#editInterests").editAutocomplete(
         {
           multiple : true,
@@ -165,7 +163,63 @@ macademia.autocomplete.initEditProfile = function() {
               return false;
           }
         },  macademia.makeActionUrl('autocomplete', 'index') + "?klass=interest");
+
     };
+
+// makes autocomplete for institution fields (both primary and other) in edit profile page
+macademia.autocomplete.editInstitutionsAutocomplete = function() {
+    var updateInstitutionForm = function(event, ui) {
+        var college = ui.item.data.name;
+        $(this).val(college);
+        if ($(this).attr("id") == "institutionField"){
+            $('#institutionAddressField').val(ui.item.data.url);
+        } else {
+            $(this).parent().parent().find(".otherInstitutionUrlInput").val(ui.item.data.url);
+        }
+        return false;
+    };
+
+    var source = [];
+    $.each(macademia.allInstitutions,
+        function(index, institution) {
+            source.push({
+                        value : institution.name,
+                        data : institution
+                    });
+        }
+    );
+    $('#institutionField, .otherInstitutionInput').autocomplete({
+			minLength: 0,
+            delay : 50,
+            source : source,
+            focus: updateInstitutionForm,
+            select : updateInstitutionForm
+        });
+
+    // Handle the automatic completion of primary institution
+    $('#edit_profile input[name=email]').blur(
+           function() {
+               var email = $(this).val().toLowerCase();
+               if (email && $(this).data('lastEmail') != email) {
+                   $(this).data('lastEmail', email);
+                   var domain = email.split('@', 2)[1];
+                   for (var i = 0; i < macademia.allInstitutions.length; i++) {
+                       var inst = macademia.allInstitutions[i];
+                       if (inst.emailDomain == null) {
+                           continue;
+                       }
+                       if (inst.emailDomain == domain || macademia.endsWith(domain, '.' + inst.emailDomain)) {
+                            $('#institutionAddressField').val(inst.url);
+                            $('#institutionField').val(inst.name);
+                           return;
+                       }
+                   }
+               }
+           }
+    );
+};
+
+
 
 macademia.autocomplete.initEditRequest = function() {
     $("#requestKeywordsBox").editAutocomplete(

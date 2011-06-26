@@ -79,7 +79,7 @@ class InterestService implements ApplicationContextAware {
       List<Long> theReaped = databaseService.reapOrphans()
       for (reaped in theReaped){
           if (Interest.get(reaped) != null){
-              delete(reaped)
+            Interest.get(reaped).delete()
           }
       }
 
@@ -89,7 +89,7 @@ class InterestService implements ApplicationContextAware {
       for (interest in oldInterests){
             if (!person.interests.contains(interest)){
                 if (interestRemove(interest, person))
-                    delete(interest.id)
+                    delete(person, interest.id)
                 }
         }
   }
@@ -98,7 +98,7 @@ class InterestService implements ApplicationContextAware {
       for (interest in oldKeywords){
             if (!request.keywords.contains(interest)){
                 if (keywordRemove(interest, request))
-                    delete(interest.id)
+                    delete(request.creator, interest.id)
                 }
         }
   }

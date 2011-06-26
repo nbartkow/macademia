@@ -50,12 +50,26 @@ class InstitutionController {
         }
         InstitutionGroup all = institutionGroupService.getAllGroup()
         log.error(request.authenticated.memberships)
+        // should ACM be in caps? should we lowercaps everything? this may cause problems in future
         if (request.authenticated.memberOfAny(institutionGroupService.findByAbbrev("ACM"))) {
             render(institutionGroupService.findByAbbrev("ACM").abbrev)
         } else if (request.authenticated.memberships.size() > 0) {
             render (request.authenticated.memberships.toList()[0].institution.institutionGroups.toList()[0].abbrev)
         } else {
             render(all.abbrev)
+        }
+    }
+
+    def institutionsFromGroup = {
+        def institutions = institutionGroupService.retrieveInstitutions(institutionGroupService.findByAbbrev(params.group)).asList()
+        if (institutions.size() == 1){
+            if (institutions[0].type == Institution.TYPE_SCHOOL) {
+                render ([type:'school', institution:institutions[0].name, url:institutions[0].webUrl] as JSON)
+            } else if (institutions[0].type == Institution.TYPE_GROUP){
+                render ([type:'group', institution:''+institutions[0].name, url:''+institutions[0].webUrl] as JSON)
+            }
+        } else {
+            render([type:'notSingle'] as JSON)
         }
     }
 }

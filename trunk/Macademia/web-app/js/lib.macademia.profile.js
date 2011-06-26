@@ -6,10 +6,16 @@ var macademia = macademia || {};
 
 
 macademia.initializeRegister = function() {
-  macademia.upload.init();
-  macademia.links.init();
-  macademia.initAnalyzeInterests();
-  macademia.autocomplete.initEditProfile();
+    macademia.upload.init();
+    if (macademia.isNewUser()){
+        macademia.populateSchoolFromGroup();
+    }
+
+    macademia.links.init();
+    macademia.initAnalyzeInterests();
+    macademia.autocomplete.editInstitutionsAutocomplete();
+
+    //macademia.autocomplete.initEditProfileInterests(); For now, no interest autocomplete
 
     $("#cancelAccountCreation").click(function() {
        $("#registerDialog").jqmHide(); 
@@ -37,6 +43,7 @@ macademia.initializeRegister = function() {
               var confirm = $(this).find('[name=passConfirm]').val();
               var email = $(this).find('[name=email]').val();
               var institution = $(this).find('[name=institution]').val();
+              var institutionUrl = $(this).find('[name=institutionURL]').val();
               if (pass!=confirm) {
                   $("#passConfirmErrors").html("<b>Passwords do not match</b>");
                   $("#passConfirmErrors").show();
@@ -56,6 +63,11 @@ macademia.initializeRegister = function() {
               if (institution.length<5) {
                   $('#institutionErrors').html("<b>Valid institution must be provided</b>");
                   $('#institutionErrors').show();
+                  hasError=true;
+              }
+              if (institutionUrl.length<5) {
+                  $('#institutionAddressErrors').html("<b>Valid institution URL must be provided</b>");
+                  $('#institutionAddressErrors').show();
                   hasError=true;
               }
           }
@@ -81,9 +93,32 @@ macademia.isNewUser = function() {
     return ($('#edit_profile').find('[name=pass]').length > 0);
 };
 
+macademia.populateSchoolFromGroup = function() {
+        jQuery.ajax({
+          url: macademia.makeActionUrl('institution', 'institutionsFromGroup'),
+          type: "POST",
+          data: {group: macademia.retrieveGroup()},
+          dataType: "json",
+          success: function(data) {
+              if (data.type == "group") {
+                    macademia.links.addNewInstitution(data.institution, data.url);
+              } else if (data.type == "school"){
+                    $("#institutionField").val(data.institution);
+                    $("#institutionAddressField").val(data.url);
+              }
+              return;
+          },
+          error: function(request, status, errorThrown) {
+              alert('error occurred!');
+              return;
+          }
+      });
+};
+
+
 macademia.saveUserProfile = function() {
    var url = macademia.makeActionUrl('account', (macademia.isNewUser() ? 'saveuser' : 'updateuser'));
-   jQuery.ajax({
+    jQuery.ajax({
           url: url,
           type: "POST",
           data: $('#edit_profile').serialize(),
@@ -95,6 +130,7 @@ macademia.saveUserProfile = function() {
                        return;
                   }
                   macademia.initAnalyzeInterests();
+                  alert(data);
                   var showedErrors = false;
                   if (data.indexOf('Email') == 0) {
                       showedErrors = true;
@@ -110,6 +146,11 @@ macademia.saveUserProfile = function() {
                       showedErrors = true;
                       $('#institutionErrors').html("<b>" + data + "</b>");
                       $('#institutionErrors').show();
+                  }
+                  if (data.indexOf("institution url") == 0){
+                      showedErrors = true;
+                      $("#institutionAddressErrors").html("<b>" + data +"</b>");
+                      $('#institutionAddressErrors').show();
                   }
                   if (!showedErrors) {
                       $('#nameErrors').html("<b>" + macademia.htmlEncode(data) +"</b>");
@@ -168,10 +209,17 @@ macademia.links.init = function() {
     $(".personLinks .addLink").click(
             function () {return macademia.links.addNewLink();}
         );
+    $(".otherInstitutions .addLink").click(
+            function () {return macademia.links.addNewInstitution();}
+        );
     macademia.links.deserialize();
     $(".personLinks .clearDefault").clearDefault();
+    $(".otherInstitutions .clearDefault").clearDefault();
     while ($(".personLinks .customLink:visible").length < 2) {
         macademia.links.addNewLink();
+    }
+    while ($(".otherInstitutions .customLink:visible").length < 2) {
+        macademia.links.addNewInstitution();
     }
 };
 
@@ -184,12 +232,12 @@ macademia.links.addNewLink = function(linkName, linkUrl) {
     if (linkUrl) {
         newDiv.find('.linkValue input').val(linkUrl);
     }
+    $(".personLinks .customLinkCaption").before(newDiv);
 
-    $(".customLinkCaption").before(newDiv);
-
-    newDiv.find(".removeLink").click(
+    newDiv.find("a.removeLink").click(
                 function () {
                     $(this).parent().parent().remove();
+                    macademia.renumberLinks();
                     return false;
                 }
             );
@@ -199,16 +247,52 @@ macademia.links.addNewLink = function(linkName, linkUrl) {
     return false;
 };
 
+macademia.links.addNewInstitution = function(linkName, linkUrl) {
+    var newDiv = $(".otherInstitutions .customLinkTemplate").clone();
+    newDiv.removeClass("customLinkTemplate");
+     if (linkName) {
+        newDiv.find('.otherInstitutionField input').val(linkName);
+    }
+    if (linkUrl) {
+        newDiv.find('.otherInstitutionURL input').val(linkUrl);
+    }
+
+    $(".otherInstitutions .customLinkCaption").before(newDiv);
+
+    newDiv.find("a.removeLink").click(
+                function () {
+                    $(this).parent().parent().remove();
+                    macademia.renumberInstitutions();
+                    return false;
+                }
+            );
+    newDiv.find('.clearDefault').clearDefault();
+    newDiv.show();
+    macademia.renumberInstitutions();
+    return false;
+};
+
 macademia.renumberLinks = function() {
     var i = 1;
-    $(".personLinks .customLink").each(function () {
+    $(".personLinks .customLink ").each(function () {
         if ($(this).hasClass('customLinkTemplate')) {
             return;
         }
         $(this).find('.linkNumber').html('' + i + '.');
         i += 1;
     });
-}
+};
+
+macademia.renumberInstitutions = function() {
+    var i = 1;
+    $(".otherInstitutions .customLink ").each(function () {
+        if ($(this).hasClass('customLinkTemplate')) {
+            return;
+        }
+        $(this).find('.institutionNumber').html('' + i + '.');
+        i += 1;
+    });
+};
 
 macademia.links.serialize = function() {
     var linkStr = "";
@@ -226,21 +310,50 @@ macademia.links.serialize = function() {
                 value = 'http://' + value;
             }
             linkStr += "<li><a href=\"" + encodeURI(value) + "\">";
-            linkStr += macademia.htmlEncode(name) + "</a>\n";
+            linkStr += macademia.htmlEncode(name) + "</a></li>\n";
         }
     });
     $(".personLinks input[name='links']").val(linkStr);
+
+    var institutionArray = [];
+    $(".otherInstitutions .customLink").each(function (){
+        var institution;
+        if ($(this).find('.otherInstitutionField input').length > 0) {
+            institution = $(this).find('.otherInstitutionField input').val();
+        } else {
+            institution = $(this).find('.otherInstitutionField').html();
+        }
+        var address = $(this).find('.otherInstitutionURL input').val();
+        if (address && address != $(this).find('.otherInstitutionURL input').attr('prompt')){
+            institution = institution+ "#" + address + "&";
+            institutionArray.push(institution);
+        }
+    });
+    $(".otherInstitutions input[name='otherInstitutions']").val(institutionArray);
 };
 
+
+// TODO: remove personlinks. do smth similar for otherinstitutions?
 macademia.links.deserialize = function() {
     try {
-    var linksStr =$(".personLinks input[name='links']").val();
-    $(linksStr).find('a').each(
-        function() {
-            macademia.links.addNewLink($(this).text(), decodeURI($(this).attr('href')));
-        });
+        var linksStr =$(".personLinks input[name='links']").val();
+        $(linksStr).find('a').each(
+            function() {
+                macademia.links.addNewLink($(this).text(), decodeURI($(this).attr('href')));
+            });
     } catch (err) {
         alert('error during link deserialization: ' + err);
     }
 
+    try {
+        $.each(macademia.otherInstitutions,
+               function(key, value){
+                    macademia.links.addNewInstitution(value.institutionName, value.institutionUrl);
+               });
+    } catch (err) {
+        alert('error during institution deserialization: ' + err);
+    }
+
 };
+
+macademia.otherInstitutions;
