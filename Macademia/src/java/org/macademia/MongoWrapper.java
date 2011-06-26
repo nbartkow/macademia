@@ -229,6 +229,9 @@ public class MongoWrapper {
             if (user == null) {
                 LOG.fatal("no user associated with id '" + userId + "'");
             }
+            if (user.get("institutions") == null) {
+                LOG.fatal("no institutions associated with user '" + userId + "'");
+            }
             for (Long id: (List<Long>)user.get("institutions")) {
                 institutionIds.add(id);
             }
