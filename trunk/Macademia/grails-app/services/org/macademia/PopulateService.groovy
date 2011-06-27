@@ -8,6 +8,7 @@ class PopulateService {
     def nimbleService
     def personService
     def adminsService
+    def institutionGroupService
 
     def sessionFactory
 
@@ -25,25 +26,29 @@ class PopulateService {
         file.eachLine {
             String line ->
             String[] tokens = line.trim().split("\t")
-            if (tokens.length != 2) {
+            if (tokens.length != 3) {
                 log.error("illegal line in ${file.absolutePath}: ${line.trim()}")
                 log.error("$tokens.length")
                 return
             }
             String name = tokens[0]
             String emailDomain = tokens[1]
-            if (institutionService.findByEmailDomain(emailDomain) == null) {
-                Institution institution = new Institution(name : name, emailDomain : emailDomain, webUrl : "www.${emailDomain}")
-                institutionService.save(institution)
+            String groupName = tokens[2]
+            def inst = institutionService.findByEmailDomain(emailDomain)
+            if (inst == null) {
+                inst = new Institution(name : name, emailDomain : emailDomain, webUrl : "www.${emailDomain}")
+                institutionService.save(inst)
             }
+            def ig = institutionGroupService.findByAbbrev(groupName)
+            if (ig == null) {
+                def igName = (groupName == 'acm') ? 'Associated Colleges of the Midwest' : "Group $groupName"
+                ig = new InstitutionGroup(name : igName, abbrev : groupName)
+            }
+            ig.addToInstitutions(inst)
+            inst.addToInstitutionGroups(ig)
+            Utils.safeSave(ig)
+            Utils.safeSave(inst)
         }
-
-        def ig1 = new InstitutionGroup(name : 'Associated Colleges of the Midwest', abbrev : 'acm')
-        Institution.list().each({
-            ig1.addToInstitutions(it)
-            it.addToInstitutionGroups(ig1)
-        })
-        Utils.safeSave(ig1)
         def ig2 = new InstitutionGroup(name : 'All institutions', abbrev : 'all')
         Institution.list().each({
             ig2.addToInstitutions(it)

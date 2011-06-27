@@ -31,9 +31,10 @@ searchable {
      *
      * The default is "${user.home}/.grails/projects/${app.name}/searchable-index/${grails.env}"
      */
-    compassConnection = new File(
-        "${userHome}/.grails/projects/${appName}/searchable-index/${grailsEnv}"
-    ).absolutePath
+//    compassConnection = new File(
+//        "${userHome}/.grails/projects/${appName}/searchable-index/${grailsEnv}"
+//    ).absolutePath
+    compassConnection =  "ram://test-index"
 
     /**
      * Any settings you wish to pass to Compass
@@ -146,27 +147,29 @@ searchable {
 
 // per-environment settings
 environments {
-    development {
+
+    populateDev {
         searchable {
-            // use faster in-memory index
-            compassConnection = "ram://test-index"
+            // disable bulk index on startup
+            bulkIndexOnStartup = false
         }
     }
-
+    populateTest {
+        searchable {
+            // disable bulk index on startup
+            bulkIndexOnStartup = false
+        }
+    }
+    populateProd {
+        searchable {
+            // disable bulk index on startup
+            bulkIndexOnStartup = false
+        }
+    }
     test {
         searchable {
             // disable bulk index on startup
             bulkIndexOnStartup = false
-
-            // use faster in-memory index
-            compassConnection = "ram://test-index"
-        }
-    }
-
-    production {
-        searchable {
-            // use faster in-memory index
-            compassConnection = "ram://test-index"
         }
     }
 }
