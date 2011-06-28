@@ -27,11 +27,19 @@ if ! [ -d $MONGO_WP_BACKUP_TEST ]; then
     mkdir $MONGO_WP_BACKUP_TEST
 fi
 
-wget $URL_PREFIX/`basename $MONGO_BACKUP`.tar.z -O - | tar -xpzf - && \
-wget $URL_PREFIX/`basename $MONGO_WP_BACKUP_TEST`.tar.z -O - | tar -xpzf - && \
-wget $URL_PREFIX/`basename $MONGO_WP_BACKUP`.tar.z -O - | tar -xpzf - && \
-wget $URL_PREFIX/`basename $PSQL_BACKUP`.tar.z -O - | tar -xpzf - || 
+read -p "user name:"  uname
+stty -echo
+read -p "Pass:" pass
+stty echo
+
+wget --user="$uname" --password="$pass" $URL_PREFIX/`basename $MONGO_BACKUP`.tar.z -O - | openssl aes-256-cbc -d -pass pass:"$pass" | tar -xpzf - && \
+wget --user="$uname" --password="$pass" $URL_PREFIX/`basename $MONGO_WP_BACKUP_TEST`.tar.z -O - | openssl aes-256-cbc -d -pass pass:"$pass" | tar -xpzf - && \
+wget --user="$uname" --password="$pass" $URL_PREFIX/`basename $MONGO_WP_BACKUP`.tar.z -O - | openssl aes-256-cbc -d -pass pass:"$pass" | tar -xpzf - && \
+wget --user="$uname" --password="$pass" $URL_PREFIX/`basename $PSQL_BACKUP`.tar.z -O - | openssl aes-256-cbc -d -pass pass:"$pass" | tar -xpzf - ||
     { echo "retrieval of dbs failed" >&2; exit 1; }
+
+unset uname
+unset pass
 
 rm -rf $MONGO_WP_BACKUP/$MONGO_DB_WP_DEST
 dropdb -U grails $PSQL_DB >&/dev/null
