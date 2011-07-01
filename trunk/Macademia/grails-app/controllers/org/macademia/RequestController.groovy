@@ -20,8 +20,13 @@ class RequestController {
 
     def list = {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        def CollaboratorRequestList = CollaboratorRequest.list(params)
-        [collaboratorRequestList: CollaboratorRequestList, collaboratorRequestInstanceTotal: CollaboratorRequest.count()]
+        Set<Long> institutions =  institutionGroupService.getInstitutionIdsFromParams(params)
+        def list = CollaboratorRequest.list()
+        if (institutions) {
+            list = list.findAll({it.creator.memberOfAny(institutions)})
+            print("list is $list")
+        }
+        [collaboratorRequestList: list, collaboratorRequestInstanceTotal: list.size()]
     }
 
     def manage = {

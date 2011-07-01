@@ -13,14 +13,16 @@
   </p>
   <table>
 
-    <thead>
-    <tr>
-      <th class="title">Title</th>
-      <th class="expires">Expires</th>
-      <th class="creator">Creator</th>
-      <th class="description">Description</th>
-    </tr>
-    </thead>
+    <g:if test="${collaboratorRequestList}">
+        <thead>
+        <tr>
+          <th class="title">Title</th>
+          <th class="expires">Expires</th>
+          <th class="creator">Creator</th>
+          <th class="description">Description</th>
+        </tr>
+        </thead>
+    </g:if>
     <tbody>
     <g:each in="${collaboratorRequestList}" status="i" var="c">
       <tr class="${(i % 2) == 0 ? 'odd' : 'even'}" requestId="${c.id}">
@@ -35,6 +37,11 @@
         </td>
       </tr>
     </g:each>
+    <g:if test="${collaboratorRequestList.size() == 0}">
+        <tr>
+          <td class="title">No existing requests.</td>
+        </tr>
+    </g:if>
     </tbody>
   </table>
   <div id="closeListRequests">
