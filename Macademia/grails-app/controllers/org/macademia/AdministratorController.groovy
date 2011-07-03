@@ -1,5 +1,13 @@
 package org.macademia
 
+/**
+ * To access actions in the administrator controller you must
+ * 1) Execute the resetKey action.
+ * 2) Go to the logs and read out the new access key
+ * 3) Execute a new action with the newly generated key
+ *
+ * It is crucial that all actions call checkAuth() first.
+ */
 class AdministratorController {
     private static int AUTH_KEY = new Random().nextInt()
     def personService
