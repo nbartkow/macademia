@@ -15,7 +15,7 @@ class AdministratorController {
     def resetKey = {
         AUTH_KEY = new Random().nextInt()
         println("AUTH_KEY is " + AUTH_KEY)
-        render("key reset... new key should appear in log files")
+        render("key reset... new key will appear in log file.  Grep for AUTH_KEY")
     }
 
     def ping = {
