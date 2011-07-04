@@ -12,7 +12,7 @@
   <body>
   Dear ${person.fullName.split()[0]},
 
-  <p>We are delighted to invite you to the all new, vastly improved <a href="http://macademia.macalester.edu/Macademia/account/changepassword?currentPassword=${password.encodeAsURL()}&authToken=${person.token}">Macademia website</a>!</p>
+  <p>We are delighted to invite you to the all new, vastly improved <a href="${baseUrl}/account/changepassword?currentPassword=${password.encodeAsURL()}&authToken=${person.token}">Macademia website</a>!</p>
 
   <p>
   We'll be opening Macademia to 13 other colleges over the next few weeks, and we want you to
@@ -48,7 +48,7 @@
 
   <p>
     Please visit the
-    <a href="http://macademia.macalester.edu/Macademia/account/changepassword?currentPassword=${password.encodeAsURL()}&authToken=${person.token}">
+    <a href="${baseUrl}/account/changepassword?currentPassword=${password.encodeAsURL()}&authToken=${person.token}">
     <b>new Macademia website</b></a> and update your profile.
   </p>
   <p><br/>Thank you!</p>

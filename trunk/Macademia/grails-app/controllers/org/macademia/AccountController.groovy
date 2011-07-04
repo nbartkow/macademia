@@ -101,7 +101,7 @@ The Macademia Team
         personService.save(request.authenticated)
 
         if (params.fromEmail) {
-            redirect(action : 'edit')
+            redirect(uri : Utils.makeUrl(params.group, params.controller, 'edit', [:]))
         } else {
             render(view : 'message',
                    model : [

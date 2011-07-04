@@ -26,15 +26,16 @@ class AdministratorController {
         checkAuth()
         String template = params.template
         String email = params.email
-        if (!template || !email) {
-            throw new IllegalArgumentException("missing template or email argument")
+        String baseUrl = params.baseUrl
+        if (!template || !email || !baseUrl) {
+            throw new IllegalArgumentException("missing template, baseUrl, or email argument")
         }
         Person p = personService.findByEmail(params.email)
         if (p) {
             String password = p.resetPasswd()
             String body = g.render(
                         template: "${template}",
-                        model : [person : p, password : password]
+                        model : [person : p, password : password, baseUrl : baseUrl]
                 )
             sendMail {
                 to "${email}"
