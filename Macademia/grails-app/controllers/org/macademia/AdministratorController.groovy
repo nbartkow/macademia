@@ -23,8 +23,8 @@ class AdministratorController {
     }
 
     private static int newKey() {
-//        return new Random().nextInt()
-        return 1
+        return new Random().nextInt()
+//        return 1
     }
 
     def invite = {
