@@ -24,12 +24,15 @@ class AdministratorController {
 
     def invite = {
         checkAuth()
+        ['template', 'email', 'baseUrl', 'subject'].each({
+            if (!params[it]) {
+                throw new IllegalArgumentException("missing ${it} parameter")
+            }
+        })
         String template = params.template
         String email = params.email
         String baseUrl = params.baseUrl
-        if (!template || !email || !baseUrl) {
-            throw new IllegalArgumentException("missing template, baseUrl, or email argument")
-        }
+        String subject = params.subject
         Person p = personService.findByEmail(params.email)
         if (p) {
             String password = p.resetPasswd()
@@ -39,7 +42,7 @@ class AdministratorController {
                 )
             sendMail {
                 to "${email}"
-                subject "Come see your Macademia 2.0 profile!"
+                subject "${subject}"
                 html "${body}"
             }
             render(body)
