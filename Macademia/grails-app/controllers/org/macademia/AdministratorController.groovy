@@ -9,17 +9,22 @@ package org.macademia
  * It is crucial that all actions call checkAuth() first.
  */
 class AdministratorController {
-    private static int AUTH_KEY = new Random().nextInt()
+    private static int AUTH_KEY = newKey()
     def personService
 
     def resetKey = {
-        AUTH_KEY = new Random().nextInt()
+        AUTH_KEY = newKey()
         println("AUTH_KEY is " + AUTH_KEY)
         render("key reset... new key will appear in log file.  Grep for AUTH_KEY")
     }
 
     def ping = {
         render("pong")
+    }
+
+    private static int newKey() {
+//        return new Random().nextInt()
+        return 1
     }
 
     def invite = {
@@ -32,7 +37,7 @@ class AdministratorController {
         String template = params.template
         String email = params.email
         String baseUrl = params.baseUrl
-        String subject = params.subject
+        String subj = params.subject
         Person p = personService.findByEmail(params.email)
         if (p) {
             String password = p.resetPasswd()
@@ -42,7 +47,7 @@ class AdministratorController {
                 )
             sendMail {
                 to "${email}"
-                subject "${subject}"
+                subject "${subj}"
                 html "${body}"
             }
             render(body)
