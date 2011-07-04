@@ -15,12 +15,10 @@ class MacademiaFilters {
                    if (person == null) {
                        render('automatic authentication failed: authtoken unknown')
                    } else {
-                        Utils.setAuthCookie(person, request, response)
+                       Utils.setAuthCookie(person, request, response)
                        params.remove('authToken')
-                       redirect(
-                               action : params.action,
-                               controller : params.controller,
-                               params : params)
+                       String url = Utils.makeUrl(params.group, params.controller, params.action, params)
+                       redirect(uri : url)
                    }
                    return false
                } else {

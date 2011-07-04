@@ -26,6 +26,25 @@ class Utils {
         String randToken = addRandom ? "?random=${new Random().nextInt()}" : "" 
         return "/${group}/person/jit${randToken}/#/?nodeId=${type[0]}_${id}&navVisibility=true&navFunction=${type}&institutions=all&${type}Id=${id}"
     }
+
+    public static String makeUrl(String group, String controller, String action, Map params) {
+        String url = "/${group}/${controller}/${action}"
+        if (params.id) {
+            url += "/${params.id}"
+        }
+        int i = 0
+        for (String key : params.keySet()) {
+            if (!['id', 'group', 'action', 'controller'].contains(key)) {
+                if (i++ == 0) {
+                    url += '?'
+                } else {
+                    url += '&'
+                }
+                url += URLEncoder.encode(key) + "=" + URLEncoder.encode(params[key])
+            }
+        }
+        return url
+    }
     
     public static void safeSave(Object o) {
         safeSave(o, false)

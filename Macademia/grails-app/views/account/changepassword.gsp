@@ -28,7 +28,7 @@
         <p class="alert">${error.encodeAsHTML()}</p>
       </g:if>
 
-      <g:form action="changepasswordcomplete">
+      <g:form params="[group : params.group]" action="changepasswordcomplete">
         <table>
           <tbody>
             <g:if test="${currentPassword}">
