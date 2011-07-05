@@ -5,7 +5,7 @@
   <body>
   Dear ${person.fullName.split()[0]},
 
-  <p>The GLCA’s New Directions Initiative has funded almost 200 faculty projects over the last two years.
+  <p>The GLCA’s <a href="http://glca.org/programs-groups-a-services/programs/new-directions-initiative">New Directions Initiative</a> has funded almost 200 faculty projects over the last two years.
   In the remaining two years of funding we are eager to encourage faculty to network and collaborate on
   scholarly research and curricular development projects.</p>
 
