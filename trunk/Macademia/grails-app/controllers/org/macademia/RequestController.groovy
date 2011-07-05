@@ -24,7 +24,6 @@ class RequestController {
         def list = CollaboratorRequest.list()
         if (institutions) {
             list = list.findAll({it.creator.memberOfAny(institutions)})
-            print("list is $list")
         }
         [collaboratorRequestList: list, collaboratorRequestInstanceTotal: list.size()]
     }
