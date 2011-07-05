@@ -122,7 +122,13 @@ macademia.autocomplete.initSearch = function() {
                 window.setTimeout(function () {
                         $("#searchBox").blur();
                     }, 100);
-
+                if (type=="person"){
+                    macademia.serverLog('nav', 'fragment', {"nodeId":"p_"+id, "navFunction":"search", "group":macademia.retrieveGroup()});
+                } else if (type=="interest"){
+                    macademia.serverLog('nav', 'fragment', {"nodeId":"i_"+id, "navFunction":"search", "group":macademia.retrieveGroup()});
+                } else if (type="request") {
+                    macademia.serverLog('nav', 'fragment', {"nodeId":"r_"+id, "navFunction":"search", "group":macademia.retrieveGroup()});
+                }
                 return false;
             }
         }, macademia.makeActionUrl('autocomplete'));
