@@ -50,7 +50,7 @@ class AdministratorController {
                 subject "${subj}"
                 html "${body}"
             }
-            render(body)
+            render('okay')
         } else {
             render("unknown person: ${email}")
         }
