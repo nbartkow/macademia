@@ -191,7 +191,7 @@ The Macademia Team
                                     params.institution,
                                     webUrl,
                                     extractEmailDomain(params.email.toLowerCase()),
-                                    params.otherInstitutions[0..params.otherInstitutions.size()-2]
+                                    params.otherInstitutions[0..params.otherInstitutions.size()]
                                 )
 
         try {
