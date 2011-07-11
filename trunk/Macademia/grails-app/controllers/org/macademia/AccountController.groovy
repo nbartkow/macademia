@@ -246,18 +246,14 @@ The Macademia Team
         // TODO: emaildomain are not set for otherinstitutions. Allow abbrev, edomain and url to be editable by institutionAdmins.
         for (triple in institutionStringsList){
             def (name, url, emailDomain) = triple
-            println("triple is ${triple}")
             def institution = (url) ? Institution.findByWebUrl(url) : Institution.findByName(name)
-            println("institution is ${institution}")
             if (!institution) {
                 institution= new Institution(name:name, emailDomain:emailDomain, webUrl: url )
-                println("creating ${institution}")
                 def allGroup = institutionGroupService.getAllGroup()
                 institutionGroupService.addToInstitutions(allGroup, institution)
                 Utils.safeSave(allGroup)
                 autocompleteService.addInstitution(institution)
             }
-            println("institution 2 is ${institution} with id ${institution.id}")
 
             if (!institutionList.contains(institution)) institutionList.add(institution);
         }
