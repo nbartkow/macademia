@@ -122,7 +122,7 @@ def prepDirectories(prefix) {
 
 
 macademia {
-    salt = 'Foo'
+    salt = 'M@c@d8m1@'
     creatableFields = ['fullName', 'email', 'department', 'imageSubpath', 'links', 'title']
     editableFields = ['fullName', 'department', 'imageSubpath', 'links', 'title']
     collaboratorRequestFields = ['creator', 'title', 'description', 'expiration']
@@ -150,7 +150,9 @@ grails.mail.default.from="macalester.macademia@gmail.com"
 uiperformance.bundles = [
    [type: 'js',
     name: 'macademia.js.all',
-    files: ['jquery/jquery-ui-1.8.2.custom.min',
+    files: [
+            'jquery/jquery-1.6.1.min',
+            'jquery/jquery-ui-1.8.2.custom.min',
             'jquery/jquery-ui-1.8.5.custom.min',
             'jquery/jquery-deps',
             'jquery/jquery.qtip-1.0.0-rc3',
@@ -204,6 +206,7 @@ environments {
     populateProd {
     }
     production {
+        //wikipediaService.setCache(new File("db/prodwiki_cache.txt"))
     }
     benchmark{
         //prepDirectories("benchmark")
