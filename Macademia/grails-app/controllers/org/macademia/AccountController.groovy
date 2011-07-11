@@ -230,7 +230,8 @@ The Macademia Team
         def institutionStringsList = []
         institutionStringsList[0] = [primaryInstitution, primaryUrl, primaryEDomain]
         for (otherInstitution in otherInstitutionsString.trim().split("&")){
-            if (otherInstitution.trim()) {
+            otherInstitution = otherInstitution.trim()
+            if (otherInstitution && otherInstitution != '#') {
                 def (name, url) = otherInstitution.trim().split("#") // name, url
                 url = institutionService.normalizeWebUrl(url)
                 if (url) {
