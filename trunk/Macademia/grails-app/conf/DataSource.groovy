@@ -66,18 +66,6 @@ environments {
     /**
      * Production database environments (shared)
      */
-	populateProd {
-		dataSource {
-			dbCreate = "create"
-            pooled = false
-            url = "jdbc:postgresql://poliwiki.macalester.edu:5432/macademia_prod"
-            driverClassName = "org.postgresql.Driver"
-            username = "grails"
-            password = "grails"
-            dialect = net.sf.hibernate.dialect.PostgreSQLDialect
-            mongoDbName = "macademia_prod"
-		}
-	}
 	production {
 		dataSource {
 			dbCreate = "update"
