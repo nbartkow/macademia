@@ -164,3 +164,6 @@ returns output that is formatted to be inserted into MongoDB
    * The input file is "s3://macademia/step5" and the output file is "s3://macademia/step6"
 == Notes ==
    * Tried using 20 large machines and failed due to lack of memory.  There may have been other reasons as well.  
+
+= Stage 7: Load to MongoDB =
+Move the files to the server and use the load.sh script to load them into MongoDB.
