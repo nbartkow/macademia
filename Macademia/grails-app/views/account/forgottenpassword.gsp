@@ -23,7 +23,7 @@
         <p class="alert">${error.encodeAsHTML()}</p>
       </g:if>
 
-      <g:form action="forgottenpasswordcomplete">
+      <g:form params="[group : params.group]" action="changepasswordcomplete">
         <table>
           <tbody>
 
