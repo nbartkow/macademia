@@ -11,6 +11,6 @@ Interest.withTransaction {
     interests.each() {
         i++
         println "($i of ${interests.size()}): building interest doc for ${it.text}\n"
-        interestService.buildDocuments(it, null)
+        interestService.buildDocuments(it)
     }
 }
