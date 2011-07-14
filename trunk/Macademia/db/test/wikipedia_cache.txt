@@ -111,3 +111,4 @@
 ["GIS",["http://en.wikipedia.org/wiki/Geographic_information_system"]]
 ["GIS (Geographic Information System)",["http://en.wikipedia.org/wiki/Geographic_information_system"]]
 ["e-democracy",["http://en.wikipedia.org/wiki/E-democracy"]]
+["web 4.0",["http://en.wikipedia.org/wiki/Windows_NT_4.0"]]
