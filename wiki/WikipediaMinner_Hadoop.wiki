@@ -166,4 +166,4 @@ returns output that is formatted to be inserted into MongoDB
    * Tried using 20 large machines and failed due to lack of memory.  There may have been other reasons as well.  
 
 = Stage 7: Load to MongoDB =
-Move the files to the server and use the load.sh script to load them into MongoDB.
+Move the files to the server and use removeQuotes.py to remove unnecessary quotes from the beginning and end of the keys and values if they exist.  Finally, use the load.sh script to load the output into MongoDB.
