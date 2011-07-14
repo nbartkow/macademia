@@ -206,7 +206,7 @@ environments {
     populateProd {
     }
     production {
-        //wikipediaService.setCache(new File("db/prodwiki_cache.txt"))
+        uiperformance.enabled = false
     }
     benchmark{
         //prepDirectories("benchmark")
