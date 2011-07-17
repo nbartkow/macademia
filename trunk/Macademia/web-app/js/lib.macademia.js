@@ -140,12 +140,16 @@ macademia.logEmailClick = function(email) {
 
 // determines the type according to the node's id (eg p_4)
 macademia.getType = function(nodeId) {
-    if (nodeId.indexOf('p') >= 0) {
+    if (nodeId.indexOf('empty') >= 0) {
+        return'empty';
+    } else if (nodeId.indexOf('p') >= 0) {
         return'person';
     } else if (nodeId.indexOf('i') >= 0) {
         return 'interest';
     } else if (nodeId.indexOf('r') >= 0) {
         return 'request';
+    } else {
+        alert('unknown node id: ' + nodeId);
     }
 };
 //canvas background circles
@@ -357,7 +361,9 @@ macademia.updateNav = function(){
          // go to search page
      }else if (navFunction == 'person' && $.address.parameter('personId') != macademia.queryString.personId){
          var rootId = $.address.parameter('nodeId');
-         $('#personIdDiv').load(macademia.makeActionUrl('person', 'show') + '/' + rootId.slice(2));
+         if (rootId != 'p_empty') {
+            $('#personIdDiv').load(macademia.makeActionUrl('person', 'show') + '/' + rootId.slice(2));
+         }
      }else if (navFunction == 'request'){
          var rootId = $.address.parameter('nodeId');
          $('#requestIdDiv').load(macademia.makeActionUrl('request', 'show') + '/' + rootId.slice(2));

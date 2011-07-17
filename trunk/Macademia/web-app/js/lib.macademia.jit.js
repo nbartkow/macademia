@@ -91,6 +91,11 @@ macademia.jit.init = function(rootType,id){
         $("#infovis").empty();
     }
     macademia.jit.rootId = id;
+    if (rootType == 'empty') {
+        $("#empty").show();
+        return false;
+    }
+    $("#empty").hide();
     if (rootType != 'person' && rootType != 'interest' && rootType != 'request'){
         alert('unknown root type: ' + rootType);
         return false;

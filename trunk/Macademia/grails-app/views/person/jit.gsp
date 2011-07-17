@@ -44,6 +44,7 @@
   </div>
 
 
+
   <div id="collegeFilterButton2" class="collegeFilterTrigger" >
   </div>
   <div id="slider">
@@ -66,8 +67,10 @@
 
   <div id="infovis">
 
-    
-    &nbsp;
+  <div id="empty">
+    Nobody has created a profile from the institution you selected.  Create your own by following the "register" link in the top right.
+  </div>
+
   </div>
   <g:render template="../templates/macademia/tagline"/>
 </div>

@@ -44,7 +44,10 @@ class  PersonController{
             }
         }
         Random r = new Random()
-        long id = ids[r.nextInt(ids.size())]
+        def id = 'empty'
+        if (ids) {
+            id = ids[r.nextInt(ids.size())]
+        }
         redirect(uri: "/${params.group}/person/jit/#/?nodeId=p_${id}&navVisibility=true&navFunction=person&institutions=all&personId=${id}")
     }
 
