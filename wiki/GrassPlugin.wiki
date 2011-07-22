@@ -11,7 +11,7 @@ If you do not want to bother with grass, you can still have a mostly working sys
 
 Simply comment out the lines in `grails-app/conf/BootStrap.groovy` which enable on-run scss compilation. They should be documented in the code.
 
-If you wish to compile the sass without using the plugin, skip to the [Manually_Without_Plugin].
+If you wish to compile the sass without using the plugin, skip to the [GrassPlugin#Manually_Without_Plugin].
 
 If you wish to use grass, read on.
 
@@ -136,7 +136,7 @@ grails compile-css
 
 ===Manually Without Plugin===
 
-Make sure compass and ruby are in your path and you have installed html5-boilerplate. Instructions can be found in the [Installing_Needed_Programs] section above.
+Make sure compass and ruby are in your path and you have installed html5-boilerplate. Instructions can be found in the [GrassPlugin#Installing_Needed_Programs] section above.
 
 In the macademia project root directory run:
 {{{
