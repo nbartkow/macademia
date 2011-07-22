@@ -1,16 +1,17 @@
 #summary Installing and working with the grass plugin for scss and sass.
-
 = Introduction =
 
-Grass is used to compile sass and scss into css. it currently requires semi-manual installation of the plugin (from git), and compass.
+Grass is used to compile sass and scss into css. It currently requires semi-manual installation of the plugin (from git), and compass.
+
+<wiki:toc max_depth="3" />
 
 = Disable Grass =
 
 If you do not want to bother with grass, you can still have a mostly working system (you will not be able to compile the sass automatically and therefore will need to manually recompile the scss on each change).
 
-Simply comment out the lines in grails-app/conf/BootStrap.groovy which enable on-run scss compilation. They should be documented in the code.
+Simply comment out the lines in `grails-app/conf/BootStrap.groovy` which enable on-run scss compilation. They should be documented in the code.
 
-If you wish to compile the sass without using the plugin, skip to the "Manually Without Plugin" subsection of the "Compiling" section below
+If you wish to compile the sass without using the plugin, skip to the [Manually_Without_Plugin].
 
 If you wish to use grass, read on.
 
@@ -89,7 +90,7 @@ for a user installed gem on a mac:
 echo "PATH=$PATH:$HOME/.gem/ruby/1.8/bin/" >> $HOME/.profile
 }}}
 
-linux users: s/.profile/.bashrc/
+linux users: replace `.profile` in the command above with .bashrc
 
 ===Install html5-boilerplate===
 
@@ -108,14 +109,15 @@ run the script from the macademia project root directory
 }}}
 this will: 
 
-1. create a temp directory,
-2. clone the project from git and checkout version 0.3.4,
-3. upgrade the plugin to the current grails version,
-4. package the plugin,
-5. install the plugin
+  # create a temp directory,
+  # clone the project from git and checkout version 0.3.4,
+  # upgrade the plugin to the current grails version,
+  # package the plugin,
+  # install the plugin
 
-*this script works on MacOSX and the most common flavors of linux*
-*it may or may not work on windows*
+*this script works on MacOSX and the most common flavors of linux.*
+
+*It may or may not work on windows. Cygwin will probably make it work.*
 
 =Compiling=
 
@@ -134,7 +136,7 @@ grails compile-css
 
 ===Manually Without Plugin===
 
-Make sure compass and ruby are in your path and you have installed html5-boilerplate. Instructions can be found in the "Installing Needed Programs" section above.
+Make sure compass and ruby are in your path and you have installed html5-boilerplate. Instructions can be found in the [Installing_Needed_Programs] section above.
 
 In the macademia project root directory run:
 {{{
