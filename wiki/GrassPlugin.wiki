@@ -136,7 +136,7 @@ grails compile-css
 
 ===Manually Without Plugin===
 
-Make sure compass and ruby are in your path and you have installed html5-boilerplate. Instructions can be found in the [GrassPlugin#Installing_Needed_Programs] section above.
+Make sure compass and ruby are in your path and you have installed html5-boilerplate. Instructions can be found in the [GrassPlugin#Install_Needed_Programs] section above.
 
 In the macademia project root directory run:
 {{{
