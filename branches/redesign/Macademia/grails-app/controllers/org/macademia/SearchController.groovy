@@ -1,5 +1,7 @@
 package org.macademia
 
+import grails.converters.JSON
+
 class SearchController {
     def searchService
     def institutionService
@@ -110,6 +112,28 @@ class SearchController {
             total = preResults.size() / max
         }
         render(template: "/search/deepSearchResults", model: [results: results, query: query, type: type, index: pageNumber, total: total, institutions: institutionString])
+    }
+
+    def searchExistence = {
+        String query = params.query
+        query = query.toLowerCase()
+        def person = searchService.searchPeople(query, 0, 1)
+        def interest = searchService.searchInterests(query, 0, 1)
+        def request = searchService.searchCollaboratorRequests(query, 0, 1)
+        person = person.size() == 1 ? person[0] : null
+        interest = interest.size() == 1 ? interest[0] : null
+        request = request.size() == 1 ? request[0] : null
+        def result = [:]
+        if (person && person.fullName.toLowerCase() == query) {
+            result.res = person
+        } else if (interest && interest.text.toLowerCase() == query) {
+            result.res = interest
+        } else if (request && request.title.toLowerCase() == query) {
+            result.res = request
+        } else {
+            result.res = null
+        }
+        render(result as JSON)
     }
 
 }

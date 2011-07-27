@@ -48,7 +48,8 @@
                         cache[request.term] = result;
 						response(result);
 					}
-				})}
+				})
+            }
         };
 
         if (settings) $.extend(config, settings);
@@ -123,6 +124,7 @@ macademia.autocomplete.initSearch = function() {
                 $.address.parameter('nodeId', type.substring(0, 1) + "_" + id);
                 $.address.parameter('navFunction', type);
                 macademia.sortParameters(type, id);
+                location.href = '/Macademia/acm/person/jit/#'+$.address.value();
                 $.address.update();
                 $("#searchBox").val("");
                 window.setTimeout(function () {

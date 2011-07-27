@@ -16,7 +16,7 @@
       <h2>Reset your password.</h2>
 
       <p>
-        Enter your email address below to reset your password.  
+        Enter your email address below to reset your password.
       </p>
 
       <g:if test="${error}">

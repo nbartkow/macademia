@@ -231,22 +231,13 @@ macademia.changeCollegeString = function(institutionNames){
     }
 
     if(institutionNames.length == $(".college").size() || institutionNames[0] == 'all'){
-        results = 'Showing all schools' +group+'(<a href="#" class="change">change</a>)';
-    }else if(institutionNames.length == 1){
-        results= ('Showing ' + institutionNames[0] + group +' (<a href="#/?institutions=all" class="all">show all</a> | <a href="#" class="change">change</a>)');
-    }else if(institutionNames.length == 2){
-        results= ('Showing ' + institutionNames[0] + " and " + institutionNames[1] + group+' (<a href="#/?institutions=all" class="all">show all</a>)');
-    }else if(institutionNames.length == 3){
-        results= ('Showing ' + institutionNames[0] + ", " + institutionNames[1] + ", and " + institutionNames[2] + group+' (<a href="#/?institutions=all" class="all">show all</a> | <a href="#" class="change">change</a>)');
-    }else if(institutionNames.length > 3){
-        results= ('Showing ' + institutionNames[0] + ", " + institutionNames[1] + ", and " + (institutionNames.length - 2) + " others" + group+' (<a href="#/?institutions=all" class="all">show all</a> | <a href="#" class="change">change</a>)');
+        results = 'Showing all schools' + group;
+    }else {
+        results = 'Showing select schools' + group;
     }
 
-
-
-    if (results != ""){
-        $("#collegeFilterButton").html(results);
-        $("#collegeFilterButton2").html(results);
+    if (results != "") {
+        $("#collegeFilterLink").html(results);
         macademia.wireupCollegeFilter();
     }
     macademia.queryString.institutions = $.address.parameter('institutions');

@@ -25,11 +25,11 @@
 
     <div id="editColleges">
       <div id="collegeFilterEditButtons" class="padded2">
-        <input id="addAllColleges" type="submit" value="add all"/>
-        <input id="clearAllColleges" type="submit" value="remove all"/>
+        <input id="addAllColleges" type="submit" value="Add all"/>
+        <input id="clearAllColleges" type="submit" value="Remove all"/>
 
         <input id="collegeSearchAuto" type="text" prompt="Type college name" class="clearDefault"/>
-        <input id="addCollege" type="submit" value="add"/>
+        <input id="addCollege" type="submit" value="Add"/>
       </div>
       <div id="selectedColleges" class="medium">
           %{--<div id = "clearMessage" class = "center" style = "display:none"> Visualization cannot display a filter of 0 colleges </div>--}%
@@ -45,7 +45,7 @@
           </ul>
       </div>
       <div id="submitColleges">
-          <input id ="selectColleges" type="submit" value = "save schools and close"/>
+          <input id ="selectColleges" type="submit" value = "Save schools and close"/>
       </div>
     </div>
 </div>
