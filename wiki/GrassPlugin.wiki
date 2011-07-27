@@ -9,8 +9,6 @@ Grass is used to compile sass and scss into css. It currently requires semi-manu
 
 If you do not want to bother with grass, you can still have a mostly working system (you will not be able to compile the sass automatically and therefore will need to manually recompile the scss on each change).
 
-Simply comment out the lines in `grails-app/conf/BootStrap.groovy` which enable on-run scss compilation. They should be documented in the code.
-
 If you wish to compile the sass without using the plugin, skip to the [GrassPlugin#Manually_Without_Plugin].
 
 If you wish to use grass, read on.
@@ -91,13 +89,6 @@ echo "PATH=$PATH:$HOME/.gem/ruby/1.8/bin/" >> $HOME/.profile
 }}}
 
 linux users: replace `.profile` in the command above with .bashrc
-
-===Install html5-boilerplate===
-
-this is needed for the redesigned macademia
-{{{
-gem install html5-boilerplate
-}}}
 
 =Install the Plugin=
 
