@@ -2,7 +2,7 @@ var macademia = macademia || {};
 
 macademia.jit = {};
 
-macademia.jit.unfocusedEdgeColor = "#999";
+macademia.jit.unfocusedEdgeColor = "#eee";
 macademia.jit.rootId;
 macademia.nextNode = null;
 macademia.jit.nextJson = null;
@@ -32,8 +32,7 @@ macademia.jit.highlightAdjacenciesOn = function(node){
     root.eachSubnode(function(n){
         n.eachAdjacency(function(adj){
             if (adj.nodeTo.id != node.id && adj.nodeFrom.id != node.id){
-                if (adj.data.$color != macademia.jit.unfocusedEdgeColor && adj.data.$color != undefined){
-                    if(adj.data.$color)
+                if (adj.data.$color != macademia.jit.unfocusedEdgeColor && adj.data.$color != undefined) {
                     adj.data.$colorB = adj.data.$color;
                     adj.data.$color = macademia.jit.unfocusedEdgeColor;
                 }
@@ -46,12 +45,14 @@ macademia.jit.highlightAdjacenciesOn = function(node){
             }
         })
     });
+
+    $(".node").css('color', '#aaa');
     for (var i = 0; i < adjacentNodes.length; i++){
         var adjN = "#" + adjacentNodes[i];
         $(adjN).css('opacity', 0.75);
         $(adjN).css('z-index', 30);
-        $(adjN).css('background-color', '#A2AB8E');
-        $(adjN).css('color', '#FFF');
+        $(adjN).css('background-color', 'transparent');
+        $(adjN).css('color', '#000');
     }
 };
 
@@ -75,6 +76,7 @@ macademia.jit.highlightAdjacenciesOff = function(node){
         })
     });
 
+    $(".node").css('color', '#000');
     for (var i = 0; i < adjacentNodes.length; i++){
         var adjN = "#" + adjacentNodes[i];
         $(adjN).css('opacity', 0.8);
@@ -122,7 +124,7 @@ macademia.jit.init = function(rootType,id){
         Node: {
             'overridable': true,
             'type': 'circle',
-            'color': '#FFFFFF', /*'#ccddee'*/
+            'color': '#088', /*'#ccddee'*/
             'width' : '4px'
         },
         Edge: {

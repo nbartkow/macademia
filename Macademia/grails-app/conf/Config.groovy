@@ -167,7 +167,7 @@ uiperformance.bundles = [
             'lib.macademia.collegefilter',
             'lib.macademia.autocomplete',
             'lib.macademia.profile',
-            'lib.macademia.slider'
+            'lib.macademia.density'
     ]],
 ]
 

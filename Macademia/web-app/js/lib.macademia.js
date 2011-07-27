@@ -36,7 +36,6 @@ macademia.pageLoad = function() {
     $.address.autoUpdate(false);
     $.address.change(macademia.onAddressChange);
     macademia.initialSettings();
-    macademia.showHide();
     macademia.initializeLogin();
     macademia.nav();
     macademia.updateNav();
@@ -44,22 +43,16 @@ macademia.pageLoad = function() {
     macademia.autocomplete.initSearch();
     macademia.toggleAccountControls();
     macademia.setupRequestCreation();
-    macademia.initializeAbout();
-    macademia.slider.initSlider();
+    macademia.density.initDensity();
     macademia.initLogging();
     macademia.changeDisplayedColleges();
+    macademia.initAsteroids();
 };
 
-macademia.initializeAbout = function() {
-    $("#aboutJqm").jqm({modal : true, overlay : 45});
-    $("#aboutJqm").jqmAddClose($("#aboutJqm .close a"));
-    $("#aboutJqm").jqmAddClose($("#aboutJqm .closeImg"));
-    $("#logo .about a").click(macademia.showAbout);
-    $("#taglineLinks .about").click(macademia.showAbout);
-    if (!macademia.getCookie('about')) {
-        window.setTimeout(macademia.showAbout, 500);
-        macademia.setCookie('about', "seen", 1);
-    }
+macademia.homePageLoad = function() {
+    macademia.initializeLogin();
+    macademia.autocomplete.initSearch();
+    macademia.initHomeSearchSubmit();
 };
 
 macademia.showAbout = function() {
@@ -214,7 +207,6 @@ macademia.logCurrentFragment = function() {
 
 macademia.onAddressChange = function() {
     try {
-        macademia.showHide();
         macademia.updateNav();
         macademia.changeGraph();
         macademia.changeDisplayedColleges();
@@ -261,42 +253,6 @@ macademia.nav = function() {
     $(".clearDefault").clearDefault();
 };
 
-// controls the show and hide options
-macademia.showHide = function() {
-    if ($.address.parameter('navVisibility') != macademia.queryString.navVisibility) {
-        var navVisibility = $.address.parameter('navVisibility');
-        if (navVisibility == 'true' && !$("#wrapper").is(":visible")) {
-            $("#sidebar").animate({width: "320"}, "slow", function() {
-                  $("#sidebar > *").show();
-            });
-            $("#tagContainer").animate({right: "0px"}, "slow");
-//            $("#infovis").animate({right: "320"}, "slow", function() {
-
-//            });
-            // resize visual
-            if (macademia.rgraph) {
-                macademia.resizeCanvas($("body").width() - 320);
-            }
-        } else if (navVisibility == 'false' && $("#wrapper").is(":visible")) {
-            $("#sidebar > *").hide();
-            if (macademia.rgraph) {
-                $("#sidebar").animate({width: "0"}, "slow");
-                $("#tagContainer").animate({right: "0px"}, "slow");
-                $("#infovis").animate({right: "0"}, "slow");
-            } else {
-                // on page load rightDiv will not slide over
-                $("#sidebar").css('width', '0');
-                $("#infovis").css('right', '0');
-            }
-            $("#show").show();
-            // resize visual
-            if (macademia.rgraph) {
-                macademia.resizeCanvas($("body").width());
-            }
-        }
-        macademia.queryString.navVisibility = navVisibility;
-    }
-};
 // Changes the visualization to new root node
 macademia.changeGraph = function(nodeId){
     if ($.address.parameter('nodeId') != macademia.queryString.nodeId && $.address.parameter('institutions') == macademia.queryString.institutions) {
@@ -321,20 +277,18 @@ macademia.changeGraph = function(nodeId){
 macademia.resizeCanvas = function(currentWidth) {
     var originalWidth = 680;
     var originalHeight = 660;
-    var originalDistance = 150;
-    currentWidth = currentWidth - 150;
-    var currentHeight = $("#infovis").height() - 30;
-    if (Math.min(currentWidth, currentHeight) == currentWidth) {
+    var currentHeight = $(window).height() - 175;
+    if (currentWidth <= currentHeight) {
         var newWidth = 0.95 * currentWidth;
         var newHeight = originalHeight * newWidth / originalWidth;
     } else {
         var newHeight = 0.95 * currentHeight;
         var newWidth = originalWidth * newHeight / originalHeight;
     }
-    if (newWidth != $("#infovis-canvaswidget").css("width")) {
+    if (newWidth !== $("#infovis-canvaswidget").css("width")) {
         $("#infovis-canvaswidget").css({"width":newWidth, "height": newHeight});
         macademia.rgraph.canvas.resize(currentWidth, currentHeight);
-        macademia.rgraph.canvas.scale(newHeight/originalHeight,newWidth/originalWidth);
+        macademia.rgraph.canvas.scale(newWidth/originalWidth, newHeight/originalHeight);
         macademia.rgraph.canvas.translate(0, 25);
     }
 };
@@ -568,6 +522,7 @@ macademia.initializeLogin = function() {
         });
 
         if (result.substr(0, 4) == 'okay') {
+//            alert("result: " + result);
             macademia.reloadToPerson(result.substring(5));
         } else {
             $("#login .flash").html(result).show();
@@ -575,6 +530,29 @@ macademia.initializeLogin = function() {
         return false;
     });
 
+};
+
+macademia.initHomeSearchSubmit = function() {
+    $("#searchSubmit").click(function() {
+        var query = $("#searchBox").val();
+        $.ajax({
+            // TODO: manage group
+            url: "/Macademia/all/search/searchExistence",
+            dataType: "json",
+            data: "query="+query,
+            success: function( data ) {
+                if (data.res) {
+                    var type = data.res.class.split(".")[2];
+                    type = type.toLowerCase();
+                    $.address.parameter('nodeId', type.substring(0, 1) + "_" + data.res.id);
+                    $.address.parameter('navFunction', type);
+                    macademia.sortParameters(type, data.res.id);
+                    location.href = '/Macademia/acm/person/jit/#'+$.address.value();
+                    $.address.update();
+                }
+            }
+        });
+    });
 };
 
 macademia.reloadToRequest = function(rid) {
@@ -616,6 +594,16 @@ macademia.reloadToPerson = function(pid) {
         alert('error occured while loading primary group for person with id ' + id + ': ' + err);
     }
 
+};
+
+macademia.initAsteroids = function() {
+    $("#asteroids").click(function() {
+        var s = document.createElement('script');
+        s.type='text/javascript';
+        document.body.appendChild(s);
+        s.src='http://erkie.github.com/asteroids.min.js';
+        void(0);
+    });
 };
 
 
