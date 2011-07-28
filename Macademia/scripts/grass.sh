@@ -14,6 +14,7 @@ echo 'expect eof' >> grailsup
 chmod +x grailsup
 ./grailsup
 rm grailsup
+sed -i "" '36s/(!value)/(value == null)/' src/groovy/CompassConfiguration.groovy
 grails package-plugin 
 cd $macdir
 grails install-plugin /tmp/grasstmp/grass/grails-grass-0.3.4.zip
