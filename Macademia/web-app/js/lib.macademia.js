@@ -35,6 +35,7 @@ macademia.pageLoad = function() {
     // address only updates manually when a link/node is clicked
     $.address.autoUpdate(false);
     $.address.change(macademia.onAddressChange);
+    macademia.initLogoLink();
     macademia.initialSettings();
     macademia.initializeTopNav();
     macademia.initializeLogin();
@@ -51,15 +52,17 @@ macademia.pageLoad = function() {
 };
 
 macademia.homePageLoad = function() {
+    macademia.initLogoLink();
     macademia.initializeTopNav();
     macademia.initializeLogin();
     macademia.autocomplete.initSearch();
     macademia.initHomeSearchSubmit();
 };
 
-macademia.showAbout = function() {
-    $("#aboutJqm").jqmShow();
-    macademia.serverLog('dialog', 'show', {'name' : 'about'});
+macademia.initLogoLink = function() {
+    $("#logo").click(function() {
+        location.href = "/Macademia";
+    });
 };
 
 //sets macademia.queryString values and initial page settings
@@ -423,6 +426,11 @@ macademia.makeActionUrl = function(controller, action) {
 
 
 macademia.makeActionUrlWithGroup = function(group, controller, action) {
+    // This is a work around of the jquery address plugin's behavior on
+    // the home page, where it sets the url to be /Macademia/#
+    if (group == "#") {
+        group = "all";
+    }
     if (action) {
         return "/Macademia/" + group + '/' + controller + "/" + action;
     } else {
@@ -454,7 +462,7 @@ macademia.setupModal = function(modalDialog, trigger, url, depModule, fnString) 
 
 macademia.serverLog = function(category, event, params, onSuccess) {
     if (onSuccess == null) {
-        //Optional funciton called when logging succeeds.
+        //Optional function called when logging succeeds.
         //Not passed in every serverLog call
         onSuccess = function() {};
     }
@@ -471,7 +479,11 @@ macademia.serverLog = function(category, event, params, onSuccess) {
                 onSuccess();
             },
             error : function(req, textStatus, error) {
-                alert('logging failed: ' + textStatus + ', ' + error);
+                // Changing pages can cause logs to fail, set this variable in params
+                // if the log is getting through the controller but failing anyway.
+                if (!params.ignoreLogFail) {
+                    alert('logging failed: ' + textStatus + ', ' + error);
+                }
             }
         });
 };

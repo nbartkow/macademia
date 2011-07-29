@@ -2,6 +2,7 @@
 <div id="sidebar">
     <div id="sidebar_main">
       <div id="login" style="display: block;">
+        <div class="flash">Invalid Password</div>
         <div id="local" class="localonlymethod">
           <form id="signin" name="signin" action="#">
             <div id="login_info_div" style="display: block;">

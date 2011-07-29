@@ -5,11 +5,16 @@
 
   <link rel='stylesheet' href='/Macademia/css/style.css?v=1' media='all' />
   <g:include view="/layouts/headers.gsp"/>
+  <g:javascript>
+      $(document).ready(function() {
+          macademia.initLogoLink();
+      });
+  </g:javascript>
 </head>
 
 <body>
 
-    <header><div id="logo">Macademia <span>Connecting colleagues by research interests</span></div></header>
+    <header><div id="logo"></div></header>
 
     <div id="passwordEdit">
     <div id="main">
