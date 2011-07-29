@@ -29,12 +29,16 @@
                         <li><a id="login_link" href="#">Login</a></li>
                     </m:ifNotLoggedIn>
                     <m:ifLoggedIn>
-                        <li>Logged in as <m:personLink person="${request.authenticated}"/>
-                        (<g:link params="[group : params.group]" controller="account" action="logout" class="icon_cross">Logout</g:link>)</li>
-                        <li><g:link params="[group : params.group]" controller="account" action="edit">Edit Profile</g:link></li>
-                        <li><g:link params="[group : params.group]" controller="account" action="changepassword">Change Password</g:link></li>
+                        <li>
+                          logged in as <a href="#">${request.authenticated.fullName.encodeAsHTML()}</a>
+                          <ul>
+                            <li><m:personLink person="${request.authenticated}">view</m:personLink></li>
+                            <li><g:link params="[group : params.group]" controller="account" action="logout" class="icon_cross">logout</g:link></li>
+                            <li><g:link params="[group : params.group]" controller="account" action="edit">edit profile</g:link></li>
+                            <li><g:link params="[group : params.group]" controller="account" action="changepassword">change password</g:link></li>
+                          </ul>
+                        </li>
                     </m:ifLoggedIn>
-
                 </ul>
             </nav>
 

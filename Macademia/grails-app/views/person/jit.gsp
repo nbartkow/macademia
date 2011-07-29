@@ -28,18 +28,29 @@
           <span id="asteroids"></span>
         <nav>
             <ul>
-                <li><a href="/Macademia">Home</a></li>
                 <m:ifNotLoggedIn>
                     <li><a class="listRequestLink" id="listRequestLink" href="#">Collaboration requests</a></li>
                     <li><g:link params="[group : params.group]" controller="account" action="createuser" href="#">Create Account</g:link></li>
                     <li><a id="login_link" href="#">Login</a></li>
                 </m:ifNotLoggedIn>
                 <m:ifLoggedIn>
-                    <li>Logged in as <m:personLink person="${request.authenticated}"/>
-                    (<g:link params="[group : params.group]" controller="account" action="logout" class="icon_cross">Logout</g:link>)</li>
-                    <li><g:link params="[group : params.group]" controller="account" action="edit">Edit Profile</g:link></li>
-                    <li><g:link params="[group : params.group]" controller="account" action="changepassword">Change Password</g:link></li>
-                    <li><a href="#" class="listRequestLink" id="makeRequestLink">Collaboration Requests</a></li>
+                  <li>
+                    <a href="#">Collaboration Requests</a>
+                    <ul>
+                      <li><a href="#" class="listRequestLink" id="makeRequestLink">view all requests</a></li>
+                      <li><a href="#" class="makeRequestLink">create new request</a></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="#">${request.authenticated.fullName.encodeAsHTML()}</a>
+                    <ul>
+                      <li><m:personLink person="${request.authenticated}">view</m:personLink></li>
+                      <li><g:link params="[group : params.group]" controller="account" action="logout" class="icon_cross">logout</g:link></li>
+                      <li><g:link params="[group : params.group]" controller="account" action="edit">edit profile</g:link></li>
+                      <li><g:link params="[group : params.group]" controller="account" action="changepassword">change password</g:link></li>
+                    </ul>
+                  </li>
+                  <li><a href="/Macademia"><p:image src="home.png" height="20"/></a></li>
                 </m:ifLoggedIn>
             </ul>
         </nav>
