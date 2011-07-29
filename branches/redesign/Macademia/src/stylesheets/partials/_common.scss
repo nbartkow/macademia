@@ -86,17 +86,7 @@ header {
 		text-indent: -9999px;
 		z-index:9999;
 	}
-	nav {
-		ul {
-			@include horizontal-list;
-			float:right;
-			padding-top:8px;
-			margin-right: 20px;
-			li {
-				padding-left: 35px;
-			}
-		}
-	}
+
     a {
         color: $font-color-light;
         font-weight:normal;

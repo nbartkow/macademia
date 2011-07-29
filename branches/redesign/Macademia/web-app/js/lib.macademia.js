@@ -36,6 +36,7 @@ macademia.pageLoad = function() {
     $.address.autoUpdate(false);
     $.address.change(macademia.onAddressChange);
     macademia.initialSettings();
+    macademia.initializeTopNav();
     macademia.initializeLogin();
     macademia.nav();
     macademia.updateNav();
@@ -50,6 +51,7 @@ macademia.pageLoad = function() {
 };
 
 macademia.homePageLoad = function() {
+    macademia.initializeTopNav();
     macademia.initializeLogin();
     macademia.autocomplete.initSearch();
     macademia.initHomeSearchSubmit();
@@ -496,8 +498,31 @@ macademia.toggleAccountControls = function() {
 };
 
 macademia.setupRequestCreation = function() {
-    $("#makeRequestDialog").jqm({ajax: macademia.makeActionUrl('request', 'create'), trigger: '.makeRequestLink2',  modal: false});
+    $("#makeRequestDialog").jqm({ajax: macademia.makeActionUrl('request', 'create'), trigger: '.makeRequestLink',  modal: false});
     $("#listRequestDialog").jqm({ajax: macademia.makeActionUrl('request', 'list'), trigger: '.listRequestLink', modal: false});
+};
+
+macademia.initializeTopNav = function() {
+    $("nav ul ul").parent().addClass("dropdown");
+    $("nav li.dropdown").hover(
+        function() {
+            $(this).data('hideId', null);
+            $(this).find("ul").slideDown('fast').show();
+            var hideId = null;
+            $(this).hover(
+                function() {;
+                    if (hideId != null) {
+                        window.clearTimeout(hideId);
+                    }
+                },
+                function() {
+                    var d = $(this);
+                    hideId = window.setTimeout(function() {
+                        d.find("ul").slideUp('fast');
+                    }, 100);
+                }
+            );
+    });
 };
 
 macademia.initializeLogin = function() {
