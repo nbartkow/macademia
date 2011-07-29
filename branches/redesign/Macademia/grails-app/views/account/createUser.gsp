@@ -19,14 +19,21 @@
     $(document).ready(function() {
         macademia.otherInstitutions = ${otherInstitutions};
         macademia.allInstitutions = ${allInstitutions};
+        macademia.initLogoLink();
         macademia.initializeRegister();
+        var params = {
+            'page' : 'editProfile',
+            'user' : "${user.id}"
+        };
+        macademia.serverLog('page', 'load', params);
+        $(".clearDefault").clearDefault();
     });
   </g:javascript>
   
 </head>
 <body>
 
-<header><div id="logo">Macademia <span>Connecting colleagues by research interests</span></div></header>
+<header><div id="logo"></div></header>
 
 <div id="editProfile">
     <div id="center_wrapper">
@@ -169,21 +176,8 @@
 </div>
 
 
-
 <g:render template="../layouts/footer"/>
 
-  <g:javascript >
 
-    $().ready(function() {
-        var params = {
-            'page' : 'editProfile',
-            'user' : "${user.id}"
-        };
-        macademia.serverLog('page', 'load', params);
-        $(".clearDefault").clearDefault();
-
-
-    });
-  </g:javascript>
 </body>
 </html>

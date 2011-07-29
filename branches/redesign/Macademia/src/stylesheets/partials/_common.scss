@@ -60,6 +60,12 @@ input:invalid, textarea:invalid {
     color: #c11;
 }
 
+.flash {
+    font-weight : bold;
+    color : #f00;
+    display: none;
+}
+
 .warning {
     background:#FFDDDD;
     color : #A44;
@@ -78,13 +84,13 @@ header {
 	color: $font-color-light;
 
 	#logo {
-		position:absolute;
-		background:url(../images/macademiaLogo.png) no-repeat;
+		position: absolute;
+		background: url(../images/macademiaLogo.png) no-repeat;
 		height: 124px;
 		width: 159px;
-		left:16px;
-		text-indent: -9999px;
-		z-index:9999;
+		left: 16px;
+		cursor: pointer;
+		z-index: 9999;
 	}
 
     a {

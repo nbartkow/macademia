@@ -1,4 +1,4 @@
-<%@ page import="org.macademia.Person" %>
+ <%@ page import="org.macademia.Person" %>
 <div class="medium padded2" id="profile">
   <div id="pf_top_container">
     <table width="100%" cellspacing="0" cellpadding="0">

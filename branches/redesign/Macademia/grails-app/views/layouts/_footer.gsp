@@ -2,7 +2,7 @@
 <footer>
 <div id="footerWrapper">
     <div class="footerBlock"><b>About</b>
-    Macademia is developed by current and past students at Macalester College:  Nick Brooks, Henry Charlton, Ryan Kerwin, Aaron Laursen, Jeremy Lim, Melissa Marshall, Brandon Maus, Nathaniel Miller, Meg Naminski, Ernesto Nunes, Alex Schneeman, Isaac Sparling, Anthony Tran, under the direction of Prof. Shilad Sen
+    Macademia is developed by current and past students at Macalester College:  Nick Brooks, Henry Charlton, Ryan Kerwin, Aaron Laursen, Jeremy Lim, Melissa Marshall, Brandon Maus, Nathaniel Miller, Meg Naminski, Ernesto Nunes, Alex Schneeman, Isaac Sparling, Anthony Tran, under the direction of Prof. Shilad Sen, with design from Marty Moore
     </div>
     <div class="footerBlock"><b>Sponsors</b>
         <ul>
