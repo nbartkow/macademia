@@ -567,7 +567,7 @@ macademia.initHomeSearchSubmit = function() {
             data: "query="+query,
             success: function( data ) {
                 if (data.res) {
-                    var type = data.res.class.split(".")[2];
+                    var type = data.res['class'].split(".")[2];
                     type = type.toLowerCase();
                     $.address.parameter('nodeId', type.substring(0, 1) + "_" + data.res.id);
                     $.address.parameter('navFunction', type);
