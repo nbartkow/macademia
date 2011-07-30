@@ -43,7 +43,7 @@
               </g:if>
             </g:each>
             <g:if test="${relatedInterests.size() > maxInterests}">
-              <li class="more"><a href="#">&nbsp;...&nbsp;show ${relatedInterests.size() - maxInterests} more related interests</a></li>
+              <li class="more"><a href="#">show ${relatedInterests.size() - maxInterests} more related interests&nbsp;...</a></li>
               <div class="more">
                 <g:each in="${relatedInterests.subList(maxInterests, relatedInterests.size())}" var="interest">
                   <g:if test="${interest != null}">
