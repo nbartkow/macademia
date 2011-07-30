@@ -32,7 +32,8 @@
         <div class="sidebarSection">
           <h2>Related interests:</h2>
           <ul>
-            <g:each in="${relatedInterests}" var="interest">
+            <g:set var="maxInterests" value="${2}"/>
+            <g:each in="${relatedInterests.subList(0, Math.min(relatedInterests.size(), maxInterests))}" var="interest">
               <g:if test="${interest != null}">
                 <li>
                   <g:link url="#/?nodeId=i_${interest.id}&navFunction=interest&interestId=${interest.id}">
@@ -41,6 +42,20 @@
                 </li>
               </g:if>
             </g:each>
+            <g:if test="${relatedInterests.size() > maxInterests}">
+              <li class="more"><a href="#">&nbsp;...&nbsp;show ${relatedInterests.size() - maxInterests} more related interests</a></li>
+              <div class="more">
+                <g:each in="${relatedInterests.subList(maxInterests, relatedInterests.size())}" var="interest">
+                  <g:if test="${interest != null}">
+                    <li>
+                      <g:link url="#/?nodeId=i_${interest.id}&navFunction=interest&interestId=${interest.id}">
+                        ${interest.text}
+                      </g:link>
+                    </li>
+                  </g:if>
+                </g:each>
+              </div>
+            </g:if>
 
           </ul>
         </div>
