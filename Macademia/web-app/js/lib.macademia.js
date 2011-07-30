@@ -256,6 +256,11 @@ macademia.nav = function() {
     });
 
     $(".clearDefault").clearDefault();
+
+    $(".sidebarSection li.more").live('click', function () {
+        $(this).hide();
+        $(".sidebarSection div.more").slideDown('medium');
+    });
 };
 
 // Changes the visualization to new root node
@@ -663,6 +668,7 @@ macademia.setCookie = function (c_name, value, expiredays) {
     document.cookie = c_name + "=" + escape(value) +
             ((expiredays == null) ? "" : ";expires=" + exdate.toUTCString());
 };
+
 macademia.endsWith = function(str, suffix) {
     return str.indexOf(suffix, str.length - suffix.length) !== -1;
 };
