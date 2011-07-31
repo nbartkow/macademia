@@ -48,8 +48,8 @@
           <input id ="selectColleges" type="submit" value = "Save schools and close"/>
       </div>
     </div>
+
+    <g:javascript>
+        macademia.initCollegeFilter();
+    </g:javascript>
 </div>
-
-<g:javascript>
-
-</g:javascript>

@@ -222,8 +222,9 @@
         .editPicture {
             text-align: center;
             line-height: 1.25em;
+            float : left;
 
-            .link {
+            .links {
                 position: relative;
                 a {
                     z-index: -1;

@@ -155,7 +155,6 @@
                 <input type="hidden" name="links" value="${user.links?.encodeAsHTML()}"/>
                 <div class="center addItemDiv" id="addLinkDiv"><button class="addLink">add other link</button></div>
               </div>
-
             </div>
 
             <div class="clear topBorder"></div>
