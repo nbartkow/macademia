@@ -7,7 +7,7 @@
 
 body, select, input, textarea {
   color: $font-color;
-  font-size: 14px;
+  font-size: $base-font-size;
   // Set your base font here, to apply evenly
   // font-family: Georgia, serif;
 }
