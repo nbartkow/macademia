@@ -121,7 +121,7 @@ input:invalid, textarea:invalid { /*border-radius: 1px; -moz-box-shadow: 0px 0px
 a:link { -webkit-tap-highlight-color: #a8d1ff; }
 
 /* line 8, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_common.scss */
-body, select, input, textarea { color: #444444; font-size: 14px; }
+body, select, input, textarea { color: #444444; font-size: 13px; }
 
 /* line 16, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_common.scss */
 h1, h2, h3, h4, h5, h6 { font-weight: bold; }
@@ -585,6 +585,15 @@ nav ul li ul li a:hover { background: #777777 url(../images/dropdown/dropdown_li
 #filterDialog #selectedColleges ul .collegeDiv li:hover { background-color: #c3d6e4; }
 /* line 227, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_modal.scss */
 #filterDialog #submitColleges { margin: 5px; text-align: center; }
+
+/* line 1, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_message.scss */
+#message { background: #eeeeee; }
+/* line 5, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_message.scss */
+#message #main { background: white; padding-top: 75px; padding-bottom: 50px; border-left: 1px solid black; border-right: 1px solid black; width: 100%; margin-right: auto; margin-left: auto; text-align: center; }
+/* line 16, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_message.scss */
+#message #main div, #message #main span, #message #main li, #message #main label, #message #main p, #message #main input { font-family: Arial; font-size: 18px; }
+/* line 20, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_message.scss */
+#message #main p { margin: 10px 0px; }
 
 /*/mediaquery*/
 /*/mediaquery*/
