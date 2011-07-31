@@ -16,12 +16,12 @@ macademia.initCollegeFilter = function() {
         return false;
     });
     $(".college a").click(function() {
-        $(this).parents("li").hide();
+        $(this).parent().parent().hide();
         return false;
     });
     $("#addCollege").click(function() {
         var college = $("#collegeSearchAuto").val();
-        $("#filterModal .college").each(function(){
+        $("#filterModal .collegeDiv").each(function(){
             if ($(this).text().indexOf(college) >= 0){
                 $(this).show();
             }
@@ -29,7 +29,7 @@ macademia.initCollegeFilter = function() {
         return false;
     });
     $("#clearAllColleges").click(function() {
-        $(".college").hide();
+        $(".collegeDiv").hide();
         return false;
     });
     $("#addAllColleges").click(function() {
@@ -55,13 +55,7 @@ macademia.initCollegeFilter = function() {
 
 macademia.initIgFilter = function(){
     macademia.hideAllSchools();
-    var igId;
-    $.each(macademia.igMap, function(key, value){
-        if (value.info.abbrev == macademia.retrieveGroup()){
-            igId = key;
-            return false;
-        }
-    });
+    var igId = macademia.getIgId(macademia.retrieveGroup());
     for (var i=0; i < document.consortiaForm.consortia.options.length; i++){
         if (document.consortiaForm.consortia.options[i].value == igId){
             document.consortiaForm.consortia.options[i].selected = true;
@@ -73,11 +67,31 @@ macademia.initIgFilter = function(){
     }
 };
 
+macademia.getIgId = function(igAbbrev) {
+    var igId = null;
+    $.each(macademia.igMap, function(key, value){
+        if (value.info.abbrev == igAbbrev){
+            igId = key;
+            return false;
+        }
+    });
+    if (igId == null) {
+        alert('couldnt find institution group with abbreviation ' + igAbbrev);
+    }
+    return igId;
+};
+
 
 // shows colleges that are currently selected under the filter
 macademia.showColleges = function(){
-    if ($.address.parameter('institutions') == 'all'){
-        $(".college").show();
+    var igAbbrev = macademia.retrieveGroup();
+    var igId = macademia.getIgId(igAbbrev);
+    if ($.address.parameter('institutions') == 'all' && igAbbrev == 'all'){
+        $(".collegeDiv").show();
+    } else if ($.address.parameter('institutions') == 'all') {
+        $.each(macademia.igMap[igId]["institutions"], function(index, inst) {
+            $("#" + inst.id).show();
+        });
     } else {
         var collegeIds = $.address.parameter('institutions').split("+");
         for (var i = 0; i < collegeIds.length; i++) {
@@ -215,7 +229,7 @@ macademia.changeCollegeString = function(institutionNames){
         group = ". ";
     }
 
-    if(institutionNames.length == $(".college").size() || institutionNames[0] == 'all'){
+    if(institutionNames.length == $(".collegeDiv").size() || institutionNames[0] == 'all'){
         results = "Showing all schools" + group;
     } else if (institutionNames.length == 1) {
         results = "Showing " + institutionNames[0] + group;
@@ -234,7 +248,7 @@ macademia.changeDisplayedColleges = function(){
 
     if($.address.parameter('institutions') == 'all') {
         macademia.changeCollegeString(['all']);
-    } else if ($(".college").size() > 0) {
+    } else if ($(".collegeDiv").size() > 0) {
 
         var collegeIds = ($.address.parameter('institutions')).split("+");
         var collegeNames = new Array();
@@ -286,19 +300,7 @@ macademia.initCollegeSearch = function() {
 };
 
 macademia.hideAllSchools = function() {
-        var institutionIds = new Array();
-        for (var igId in macademia.igMap) {
-            if (macademia.igMap[igId].info.abbrev == "all"){
-                for (var institutionId in macademia.igMap[igId]["institutions"]) {
-                    institutionIds.push(institutionId);
-                }
-                break;
-            }
-
-        }
-        for (var id in institutionIds) {
-            $("#c_"+id).hide();
-        }
+    $(".collegeDiv").hide();
 };
 
 macademia.showSchools = function(igId){
@@ -308,6 +310,5 @@ macademia.showSchools = function(igId){
         }
         for (var i=0; i < visibleInstitutions.length; i++) {
             $("#c_"+visibleInstitutions[i]).show();
-            $("#c_"+visibleInstitutions[i]+" li").show();
         }
 };
