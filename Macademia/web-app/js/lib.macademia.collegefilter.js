@@ -1,12 +1,6 @@
 // controller for the select colleges filter
 macademia.wireupCollegeFilter = function() {
-    macademia.setupModal(
-            '#filterDialog',
-            '.collegeFilterTrigger .change',
-            'institution/filter',
-            'none',
-            'macademia.initCollegeFilter()'
-        );
+    $("#filterDialog").jqm({ajax: macademia.makeActionUrl('institution', 'filter'), trigger: '.collegeFilterTrigger .change',  modal: false});
 };
 
 macademia.initCollegeFilter = function() {
@@ -83,9 +77,7 @@ macademia.initIgFilter = function(){
 // shows colleges that are currently selected under the filter
 macademia.showColleges = function(){
     if ($.address.parameter('institutions') == 'all'){
-        $(".college").each(function(){
-            $(this).show();
-        });
+        $(".college").show();
     } else {
         var collegeIds = $.address.parameter('institutions').split("+");
         for (var i = 0; i < collegeIds.length; i++) {

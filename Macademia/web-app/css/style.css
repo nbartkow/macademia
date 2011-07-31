@@ -455,24 +455,24 @@ nav ul li ul li a:hover { background: #777777 url(../images/dropdown/dropdown_li
 /* line 213, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_profile.scss */
 #editProfile #center_wrapper .addItemDiv { padding-top: 8px; clear: both; }
 /* line 222, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_profile.scss */
-#editProfile #center_wrapper .editPicture { text-align: center; line-height: 1.25em; }
-/* line 226, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_profile.scss */
-#editProfile #center_wrapper .editPicture .link { position: relative; }
-/* line 228, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_profile.scss */
-#editProfile #center_wrapper .editPicture .link a { z-index: -1; }
-/* line 234, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_profile.scss */
+#editProfile #center_wrapper .editPicture { text-align: center; line-height: 1.25em; float: left; }
+/* line 227, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_profile.scss */
+#editProfile #center_wrapper .editPicture .links { position: relative; }
+/* line 229, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_profile.scss */
+#editProfile #center_wrapper .editPicture .links a { z-index: -1; }
+/* line 235, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_profile.scss */
 #editProfile #center_wrapper #imgUploaderUploader { position: absolute; top: 0px; left: 0px; width: 100px; height: 25px; z-index: 100; }
-/* line 243, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_profile.scss */
+/* line 244, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_profile.scss */
 #editProfile #center_wrapper .center { text-align: center; }
-/* line 248, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_profile.scss */
+/* line 249, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_profile.scss */
 #editProfile #center_wrapper #tagContainer { position: absolute; bottom: 0px; right: 0px; left: 0px; min-width: 950px; text-align: center; color: #d0d3b3; z-index: -10; }
-/* line 257, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_profile.scss */
+/* line 258, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_profile.scss */
 #editProfile #center_wrapper #tagContainer a { color: #ffe; }
-/* line 262, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_profile.scss */
+/* line 263, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_profile.scss */
 #editProfile #center_wrapper #registerTitle { margin-left: auto; margin-right: auto; width: 950px; z-index: -30; padding: 10px 0 10px 0; }
-/* line 270, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_profile.scss */
+/* line 271, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_profile.scss */
 #editProfile #center_wrapper .progressBar { display: none; backbground-color: #FFDDDD; }
-/* line 273, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_profile.scss */
+/* line 274, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_profile.scss */
 #editProfile #center_wrapper .progressBar span { margin: 3px; position: absolute; }
 
 /* line 1, /Users/shilad/Documents/Intellij/Macademia/src/stylesheets/partials/_password.scss */

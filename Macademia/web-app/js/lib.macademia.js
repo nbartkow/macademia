@@ -443,28 +443,6 @@ macademia.makeActionUrlWithGroup = function(group, controller, action) {
     }
 };
 
-
-macademia.setupModal = function(modalDialog, trigger, url, depModule, fnString) {
-//    if (!$(modalDialog).hasClass("jqmWindow")) {
-        $(modalDialog).jqm({modal: true});
-//    }
-    $(trigger).click(function(){
-        $(modalDialog).load(
-                "/Macademia/" + macademia.retrieveGroup() + '/' + url,
-                    function(responseText, textStatus, xmlHttpRequest) {
-                        $.deps.load(depModule, function() {
-                            try {
-                                eval(fnString);
-                            } catch (error) {
-                                alert('evaluation of ' + fnString + ' failed: ' + error);
-                            }
-                         });
-                    }
-                );
-        $(modalDialog).jqmShow();
-    });
-};
-
 macademia.serverLog = function(category, event, params, onSuccess) {
     if (onSuccess == null) {
         //Optional function called when logging succeeds.

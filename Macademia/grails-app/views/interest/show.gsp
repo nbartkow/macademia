@@ -56,7 +56,6 @@
                 </g:each>
               </div>
             </g:if>
-
           </ul>
         </div>
       </g:if>
