@@ -157,6 +157,7 @@ uiperformance.bundles = [
             'jquery/jquery.qtip-1.0.0-rc3',
             'jquery/jquery.address-1.4',
             'jquery/jqModal',
+            'jquery/jqDropDown.jquery.min',
             'ba-debug',
             'jit/jit',
             'lib.macademia',

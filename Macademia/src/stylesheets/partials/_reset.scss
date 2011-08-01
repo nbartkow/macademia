@@ -64,7 +64,9 @@ input, select { vertical-align: middle; }
  */
 
 body { font:13px/1.231 sans-serif; *font-size:small; } /* Hack retained to preserve specificity */
-select, input, textarea, button { font:99% sans-serif; }
+@-moz-document url-prefix() {
+    select, input, textarea, button { font: 100% sans-serif; }
+}
 
 /* Normalize monospace sizing:
    en.wikipedia.org/wiki/MediaWiki_talk:Common.css/Archive_11#Teletype_style_fix_for_Chrome */

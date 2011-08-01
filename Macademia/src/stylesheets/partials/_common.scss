@@ -77,79 +77,6 @@ body {
 	min-width:1024px;
 }
 
-header {
-	background: url("../images/headerBackground.png");
-	height:37px;
-	@include box-shadow();
-	color: $font-color-light;
-
-	#logo {
-		position: absolute;
-		background: url(../images/macademiaLogo.png) no-repeat;
-		height: 124px;
-		width: 159px;
-		left: 16px;
-		cursor: pointer;
-		z-index: 9999;
-	}
-
-    a {
-        color: $font-color-light;
-        font-weight:normal;
-        &:visited { color: $font-color-light; }
-        &:hover { color: #ccc; }
-    }
-    #asteroids {
-        position: absolute;
-        top: 31px;
-        left: 266px;
-        padding: 2px;
-    }
-}
-
-footer {
-	background:url(../images/footerBackground.png) repeat-x;
-	padding: 20px 0;
-
-	#footerWrapper {
-		width: 980px;
-		margin: 0 auto;
-		@include clearfix();
-
-		.footerBlock {
-            float: left;
-            width: 220px;
-            padding: 0 10px;
-
-            b {
-                display: block;
-                text-transform: uppercase;
-                color: #666;
-                font-size: 11px;
-                border-bottom: 1px solid #CCC;
-                padding-bottom: 5px;
-                margin-bottom: 5px;
-            }
-
-            ul {
-                list-style-type: none;
-                margin-left: 0;
-                padding-top: 5px;
-
-                li {
-                    padding-bottom: 5px;
-
-                    a {
-                        color: #444;
-                        &:hover {color:#0160a0;}
-                    }
-                }
-            }
-        }
-
-	}
-}
-
 .customButton {
     display: inline;
     padding: 5px 10px 3px;
@@ -170,3 +97,4 @@ button, input[type="submit"], input[type="button"] {
     border: 1px solid #666;
     text-decoration: none;
 }
+
