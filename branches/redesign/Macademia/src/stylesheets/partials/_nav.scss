@@ -10,6 +10,10 @@ nav {
             @include horizontal-list-item;
             margin-left: 35px;
             position: relative;
+            img {
+                position: relative;
+                bottom: 3px;
+            }
             &.dropdown {
                 background: url(../images/dropdown/dropdown_white.png) no-repeat right center;
                 padding-right: 15px;

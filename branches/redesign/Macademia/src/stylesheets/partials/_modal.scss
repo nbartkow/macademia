@@ -153,20 +153,24 @@
     width: 425px;
     
     #consortiaFilter {
-        margin-bottom: -20px;
         margin-left: 5px;
-    }
-    #consortiaForm select {
-        bottom: 17px;
-        height: 0;
-        left: 179px;
-        overflow: visible;
-        position: relative;
-        width: 169px;
+        h3 {
+            display: inline-block;
+            position: relative;
+            bottom: 7px;
+        }
+        form {
+            display: inline;
+            margin-left: 50px;
+            .ddContainer a {
+                width: 145px !important;
+            }
+            .ddOptionList {
+                width: 225px !important;
+            }
+        }
     }
     input[type="submit"] {
-        position: relative;
-        top: 2px;
         display: inline-block;
         font-size: 13px;
         margin: 2px;
@@ -175,7 +179,7 @@
         margin: 0 3px 0 27px;
         border: 1px solid black;
         border-radius: 5px 5px 5px 5px;
-        margin-left: 20px;
+        margin-left: 15px;
         padding: 5px 3px;
         width: 160px;
     }

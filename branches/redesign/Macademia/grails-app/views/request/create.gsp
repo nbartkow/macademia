@@ -43,9 +43,10 @@
     </div>
   </g:form>
   <g:javascript >
-    $().ready(function () {
+    $(document).ready(function () {
         macademia.autocomplete.initEditRequest();
         $("#listRequestDialog").jqmHide();
+        $("select").jqDropDown();
     });
 </g:javascript>
 </div>

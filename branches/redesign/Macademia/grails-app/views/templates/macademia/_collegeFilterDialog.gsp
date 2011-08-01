@@ -9,7 +9,6 @@
 <div class="padded medium btxt" id="filterModal">
   <div id="consortiaFilter">
     <h3>Select Consortia:</h3>
-    <div id="consortiaForm">
       <form name="consortiaForm">
         <select id="consortia" name="consortia">
           <g:each in="${igList}" var="ig">
@@ -17,7 +16,6 @@
           </g:each>
         </select>
       </form>
-    </div>
   </div>
   <div id="closeCollegeFilter">
     <a href ="#"><p:image src="close_icon.gif"/></a>
@@ -50,6 +48,7 @@
     </div>
 
     <g:javascript>
+        $("select").jqDropDown();
         macademia.initCollegeFilter();
     </g:javascript>
 </div>
