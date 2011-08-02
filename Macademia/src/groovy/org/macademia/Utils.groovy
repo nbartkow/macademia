@@ -45,6 +45,10 @@ class Utils {
         }
         return url
     }
+
+    public static String getGroupFromUrl(String url) {
+        return url.split("/")[2]
+    }
     
     public static void safeSave(Object o) {
         safeSave(o, false)
