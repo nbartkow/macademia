@@ -29,12 +29,9 @@
               <h2>Manage request:</h2>
           </g:else>
           <p><a href="#" id="editRequestButton">Edit request</a></p>
-          <g:form action="delete">
-            <g:if test="${collaboratorRequest.id}">
-              <g:hiddenField name="requestId" value="${collaboratorRequest.id}"/>
-              <g:actionSubmit value="delete" onclick="return confirm('Are you sure you want to delete this request?')">delete</g:actionSubmit>
-            </g:if>
-          </g:form>
+          <div class="customButton" id="request_delete">
+              <g:link base="/Macademia/${params.group}" controller='request' action='delete' params= "[requestId: collaboratorRequest.id]" onclick="return confirm('Are you sure you want to delete this request?')">Delete Request</g:link>
+          </div>
         </g:if>
     </div>
   </div>

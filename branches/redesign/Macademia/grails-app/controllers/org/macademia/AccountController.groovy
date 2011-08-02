@@ -365,7 +365,8 @@ The Macademia Team
                cookie.path = "/"
                response.addCookie(cookie)
             }
-            redirect(uri: "/")
+            def group = Utils.getGroupFromUrl(request.forwardURI)
+            redirect(uri: "/$group")
         }
     }
 
