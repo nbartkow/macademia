@@ -24,7 +24,7 @@ macademia.queryString = {
     density:null
 };
 
-//sets the sidebar's visibility according to original status.  Initializes jit visualization
+// Initializes interactive page elements
 macademia.pageLoad = function() {
     $(window).resize(function() {
         if (macademia.rgraph) {

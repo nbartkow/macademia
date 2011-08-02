@@ -10,6 +10,13 @@ macademia.jit.distance = 150;
 macademia.jit.refreshNeeded = true;
 macademia.jit.intervalId = -1;
 
+// Used to synchronize building the graph. Fix to issue
+// wherein interacting with elements which cause the graph
+// to be rebuilt, such as the density widget, might interfere
+// with each other, manifesting most often as multiple graphs
+// being drawn.
+macademia.jit.buildingGraph = false;
+
 macademia.makeJsonUrl = function(type, id) {
     // TODO: should this really go here?
     var density = $.address.parameter('density');
@@ -87,6 +94,12 @@ macademia.jit.highlightAdjacenciesOff = function(node){
 };
 
 macademia.jit.init = function(rootType,id){
+
+    if (macademia.jit.buildingGraph) {
+        return;
+    }
+    macademia.jit.buildingGraph = true;
+
     macademia.checkBrowser();
 
     if(macademia.rgraph){
@@ -335,6 +348,8 @@ macademia.jit.init = function(rootType,id){
     //compute positions and plot
     macademia.resizeCanvas($("#infovis").width());
     // $('#infovis').draggable();
+
+    macademia.jit.buildingGraph = false;
         
     })
 };
