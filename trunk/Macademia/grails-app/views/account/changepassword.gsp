@@ -59,7 +59,7 @@
             <tr>
               <td><label for="password">New password:</label></td>
               <td>
-                <input type="password" size="30" id="password" name="password" class="password easyinput"/></a>
+                <input type="password" size="30" id="password" name="password" class="password easyinput"/>
               </td>
             </tr>
 
