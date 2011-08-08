@@ -34,7 +34,7 @@
           <p>${message.encodeAsHTML()}</p>
 
           <p>
-            <m:ifLoggedIn ><a href="/Macademia/${params.group}/person/jit/#/?nodeId=p_${request.authenticated.id}&institutions=all">Return to Macademia</a></m:ifLoggedIn>
+            <m:ifLoggedIn ><a href="/Macademia/${params.group}/person/jit/#/?nodeId=p_${request.authenticated.id}&amp;institutions=all">Return to Macademia</a></m:ifLoggedIn>
             <m:ifNotLoggedIn><a href="/Macademia/${params.group}">Return to Macademia</a></m:ifNotLoggedIn>
           </p>
         </div>
