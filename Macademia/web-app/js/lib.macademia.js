@@ -300,6 +300,7 @@ macademia.changeGraph = function(nodeId){
 };
 // resizes canvas according to original dimensions
 macademia.resizeCanvas = function(currentWidth) {
+    $("#infovis").height('');
     var originalWidth = 680;
     var originalHeight = 660;
     var currentHeight = $(window).height() - 175;
@@ -316,6 +317,7 @@ macademia.resizeCanvas = function(currentWidth) {
         macademia.rgraph.canvas.scale(newWidth/originalWidth, newHeight/originalHeight);
         macademia.rgraph.canvas.translate(0, 25);
     }
+    $("#infovis").height($("#infovis").height());
 };
 
 // changes the Query string according link's href
