@@ -168,6 +168,7 @@
             <div id="submit_edits">
               <g:if test="${user.id}"><input type="hidden" name="id" value="${user.id}"/></g:if>
               <input type="submit" value="Update" /><input type="button" value="Cancel" onclick="location.href = '/Macademia/${params.group}'" />
+            </div>
 
           </form>
 
