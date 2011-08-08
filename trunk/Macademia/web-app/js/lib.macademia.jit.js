@@ -28,7 +28,7 @@ macademia.makeJsonUrl = function(type, id) {
 
 macademia.checkBrowser = function() {
     if (!$.browser.mozilla && !$.browser.safari) {
-        alert('This website will not work properly on Internet Explorer.  Please use Firefox or Safari');
+//        alert('This website will not work properly on Internet Explorer.  Please use Firefox or Safari');
     }
 };
 
