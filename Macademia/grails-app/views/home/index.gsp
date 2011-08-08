@@ -1,3 +1,4 @@
+<%@ page import="org.macademia.HomeController" %>
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html lang="en" class="no-js ie6"> <![endif]-->
 <!--[if IE 7]>    <html lang="en" class="no-js ie7"> <![endif]-->
@@ -70,15 +71,48 @@
       	<div id="mainSearchBox">
       		<input type="text" id="searchBox" placeholder="Search for researchers or interests" />
       		<div id="searchSubmit" class="customButton"><a id="submitSearch" href="javascript:;">Search</a></div>
+            <div id="consortia">
+              <ul>
+                <g:each in="${igs}" var="ig" status="i">
+                  <g:if test="${i < 4}">
+                    <li>
+                      <label for="radio_${ig.abbrev}">
+                        <input type="radio" name="consortia" id="radio_${ig.abbrev}" value="${ig.abbrev}"/>&nbsp;${ig.name.encodeAsHTML().replace(' ', '&nbsp;')}
+                      </label>
+                    </li>
+                  </g:if>
+                </g:each>
+                <li>
+                  <a href="#">more...</a>
+                </li>
+                <div class="more">
+                  <g:each in="${igs}" var="ig" status="i">
+                    <g:if test="${i >= 4}">
+                    <li>
+                      <label for="radio_${ig.abbrev}">
+                        <input type="radio" name="consortia" id="radio_${ig.abbrev}" value="${ig.abbrev}"/>&nbsp;${ig.name.encodeAsHTML().replace(' ', '&nbsp;')}
+                      </label>
+                    </li>
+                    </g:if>
+                  </g:each>
+                </div>
+              </ul>
+            </div>
       	</div>
 
       	<div id="slideshow">
       		<div id="slideshowReel">
 	      		<div class="slide">
-	      			<a href="/Macademia/acm"><img src="images/thumbnailTest01.png" /></a>
-	      			<h3>Find collaborators by searching for research interests</h3>
-	      			<p>Macademia visualizes your search results by showing connections between research topics and colleagues. Click on names or interests to recenter the visualization.</p>
-	      		    <div id="entrancePortal"><div class="customButton"><a href="/Macademia/acm">Go to Macademia</a></div></div>
+	      			<a href="/Macademia/acm"><img id="graphThumb" src="images/thumbnailTest01.png" /></a>
+	      		    <div id="entrancePortal">
+                        <ul>
+                          <g:each in="${people}" var="p"><li><m:personLink person="${p}" group="all"><m:personImage person="${p}"/></m:personLink></li></g:each>
+                          <g:each in="${(people.size()..< HomeController.NUM_PEOPLE)}"><li><a href="#"><img src="images/shilad.jpg"></a></li></g:each>
+                        </ul>
+	      		    </div>
+                    <h3>Find collaborators by searching for research interests</h3>
+                    <p>Macademia visualizes your search results by showing connections between research topics and colleagues. Click on names or interests to recenter the visualization.</p>
+
                 </div>
       		</div>
       	</div>
@@ -88,7 +122,8 @@
       	<div id="sponsors">
       		<h3>Macademia is generously funded by:</h3>
       		<ul>
-      			<li><a href="http://www.acm.edu/index.html"><img src="images/logos_acm.png" alt="The American Colleges of the Midwest" /></a></li>
+                <li><a href="http://www.macalester.edu"><img src="images/mac_logo2.png" alt="Macalester College" /></a></li>
+                <li><a href="http://www.acm.edu/index.html"><img src="images/logos_acm.png" alt="The American Colleges of the Midwest" /></a></li>
       			<li><a href="http://www.nsf.gov/"><img src="images/logos_nsf.png" alt="The National Science Foundation" /></a></li>
       			<li><a href="http://www.mellon.org/"><img src="images/logos_andrewMellon.png" alt="the Andrew Mellon Charitable Trust" /></a></li>
       		</ul>

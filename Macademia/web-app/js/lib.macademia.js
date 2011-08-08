@@ -57,12 +57,27 @@ macademia.homePageLoad = function() {
     macademia.initializeLogin();
     macademia.autocomplete.initSearch();
     macademia.initHomeSearchSubmit();
+    macademia.initInstitutionGroups();
 };
 
 macademia.initLogoLink = function() {
     $("#logo").click(function() {
         location.href = "/Macademia";
     });
+};
+
+macademia.initInstitutionGroups = function() {
+    $('#consortia ul>li:first-child input').attr('checked', 'checked');
+    $('#consortia a').click(
+            function() {
+                $("#consortia .more").fadeIn();
+                $("#consortia a").hide();
+            }
+    )
+};
+
+macademia.getSelectedInstitutionGroup = function() {
+    return $('#consortia ul li input:checked').val();
 };
 
 //sets macademia.queryString values and initial page settings
@@ -411,9 +426,18 @@ macademia.submitSearch = function(){
 };
 
 macademia.retrieveGroup = function() {
+    // first check the home page radio buttons.
+    var group = macademia.getSelectedInstitutionGroup();
+    if (group) {
+        return group;
+    }
+
+    // next check the url
     var marker = '/Macademia/';     // string appearing before group
     var url = window.location.href;
     var i = url.indexOf(marker, 0);
+
+    // finally, give up
     if (i < 0) {
         return 'all';    // default group
     }

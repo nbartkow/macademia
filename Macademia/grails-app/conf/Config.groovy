@@ -130,6 +130,17 @@ macademia {
     profileImagePath = "web-app/images/db"
 }
 
+springcache {
+    defaults {
+        eternal = false
+        diskPersistent = false
+    }
+    caches {
+        homeCache {
+           timeToLive = 30
+        }
+    }
+}
 
 
 grails {
