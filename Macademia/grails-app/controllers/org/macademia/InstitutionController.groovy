@@ -11,8 +11,8 @@ class InstitutionController {
     def index = { }
 
     def filter = {
-        def institutions = Institution.list()
-        def igList = InstitutionGroup.list()
+        def institutions = Institution.list().sort({it.name.toLowerCase()})
+        def igList = InstitutionGroup.list().sort({it.name.toLowerCase()})
         def igMap = jsonService.makeJsonForIgMap()
         render(view: "/templates/macademia/_collegeFilterDialog", model: [institutions: institutions, igMap: igMap as JSON, igList: igList])
     }
