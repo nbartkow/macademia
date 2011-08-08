@@ -140,6 +140,9 @@
                         white-space: nowrap;
                         a {
                             color : blue;
+                            &:hover{
+                                text-decoration: underline;
+                            }
                         }
                     }
                 }
