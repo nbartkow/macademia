@@ -14,7 +14,8 @@
     <link rel='stylesheet' href='css/style.css' media='all' />
     <g:javascript>
       $(document).ready(function() {
-          macademia.homePageLoad();
+            macademia.homePageLoad();
+            macademia.serverLog('page', 'load', {'page' : 'home'});
       });
     </g:javascript>
   </head>
