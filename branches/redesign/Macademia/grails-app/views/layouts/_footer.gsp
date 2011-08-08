@@ -6,6 +6,7 @@
     </div>
     <div class="footerBlock"><b>Sponsors</b>
         <ul>
+            <li><a href="http://www.macalester.edu">Macalester College</a></li>
             <li><a href="http://www.acm.edu/index.html">Associated Colleges of the Midwest</a></li>
             <li><a href="http://www.nsf.gov/">National Science Foundation</a></li>
             <li><a href="http://www.mellon.org/">The Andrew Mellon Charitable Trust</a></li>

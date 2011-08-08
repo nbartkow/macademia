@@ -41,6 +41,15 @@ class PersonService {
         this.save(person, person.memberships.institution)
     }
 
+    public Collection<Person> findRandomPeopleWithImage(int n) {
+        List<Long> ids = Person.findAllByImageSubpathNotIsNull().id as ArrayList<Long>
+        Collections.shuffle(ids)
+        if (ids.size() > n) {
+            ids = ids.subList(0, n)
+        }
+        return Person.getAll(ids)
+    }
+
     /**
      * @param person The Person to be saved.
      * @param institutions A Collection<Institution> giving all of
@@ -138,4 +147,25 @@ class PersonService {
         }
     }
 
+    /**
+     * Assumes that a user doesn't belong to more than one institution in a group.
+     * This is clearly wrong (e.g. for all), but probably harmless.
+     * @param ig
+     * @return
+     */
+    private int countMemberships(InstitutionGroup ig) {
+        int n = 0
+        for (Institution i : ig.institutions) {
+            n += Membership.countByInstitution(i)
+        }
+        return n
+    }
+
+    def getInstitutionGroupCounts() {
+        def igCounts = [:]
+        for (InstitutionGroup ig : InstitutionGroup.findAll()) {
+            igCounts[ig] = countMemberships(ig)
+        }
+        return igCounts
+    }
 }
