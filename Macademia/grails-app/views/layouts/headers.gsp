@@ -8,5 +8,3 @@
 
 <p:javascript src='macademia.js.all'/>
 
-
-<title>Macademia - connecting colleagues who have shared interests</title>
