@@ -48,7 +48,6 @@
     </div>
 
     <g:javascript>
-        $("select").jqDropDown();
         macademia.initCollegeFilter();
     </g:javascript>
 </div>
