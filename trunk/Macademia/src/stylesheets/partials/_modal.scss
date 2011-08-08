@@ -97,6 +97,8 @@
         text-align: center;
         z-index: -30;
     }
+
+
     .section {
         border-bottom: 1px solid black;
 
@@ -161,8 +163,7 @@
             display: inline-block;
             margin-left : 5px;
             select {
-                font-size: 11px;
-                background-color: #eee;
+                width : 250px;
             }
         }
     }
