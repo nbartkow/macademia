@@ -11,6 +11,7 @@
     <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible' />
     <meta content='width=device-width, initial-scale=1.0' name='viewport' />
     <g:include view="/layouts/headers.gsp"/>
+    <title>Macademia - Connecting colleagues who share research interests.</title>
     <link rel='stylesheet' href='css/style.css' media='all' />
     <g:javascript>
       $(document).ready(function() {
@@ -104,7 +105,7 @@
       	<div id="slideshow">
       		<div id="slideshowReel">
 	      		<div class="slide">
-	      			<a href="/Macademia/acm"><img id="graphThumb" src="images/thumbnailTest01.png" /></a>
+	      			<a href="/Macademia/acm"><img id="graphThumb" src="images/thumbnailTest01.png" alt="Go to Macademia visualization"/></a>
 	      		    <div id="entrancePortal">
                         <ul>
                           <g:each in="${people}" var="p"><li><m:personLink person="${p}" group="all"><m:personImage person="${p}"/></m:personLink></li></g:each>
