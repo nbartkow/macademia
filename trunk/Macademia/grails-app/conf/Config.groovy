@@ -137,7 +137,7 @@ springcache {
     }
     caches {
         homeCache {
-           timeToLive = 30
+           timeToLive = 300
         }
     }
 }
