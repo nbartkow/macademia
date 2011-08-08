@@ -12,7 +12,6 @@
     <g:else>Create a New Macademia Profile</g:else>
   </title>
 
-  <link rel='stylesheet' href='/Macademia/css/style.css?v=1' media='all' />
   <g:render template="/layouts/headers"/>
   <p:javascript src="uploadify/swfobject"/>
   <p:javascript src="uploadify/jquery.uploadify.v2.1.0.min"/>

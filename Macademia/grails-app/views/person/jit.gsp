@@ -7,7 +7,6 @@
     <link rel="shortcut icon" type="image/x-icon" href="/myfavicon.ico"/>
     <title>Macademia - Connecting colleagues who share research interests.</title>
     <g:render template="/layouts/headers"/>
-    <link rel='stylesheet' href='/Macademia/css/style.css' media='all' />
 
     <g:javascript>
         macademia.igMap = ${igMap as JSON};

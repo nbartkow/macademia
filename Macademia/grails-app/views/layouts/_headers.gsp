@@ -8,3 +8,4 @@
 
 <p:javascript src='macademia.js.all'/>
 
+<p:css name="style" media='all' />
