@@ -15,15 +15,13 @@ class HomeController {
         ta.startTime()
         def igCounts = getInstitutionGroupCounts()
         ta.recordTime("count ig memberships")
-        println("igCounts is ${igCounts}")
         def igs = igCounts.keySet() as ArrayList
         igs.sort({igCounts[it]})
         igs = igs.reverse()
         def r = random.nextInt(NUM_RANDOM_LISTS)
-        println("random is " + r)
         def people = getRandomPeopleWithImages(NUM_PEOPLE, r)
         ta.recordTime("find random images")
-        ta.analyze()
+//        ta.analyze()
         [people : people, igs : igs]
     }
 
