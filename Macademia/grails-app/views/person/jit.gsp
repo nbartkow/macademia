@@ -5,7 +5,8 @@
     <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible' />
     <meta content='width=device-width, initial-scale=1.0' name='viewport' />
     <link rel="shortcut icon" type="image/x-icon" href="/myfavicon.ico"/>
-    <g:include view="/layouts/headers.gsp"/>
+    <title>Macademia - Connecting colleagues who share research interests.</title>
+    <g:render template="/layouts/headers"/>
     <link rel='stylesheet' href='/Macademia/css/style.css' media='all' />
 
     <g:javascript>
@@ -32,7 +33,7 @@
                     <li><a class="listRequestLink" id="listRequestLink" href="#">Collaboration Requests</a></li>
                     <li><g:link params="[group : params.group]" controller="account" action="createuser" href="#">Create Account</g:link></li>
                     <li><a id="login_link" href="#">Login</a></li>
-                    <li><a href="/Macademia"><p:image src="home.png" height="20"/></a></li>
+                    <li><a href="/Macademia"><p:image alt="home" src="home.png" height="20"/></a></li>
                 </m:ifNotLoggedIn>
                 <m:ifLoggedIn>
                   <li>
@@ -51,7 +52,7 @@
                       <li><g:link params="[group : params.group]" controller="account" action="logout" class="icon_cross">Logout</g:link></li>
                     </ul>
                   </li>
-                  <li><a href="/Macademia"><p:image src="home.png" height="20"/></a></li>
+                  <li><a href="/Macademia"><p:image alt="home" src="home.png" height="20"/></a></li>
                 </m:ifLoggedIn>
             </ul>
         </nav>

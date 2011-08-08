@@ -10,7 +10,7 @@
     <title>Change password</title>
 
   <link rel='stylesheet' href='/Macademia/css/style.css?v=1' media='all' />
-  <g:include view="/layouts/headers.gsp"/>
+  <g:render template="/layouts/headers"/>
   <g:javascript>
       $(document).ready(function() {
           macademia.initLogoLink();
