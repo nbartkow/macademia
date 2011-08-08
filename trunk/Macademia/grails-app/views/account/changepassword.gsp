@@ -9,7 +9,6 @@
 <head>
     <title>Change password</title>
 
-  <link rel='stylesheet' href='/Macademia/css/style.css?v=1' media='all' />
   <g:render template="/layouts/headers"/>
   <g:javascript>
       $(document).ready(function() {
