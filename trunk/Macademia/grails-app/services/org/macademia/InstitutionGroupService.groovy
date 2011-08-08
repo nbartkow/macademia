@@ -66,4 +66,5 @@ class InstitutionGroupService {
     def retrieveInstitutions(InstitutionGroup group){
         return group.institutions
     }
+
 }

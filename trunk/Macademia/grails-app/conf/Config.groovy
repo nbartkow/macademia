@@ -130,6 +130,17 @@ macademia {
     profileImagePath = "web-app/images/db"
 }
 
+springcache {
+    defaults {
+        eternal = false
+        diskPersistent = false
+    }
+    caches {
+        homeCache {
+           timeToLive = 30
+        }
+    }
+}
 
 
 grails {
@@ -154,20 +165,19 @@ uiperformance.bundles = [
             'jquery/jquery-1.6.1.min',
             'jquery/jquery-ui-1.8.2.custom.min',
             'jquery/jquery-ui-1.8.5.custom.min',
-            'jquery/jquery-deps',
             'jquery/jquery.qtip-1.0.0-rc3',
             'jquery/jquery.address-1.4',
             'jquery/jqModal',
+            'jquery/jqDropDown.jquery.min',
             'ba-debug',
             'jit/jit',
             'lib.macademia',
-            'lib.macademia.deps',
             'lib.macademia.json',
             'lib.macademia.jit',
             'lib.macademia.collegefilter',
             'lib.macademia.autocomplete',
             'lib.macademia.profile',
-            'lib.macademia.slider'
+            'lib.macademia.density'
     ]],
 ]
 

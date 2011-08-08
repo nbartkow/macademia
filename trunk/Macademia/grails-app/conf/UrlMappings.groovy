@@ -8,7 +8,7 @@ class UrlMappings {
 		  }
 	  }
       "/" {
-          controller = 'person'
+          controller = 'home'
           group = MacademiaConstants.DEFAULT_GROUP
           action = 'index'
       }

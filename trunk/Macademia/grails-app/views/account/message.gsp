@@ -2,28 +2,38 @@
 
 <head>
   <title>${title.encodeAsHTML()}</title>
-  <p:css name="macademiaJit"/>
+
   <g:include view="/layouts/headers.gsp"/>
-  <p:css name="message"/>
+  <link rel='stylesheet' href='/Macademia/css/style.css?v=1' media='all' />
+
+  <g:javascript>
+      $(document).ready(function() {
+          macademia.initLogoLink();
+      });
+  </g:javascript>
 </head>
 
 <body>
-  <g:render template="../templates/macademia/logo"/>
-  <div id="main">
-      <h2>${title}</h2>
 
-      <g:if test="${error}">
-        <p class="alert">${error.encodeAsHTML()}</p>
-      </g:if>
+    <header><div id="logo"></div></header>
 
-      <p>${message.encodeAsHTML()}</p>
+    <div id="message">
+        <div id="main">
+          <h2>${title.encodeAsHTML()}</h2>
 
-      <p>
-        <m:ifLoggedIn ><a href="/Macademia/${params.group}/person/jit/#/?nodeId=p_${request.authenticated.id}&institutions=all">Return to Macademia</a></m:ifLoggedIn>
-        <m:ifNotLoggedIn><a href="/Macademia/${params.group}">Return to Macademia</a></m:ifNotLoggedIn>
-      </p>
+          <g:if test="${error}">
+            <p class="alert">${error.encodeAsHTML()}</p>
+          </g:if>
+
+          <p>${message.encodeAsHTML()}</p>
+
+          <p>
+            <m:ifLoggedIn ><a href="/Macademia/${params.group}/person/jit/#/?nodeId=p_${request.authenticated.id}&institutions=all">Return to Macademia</a></m:ifLoggedIn>
+            <m:ifNotLoggedIn><a href="/Macademia/${params.group}">Return to Macademia</a></m:ifNotLoggedIn>
+          </p>
+        </div>
     </div>
-    <g:render template="/templates/macademia/tagline"/> 
+    <g:render template="../layouts/footer"/>
 </body>
 
 </html>

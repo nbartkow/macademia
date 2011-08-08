@@ -1,21 +1,14 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: isparling
-  Date: Aug 4, 2009
-  Time: 2:46:41 PM
-  To change this template use File | Settings | File Templates.
---%>
-
+ <%@ page import="org.macademia.Person" %>
 <div class="medium padded2" id="profile">
   <div id="pf_top_container">
-    <table cellspacing="0" cellpadding="0">
+    <table width="100%" cellspacing="0" cellpadding="0">
     <tr>
       <g:if test="${person.imageSubpath}">
         <td id="pf_img" rowspan="2">
         <img src="/Macademia/${params.group}/image/retrieve?subPath=${person.imageSubpath}">
         </td>
       </g:if>
-      <td id="pf_name">${person.fullName.encodeAsHTML()}</td>
+      <td id="pf_name"><h1 id="currentFocus">${person.fullName.encodeAsHTML()}</h1></td>
     </tr>
     <tr>
       <td id="pf_inst">${person.institutionsToString().encodeAsHTML()}</td>
@@ -33,18 +26,16 @@
       </g:elseif>
       </td>
     </tr>
-    <tr>
-      <td colspan="2">
-      <h3 id="pf_email">
-      <g:link url="mailto:${person.email}">${person.email}</g:link>
-      </h3>
-      </td>
-    </tr>
     </table>
   </div>
+  <div id="pf_email">
+  <h4>
+    <g:link url="mailto:${person.email}">${person.email}</g:link>
+  </h4>
   </div>
-  <div id="pf_interests">
-    <h4>Interests:</h4>
+  </div>
+  <div class="sidebarSection">
+    <h2>Interests:</h2>
     <p class="atxt">
       <g:set var="counter" value="${0}"/>
       <g:each in="${interests}" var="interest" >
@@ -55,8 +46,8 @@
     </p>
   </div>
   <g:if test="${collaboratorRequests}">
-  <div id="pf_requests">
-    <h4>Collaborator Requests:</h4>
+  <div class="sidebarSection">
+    <h2>Collaborator Requests:</h2>
     <ul class="styledList atxt">
       <g:each in="${collaboratorRequests}" var="collaboratorRequest">
         
@@ -67,27 +58,23 @@
   </div>
   </g:if>
   <g:if test="${person.links}">
-    <div id="pf_links">
-        <h4>Links</h4>
+    <div class="sidebarSection">
+        <h2>Links</h2>
         <ul class="styledList atxt">
           ${person.links}
         </ul>
     </div>
   </g:if>
 
-<g:if test= "${request.authenticated && request.authenticated.canEdit(person)}">
-  <div>
-  <h4>Account:</h4>
-      <ul class="styledList atxt">
-      <li>
-      <g:link url="[controller:'account',action:'edit', id:person.id, params: [group : params.group] ]">Edit Profile</g:link>
+<g:if test= "${request.authenticated && (request.authenticated.role > Person.USER_ROLE) && (!request.authenticated.equals(person)) && request.authenticated.canEdit(person)}">
+  <div class="sidebarSection">
+  <h2>Admin:</h2>
+      <g:link url="[controller:'account',action:'edit', id:person.id, params: [group : params.group] ]">Edit ${person.fullName.encodeAsHTML()}'s Profile</g:link>
       <g:if test="${request.authenticated && request.authenticated.isShilad(person)}">
          <g:form controller="interest" action="reapOrphans">
               <g:actionSubmit value="Reap Orphans" action="reapOrphans" onclick="return confirm('are you sure you want to reap the orphans?')"/>
         </g:form>
       </g:if>
-      </li>
-      </ul>
 </g:if>
 
 
