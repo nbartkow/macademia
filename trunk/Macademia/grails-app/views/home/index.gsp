@@ -104,11 +104,11 @@
       	<div id="slideshow">
       		<div id="slideshowReel">
 	      		<div class="slide">
-	      			<a href="/Macademia/acm"><img id="graphThumb" src="images/thumbnailTest01.png" alt="Go to Macademia visualization"/></a>
+	      			<a href="/Macademia/acm"><p:image id="graphThumb" src="thumbnailTest01.png" alt="Go to Macademia visualization"/></a>
 	      		    <div id="entrancePortal">
                         <ul>
                           <g:each in="${people}" var="p"><li><m:personLink person="${p}" group="all"><m:personImage person="${p}"/></m:personLink></li></g:each>
-                          <g:each in="${(people.size()..< HomeController.NUM_PEOPLE)}"><li><a href="#"><img src="images/shilad.jpg"></a></li></g:each>
+                          <g:each in="${(people.size()..< HomeController.NUM_PEOPLE)}"><li><a href="#"><p:image src="shilad.jpg"/></a></li></g:each>
                         </ul>
 	      		    </div>
                     <h3>Find collaborators by searching for research interests</h3>
@@ -123,10 +123,10 @@
       	<div id="sponsors">
       		<h3>Macademia is generously funded by:</h3>
       		<ul>
-                <li><a href="http://www.macalester.edu"><img src="images/mac_logo2.png" alt="Macalester College" /></a></li>
-                <li><a href="http://www.acm.edu/index.html"><img src="images/logos_acm.png" alt="The American Colleges of the Midwest" /></a></li>
-      			<li><a href="http://www.nsf.gov/"><img src="images/logos_nsf.png" alt="The National Science Foundation" /></a></li>
-      			<li><a href="http://www.mellon.org/"><img src="images/logos_andrewMellon.png" alt="the Andrew Mellon Charitable Trust" /></a></li>
+                <li><a href="http://www.macalester.edu"><p:image src="mac_logo2.png" alt="Macalester College" /></a></li>
+                <li><a href="http://www.acm.edu/index.html"><p:image src="logos_acm.png" alt="The American Colleges of the Midwest" /></a></li>
+      			<li><a href="http://www.nsf.gov/"><p:image src="logos_nsf.png" alt="The National Science Foundation" /></a></li>
+      			<li><a href="http://www.mellon.org/"><p:image src="logos_andrewMellon.png" alt="the Andrew Mellon Charitable Trust" /></a></li>
       		</ul>
       	</div>
 
