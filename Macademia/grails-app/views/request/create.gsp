@@ -46,7 +46,6 @@
     $(document).ready(function () {
         macademia.autocomplete.initEditRequest();
         $("#listRequestDialog").jqmHide();
-        $("select").jqDropDown();
     });
 </g:javascript>
 </div>
