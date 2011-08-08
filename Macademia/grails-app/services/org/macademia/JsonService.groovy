@@ -344,14 +344,15 @@ class JsonService {
 
     def makeJsonForIgMap() {
         def igMap = [:]
-        for (ig in InstitutionGroup.list()) {
+        for (ig in InstitutionGroup.list().sort({it.name.toLowerCase()})) {
             igMap[ig.id] = [
                     info: [name: ig.name, abbrev: ig.abbrev],
-                    institutions: ig.institutions.collect({makeJsonForInstitution(it)})
+                    institutions: ig.institutions.sort({it.name.toLowerCase()}).collect({makeJsonForInstitution(it)})
                 ]
         }
         return igMap
     }
+
     def makeJsonForInstitutions() {
         return Institution.all.collect({makeJsonForInstitution(it)})
     }
