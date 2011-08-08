@@ -11,11 +11,13 @@
   <g:if test="${exact || close}">
   <div class="ttRel">
     <b>related to ${linkName} by:</b>
-    <g:if test="${exact}">
-      <g:each in="${exact}" var="i">
-        <li><i>${i}</i></li>
-      </g:each>
-    </g:if>
+    <ul>
+        <g:if test="${exact}">
+          <g:each in="${exact}" var="i">
+            <li><i>${i}</i></li>
+          </g:each>
+        </g:if>
+    </ul>
     <g:if test="${close}">
       <ul>
         <g:each in="${close.keySet()}" var="i">
