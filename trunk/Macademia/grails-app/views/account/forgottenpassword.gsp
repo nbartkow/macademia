@@ -9,7 +9,7 @@
 <head>
   <title>Change password</title>
 
-  <g:include view="/layouts/headers.gsp"/>
+  <g:render template="/layouts/headers"/>
   <link rel='stylesheet' href='/Macademia/css/style.css?v=1' media='all' />
 
   <g:javascript>

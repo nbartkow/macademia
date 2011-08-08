@@ -13,7 +13,7 @@
   </title>
 
   <link rel='stylesheet' href='/Macademia/css/style.css?v=1' media='all' />
-  <g:include view="/layouts/headers.gsp"/>
+  <g:render template="/layouts/headers"/>
   <p:javascript src="uploadify/swfobject"/>
   <p:javascript src="uploadify/jquery.uploadify.v2.1.0.min"/>
   <p:javascript src="lib.macademia.upload"/>
