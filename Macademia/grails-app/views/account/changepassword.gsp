@@ -3,14 +3,20 @@
 <head>
     <title>Change password</title>
 
-  <p:css name="macademiaJit"/>
+  <link rel='stylesheet' href='/Macademia/css/style.css?v=1' media='all' />
   <g:include view="/layouts/headers.gsp"/>
-  <p:css name="changePasswd"/>
+  <g:javascript>
+      $(document).ready(function() {
+          macademia.initLogoLink();
+      });
+  </g:javascript>
 </head>
 
 <body>
 
-    <a href="/Macademia/${params.group}"><p:image id="logoImage" src='macademia-logo.png'/></a>
+    <header><div id="logo"></div></header>
+
+    <div id="passwordEdit">
     <div id="main">
       <h2>Change your password</h2>
 
@@ -61,6 +67,7 @@
               <td>&nbsp;</td>
               <td>
                 <input type="submit" name="submit" value="Change password"/>
+                <input type="button" value="Cancel" onclick="location.href = '/Macademia/${params.group}'" />
               </td>
             </tr>
           </tbody>
@@ -76,7 +83,10 @@
         </div>
       </g:form>
     </div>
-    <g:render template="/templates/macademia/tagline"/>
+    </div>
+
+    <g:render template="../layouts/footer"/>
+
     <g:javascript >
       $().ready(function() {
           var params = {

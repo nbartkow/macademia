@@ -259,7 +259,7 @@ class JsonService {
         }
 
         for (String rid in collaboratorRequestNodes.keySet()) {
-            personAndRequestColors[rid] = "#F00"
+            personAndRequestColors[rid] = MacademiaConstants.REQUEST_COLOR
         }
 
         for (String pid in personNodes.keySet()) {
@@ -268,7 +268,7 @@ class JsonService {
             for (Object adj in node['adjacencies']) {
                 if(adj['nodeTo'].contains('r_')){
                     //makes the edges between root person and own collaborator requests red
-                    adj['data'].putAt("\$color", "#F00")
+                    adj['data'].putAt("\$color", MacademiaConstants.REQUEST_COLOR)
                 } else {
                     adj['data'].putAt("\$color", c)
                 }

@@ -270,6 +270,7 @@ The Macademia Team
         return render(
               view: 'createUser',
                 model: [
+                      defaultImageUrl : getDefaultImageUrl(),
                       user : new Person(),
                       interests : "",
                       allInstitutions : jsonService.makeJsonForInstitutions() as JSON,
@@ -319,6 +320,7 @@ The Macademia Team
             return render(
                     view: 'createUser',
                     model: [
+                            defaultImageUrl : getDefaultImageUrl(),
                             user: person,
                             interests : allInterests,
                             primaryInstitution: person.retrievePrimaryInstitution(),
@@ -326,6 +328,18 @@ The Macademia Team
                             allInstitutions : jsonService.makeJsonForInstitutions() as JSON
                     ])
 	    }
+    }
+
+    def getDefaultImageUrl() {
+        String l = p.imageLink(src : MacademiaConstants.DEFAULT_IMG)
+        if (l[0] == "'") {
+            l = l[1..-1]
+        }
+        if (l[-1] == "'") {
+            l = l[0..-2]
+        }
+        return l
+
     }
 
     def delete = {
@@ -351,7 +365,8 @@ The Macademia Team
                cookie.path = "/"
                response.addCookie(cookie)
             }
-            redirect(uri: "/")
+            def group = Utils.getGroupFromUrl(request.forwardURI)
+            redirect(uri: "/$group")
         }
     }
 

@@ -1,0 +1,74 @@
+/*********************************************************************
+
+jQuery UI DropDown v1.0
+http://uraniuminteractive.com
+
+Copyright 2011, Frank Parent for Uranium Interactive
+Free to use and abuse under the MIT license.
+http://www.opensource.org/licenses/mit-license.php
+
+**********************************************************************/
+
+/* The dropdown container */
+.ddContainer {
+    display: inline-block;
+}
+
+/* The dropdown toggle button */
+.ddToggle {
+    @include border-radius(5px);
+    font-size: 14px;
+	height: 14px;
+	position: relative;
+	display: block;
+	border: 1px solid #666;
+	padding: 4px 15px 4px 7px;
+	background-color: gray;
+    color: $font-color-light;
+    overflow: hidden;
+    &:hover { color: $font-color-light; }
+
+	/* The dropdown arrow in the toggle box */
+    span {
+        width: 0; height:0;
+        border-color: white gray gray;
+        border-style: solid;
+        border-width: 5px;
+        display: block;
+        position: absolute;
+        top: 9px; right:4px;
+    }
+}
+
+/* The dropdown option list */
+.ddOptionList {
+	background-color: gray;
+	border-top: solid 1px #b2b2b2  !important;
+	border-right: solid 1px #000 !important;
+	border-bottom: solid 1px #000 !important;
+	border-left: solid 1px #b2b2b2 !important;
+	list-style-type: none;
+    overflow: auto;
+    max-height: 200px;
+	padding: 0;
+	margin: 0;
+	position: absolute;
+	left: 0;
+	z-index: 999;
+
+    li {
+        a {
+            color: $font-color-light;
+            padding-right: 4px;
+        }
+        &:hover {
+            background-color: gray + 111;
+            a { color: $font-color; }
+        }
+        .optgroup {
+            font-style: italic;
+            font-weight: bold;
+            cursor: default;
+        }
+    }
+}

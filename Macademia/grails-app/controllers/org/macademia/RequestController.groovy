@@ -12,7 +12,7 @@ class RequestController {
     def autocompleteService
     def institutionGroupService
 
-    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+    static allowedMethods = [save: "POST"]
 
     def index = {
         redirect(action: "manage", params: params)
@@ -104,20 +104,24 @@ class RequestController {
 
     def delete = {
         def collaboratorRequest = CollaboratorRequest.get(params.requestId)
+        def group = Utils.getGroupFromUrl(request.forwardURI)
         if (collaboratorRequest) {
+            if (!request.authenticated.canEdit(collaboratorRequest.creator)) {
+                throw new IllegalArgumentException("not authorized")
+            }
             try {
+                collaboratorRequest = collaboratorRequest.merge()
                 collaboratorRequestService.delete(collaboratorRequest)
                 flash.message = "${message(code: 'default.deleted.message', args: [message(code: 'collaboratorRequest.label', default: 'CollaboratorRequest'), params.id])}"
-                redirect(uri: "/")
+                redirect(uri: "/$group")
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) {
                 flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'collaboratorRequest.label', default: 'CollaboratorRequest'), params.id])}"
                 redirect(action: "show", id: params.id)
             }
-        }
-        else {
+        } else {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'collaboratorRequest.label', default: 'CollaboratorRequest'), params.id])}"
-            redirect(uri: "/")
+            redirect(uri: "/$group")
         }
     }
 
