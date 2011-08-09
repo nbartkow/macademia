@@ -6,6 +6,7 @@ class HomeController {
     public static int NUM_PEOPLE = 28
     public static int NUM_RANDOM_LISTS = 20
 
+    def institutionGroupService
     def personService
     def springcacheService
     def random = new Random()
@@ -29,7 +30,15 @@ class HomeController {
         return springcacheService.doWithCache(
                 'homeCache',
                 'institutionGroupCounts',
-                {personService.getInstitutionGroupCounts()}
+                {
+                    def igCounts = personService.getInstitutionGroupCounts()
+                    def all = institutionGroupService.getAllGroup()
+                    def dg = institutionGroupService.getDefaultGroup()
+                    if (all && dg && igCounts[all] && igCounts[dg] && all != dg) {
+                        igCounts[dg] = igCounts[all] - 1
+                    }
+                    return igCounts
+                }
         )
     }
 
