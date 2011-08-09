@@ -32,14 +32,14 @@ sudo port install git-core
 
 without macports
 use installer found on git site
-<http://git-scm.com/download>
+< http://git-scm.com/download >
 
 linux:
 use your package manager or compile from source
 
 windows:
 use installer found on git site
-<http://git-scm.com/download>
+< http://git-scm.com/download >
 
 ===Install Ruby===
 
@@ -56,14 +56,14 @@ sudo port install ruby
 
 mac w/o macports:
 install from site
-<http://www.ruby-lang.org/en/downloads/>
+< http://www.ruby-lang.org/en/downloads/ >
 
 linux:
 use package manager or install from source
 
 windows:
 install from site 
-<http://www.ruby-lang.org/en/downloads/>
+< http://www.ruby-lang.org/en/downloads/ >
 
 ===Install Compass===
 
