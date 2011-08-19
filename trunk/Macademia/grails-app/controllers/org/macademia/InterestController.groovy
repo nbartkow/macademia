@@ -91,11 +91,7 @@ class InterestController {
         if (!params.interest || !params.interest.trim()) {
             render('unknown')
         } else {
-          Interest interest = interestService.findByText(params.interest)
-            if (interest == null) {
-                interest = new Interest(params.interest)
-                interestService.save(interest)
-            }
+            Interest interest = interestService.analyze(params.interest)
             render(interest.articleName)
         }
     }
