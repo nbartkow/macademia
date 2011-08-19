@@ -34,11 +34,7 @@ class SimilarityService {
    public void buildInterestRelations() {
         for (Interest interest : Interest.findAll()) {
 //            log.info("interest Id is $interest.id related article is $interest.articleId and relations Built is $relationsBuilt")
-            if(!(interest.articleId==null || interest.articleId<0)){
-                databaseService.buildInterestRelations(interest.normalizedText, interest.id, interest.articleId, relationsBuilt)
-            }  else{
-                log.info("Interest $interest has no related article")
-            }
+            buildInterestRelations(interest)
         }
         relationsBuilt = true
     }
@@ -54,7 +50,7 @@ class SimilarityService {
     * @param i
     */
     public void buildInterestRelations(Interest interest){
-        if ((interest.articleId != null) && (interest.articleId > 0)) {
+        if (interest.articleId) {
             databaseService.buildInterestRelations(interest.normalizedText, interest.id, interest.articleId, relationsBuilt)
         } else {
             log.info("Interest $interest has no related article")

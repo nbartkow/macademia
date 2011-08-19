@@ -151,7 +151,6 @@ The Macademia Team
         Person person = new Person()
         person.properties[grailsApplication.config.macademia.creatableFields] = params
         person.email = params.email.toLowerCase()
-        println "person's email is ${person.email}"
         // Handle interest splitting
         person.interests = []
         if (params.interests){
@@ -403,7 +402,6 @@ The Macademia Team
                     return
                 }
                 def otherInstitutions = params.otherInstitutions
-                println("otherInstiuttions is ${otherInstitutions}")
                 List institutionList = institutionParse(params.institution, webUrl, extractEmailDomain(person.email), otherInstitutions)
 	            personService.save(person, institutionList)
                 userLoggingService.logEvent(request, 'profile', 'update', person.toMap())

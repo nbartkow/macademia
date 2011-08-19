@@ -51,6 +51,8 @@ class PersonService {
     }
 
     /**
+     * Saves the parameter person. Requires that all of the parameter
+     * person's interests have been analyzed first.
      * @param person The Person to be saved.
      * @param institutions A Collection<Institution> giving all of
      * the Institutions that the person should be a member of. The
@@ -58,31 +60,9 @@ class PersonService {
      * primary Institution.
      */
     public void save(Person person, Collection<Institution> institutions) {
-        //Maps wrong interest to right interest
-        Map<Interest,Interest> replace = new HashMap<Interest,Interest>()
-        //log.info("$person.interests[0]")
-
-        for (Interest interest in person.interests) {
-            Interest existingInterest = interestService.findByText(interest.text)
-            if (!existingInterest) {
-                // brand new interest
-                interestService.save(interest)
-            } else if (interest.id == null) {
-                // interest with same text exists, schedule it for replacement
-                replace.put(interest, existingInterest)
-            } else if (interest.lastAnalyzed == null) {
-                // existing interest, but not analyzed yet
-                interestService.save(interest)
-            }
-        }
-        for (Interest interest in replace.keySet()) {
-            person.removeFromInterests(interest)
-            person.addToInterests(replace.get(interest))
-        }
-
         setMemberships(person, institutions)
         setPrimaryMembership(person, institutions.iterator().next())
-        
+        Utils.safeSave(person)
         databaseService.addUser(person)
         autocompleteService.updatePerson(person)
     }
