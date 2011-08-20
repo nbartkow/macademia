@@ -1,6 +1,7 @@
 
 #filters {
-    padding-top: 15px;
+    padding-top: 7px;
+    margin-bottom: -10px;
     z-index: 1;
 
   	#density {
@@ -88,16 +89,45 @@
             width: 48%;
             position: relative;
             left: 50%;
-            padding: 0 10px 25px 25px;;
+            padding: 0 10px 0 25px;;
 
             #content {
                 @include clearfix();
                 margin: 0 0 0 280px;
                 padding-top: 5px;
-                text-align:center;
+                text-align: center;
+
+                #instKeyEntryTemplate {
+                    visibility: hidden;
+                    height: 0;
+                }
+
+                #institutionKey {
+                    margin:  12px;
+                    line-height: 150%;
+                    span {
+                        display: inline-block;
+                        cursor: default;
+                        padding-left: 3px;
+                        &:hover {
+                            background-color: #c3d6e4;
+                        }
+                        .instColor {
+                            position: relative;
+                            top: 3px;
+                            height: 16px;
+                            width: 16px;
+                            border-radius: 10px;
+                            margin: 0 4px 0 2px;
+                            padding: 0;
+                            border: 1px solid black;
+                        }
+                    }
+                }
             }
             
             .node {
+                color: #000;
                 cursor: pointer;
                 text-shadow: -1px 0 #FFF, 0 1px #FFF, 1px 0 #FFF, 0 -1px #FFF;
             }

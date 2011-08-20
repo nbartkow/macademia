@@ -303,7 +303,7 @@ macademia.resizeCanvas = function(currentWidth) {
     $("#infovis").height('');
     var originalWidth = 680;
     var originalHeight = 660;
-    var currentHeight = $(window).height() - 175;
+    var currentHeight = $(window).height() - 125;
     if (currentWidth <= currentHeight) {
         var newWidth = 0.95 * currentWidth;
         var newHeight = originalHeight * newWidth / originalWidth;
@@ -315,7 +315,6 @@ macademia.resizeCanvas = function(currentWidth) {
         $("#infovis-canvaswidget").css({"width":newWidth, "height": newHeight});
         macademia.rgraph.canvas.resize(currentWidth, currentHeight);
         macademia.rgraph.canvas.scale(newWidth/originalWidth, newHeight/originalHeight);
-        macademia.rgraph.canvas.translate(0, 25);
     }
     $("#infovis").height($("#infovis").height());
 };
@@ -335,7 +334,6 @@ macademia.changeQueryString = function(query) {
 macademia.updateNav = function(){
      var navFunction = $.address.parameter('navFunction');
      macademia.showDivs(navFunction);
-     macademia.clearInstructions();
      if (navFunction == 'search'){
             macademia.submitSearch();
             macademia.queryString.searchPage = $.address.parameter('searchPage');
@@ -390,12 +388,6 @@ macademia.showDivs = function(type){
             }
 
         }
-    }
-};
-// clears the instructions after the page has been changed by user (or if user enters exact url)
-macademia.clearInstructions = function(){
-    if($.address.parameter('searchBox') || $.address.parameter('personId') || $.address.parameter('interestId') || $.address.parameter('requestId')){
-        $("#instruct_list").hide();
     }
 };
 // submits the search query from the url
@@ -454,7 +446,6 @@ macademia.retrieveGroup = function() {
 macademia.makeActionUrl = function(controller, action) {
     return macademia.makeActionUrlWithGroup(macademia.retrieveGroup(), controller, action);
 };
-
 
 macademia.makeActionUrlWithGroup = function(group, controller, action) {
     // This is a work around of the jquery address plugin's behavior on

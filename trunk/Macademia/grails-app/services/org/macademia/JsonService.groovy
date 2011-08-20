@@ -247,7 +247,7 @@ class JsonService {
         for (String pid in personNodes.keySet()) {
             String fullName = personNodes[pid]['name']
 
-            def inst = personNodes[pid]['institutions']
+            def inst = personNodes[pid]['data']['institution']
             if (collegeColors != null && collegeColors.containsKey(inst.toString())) {
               personAndRequestColors[pid] = collegeColors.(inst.toString())
             }
@@ -311,10 +311,10 @@ class JsonService {
                 name: p.fullName,
                 data: [
                         unmodifiedId: p.id,
-                        type: 'person'
+                        type: 'person',
+                        institution: p.retrievePrimaryInstitution().id
                 ],
-                adjacencies: [],
-                institutions: p.memberships.institution.id
+                adjacencies: []
         ]
     }
 
