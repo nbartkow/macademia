@@ -56,9 +56,6 @@ macademia.jit.highlightAdjacenciesOn = function(node){
     $(".node").css('color', '#aaa');
     for (var i = 0; i < adjacentNodes.length; i++){
         var adjN = "#" + adjacentNodes[i];
-        $(adjN).css('opacity', 0.75);
-        $(adjN).css('z-index', 30);
-        $(adjN).css('background-color', 'transparent');
         $(adjN).css('color', '#000');
     }
 };
@@ -82,15 +79,49 @@ macademia.jit.highlightAdjacenciesOff = function(node){
             }
         })
     });
-
     $(".node").css('color', '#000');
-    for (var i = 0; i < adjacentNodes.length; i++){
-        var adjN = "#" + adjacentNodes[i];
-        $(adjN).css('opacity', 0.8);
-        $(adjN).css('z-index', 10);
-        $(adjN).css('background-color','transparent');
+};
+
+// highlight institution edges during mouseover of the institution key
+macademia.jit.highlightInstitutionOn = function(institution) {
+    var instNodes = [];
+    var root = macademia.rgraph.graph.getNode(macademia.rgraph.root);
+    root.eachSubnode(function(n) {
+        n.eachAdjacency(function(adj) {
+            if (adj.nodeTo['data']['institution'] == institution) {
+                instNodes.push(adj.nodeFrom.id);
+                instNodes.push(adj.nodeTo.id);
+                adj.data.$lineWidth = 1.8;
+            } else {
+                adj.data.$colorB = adj.data.$color;
+                adj.data.$color = macademia.jit.unfocusedEdgeColor;
+            }
+        });
+    });
+    $(".node").css('color', '#aaa');
+    for (var i = 0; i < instNodes.length; i++){
+        var adjN = "#" + instNodes[i];
         $(adjN).css('color', '#000');
     }
+};
+
+// returns graph to original coloring during mouseout
+macademia.jit.highlightInstitutionOff = function(institution) {
+    var instNodes = [];
+    var root = macademia.rgraph.graph.getNode(macademia.rgraph.root);
+    root.eachSubnode(function(n) {
+        n.eachAdjacency(function(adj) {
+            if (adj.nodeTo['data']['institution'] == institution) {
+                instNodes.push(adj.nodeFrom.id);
+                instNodes.push(adj.nodeTo.id);
+                adj.data.$lineWidth = 1;
+            } else {
+                adj.data.$color = adj.data.$colorB;
+            }
+        });
+
+    });
+    $(".node").css('color', '#000');
 };
 
 macademia.jit.init = function(rootType,id){
@@ -212,17 +243,17 @@ macademia.jit.init = function(rootType,id){
                     d.css('font-weight', 600);
                 }
             $(d).mouseover(function() {
-                $(this).css('opacity', 0.75);
-                $(this).css('z-index', 50);
-                $(this).css('background-color', '#A2AB8E');
+//                $(this).css('opacity', 0.75);
+//                $(this).css('z-index', 50);
+//                $(this).css('background-color', '#A2AB8E');
                 macademia.jit.highlightAdjacenciesOn(node);
                 macademia.rgraph.refresh();
 
             });
             $(d).mouseout(function() {
-                $(this).css('opacity', 0.8);
-                $(this).css('z-index', 10);
-                $(this).css('background-color','transparent');
+//                $(this).css('opacity', 0.8);
+//                $(this).css('z-index', 10);
+//                $(this).css('background-color','transparent');
                 if (macademia.jit.refreshNeeded){
                     macademia.jit.highlightAdjacenciesOff(node);
                     macademia.rgraph.refresh();
@@ -315,6 +346,10 @@ macademia.jit.init = function(rootType,id){
                     }
                     var data = macademia.jit.nextJson;
                     macademia.jit.nextJson = null;
+                    
+                    // set up the institution key
+                    macademia.jit.setInstitutionKey(macademia.jit.getColorsFromJson(data));
+                    
                     if (macademia.jit.intervalId > 0) {
                         clearInterval(macademia.jit.intervalId);
                         macademia.jit.intervalId = -1;
@@ -343,6 +378,8 @@ macademia.jit.init = function(rootType,id){
         }
 
     });
+    // set up the institution key
+    macademia.jit.setInstitutionKey(macademia.jit.getColorsFromJson(json));
     //load tree from tree data.
     macademia.rgraph.loadJSON(json);
     //compute positions and plot
@@ -352,4 +389,59 @@ macademia.jit.init = function(rootType,id){
     macademia.jit.buildingGraph = false;
         
     })
+};
+
+// Returns a mapping of institution ids to colors.
+macademia.jit.getColorsFromJson = function(json) {
+    var colors = {};
+    $.each(json, function(key, value) {
+        if (json[key]['data']['type'] == 'person') {
+            colors[json[key]['data']['institution']] = json[key]['adjacencies'][0]['data']['$color'];
+        }
+    });
+    return colors;
+};
+
+// Places an institution key on the page, telling the user what
+// the edge colors on the graph represent.
+macademia.jit.setInstitutionKey = function(colors) {
+    $("#keyInstitutions").empty();
+    var all = null;
+    for (var igMapKey in macademia.igMap) {
+        if (macademia.igMap[igMapKey]["info"]["abbrev"] == "all") {
+            all = macademia.igMap[igMapKey]["institutions"];
+            break;
+        }
+    }
+    for (var colorKey in colors) {
+        var instName;
+        for (var instKey in all) {
+            if (all[instKey]["id"] == colorKey) {
+                instName = all[instKey]["name"];
+                break;
+            }
+        }
+
+        var instKeyEntry = $("#instKeyEntryTemplate").clone();
+        var instColor = $(".instColorTemplate").clone();
+        $(instColor).attr('class', "instColor");
+        $(instColor).css("background-color", colors[colorKey]);
+        $(instKeyEntry).attr('id', "instKey_" + colorKey);
+        $(instKeyEntry).html(instName + ":");
+        $(instKeyEntry).append(instColor);
+        $("#keyInstitutions").append(instKeyEntry);
+        
+        $(instKeyEntry).hover(
+        function() {
+            var institution = this.id.split("_")[1];
+            macademia.jit.highlightInstitutionOn(institution);
+            macademia.rgraph.refresh();
+        }, function() {
+            var institution = this.id.split("_")[1];
+            if (macademia.jit.refreshNeeded){
+                macademia.jit.highlightInstitutionOff(institution);
+                macademia.rgraph.refresh();
+            }
+        });
+    }
 };

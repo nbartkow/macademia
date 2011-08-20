@@ -85,6 +85,11 @@
                         Nobody has created a profile from the institution you selected.  Create your own by following the "register" link in the top right.
                         </div>
                     </div>
+                    <div id="institutionKey">
+                        <p>Edge color shows a person's primary institution:</p>
+                        <div id="keyInstitutions"></div>
+                    </div>
+                    <span id="instKeyEntryTemplate"><span class='instColorTemplate'></span></span>
                 </div>
             </div>
 

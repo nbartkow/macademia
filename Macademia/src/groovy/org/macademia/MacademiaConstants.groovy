@@ -24,7 +24,7 @@ public class MacademiaConstants {
             "#9FD",
             "#DF9",
     ]
-    public static final REQUEST_COLOR = "#F77"
+    public static final REQUEST_COLOR = "#00F"
 
     static int MAX_COOKIE_AGE =  60 * 60 * 24 * 30 * 3 // three months
 
