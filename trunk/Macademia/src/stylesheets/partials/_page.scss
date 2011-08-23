@@ -52,6 +52,7 @@
         right: 20px;
         border: 1px solid #999;
         padding: 6px 8px;
+        z-index: 999;
 
   		a {
   			color: #666;
@@ -210,7 +211,6 @@
                 padding-bottom: 5px;
                 margin-bottom: 10px;
                 border-bottom: 1px solid #666;
-                z-index: 999;
             }
 
             #currentFocus{
