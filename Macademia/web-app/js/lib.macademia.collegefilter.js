@@ -45,6 +45,7 @@ macademia.initCollegeFilter = function() {
     $("#consortia").change(function(){
           macademia.hideAllSchools();
           macademia.showSchools($("#consortia").val());
+          macademia.initCollegeSearch($("#consortia").val());
           return false;
     });
 
@@ -252,14 +253,7 @@ macademia.changeDisplayedColleges = function(){
 
         var collegeIds = ($.address.parameter('institutions')).split("+");
         var collegeNames = new Array();
-
-        var igId;
-        $.each(macademia.igMap, function(key, value){
-            if (value.info.abbrev == macademia.retrieveGroup()){
-                igId = key;
-                return false;
-            }
-        });
+        var igId = macademia.getGroupId();
 
         for (var i = 0; i < collegeIds.length; i++) {
             collegeIds[i] = collegeIds[i].split("c_")[1];
@@ -281,12 +275,39 @@ macademia.changeDisplayedColleges = function(){
 
 };
 
-macademia.initCollegeSearch = function() {
-    $("#collegeSearchAuto").macademiaAutocomplete(
-        {
-            multiple : true,
+macademia.getGroupId = function() {
+    var igId = null;
+    var g = macademia.retrieveGroup();
+    $.each(macademia.igMap, function(key, value){
+        if (value.info.abbrev == g){
+            igId = key;
+            return false;
+        }
+    });
+    if (igId == null) {
+        alert('group not found');
+    }
+    return igId;
+};
+
+macademia.initCollegeSearch = function(igId) {
+    var source = [];
+    var igInfo = macademia.igMap[igId ? igId : macademia.getGroupId()];
+    $.each(igInfo.institutions,
+        function(index, institution) {
+            source.push({
+                        value : institution.name,
+                        data : institution
+                    });
+        }
+    );
+    console.log('source is ' + source);
+    $('#collegeSearchAuto').autocomplete({
+			minLength: 0,
+            delay : 50,
+            source : source,
             select : function (event, ui) {
-                var college = ui.item.data[1];
+                var college = ui.item.value;
                 $('#collegeSearchAuto').val(college);
                 $('#addCollege').click();
                 window.setTimeout(function () {
@@ -296,7 +317,7 @@ macademia.initCollegeSearch = function() {
 
                 return false;
             }
-        }, macademia.makeActionUrl('autocomplete', 'index') + '?klass=institution');
+        });
 };
 
 macademia.hideAllSchools = function() {

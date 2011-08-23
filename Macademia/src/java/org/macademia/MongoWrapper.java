@@ -785,15 +785,18 @@ public class MongoWrapper {
         return new SimilarInterestList(res);
     }
 
-    public SimilarInterestList getSimilarInterests(Long interest, Set<Long> institutionFilter) {
+    public SimilarInterestList getSimilarInterests(Long interest, InstitutionFilter institutionFilter) {
         DBObject i = safeFindById(INTERESTS, interest, false);
         if (i == null) {
             return new SimilarInterestList();
         }
         //log.info(similar +" getSimilarInterests get")
         Set<Long> institutionInterests = new HashSet<Long>();
-        for (long id : institutionFilter) {
+        for (long id : institutionFilter.institutionIds) {
             institutionInterests.addAll(getInstitutionInterests(id));
+        }
+        if (institutionFilter.requiredInstitutionId != null) {
+            institutionInterests.retainAll(getInstitutionInterests(institutionFilter.requiredInstitutionId));
         }
         return new SimilarInterestList((String)i.get("similar"), institutionInterests);
     }

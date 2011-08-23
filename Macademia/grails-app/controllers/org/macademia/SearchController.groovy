@@ -29,7 +29,7 @@ class SearchController {
         def iTotal = searchService.numInterestResults(cleanedQuery)
         def rTotal = searchService.numRequestResults(cleanedQuery)
 
-        Set<Long> institutions =  institutionGroupService.getInstitutionIdsFromParams(params)
+        Set<Long> institutions =  institutionGroupService.getInstitutionFilterFromParams(params)
         if (institutions == null) {
             pResults = searchService.searchPeople(cleanedQuery, pageNumber, allMax)
             iResults = searchService.searchInterests(cleanedQuery, pageNumber, allMax)
@@ -66,7 +66,7 @@ class SearchController {
         }
 
 
-        Set<Long> institutions =  institutionGroupService.getInstitutionIdsFromParams(params)
+        InstitutionFilter institutions =  institutionGroupService.getInstitutionFilterFromParams(params)
         if (institutions == null) {
             if (type == "interest") {
                 results = searchService.searchInterests(cleanedQuery, pageNumber * interestMax, interestMax)

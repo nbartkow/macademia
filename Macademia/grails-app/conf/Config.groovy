@@ -139,6 +139,9 @@ springcache {
         homeCache {
            timeToLive = 300
         }
+        institutionCache {
+           timeToLive = 86400
+        }
     }
 }
 

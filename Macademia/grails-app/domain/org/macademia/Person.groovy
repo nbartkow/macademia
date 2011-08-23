@@ -172,6 +172,10 @@ class Person {
         return institutionIds.any({memberships.institution.id.contains(it)})
     }
 
+    public Boolean isMatch(InstitutionFilter filter) {
+        return filter.matches(memberships.institution.id)
+    }
+
     def retrieveInstitutionGroups() {
         Collection<InstitutionGroup> igs = []
         for (Institution institution in memberships.institution){
