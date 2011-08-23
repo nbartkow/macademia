@@ -173,7 +173,7 @@ class Person {
     }
 
     public Boolean isMatch(InstitutionFilter filter) {
-        return filter.matches(memberships.institution.id)
+        return filter.matches(memberships.institution.id as Set)
     }
 
     def retrieveInstitutionGroups() {
