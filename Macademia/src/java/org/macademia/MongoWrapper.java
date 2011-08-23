@@ -312,8 +312,12 @@ public class MongoWrapper {
     private void setInterestUsage(long id, int usage) {
         DBCollection interests = getDb().getCollection(INTERESTS);
         DBObject interest = safeFindById(INTERESTS, id, false);
-        interest.put("usage", usage);
-        interests.update(safeFindById(INTERESTS, id, false), interest);
+        if (interest == null) { // FIXME: what should we do if interest is null? Create one? It's an error!
+            LOG.error("setInterestUsage: no interest with id " + id);
+        } else {
+            interest.put("usage", usage);
+            interests.update(safeFindById(INTERESTS, id, false), interest);
+        }
     }
 
     /**
@@ -325,7 +329,7 @@ public class MongoWrapper {
      */
     public int getInterestUsage(long id) {
         DBObject interest = safeFindById(INTERESTS, id, false);
-        if (interest != null) {
+        if (interest != null && interest.containsField("usage")) {
             return (Integer)interest.get("usage");
         } else {
             return 0;
