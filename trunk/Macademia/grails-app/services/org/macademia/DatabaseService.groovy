@@ -187,7 +187,7 @@ class DatabaseService {
         return wrapper.getSimilarInterests((long)interest.id)
     }
 
-    public SimilarInterestList getSimilarInterests(Interest interest, Set<Long> institutionFilter) {
+    public SimilarInterestList getSimilarInterests(Interest interest, InstitutionFilter institutionFilter) {
         return wrapper.getSimilarInterests(interest.id, institutionFilter)
     }
 
@@ -195,7 +195,7 @@ class DatabaseService {
         return wrapper.getSimilarInterests(id)
     }
 
-    public SimilarInterestList getSimilarInterests(Long id, Set<Long> institutionFilter) {
+    public SimilarInterestList getSimilarInterests(Long id, InstitutionFilter institutionFilter) {
         return wrapper.getSimilarInterests(id, institutionFilter)
     }
 

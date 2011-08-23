@@ -14,7 +14,7 @@ class InstitutionController {
 
     def filter = {
         def model = springcacheService.doWithCache(
-                'homeCache',
+                'institutionCache',
                 'filterModel',
                 {
                     def institutions = Institution.list().sort({it.name.toLowerCase()})

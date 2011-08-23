@@ -20,10 +20,10 @@ class RequestController {
 
     def list = {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        Set<Long> institutions =  institutionGroupService.getInstitutionIdsFromParams(params)
+        InstitutionFilter institutions =  institutionGroupService.getInstitutionFilterFromParams(params)
         def list = CollaboratorRequest.list()
         if (institutions) {
-            list = list.findAll({it.creator.memberOfAny(institutions)})
+            list = list.findAll({it.creator.isMatch(institutions)})
         }
         [collaboratorRequestList: list, collaboratorRequestInstanceTotal: list.size()]
     }
@@ -135,7 +135,7 @@ class RequestController {
         }
         def root = collaboratorRequestService.get((params.id as long))
         Graph graph
-        Set<Long> institutions =  institutionGroupService.getInstitutionIdsFromParams(params)
+        InstitutionFilter institutions =  institutionGroupService.getInstitutionFilterFromParams(params)
         graph = similarityService.calculateRequestNeighbors(root, max, institutions)
         def data = jsonService.buildCollaboratorRequestCentricGraph(root, graph)
         render(data as JSON)

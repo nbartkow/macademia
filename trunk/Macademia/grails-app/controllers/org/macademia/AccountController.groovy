@@ -13,6 +13,7 @@ class AccountController {
     def institutionService
     def institutionGroupService
     def jsonService
+    def springcacheService
 
 
     def forgottenpassword = {
@@ -252,6 +253,7 @@ The Macademia Team
                 institutionGroupService.addToInstitutions(allGroup, institution)
                 Utils.safeSave(allGroup)
                 autocompleteService.addInstitution(institution)
+                springcacheService.flush('institutionCache')
             }
 
             if (!institutionList.contains(institution)) institutionList.add(institution);

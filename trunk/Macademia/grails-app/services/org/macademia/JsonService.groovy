@@ -5,6 +5,9 @@ import grails.converters.JSON
 class JsonService {
 
     def collaboratorRequestService
+    def personService
+    def springcacheService
+
       //max number of interests per interest-centric graph
     int DEFAULT_MAX_INTERESTS_INTEREST_CENTRIC = 25
 
@@ -343,14 +346,27 @@ class JsonService {
     }
 
     def makeJsonForIgMap() {
-        def igMap = [:]
-        for (ig in InstitutionGroup.list().sort({it.name.toLowerCase()})) {
-            igMap[ig.id] = [
-                    info: [name: ig.name, abbrev: ig.abbrev],
-                    institutions: ig.institutions.sort({it.name.toLowerCase()}).collect({makeJsonForInstitution(it)})
-                ]
-        }
-        return igMap
+        return springcacheService.doWithBlockingCache("institutionCache", "igmap", {
+            def igMap = [:]
+            for (ig in InstitutionGroup.list().sort({it.name.toLowerCase()})) {
+                Set<Institution> insts
+                if (ig.crossCutting) {
+                    insts = new HashSet<Institution>()
+                    for (Institution i : ig.institutions) {
+                        for (Person p : personService.findAllInInstitution(i)) {
+                            insts.addAll(p.memberships.institution)
+                        }
+                    }
+                } else {
+                    insts = ig.institutions
+                }
+                igMap[ig.id] = [
+                        info: [name: ig.name, abbrev: ig.abbrev],
+                        institutions: insts.sort({it.name.toLowerCase()}).collect({makeJsonForInstitution(it)})
+                    ]
+            }
+            return igMap
+        })
     }
 
     def makeJsonForInstitutions() {
