@@ -1,28 +1,84 @@
-// This file must be imported before loading html5-boilerplate
+//-----------------------------------------------
+// Base element styles shared across pages
+//-----------------------------------------------
 
-$base-font-family: unquote('sans-serif');  // default font-family
+body, select, input, textarea {
+  color: $font-color;
+  font-size: $base-font-size;
+  // Set your base font here, to apply evenly
+  // font-family: Georgia, serif;
+}
 
-$base-font-size: 13px;  // default font-size for YUI fonts
+//Headers (h1, h2, etc) have no default font-size or margin; define those yourself
+h1, h2, h3, h4, h5, h6 {
+    // Bold might not be the best choice if you are
+    // embedding a @font-face that's already bold
+    font-weight: bold;
+}
+h1 {
+    font-size: 26px;
+}
+h2 {
+    font-size: 24px;
+}
+h3 {
+    font-size: 16px;
+}
 
-$base-line-height: 1.231;  // default line-height for YUI fonts
+a, a:active, a:visited {
+    color: $link-color;
+    text-decoration: none;
+}
+a:hover { color: $link-hover-color; }
 
-$font-color: #444;
+strong, th, b {
+  font-weight: bold;
+}
 
-$font-color-light: #eee;
+.alert {
+    color: #c11;
+}
 
-$link-color: #607890;
+.flash {
+    font-weight : bold;
+    color : #f00;
+    display: none;
+}
 
-$link-hover-color: #036;
+.warning {
+    background:#FFDDDD;
+    color : #A44;
+    text-align: center;
+    display: none;
+}
 
-$link-active-color: #607890;
+body {
+	min-width:1024px;
+}
 
-$link-visited-color: #607890;
+.customButton {
+    display: inline;
+    padding: 5px 10px 3px;
+    @include border-radius(5px);
+    background-color: gray;
+    border: 1px solid #666;
+    text-decoration: none;
+    a { color: white; }
+    a:visited { color: white; }
+    a:hover { color: $font-color-light; }
+}
 
-$selected-font-color: auto;  // color for selected text
+button, input[type="submit"], input[type="button"] {
+    padding: 5px 10px 3px;
+    @include border-radius(5px);
+    background-color: gray;
+    color: white;
+    border: 1px solid #666;
+    text-decoration: none;
+}
 
-$selected-background-color: #a8d1ff;  // bg-color for selected text
 
-$list-left-margin: 2em;  // left margin for ul an ol
-
-$background-color: #eee;
-
+select {
+    font-size: 14px;
+    padding: 2px;
+}

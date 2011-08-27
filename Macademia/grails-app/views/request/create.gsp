@@ -38,7 +38,7 @@
       </div>
 
     </div>
-    <div id="submitRequest" class="center">
+    <div id="submitRequest">
       <g:submitButton name="create" class="save" value="${collaboratorRequest.id ? 'Update' : 'Create'}"/>
     </div>
   </g:form>

@@ -13,6 +13,11 @@
   <g:javascript>
       $(document).ready(function() {
           macademia.initLogoLink();
+          var params = {
+              'page' : 'changepassword',
+              fromEmail : '${currentPassword != null}'
+          };
+          macademia.serverLog('page', 'load', params);
       });
   </g:javascript>
 </head>
@@ -92,15 +97,6 @@
 
     <g:render template="../layouts/footer"/>
 
-    <g:javascript >
-      $().ready(function() {
-          var params = {
-              'page' : 'changepassword',
-              fromEmail : '${currentPassword != null}'
-          };
-          macademia.serverLog('page', 'load', params);
-      });
-    </g:javascript>
 </body>
 
 </html>

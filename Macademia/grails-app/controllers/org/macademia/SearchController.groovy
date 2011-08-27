@@ -10,7 +10,7 @@ class SearchController {
     def index = { }
 
     def search = {
-        def query = params.searchBox
+        String query = params.searchBox
         def offset
         def allMax = 10
         def pResults
@@ -18,7 +18,7 @@ class SearchController {
         def rResults
 
         def institutionString = params.institutions
-        def pageNumber = params.pageNumber.toInteger()
+        int pageNumber = params.pageNumber.toInteger()
 
         // Prefix match!
         def cleanedQuery = query.toLowerCase()
@@ -29,7 +29,7 @@ class SearchController {
         def iTotal = searchService.numInterestResults(cleanedQuery)
         def rTotal = searchService.numRequestResults(cleanedQuery)
 
-        Set<Long> institutions =  institutionGroupService.getInstitutionFilterFromParams(params)
+        InstitutionFilter institutions =  institutionGroupService.getInstitutionFilterFromParams(params)
         if (institutions == null) {
             pResults = searchService.searchPeople(cleanedQuery, pageNumber, allMax)
             iResults = searchService.searchInterests(cleanedQuery, pageNumber, allMax)
@@ -51,16 +51,16 @@ class SearchController {
         def iResults
         def rResults
         def institutionString = params.institutions
-        def pageNumber = params.pageNumber.toInteger()
+        int pageNumber = params.pageNumber.toInteger()
         def type = params.type
         def personMax = 10
-        def interestMax = 20
+        def interestMax = 15
         def requestMax = 3
         def results = []
         def total
 
         // Prefix match!
-        def cleanedQuery = query.toLowerCase()
+        String cleanedQuery = query.toLowerCase()
         if (cleanedQuery[-1] != '*') {
             cleanedQuery += "*"
         }
@@ -96,7 +96,7 @@ class SearchController {
                 preResults = searchService.filterSearchPeople(cleanedQuery, 0, pTotal, pTotal, institutions)
             } else {
                 offset = pageNumber * requestMax
-                max = interestMax
+                max = requestMax
                 def rTotal = searchService.numRequestResults(cleanedQuery)
                 preResults = searchService.filterSearchCollaboratorRequests(cleanedQuery, 0, rTotal, rTotal, institutions)
             }

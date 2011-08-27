@@ -27,7 +27,7 @@
             <nav>
                 <ul>
                     <m:ifNotLoggedIn>
-                        <li><g:link params="[group : params.group]" controller="account" action="createuser" href="#">Create Account</g:link></li>
+                        <li><g:link params="[group : params.group]" controller="account" action="createuser">Create Account</g:link></li>
                         <li><a id="login_link" href="#">Login</a></li>
                     </m:ifNotLoggedIn>
                     <m:ifLoggedIn>

@@ -93,11 +93,6 @@ class Person {
         }
     }
 
-    //TODO: remove after reapOrphans. used for debugging purposes.
-    public boolean isShilad(Person other){
-        return (email=="ssen@macalester.edu")
-    }
-
     public static String calculatePasswdHash(String passwd) {
         return ("" + (String)ConfigurationHolder.config.macademia.salt + passwd).encodeAsSHA256() 
     }
