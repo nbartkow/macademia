@@ -1,5 +1,6 @@
 <%@ page import="grails.converters.JSON" contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
+<html>
 <head>
     <meta charset='utf-8' />
     <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible' />
@@ -29,8 +30,8 @@
         <nav>
             <ul>
                 <m:ifNotLoggedIn>
-                    <li><a class="listRequestLink" id="listRequestLink" href="#">Collaboration Requests</a></li>
-                    <li><g:link params="[group : params.group]" controller="account" action="createuser" href="#">Create Account</g:link></li>
+                    <li><a class="listRequestLink" href="#">Collaboration Requests</a></li>
+                    <li><g:link params="[group : params.group]" controller="account" action="createuser">Create Account</g:link></li>
                     <li><a id="login_link" href="#">Login</a></li>
                     <li><a href="/Macademia"><p:image alt="home" src="home.png" height="20"/></a></li>
                 </m:ifNotLoggedIn>
@@ -38,7 +39,7 @@
                   <li>
                     <a href="#">Collaboration Requests</a>
                     <ul>
-                      <li><a href="#" class="listRequestLink" id="makeRequestLink">View All Requests</a></li>
+                      <li><a href="#" class="listRequestLink">View All Requests</a></li>
                       <li><a href="#" class="makeRequestLink">Create New Request</a></li>
                     </ul>
                   </li>

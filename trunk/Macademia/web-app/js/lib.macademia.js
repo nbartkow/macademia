@@ -311,7 +311,7 @@ macademia.resizeCanvas = function(currentWidth) {
         var newHeight = 0.95 * currentHeight;
         var newWidth = originalWidth * newHeight / originalHeight;
     }
-    if (newWidth !== $("#infovis-canvaswidget").css("width")) {
+    if (newWidth !== $("#infovis-canvaswidget").css("width") && macademia.rgraph) {
         $("#infovis-canvaswidget").css({"width":newWidth, "height": newHeight});
         macademia.rgraph.canvas.resize(currentWidth, currentHeight);
         macademia.rgraph.canvas.scale(newWidth/originalWidth, newHeight/originalHeight);
@@ -341,15 +341,15 @@ macademia.updateNav = function(){
      }else if (navFunction == 'person' && $.address.parameter('personId') != macademia.queryString.personId){
          var rootId = $.address.parameter('nodeId');
          if (rootId != 'p_empty') {
-            $('#personIdDiv').load(macademia.makeActionUrl('person', 'show') + '/' + rootId.slice(2));
+            $('#rightContent').load(macademia.makeActionUrl('person', 'show') + '/' + rootId.slice(2));
          }
      }else if (navFunction == 'request'){
          var rootId = $.address.parameter('nodeId');
-         $('#requestIdDiv').load(macademia.makeActionUrl('request', 'show') + '/' + rootId.slice(2));
+         $('#rightContent').load(macademia.makeActionUrl('request', 'show') + '/' + rootId.slice(2));
          macademia.queryString.requestId = $.address.parameter('requestId');
      }else if (navFunction == 'interest'){
          var rootId = $.address.parameter('nodeId');
-         $('#interestIdDiv').load(macademia.makeActionUrl('interest', 'show') + '/' + rootId.slice(2));
+         $('#rightContent').load(macademia.makeActionUrl('interest', 'show') + '/' + rootId.slice(2));
      }//else if etc...
      macademia.queryString.navFunction = navFunction;
 };
@@ -405,7 +405,7 @@ macademia.submitSearch = function(){
             if(type != 'all'){
                 url = macademia.makeActionUrl('search', 'deepsearch');
             }
-            $('#searchBoxDiv').load(
+            $('#rightContent').load(
                 url,
                 {searchBox:search,
                 institutions: institutions,

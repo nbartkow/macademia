@@ -96,9 +96,4 @@ class InterestController {
         }
     }
 
-    def reapOrphans = {
-        interestService.reapOrphans()
-        redirect(uri: '/')
-    }
-
 }
