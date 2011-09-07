@@ -33,4 +33,5 @@ Indexing can be done through the mongodb shell which is available along with ins
 == Currently Required Indexes ==
 
 db.articlesToIds.ensureIndex({'wpId' : 1}) for both wikipediaReadOnly and wikipediaReadOnlyTest
+
 db.users.ensureIndex({'interests' : 1}) for macademia_prod
