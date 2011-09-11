@@ -216,7 +216,7 @@ nav ul li ul li a:hover { background: #777777 url(../images/dropdown/dropdown_li
 /* line 44, C:/Users/Brandon/idea/Macademia/src/stylesheets/partials/_home.scss */
 #homePage header #headerWrapper #login { float: right; position: relative; top: 30px; left: 170px; }
 /* line 49, C:/Users/Brandon/idea/Macademia/src/stylesheets/partials/_home.scss */
-#homePage header #headerWrapper #login .login_input { border: 1px solid gray; border-radius: 5px 5px 5px 5px; display: block; float: right; margin-bottom: 7px; margin-top: 2px; min-height: 15px; padding: 5px 2px; width: 167px; }
+#homePage header #headerWrapper #login .login_input { border: 1px solid gray; -moz-border-radius: 5px; -webkit-border-radius: 5px; -o-border-radius: 5px; -ms-border-radius: 5px; -khtml-border-radius: 5px; border-radius: 5px; display: block; float: right; margin-bottom: 7px; margin-top: 2px; min-height: 15px; padding: 5px 2px; width: 167px; }
 /* line 60, C:/Users/Brandon/idea/Macademia/src/stylesheets/partials/_home.scss */
 #homePage header #headerWrapper #login .login_submit { clear: both; display: block; float: left; margin-bottom: 5px; margin-left: 80px; }
 /* line 67, C:/Users/Brandon/idea/Macademia/src/stylesheets/partials/_home.scss */
@@ -342,7 +342,7 @@ footer #footerWrapper .footerBlock ul li a:hover { color: #0160a0; }
 /* line 108, C:/Users/Brandon/idea/Macademia/src/stylesheets/partials/_page.scss */
 #main #wrapper #centerCol #content #institutionKey span:hover { background-color: #c3d6e4; }
 /* line 111, C:/Users/Brandon/idea/Macademia/src/stylesheets/partials/_page.scss */
-#main #wrapper #centerCol #content #institutionKey span .instColor { position: relative; top: 3px; height: 16px; width: 16px; border-radius: 10px; margin: 0 4px 0 2px; padding: 0; border: 1px solid black; }
+#main #wrapper #centerCol #content #institutionKey span .instColor { position: relative; top: 3px; height: 16px; width: 16px; -moz-border-radius: 10px; -webkit-border-radius: 10px; -o-border-radius: 10px; -ms-border-radius: 10px; -khtml-border-radius: 10px; border-radius: 10px; margin: 0 4px 0 2px; padding: 0; border: 1px solid black; }
 /* line 125, C:/Users/Brandon/idea/Macademia/src/stylesheets/partials/_page.scss */
 #main #wrapper #centerCol .node { color: #000; cursor: pointer; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white; }
 /* line 132, C:/Users/Brandon/idea/Macademia/src/stylesheets/partials/_page.scss */
@@ -352,7 +352,7 @@ footer #footerWrapper .footerBlock ul li a:hover { color: #0160a0; }
 /* line 153, C:/Users/Brandon/idea/Macademia/src/stylesheets/partials/_page.scss */
 #main #wrapper #sidebar #login { float: right; position: relative; margin-bottom: 5px; }
 /* line 157, C:/Users/Brandon/idea/Macademia/src/stylesheets/partials/_page.scss */
-#main #wrapper #sidebar #login .login_input { border: 1px solid #666; border-radius: 5px 5px 5px 5px; display: block; float: right; margin-bottom: 7px; margin-top: 2px; min-height: 15px; padding: 5px 2px; width: 175px; }
+#main #wrapper #sidebar #login .login_input { border: 1px solid #666; -moz-border-radius: 5px; -webkit-border-radius: 5px; -o-border-radius: 5px; -ms-border-radius: 5px; -khtml-border-radius: 5px; border-radius: 5px; display: block; float: right; margin-bottom: 7px; margin-top: 2px; min-height: 15px; padding: 5px 2px; width: 175px; }
 /* line 168, C:/Users/Brandon/idea/Macademia/src/stylesheets/partials/_page.scss */
 #main #wrapper #sidebar #login .login_submit { clear: both; display: block; float: left; margin-bottom: 5px; margin-left: 80px; }
 /* line 175, C:/Users/Brandon/idea/Macademia/src/stylesheets/partials/_page.scss */
@@ -605,7 +605,7 @@ footer #footerWrapper .footerBlock ul li a:hover { color: #0160a0; }
 /* line 170, C:/Users/Brandon/idea/Macademia/src/stylesheets/partials/_modal.scss */
 #filterDialog input[type="submit"] { display: inline-block; font-size: 13px; margin: 2px; }
 /* line 175, C:/Users/Brandon/idea/Macademia/src/stylesheets/partials/_modal.scss */
-#filterDialog #collegeSearchAuto { margin: 0 3px 0 27px; border: 1px solid black; border-radius: 5px 5px 5px 5px; margin-left: 15px; padding: 5px 3px; width: 160px; }
+#filterDialog #collegeSearchAuto { margin: 0 3px 0 27px; border: 1px solid black; -moz-border-radius: 5px; -webkit-border-radius: 5px; -o-border-radius: 5px; -ms-border-radius: 5px; -khtml-border-radius: 5px; border-radius: 5px; margin-left: 15px; padding: 5px 3px; width: 160px; }
 /* line 183, C:/Users/Brandon/idea/Macademia/src/stylesheets/partials/_modal.scss */
 #filterDialog #closeCollegeFilter { margin: 0; padding: 0; position: absolute; right: 8px; top: 8px; }
 /* line 190, C:/Users/Brandon/idea/Macademia/src/stylesheets/partials/_modal.scss */
