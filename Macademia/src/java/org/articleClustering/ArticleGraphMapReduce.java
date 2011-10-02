@@ -6,9 +6,8 @@ package org.articleClustering;
 import edu.umd.cloud9.collection.wikipedia.WikipediaPage;
 import edu.umd.cloud9.collection.wikipedia.WikipediaPageInputFormat;
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Set;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.FileSystem;
@@ -32,46 +31,20 @@ import org.apache.hadoop.util.ToolRunner;
  *
  * @author Nathaniel Miller
  */
-public class ArticleClusterMapReduce extends Configured implements Tool{
+public class ArticleGraphMapReduce extends Configured implements Tool{
  
     /**
      * Input: Wikipedia pages
      *
-     * Output: "developed   anarchism|development"
+     * Output: "developed   anarchism#4|development#3"
      * Key is article name and value is list of linked article names
      */
     
     private static class MyMapper extends MapReduceBase implements Mapper<LongWritable, WikipediaPage, Text, Text> {
 
-        /*public void configure(JobConf conf) {
-            // read in the id mapping.
-           //Mapping doesn't exist for this job, and I don't know what the equivalent method for mapper would be anyways...
-         * try {
-
-                  PATH_WORDS = conf.get("PATH_WORDS");
-                  if (PATH_WORDS != null) {
-                      Path wordPath = new Path(PATH_WORDS);
-                      FileSystem hdfs = FileSystem.get(wordPath.toUri(), conf);
-                      BufferedReader reader = new BufferedReader(new InputStreamReader(hdfs.open(wordPath), "UTF-8"));
-                      while (true) {
-                          String line = reader.readLine();
-                          if (line == null) {
-                              break;
-                          }
-                          String tokens[] = line.split("\t");
-                          pageRanks.put(tokens[0].trim(), Integer.valueOf(tokens[1].trim()));
-
-                      }
-                  }
-
-              } catch (IOException ex) {
-                  Logger.getLogger(WordCounter.class.getName()).log(Level.SEVERE, null, ex);
-              }
-        }*/
-        
-          @Override
+        @Override
         public void map(LongWritable key, WikipediaPage p,
-                OutputCollector<Text,Text> output, Reporter reporter) throws IOException {
+            OutputCollector<Text,Text> output, Reporter reporter) throws IOException {
             for (String l : p.extractLinkDestinations()) {
                 output.collect(new Text(p.getTitle()), new Text(l));
                 output.collect(new Text(l), new Text(p.getTitle()));
@@ -85,13 +58,18 @@ public class ArticleClusterMapReduce extends Configured implements Tool{
 
         @Override
         public void reduce(Text key, Iterator<Text> values, OutputCollector<Text,Text> output, Reporter reporter) throws IOException {
-            Set<String> links = new HashSet<String>();
+            HashMap<String,Integer> links = new HashMap<String,Integer>();
             while (values.hasNext()) {
-                links.add(values.next().toString());
+                String linkName = values.next().toString();
+                if (links.containsKey(linkName)) {
+                    links.put(linkName, links.get(linkName) + 1);
+                } else {
+                    links.put(linkName, 1);
+                }
             }
             StringBuilder sb = new StringBuilder();
-            for (String s : links) {
-                sb.append(s).append("\\|");
+            for (String s : links.keySet()) {
+                sb.append(s).append("#").append(links.get(s)).append("\\|");
             }
             sb.deleteCharAt(sb.length());
             output.collect(key, new Text(sb.toString()));
@@ -141,7 +119,7 @@ public class ArticleClusterMapReduce extends Configured implements Tool{
      * <code>ToolRunner</code>.
      */
     public static void main(String[] args) throws Exception {
-        int res = ToolRunner.run(new Configuration(), new ArticleClusterMapReduce(), args);
+        int res = ToolRunner.run(new Configuration(), new ArticleGraphMapReduce(), args);
         System.exit(res);
         return;
     }
