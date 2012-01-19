@@ -167,3 +167,9 @@ returns output that is formatted to be inserted into MongoDB
 
 = Stage 7: Load to MongoDB =
 Move the files to the server and use removeQuotes.py to remove unnecessary quotes from the beginning and end of the keys and values if they exist.  Finally, use the load.sh script to load the output into MongoDB.
+
+Useful command for pulling down the files from S3: 
+{{{
+seq 0 400 | xargs printf "%05d\\n" | \
+parallel -P 10 --progress --eta s3cmd --no-progress sync s3://macademia/nbrvz/joined/{} .
+}}}
