@@ -171,5 +171,5 @@ Move the files to the server and use removeQuotes.py to remove unnecessary quote
 Useful command for pulling down the files from S3: 
 {{{
 seq 0 400 | xargs printf "%05d\\n" | \
-parallel -P 10 --progress --eta s3cmd --no-progress sync s3://macademia/nbrvz/joined/{} .
+parallel -P 10 --progress --eta s3cmd --no-progress sync s3://macademia/nbrvz/joined/part-r-{}.gz .
 }}}
