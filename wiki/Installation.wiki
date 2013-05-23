@@ -43,11 +43,11 @@ _To Hide again, just change TRUE to FALSE_
   # Download and install Intellij.  You want the ultimate edition.
   # Start up IntelliJ.  You'll need to answer some configuration questions:
     # For now we'll use the evaluation license.
-    # You only need to select the subversion VCS plugin.
-    # Select all the Web / J2EE modules. 
+    # You need to select the subversion and Git VCS plugin.
+    # Select all the Web / J2EE plugins. 
     # Only select the tomcat and Resin app server plugins.
-    # Leave all the HTML / Javascript plugins.
-    # Leave all the "Other" plugins.
+    # Select all the HTML / Javascript plugins.
+    # Select all the "Other" plugins.
     # The first time you create a Java or grails project you'll need to specify a path to a Java Compiler.  Choose "a new JCS," and use the path you specified for JAVA_HOME in your .profile.
 
 === Check out Macademia ===
