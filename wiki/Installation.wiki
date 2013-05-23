@@ -53,7 +53,8 @@ _To Hide again, just change TRUE to FALSE_
 
 === Check out Macademia ===
   # Check out Macademia from version control.
-    # Open intellij and click "check out from version control."
+    # Open intellij and click "check out from version control." 
+    # Choose Subversion
     # The repositories tab will open.  Click the "+" to add the following repository: https://macademia.googlecode.com/svn/trunk
     # When the repository opens, it will show the address https://macademia.googlecode.com/svn/trunk
     # Click on the arrow to open the file, and you will see the "Macademia" folder; click on that and click checkout
