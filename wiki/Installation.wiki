@@ -42,7 +42,7 @@ _To Hide again, just change TRUE to FALSE_
 === Setup Intellij ===
   # Download and install Intellij.  You want the ultimate edition.
   # Start up IntelliJ.  You'll need to answer some configuration questions:
-    # For now we'll use the evaluation license.
+    # For now we'll use the evaluation license (or ask Shilad for the license).
     # You need to select the subversion and Git VCS plugin.
     # Select all the Web / J2EE plugins. 
     # Only select the tomcat and Resin app server plugins.
